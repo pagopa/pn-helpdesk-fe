@@ -23,6 +23,7 @@ enum Severity {
   "OK" = "success",
   "Bad Request" = "error",
   "Internal Server Error" = "error",
+  "Gateway Timeout" = "error",
 }
 
 /** 
@@ -33,6 +34,7 @@ const SeverityMessage: {[key: string]: string} = {
   "OK": infoMessages.OK_RESPONSE,
   "Bad Request": infoMessages.BAD_REQUEST_RESPONSE,
   "Internal Server Error": infoMessages.INTERNEL_SERVER_ERROR_RESPONSE,
+  "Gateway Timeout": infoMessages.TIMEOUT,
 }
 
 /**
@@ -67,15 +69,17 @@ const SnackbarComponent = () => {
     const getSeverity = () => {
       if(status){
         if(status >= 200 && status < 300){
-        setSeverity("OK")
-      }else if(status >= 400 && status < 500){
-        setSeverity("Bad Request")
-      }else{
-        setSeverity("Internal Server Error");
+          setSeverity("OK")
+        }else if(status >= 400 && status < 500){
+          setSeverity("Bad Request")
+        }else if(status >= 504){
+          setSeverity("Gateway Timeout")
+        }else{
+          setSeverity("Internal Server Error");
+        }
       }
-      }  
     }
-
+    
     useEffect(() => getSeverity())
 
     return(

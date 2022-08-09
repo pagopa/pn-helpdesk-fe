@@ -16,7 +16,7 @@ let MenuItems: {[key: string]: Array<string>} = {
     "Ottieni EncCF": ["ticketNumber", "taxId", "recipientType"],
     "Ottieni CF": ["personId"],
     "Ottieni notifica": ["ticketNumber","iun"],
-    "Ottieni notifiche di una PA": ["ticketNumber", "publicAuthorityName", "referenceMonth"],
+    "Ottieni notifiche di una PA": ["ticketNumber", "publicAuthorityName", "monthInterval"],
     // use case 9 dissabled for now
     // "Ottieni log completi + organizzazione": ["ticketNumber", "taxId", "Time interval"],
     "Ottieni log completi": ["ticketNumber", "taxId", "iun", "personId"],
@@ -79,11 +79,15 @@ type FieldsProps = {
     /**
      * some additional input props for text fields
      */
-    inputProps?: {}
+    inputProps?: {},
     /**
      * some additional input props for text fields
      */
-    InputProps?: {}
+    InputProps?: {},
+    /**
+     * time interval limit for date ranges
+     */
+    intervalLimit?: Array<string | number>
 }
 
 /**
@@ -216,12 +220,38 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
             format: "yyyy-MM",
             required: false
     },
+    "Month Interval": {
+            name: "monthInterval",
+            componentType: "dateRangePicker",
+            label: "Month interval",
+            hidden: false,
+            required: false,
+            intervalLimit: [1, "months"],
+            format: "yyyy-MM-dd",
+            rules: {
+                required: errorMessages.REQUIRED,
+                validate: {
+                    validateInterval: (dates: Array<any>) => {
+                        let startDate = moment(dates[0]);
+                        let endDate = moment(dates[1]);
+                        return startDate.month() === endDate.month() &&  startDate.year() === endDate.year()
+                            || errorMessages.ONE_MONTH_INTERVAL
+                    },
+                    checkDates: (dates: Array<any>) => {
+                        let startDate = moment(dates[0]);
+                        let endDate = moment(dates[1]);
+                        return startDate.isBefore(endDate) || startDate.isSame(endDate) || errorMessages.DATES_ORDER
+                    }
+                }
+            }
+    },
     "Time interval": {
             name: "Time interval",
             componentType: "dateRangePicker",
             label: "Time interval",
             hidden: false,
             required: false,
+            intervalLimit: [3, "months"],
             rules: {
                 required: errorMessages.REQUIRED,
                 validate: {
@@ -350,7 +380,7 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
         }
         {
             componentType == "dateRangePicker" &&
-                <DateRangePickerComponent onBlur={onBlur} required={field.required!} onChange={onChange} intervalLimit={[3, "months"]}  datePickers={[
+                <DateRangePickerComponent field={field} onBlur={onBlur} required={field.required!} onChange={onChange} intervalLimit={field.intervalLimit}  datePickers={[
                     {
                         label: "Dal",
                         view:["day"],

@@ -6,6 +6,7 @@ import { CalendarPickerView } from '@mui/lab';
 import { useState } from 'react';
 import moment from 'moment';
 import { Grid } from '@mui/material';
+import { FieldsProps } from './FormFields';
 
 /**
  * @typedef {Object} DatePicker
@@ -49,6 +50,10 @@ type Props = {
      * function handling onBlur event used for onCLose of the date picker
      */
     onBlur: any
+    /**
+     * field properties 
+     */
+    field: FieldsProps,
 }
 
 /**
@@ -69,7 +74,8 @@ const DateRangePickerComponent = (props: Props) => {
      */
     /* istanbul ignore next */
     const handleChange = (value: any, field:string) => {
-        value = moment(value).format("YYYY-MM-DD")
+        value = props.field.name != "monthInterval" ? moment(value).format("YYYY-MM-DD")
+            : moment(value).utcOffset(0).set({hour:0,minute:0,second:0,millisecond:0}).toISOString()
         let prevState = [...dates];
         switch (field) {
             case "start":
@@ -96,7 +102,7 @@ const DateRangePickerComponent = (props: Props) => {
                     onChange={e => handleChange(e, "start")}
                     onClose={props.onBlur}
                     disableFuture
-                    inputFormat="yyyy-MM-dd"
+                    inputFormat={props.field.format || "yyyy-MM-dd"}
                     mask={"____-__-__"} 
                     renderInput={(params) => <TextField {...params} onBlur={props.onBlur} required={props.required} />}
                     />
@@ -111,7 +117,7 @@ const DateRangePickerComponent = (props: Props) => {
                 value={dates[1].value}
                 onChange={e => handleChange(e, "end")}
                 onClose={props.onBlur}
-                inputFormat="yyyy-MM-dd"
+                inputFormat={props.field.format || "yyyy-MM-dd"}
                 mask={"____-__-__"} 
                 disableFuture
                 renderInput={(params) => <TextField {...params} onBlur={props.onBlur} required={props.required} />}

@@ -32,7 +32,9 @@ const defaultFormValues: { [key: string]: any } = {
     "deanonimization": false,
     "Date Picker": moment().format("YYYY-MM-DD"),
     "Time interval": [moment().subtract(90, 'days').format("YYYY-MM-DD"), moment(new Date).format("YYYY-MM-DD")],
-    "traceId": ""
+    "traceId": "",
+    "monthInterval": [moment().utcOffset(0).date(1).set({hour:0,minute:0,second:0,millisecond:0}).toISOString(), 
+        moment().utcOffset(0).set({hour:0,minute:0,second:0,millisecond:0}).toISOString()]
 }
 
 /**
@@ -218,8 +220,10 @@ const SearchForm = () => {
         }
 
         // use case 6
-        if(payload["referenceMonth"]){
-            payload.endMonth = moment(payload["referenceMonth"]).add(1, "months");
+        if(selectedValue === "Ottieni notifiche di una PA"){
+            payload.startDate  = payload["monthInterval"][0];
+            payload.endDate = payload["monthInterval"][1];
+            delete payload["monthInterval"]
         }
         return payload;
     }
