@@ -101,9 +101,10 @@ const DateRangePickerComponent = (props: Props) => {
                     value={dates[0].value}
                     onChange={e => handleChange(e, "start")}
                     onClose={props.onBlur}
-                    disableFuture
+                    disableFuture={props.field.disableFuture}
                     inputFormat={props.field.format || "yyyy-MM-dd"}
                     mask={"____-__-__"} 
+                    maxDate={props.field.name == "monthInterval" ? new Date(props.field.maxDate!) : undefined}
                     renderInput={(params) => <TextField {...params} onBlur={props.onBlur} required={props.required} />}
                     />
                 </LocalizationProvider>
@@ -117,9 +118,10 @@ const DateRangePickerComponent = (props: Props) => {
                 value={dates[1].value}
                 onChange={e => handleChange(e, "end")}
                 onClose={props.onBlur}
+                disableFuture={props.field.disableFuture}
                 inputFormat={props.field.format || "yyyy-MM-dd"}
                 mask={"____-__-__"} 
-                disableFuture
+                maxDate={props.field.name == "monthInterval" ? new Date(props.field.maxDate!) : undefined}
                 renderInput={(params) => <TextField {...params} onBlur={props.onBlur} required={props.required} />}
                 />
             </LocalizationProvider>

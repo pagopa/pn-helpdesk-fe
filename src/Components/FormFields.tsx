@@ -88,6 +88,18 @@ type FieldsProps = {
      * time interval limit for date ranges
      */
     intervalLimit?: Array<string | number>
+    /**
+     * time interval min date
+     */
+    minDate?: string
+    /**
+     * time interval max date
+     */
+    maxDate?: string
+    /**
+     * disabling future for date range pickers
+     */
+    disableFuture?: boolean
 }
 
 /**
@@ -228,13 +240,16 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
             required: false,
             intervalLimit: [1, "months"],
             format: "yyyy-MM-dd",
+            disableFuture: false,
+            // minDate: moment().utcOffset(0).startOf('month').set({hour:0,minute:0,second:0,millisecond:0}).toISOString(),
+            maxDate: moment().utcOffset(0).add(1, "months").startOf('month').set({hour:0,minute:0,second:0,millisecond:0}).toISOString(),
             rules: {
                 required: errorMessages.REQUIRED,
                 validate: {
                     validateInterval: (dates: Array<any>) => {
                         let startDate = moment(dates[0]);
                         let endDate = moment(dates[1]);
-                        return startDate.month() === endDate.month() &&  startDate.year() === endDate.year()
+                        return endDate.isSameOrBefore(moment(startDate).add(1, 'months').date(1))
                             || errorMessages.ONE_MONTH_INTERVAL
                     },
                     checkDates: (dates: Array<any>) => {
@@ -252,6 +267,7 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
             hidden: false,
             required: false,
             intervalLimit: [3, "months"],
+            disableFuture: true,
             rules: {
                 required: errorMessages.REQUIRED,
                 validate: {
