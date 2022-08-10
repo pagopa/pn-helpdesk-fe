@@ -30,7 +30,7 @@ enum Severity {
  * connecting the alert with specific message
  * @readonly
  */
-const SeverityMessage: {[key: string]: string} = {
+const defaultSeverityMessage: {[key: string]: string} = {
   "OK": infoMessages.OK_RESPONSE,
   "Bad Request": infoMessages.BAD_REQUEST_RESPONSE,
   "Internal Server Error": infoMessages.INTERNEL_SERVER_ERROR_RESPONSE,
@@ -94,7 +94,7 @@ const SnackbarComponent = () => {
         <Alert onClose={handleClose}
            variant="filled" severity={Severity[severity as keyof typeof Severity]}
         >
-          <Typography>{snackbarMessage || SeverityMessage[severity]}</Typography> 
+          <Typography>{snackbarMessage || defaultSeverityMessage[severity]}</Typography> 
         </Alert>
       </Snackbar>
     )

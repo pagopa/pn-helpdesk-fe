@@ -263,7 +263,7 @@ const SearchForm = () => {
         if (request) {
             request.then(res => {
                 updateSnackbar(res);
-                if(!res.data.message){
+                if((res.data.password && res.data.zip) || res.data.data){
                     updateResponse(
                     res.data.password ? { password: res.data.password }
                         :
