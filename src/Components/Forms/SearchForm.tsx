@@ -221,8 +221,8 @@ const SearchForm = () => {
 
         // use case 6
         if(selectedValue === "Ottieni notifiche di una PA"){
-            payload.startDate  = payload["monthInterval"][0];
-            payload.endDate = payload["monthInterval"][1];
+            payload.referenceMonth  = payload["monthInterval"][0];
+            payload.endMonth = payload["monthInterval"][1];
             delete payload["monthInterval"]
         }
         return payload;
