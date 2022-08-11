@@ -66,6 +66,7 @@ const SnackbarComponent = () => {
       }
     }
 
+    /* istanbul ignore next */
     const getSeverity = () => {
       if(status){
         if(status >= 200 && status < 300){

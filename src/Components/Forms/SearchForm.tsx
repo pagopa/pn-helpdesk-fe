@@ -184,6 +184,7 @@ const SearchForm = () => {
      * handling form submit
      * @param data values from the form
      */
+     /* istanbul ignore next */
     const onSubmit = (data: any) => {
         resetStore();
         dispatch(spinnerActions.updateSpinnerOpened(true));

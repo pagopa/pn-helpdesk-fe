@@ -40,6 +40,7 @@ const DatePickerComponent = (props: Props) => {
    * handle change of the date field
    * @param e the selected date
    */
+  /* istanbul ignore next */
   const handleChange = (e: any) => {
       e =  field.name != "referenceMonth" ? moment(e).format(field.format!.toUpperCase())
       : moment(e).utcOffset(0).date(1).set({hour:0,minute:0,second:0,millisecond:0}).toISOString()

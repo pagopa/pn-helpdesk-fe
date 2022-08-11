@@ -40,10 +40,10 @@ describe('DatePickerComponent', () => {
     render(<DatePickerComponent field={field} value={new Date().toString()} onChange={handleChange} onBlur={handleBlur} />);
     screen.findByLabelText("Mese").then(async(textfield) => {
       expect(textfield).toBeTruthy()
-      fireEvent.change(textfield!, { target: { value: "2022-05" } });
+      fireEvent.change(textfield!, { target: { value: "2022-05-01" } });
       await waitFor(() => {
         expect(handleChange).toHaveBeenCalled();
-        expect(textfield).toHaveValue("2022-05");
+        expect(textfield).toHaveValue("2022-05-01");
       });
     });    
   });
