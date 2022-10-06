@@ -7,6 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import App from './App';
 import { Provider } from 'react-redux';
 import { store } from "./redux/store"
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { it } from "date-fns/locale";
 
 
 
@@ -16,13 +19,16 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        {/* for date formatting in italian style */}
+        <LocalizationProvider locale={it} dateAdapter={AdapterDateFns}>
           <CssBaseline />
           <Suspense fallback="loading...">
             <App />
           </Suspense>
-        </ThemeProvider>
-    </Provider>  
+        </LocalizationProvider>
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>
 );
 

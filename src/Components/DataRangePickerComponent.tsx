@@ -1,6 +1,4 @@
 import TextField from '@mui/material/TextField';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { CalendarPickerView } from '@mui/lab';
 import { useState } from 'react';
@@ -90,47 +88,61 @@ const DateRangePickerComponent = (props: Props) => {
         props.onChange([prevState[0].value, prevState[1].value]);
     }
 
-    return(
-        <Grid item container direction="row" spacing={2}>
-            <Grid item>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                    views={dates[0].view}
-                    key={dates[0].label}
-                    label={dates[0].label}
-                    value={dates[0].value}
-                    onChange={e => handleChange(e, "start")}
-                    onClose={props.onBlur}
-                    disableFuture={props.field.disableFuture}
-                    inputFormat={props.field.format || "dd-MM-yyyy"}
-                    mask={"____-__-__"} 
-                    maxDate={props.field.name == "monthInterval" ? new Date(props.field.maxDate!) : undefined}
-                    renderInput={(params) => <TextField {...params} onBlur={props.onBlur} required={props.required} />}
-                    />
-                </LocalizationProvider>
-            </Grid>
-           <Grid item>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                views={dates[1].view}
-                key={dates[1].label}
-                label={dates[1].label}
-                value={dates[1].value}
-                onChange={e => handleChange(e, "end")}
-                onClose={props.onBlur}
-                disableFuture={props.field.disableFuture}
-                inputFormat={props.field.format || "dd-MM-yyyy"}
-                mask={"____-__-__"} 
-                maxDate={props.field.name == "monthInterval" ? new Date(props.field.maxDate!) : undefined}
-                renderInput={(params) => <TextField {...params} onBlur={props.onBlur} required={props.required} />}
+    return (
+      <Grid item container direction="row" spacing={2}>
+        <Grid item>
+            <DatePicker
+              views={dates[0].view}
+              key={dates[0].label}
+              label={dates[0].label}
+              value={dates[0].value}
+              onChange={(e) => handleChange(e, "start")}
+              onClose={props.onBlur}
+              disableFuture={props.field.disableFuture}
+              inputFormat={props.field.format || "dd-MM-yyyy"}
+              mask={"____-__-__"}
+              maxDate={
+                props.field.name == "monthInterval"
+                  ? new Date(props.field.maxDate!)
+                  : undefined
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  onBlur={props.onBlur}
+                  required={props.required}
                 />
-            </LocalizationProvider>
-           </Grid>  
-        </Grid>  
-        
-      
-          
-    )
+              )}
+            />
+          {/* </LocalizationProvider> */}
+        </Grid>
+        <Grid item>
+            <DatePicker
+              views={dates[1].view}
+              key={dates[1].label}
+              label={dates[1].label}
+              value={dates[1].value}
+              onChange={(e) => handleChange(e, "end")}
+              onClose={props.onBlur}
+              disableFuture={props.field.disableFuture}
+              inputFormat={props.field.format || "dd-MM-yyyy"}
+              mask={"____-__-__"}
+              maxDate={
+                props.field.name == "monthInterval"
+                  ? new Date(props.field.maxDate!)
+                  : undefined
+              }
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  onBlur={props.onBlur}
+                  required={props.required}
+                />
+              )}
+            />
+        </Grid>
+      </Grid>
+    );
 }
 
 export default DateRangePickerComponent;
