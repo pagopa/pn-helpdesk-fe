@@ -20,7 +20,7 @@ const SearchPage = ({ email }: any) => {
   /* istanbul ignore next */
   useEffect(() => {
     const idTokenInterval = setInterval(async() => {
-        await refreshToken().then(res => console.log("refreshing token:", res))
+        await refreshToken()
     }, 3540000);
     // 300000 = 5 minutes
     // 3 540 000 = 59 minutes

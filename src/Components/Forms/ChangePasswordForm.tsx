@@ -56,7 +56,6 @@ const ChangePasswordForm = ({ user }: any) => {
         dispatch(spinnerActions.updateSpinnerOpened(true));
         await changePassword(user, data.newPassword).then(res => {
             dispatch(spinnerActions.updateSpinnerOpened(false));
-            console.log(res)
             navigate("/search");
         })
         .catch((error: any) => {

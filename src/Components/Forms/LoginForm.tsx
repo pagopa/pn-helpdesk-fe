@@ -64,7 +64,6 @@ const LoginForm = ({ setUser, setEmail }: any) => {
                     setUser(user)
                 }else{
                     dispatch(spinnerActions.updateSpinnerOpened(false));
-                    console.log(user)
                     navigate("/search");
                 }
             })

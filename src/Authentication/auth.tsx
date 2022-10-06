@@ -64,7 +64,6 @@ const refreshToken = async (): Promise<any> => {
                 const accessToken = user.getSignInUserSession()?.getAccessToken().getJwtToken();
                 setStorage("token", token!)
                 setStorage("accessToken", accessToken!)
-                console.log(user)
             });      
        })
        .catch((error: any) => {
@@ -80,10 +79,8 @@ const refreshToken = async (): Promise<any> => {
  * @returns 
  */
 const changePassword = (user: any, newPassword: string): Promise<any> => {
-    console.log(user)
     return Auth.completeNewPassword(user, newPassword)
         .then(async (user:any) => {
-                console.log(user);
                 const token = user.signInUserSession.idToken.jwtToken;
                 const refreshToken = user.signInUserSession.refreshToken.token;
                 const accessToken = user.signInUserSession.accessToken.jwtToken;
