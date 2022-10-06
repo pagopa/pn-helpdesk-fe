@@ -239,7 +239,7 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
             hidden: false,
             required: false,
             intervalLimit: [1, "months"],
-            format: "yyyy-MM-dd",
+            format: "dd-MM-yyyy",
             disableFuture: false,
             // minDate: moment().utcOffset(0).startOf('month').set({hour:0,minute:0,second:0,millisecond:0}).toISOString(),
             maxDate: moment().utcOffset(0).add(1, "months").startOf('month').set({hour:0,minute:0,second:0,millisecond:0}).toISOString(),
