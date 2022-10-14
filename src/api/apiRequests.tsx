@@ -1,6 +1,6 @@
 // import { apiClient } from "./apiClient";
 import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, 
-    getOperatorsLogsType,  getPersonIdType, getPersonTaxIdType, getPersonsLogsType } from "./apiRequestTypes";
+    getPersonIdType, getPersonTaxIdType, getPersonsLogsType } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient"
 
 /**

@@ -37,7 +37,7 @@ const LoginForm = ({ setUser, setEmail }: any) => {
      /**
      * form functionalities from react-hook-forms
      */
-    const { handleSubmit, control, watch, formState: { errors, isDirty, touchedFields, dirtyFields }, reset, getValues, } = useForm({
+    const { handleSubmit, control, formState: { errors } } = useForm({
         defaultValues: defaultFormValues,
         mode: 'onSubmit',
         reValidateMode: 'onSubmit'

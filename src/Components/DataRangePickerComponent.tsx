@@ -9,7 +9,7 @@ import { FieldsProps } from './FormFields';
 /**
  * @typedef {Object} DatePicker
  */
-type DatePicker = {
+type DatePickerType = {
     /**
      * label of the field
      */
@@ -31,7 +31,7 @@ type Props = {
     /**
      * the two dates information 
      */
-    datePickers: Array<DatePicker>,
+    datePickers: Array<DatePickerType>;
     /**
      * function handling the change of the field 
      */
@@ -72,7 +72,7 @@ const DateRangePickerComponent = (props: Props) => {
      */
     /* istanbul ignore next */
     const handleChange = (value: any, field:string) => {
-        value = props.field.name != "monthInterval" ? moment(value).format("YYYY-MM-DD")
+        value = props.field.name !== "monthInterval" ? moment(value).format("YYYY-MM-DD")
             : moment(value).utcOffset(0).set({hour:0,minute:0,second:0,millisecond:0}).toISOString()
         let prevState = [...dates];
         switch (field) {
@@ -102,7 +102,7 @@ const DateRangePickerComponent = (props: Props) => {
               inputFormat={props.field.format || "dd-MM-yyyy"}
               mask={"____-__-__"}
               maxDate={
-                props.field.name == "monthInterval"
+                props.field.name === "monthInterval"
                   ? new Date(props.field.maxDate!)
                   : undefined
               }
@@ -128,7 +128,7 @@ const DateRangePickerComponent = (props: Props) => {
               inputFormat={props.field.format || "dd-MM-yyyy"}
               mask={"____-__-__"}
               maxDate={
-                props.field.name == "monthInterval"
+                props.field.name === "monthInterval"
                   ? new Date(props.field.maxDate!)
                   : undefined
               }
