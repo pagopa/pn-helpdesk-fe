@@ -4,6 +4,6 @@ export const regex = {
     FISCAL_CODE_PATTERN: /^([A-Za-z]{6}[0-9lmnpqrstuvLMNPQRSTUV]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9lmnpqrstuvLMNPQRSTUV]{2}[A-Za-z]{1}[0-9lmnpqrstuvLMNPQRSTUV]{3}[A-Za-z]{1})|([0-9]{11})$/, 
     UNIQUE_IDENTIFIER_PATTERN: /^[A-Za-z0-9\~\-\_]*$/,
     PASSWORD: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )[\w!@#$%^&()_+.\"\-\?{}`~[\]*=|;:'<>,\/\\]{16,}$/,
-    EMAIL: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+    EMAIL: /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,15}$/,
     IUN: /^([A-Za-z]{4})-([A-Za-z]{4})-([A-Za-z]{4})-([0-9]{6})-([A-Za-z]{1})-([0-9]{1})$/
 }
