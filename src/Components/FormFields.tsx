@@ -334,7 +334,7 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
         rules: {
             required: errorMessages.INCORRECT_EMAIL,
             pattern: {
-                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                value: regex.EMAIL,
                 message: errorMessages.INCORRECT_EMAIL
             }
         },
@@ -348,7 +348,7 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
         rules: {
             required: errorMessages.INCORRECT_PASSWORD,
             pattern: {
-                value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[a-zA-Z0-9!@#$%^&()_+]).{16,}$/,
+                value: regex.PASSWORD,
                 message: errorMessages.INCORRECT_PASSWORD
             },
         },
