@@ -24,7 +24,7 @@ type Props = {
   /**
    * if there is an error for that field
    */
-  error?: any
+  error?: any,
 }
 
 /**
@@ -35,7 +35,7 @@ type Props = {
 const TextFieldComponent = (props: Props) => {
   const field = props.field
     return(
-         <TextField 
+         <TextField
             required={field.required}
             inputProps={field.inputProps ? field.inputProps : {}}
             InputProps={field.InputProps ? field.InputProps : {}}

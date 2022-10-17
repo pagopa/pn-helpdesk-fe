@@ -1,6 +1,6 @@
 import awsmobile from "./aws-exports"
 import Amplify, { Auth } from 'aws-amplify';
-import { setStorage, resetStorage, getStorage, deleteStorage } from "./storage";
+import { setStorage, resetStorage, deleteStorage } from "./storage";
 import { CognitoUser } from "@aws-amplify/auth";
 
 type Props = {

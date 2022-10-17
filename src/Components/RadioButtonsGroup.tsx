@@ -1,4 +1,4 @@
-import { FormControlLabel, FormControl, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { FormControlLabel, FormControl, Radio, RadioGroup } from "@mui/material";
 import { FieldsProps } from "./FormFields";
 
 /**
@@ -25,7 +25,7 @@ type Props = {
  * @param {Props} props
  */
 const RadioButtonsGroup = (props: Props) => {
-    const {options, label, name} = props.field;
+    const {options, name} = props.field;
 
     return(
         <FormControl >

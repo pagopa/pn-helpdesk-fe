@@ -1,6 +1,6 @@
 import { Grid, Button, Box, Card, FormHelperText, Typography, InputAdornment } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FieldsProperties, FormField } from "../FormFields";
 import LockIcon from '@mui/icons-material/Lock';
 import { errorMessages, infoMessages } from "../../helpers/messagesConstants";
@@ -9,8 +9,6 @@ import HelpIcon from '@mui/icons-material/Help';
 import Tooltip from '@mui/material/Tooltip';
 import { useDispatch } from 'react-redux';
 import * as snackbarActions from "../../redux/snackbarSlice";
-import { deleteStorage, resetStorage } from "../../Authentication/storage";
-import { CognitoUser } from "@aws-amplify/auth";
 import * as spinnerActions from "../../redux/spinnerSlice";
 
 /**
@@ -40,7 +38,7 @@ const ChangePasswordForm = ({ user }: any) => {
     /**
      * form functionalities from react-hook-forms
      */
-    const { handleSubmit, control, watch, formState: { errors, isDirty, touchedFields, dirtyFields }, reset, getValues, } = useForm({
+    const { handleSubmit, control, formState: { errors }, getValues, } = useForm({
         defaultValues: defaultFormValues,
         mode: 'onSubmit',
         reValidateMode: 'onSubmit'
