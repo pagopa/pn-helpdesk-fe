@@ -47,10 +47,10 @@
   },
   "scripts": {
     "generate:api": "rimraf generated && mkdir generated && gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/pn-logextractor-be/develop/docs/openapi/swagger.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client",
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "craco eject"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
