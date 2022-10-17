@@ -16,7 +16,7 @@ class Http {
 
   initHttp() {
     const http = axios.create({
-      baseURL: process.env.REACT_APP_API_ENDPOINT + "/logextractor/v1",
+      baseURL: process.env.REACT_APP_API_ENDPOINT,
       headers,
     });
 
@@ -44,15 +44,15 @@ class Http {
   }
 
   getPersonTaxId<T = any, R = AxiosResponse<T>>(payload: getPersonTaxIdType): Promise<R> {
-    return this.http.post<T, R>("/persons/tax-id", payload)
+    return this.http.post<T, R>("/persons/v1/tax-id", payload)
   }
 
   getPersonId<T = any, R = AxiosResponse<T>>(payload: getPersonIdType): Promise<R> {
-    return this.http.post<T, R>("/persons/person-id", payload)
+    return this.http.post<T, R>("/persons/v1/person-id", payload)
   }
 
   getPersonsLogs<T = any, R = AxiosResponse<T>>(payload: getPersonsLogsType): Promise<R> {
-    return this.http.post<T, R>("logs/persons", payload)
+    return this.http.post<T, R>("logs/v1/persons", payload)
   }
 
   /*getOperatorsLogs<T = any, R = AxiosResponse<T>>(payload: getOperatorsLogsType): Promise<R> {
@@ -60,15 +60,15 @@ class Http {
   }*/
 
   getNotificationsInfoLogs<T = any, R = AxiosResponse<T>>(payload: getNotificationsInfoLogsType): Promise<R> {
-    return this.http.post<T, R>("logs/notifications/info", payload)
+    return this.http.post<T, R>("logs/v1/notifications/info", payload)
   }
 
   getNotificationsMonthlyStatsLogs<T = any, R = AxiosResponse<T>>(payload: getNotificationsMonthlyStatsLogsType): Promise<R> {
-    return this.http.post<T, R>("logs/notifications/monthly", payload)
+    return this.http.post<T, R>("logs/v1/notifications/monthly", payload)
   }
 
   getLogsProcesses<T = any, R = AxiosResponse<T>>(payload: getLogsProcessesType): Promise<R> {
-    return this.http.post<T, R>("logs/processes", payload)
+    return this.http.post<T, R>("logs/v1/processes", payload)
   }
 
 }
