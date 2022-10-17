@@ -2,7 +2,6 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { CalendarPickerView } from '@mui/lab';
 import moment from 'moment';
 import { FieldsProps } from './FormFields';
 
@@ -42,7 +41,7 @@ const DatePickerComponent = (props: Props) => {
    */
   /* istanbul ignore next */
   const handleChange = (e: any) => {
-      e =  field.name != "referenceMonth" ? moment(e).format(field.format!.toUpperCase())
+      e =  field.name !== "referenceMonth" ? moment(e).format(field.format!.toUpperCase())
       : moment(e).utcOffset(0).date(1).set({hour:0,minute:0,second:0,millisecond:0}).toISOString()
       props.onChange(e);
   }

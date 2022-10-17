@@ -33,7 +33,7 @@ const SelectField = (props: Props) => {
                 value={value}
             >
                 {
-                    field.label != "Tipo Estrazione" &&
+                    field.label !== "Tipo Estrazione" &&
                     <MenuItem key="none" value=""></MenuItem>
                 }
                 {field.selectItems?.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)}

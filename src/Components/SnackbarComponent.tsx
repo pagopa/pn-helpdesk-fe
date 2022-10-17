@@ -61,7 +61,7 @@ const SnackbarComponent = () => {
     */
    /* istanbul ignore next */
     const handleClose = (event?: Event | SyntheticEvent<any, Event>, reason: SnackbarCloseReason = "escapeKeyDown") => {
-      if(reason != "clickaway"){
+      if(reason !== "clickaway"){
         dispatch(updateSnackbacrOpened(false))
       }
     }

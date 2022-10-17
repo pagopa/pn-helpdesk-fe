@@ -2,10 +2,8 @@ import React from "react";
 import Header from '../Components/Header';
 import SearchForm from '../Components/Forms/SearchForm';
 import { Grid } from '@mui/material';
-import { opened } from "../redux/spinnerSlice";
-import { useSelector } from 'react-redux';
 import Footer from '../Components/Footer';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { logout, refreshToken } from '../Authentication/auth';
 import { useNavigate } from "react-router-dom";
 
@@ -38,6 +36,7 @@ const SearchPage = ({ email }: any) => {
         clearInterval(idTokenInterval);
         clearInterval(refreshTokenInterval);
     } 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

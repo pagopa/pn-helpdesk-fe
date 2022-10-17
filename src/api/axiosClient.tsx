@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getOperatorsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType } from "./apiRequestTypes";
+import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType } from "./apiRequestTypes";
 
 const headers: Readonly<Record<string, string | boolean>> = {
   Accept: "*/*",

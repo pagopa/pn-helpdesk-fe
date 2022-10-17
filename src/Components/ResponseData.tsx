@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Divider, Grid, Typography } from '@mui/material';
 import { opened, responseData } from "../redux/responseSlice";
 import { useSelector } from 'react-redux';
 

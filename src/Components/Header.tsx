@@ -8,9 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { infoMessages } from "../helpers/messagesConstants"
 import { Divider, Grid, Typography } from '@material-ui/core';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import logo_pagopa_bianco from "../resources/logo_pagopa_bianco.svg";
 import {logout} from "../Authentication/auth"
-import { resetStorage } from '../Authentication/storage';
 import { useDispatch } from 'react-redux';
 import * as spinnerActions from "../redux/spinnerSlice";
 /**

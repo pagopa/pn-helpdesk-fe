@@ -1,6 +1,6 @@
 import TextFieldComponent from "./TextFieldComponent"
 import RadioButtonsGroup from "./RadioButtonsGroup";
-import { Checkbox, FormControlLabel, Grid, InputAdornment} from "@mui/material";
+import { Checkbox, FormControlLabel, Grid} from "@mui/material";
 import SelectField from "./SelectField";
 import { regex } from "../helpers/validations";
 import DatePickerComponent from "./DatePickerComponent";
@@ -375,27 +375,27 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
     const componentType : string = field.componentType;
     return <Grid item container>
         {
-            componentType == "textfield" && 
+            componentType === "textfield" && 
                 <TextFieldComponent error={error} value={value} onChange={onChange} field={field}  onBlur={onBlur}/>
         }
         {
-            componentType == "select" &&
+            componentType === "select" &&
                 <SelectField value={value} field={field} onChange={onChange} />
         }
         {
-            componentType == "radioButtons" &&
+            componentType === "radioButtons" &&
                 <RadioButtonsGroup value={value} field={field} onChange={onChange}></RadioButtonsGroup>
         }
         {
-            componentType == "checkbox" &&
+            componentType === "checkbox" &&
                 <FormControlLabel label={field.label} control={<Checkbox value={value} onChange={onChange}/>} />
         }
         {
-            componentType == "datePicker" &&
+            componentType === "datePicker" &&
                 <DatePickerComponent onBlur={onBlur} field={field} onChange={onChange} value={value}/>
         }
         {
-            componentType == "dateRangePicker" &&
+            componentType === "dateRangePicker" &&
                 <DateRangePickerComponent field={field} onBlur={onBlur} required={field.required!} onChange={onChange} intervalLimit={field.intervalLimit}  datePickers={[
                     {
                         label: "Dal",

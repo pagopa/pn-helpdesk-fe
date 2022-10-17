@@ -31,7 +31,7 @@ const defaultFormValues: { [key: string]: any } = {
     "recipientType": "PF",
     "deanonimization": false,
     "Date Picker": moment().format("YYYY-MM-DD"),
-    "Time interval": [moment().subtract(90, 'days').format("YYYY-MM-DD"), moment(new Date).format("YYYY-MM-DD")],
+    "Time interval": [moment().subtract(90, 'days').format("YYYY-MM-DD"), moment(new Date()).format("YYYY-MM-DD")],
     "traceId": "",
     "monthInterval": [moment().utcOffset(0).date(1).set({hour:0,minute:0,second:0,millisecond:0}).toISOString(), 
         moment().utcOffset(0).set({hour:0,minute:0,second:0,millisecond:0}).toISOString()]
@@ -71,7 +71,7 @@ const SearchForm = () => {
     /**
      * form functionalities from react-hook-forms
      */
-    const { handleSubmit, control, watch, formState: { errors, isDirty, touchedFields, dirtyFields },
+    const { handleSubmit, control, formState: { errors, dirtyFields },
         reset, resetField, getValues, clearErrors } = useForm({
             mode: 'onBlur',
             reValidateMode: "onBlur",
@@ -98,16 +98,19 @@ const SearchForm = () => {
         reset({ ...defaultFormValues, "Tipo Estrazione": values["Tipo Estrazione"] });
         setSelectedValue(values["Tipo Estrazione"].toString());
         resetStore();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [watchTipoEstrazione])
 
     useEffect(() => {
         setFields(filterFields(MenuItems[selectedValue]));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedValue])
 
     useLayoutEffect(() => () => {
         setFields(filterFields(MenuItems[selectedValue]));
         disableRicerca();
         resetStore();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -127,7 +130,7 @@ const SearchForm = () => {
             const common = Object.keys(dirtyFields).filter(
                 field => ["deanonimization", "ticketNumber", "Time interval", "recipientType"].includes(field));
             if (Object.keys(dirtyFields).length === common.length) {
-                neededFields = MenuItems["Ottieni log completi"].filter(item => item != "deanonimization");
+                neededFields = MenuItems["Ottieni log completi"].filter(item => item !== "deanonimization");
                 clearErrors();
             }
             else {
@@ -141,11 +144,12 @@ const SearchForm = () => {
                     neededFields = ["ticketNumber", "iun", "deanonimization"];
                 }
             }
-            if (neededFields.sort().join('|') != fields.map(field => field.name).sort().join('|')) {
+            if (neededFields.sort().join('|') !== fields.map(field => field.name).sort().join('|')) {
                 setFields(filterFields(neededFields));
             }
         }
         setPrevDirtyFields(Object.keys(dirtyFields));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [watchAllFields])
 
 
@@ -157,7 +161,7 @@ const SearchForm = () => {
     const filterFields = (neededFields: string[]): FieldsProps[] => {
         const allFields = Object.values(FieldsProperties);
         return allFields.map(field => {
-            if (neededFields.includes(field.name) || field.name == "Tipo Estrazione") {
+            if (neededFields.includes(field.name) || field.name === "Tipo Estrazione") {
                 if (selectedValue === "Ottieni log completi" &&
                     neededFields.sort().join("") === MenuItems["Ottieni log completi"].sort().join("") &&
                     field.name !== "ticketNumber"
@@ -199,7 +203,7 @@ const SearchForm = () => {
      */
     const createPayload = (data: any): any => {
         const currentFields = fields
-            .filter(field => !field.hidden && field.name != "Tipo Estrazione")
+            .filter(field => !field.hidden && field.name !== "Tipo Estrazione")
             .map(field => field.name);
         let payload = Object.assign(
             Object.keys(data)
@@ -329,8 +333,8 @@ const SearchForm = () => {
     const disableRicerca = () => {
         const necessaryFields = fields.filter(field => !field.hidden).map(field => field.name)
         const currentValues: any = Object.fromEntries(Object.entries(getValues())
-                .filter(([key]) => necessaryFields.includes(key) && key != "deanonimization"))
-        if(Object.entries(currentValues).some(([key, value]) => value == "" || value == null)){
+                .filter(([key]) => necessaryFields.includes(key) && key !== "deanonimization"))
+        if(Object.entries(currentValues).some(([key, value]) => value === "" || value === null)){
             setRicerca(true);
         }else{
             setRicerca(false);
