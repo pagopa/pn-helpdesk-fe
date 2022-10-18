@@ -11,6 +11,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {logout} from "../Authentication/auth"
 import { useDispatch } from 'react-redux';
 import * as spinnerActions from "../redux/spinnerSlice";
+import MenuComponent from './MenuComponet';
 /**
  * General component presenting the header of the app.
  */
@@ -64,18 +65,37 @@ const Header = ({email}: any) => {
   }
 
   return (
-    <AppBar position="static" sx={{bgcolor:"#0066CC"}}>
+    <AppBar position="static" sx={{ bgcolor: "#0066CC" }}>
       <Container>
-        <Toolbar sx={{ paddingRight: "0px", paddingLeft: "0px", '@media (min-width: 640px)': { paddingRight: "0px", paddingLeft: "0px" } }}>
+        <Toolbar
+          sx={{
+            paddingRight: "0px",
+            paddingLeft: "0px",
+            "@media (min-width: 640px)": {
+              paddingRight: "0px",
+              paddingLeft: "0px",
+            },
+          }}
+        >
           <Grid container justifyContent="space-between" alignItems="center">
+            <Grid item>
+              <Grid container alignItems="center">
+                <MenuComponent />
+              </Grid>
+            </Grid>
             <Grid item>
               <Typography>PagoPA S.p.A.</Typography>
             </Grid>
             <Grid item>
-              <Grid container justifyContent='flex-end' alignItems="center">
+              <Grid container alignItems="center">
                 <AccountCircleIcon />
                 <Typography>{email}</Typography>
-                <Divider style={{ background: 'white' }}  orientation="vertical" variant="middle" flexItem />
+                <Divider
+                  style={{ background: "white" }}
+                  orientation="vertical"
+                  variant="middle"
+                  flexItem
+                />
                 <Tooltip title="Log out">
                   <IconButton
                     size="large"
@@ -88,7 +108,6 @@ const Header = ({email}: any) => {
                   </IconButton>
                 </Tooltip>
               </Grid>
-
             </Grid>
           </Grid>
         </Toolbar>
@@ -99,9 +118,7 @@ const Header = ({email}: any) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          LOG OUT
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">LOG OUT</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {infoMessages.LOGOUT_CONFIRMATION}
@@ -114,8 +131,8 @@ const Header = ({email}: any) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </AppBar >
-  )
+    </AppBar>
+  );
 }
 
 export default Header;
