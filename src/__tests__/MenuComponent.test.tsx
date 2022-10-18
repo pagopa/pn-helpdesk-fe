@@ -5,7 +5,7 @@ import React from "react";
 import "regenerator-runtime/runtime";
 
 import { render, screen, waitFor, within } from "@testing-library/react";
-import MenuComponent from "../Components/MenuComponet";
+import MenuComponent from "../Components/MenuComponent";
 import { act } from "react-dom/test-utils";
 
 describe("Menu component test", () => {

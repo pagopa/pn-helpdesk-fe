@@ -11,7 +11,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {logout} from "../Authentication/auth"
 import { useDispatch } from 'react-redux';
 import * as spinnerActions from "../redux/spinnerSlice";
-import MenuComponent from './MenuComponet';
+import MenuComponent from './MenuComponent';
 /**
  * General component presenting the header of the app.
  */
@@ -103,6 +103,7 @@ const Header = ({email}: any) => {
                     color="inherit"
                     aria-label="menu"
                     onClick={handleOpenModal}
+                    sx={{"padding-right": 0}}
                   >
                     <LogoutIcon sx={{ color: "white" }} />
                   </IconButton>

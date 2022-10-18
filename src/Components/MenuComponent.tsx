@@ -2,10 +2,21 @@ import React, { useState, useEffect, useContext } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import { Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Box } from "@mui/material";
 import logo from "./../resources/logo.svg";
-
+import { Link } from "react-router-dom";
 const MenuComponent = () => {
 
     const [open, setOpen] = useState(false);
+
+    const listItems: { title: string; link: string }[] = [
+      {
+        title: "Ricerca ed estrazione dati",
+        link: "/search",
+      },
+      {
+        title: "Monitoraggio Piattaforma Notifiche",
+        link: "/monitoring",
+      },
+    ];
 
     const toggleDrawer = (status: boolean) =>
       (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -38,15 +49,14 @@ const MenuComponent = () => {
         <Divider />
 
         <List>
-          {[
-            "Ricerca ed estrazione dati",
-            "Monitoraggio Piattaforma Notifiche",
-          ].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
+          {listItems.map((item, index) => (
+            <Link to={item.link} style={{ textDecoration: "none" }}>
+              <ListItem key={item.title} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={item.title} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           ))}
         </List>
       </Drawer>
