@@ -9,6 +9,7 @@ import {login} from "../../Authentication/auth"
 import * as snackbarActions from "../../redux/snackbarSlice";
 import { useDispatch } from 'react-redux';
 import * as spinnerActions from "../../redux/spinnerSlice";
+import { MonogramPagoPACompany } from '@pagopa/mui-italia';
 
 /**
  * default values of the form fields
@@ -84,14 +85,15 @@ const LoginForm = ({ setUser, setEmail }: any) => {
         >
             <Card elevation={24} sx={{ width: 1 / 2, padding: "5%", boxShadow: "0px 3px 3px -2px " }}>
                 <Grid container direction="column" rowSpacing={2}>
-                    <Grid item container alignItems="center" justifyContent="center">
+                    {/*<Grid item container alignItems="center" justifyContent="center">
                         <AccountCircleIcon sx={{ height: "15%", width: "15%", color: "#0066CC" }} />
-                    </Grid>
+    </Grid>*/}
                     <Grid item container alignItems="center" justifyContent="center">
-                        <Box component="img" sx={{ height: "15%", width: "15%", paddingBottom:"2%"}}
+                        <MonogramPagoPACompany color="primary" shape="none"/>
+                        {/*<Box component="img" sx={{ height: "15%", width: "15%", paddingBottom:"2%"}}
                             alt="logo"
                             src={logo}
-                        />
+    />*/}
                     </Grid>
                     <form onSubmit={handleSubmit(data => onSubmit(data))}>
                         <Grid item container direction="column" rowSpacing={3}>
