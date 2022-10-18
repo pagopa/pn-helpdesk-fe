@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
-import { Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Box } from "@mui/material";
-import logo from "./../resources/logo.svg";
+import { Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
 const MenuComponent = () => {
 
@@ -50,7 +49,7 @@ const MenuComponent = () => {
 
         <List>
           {listItems.map((item, index) => (
-            <Link to={item.link} style={{ textDecoration: "none" }}>
+            <Link key={item.title} to={item.link} style={{ textDecoration: "none" }}>
               <ListItem key={item.title} disablePadding>
                 <ListItemButton>
                   <ListItemText primary={item.title} />
