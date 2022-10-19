@@ -2,9 +2,9 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { CalendarPickerView } from '@mui/lab';
 import { useState } from 'react';
-import moment from 'moment';
 import { Grid } from '@mui/material';
 import { FieldsProps } from './FormFields';
+import { format } from 'date-fns';
 
 /**
  * @typedef {Object} DatePicker
@@ -72,8 +72,10 @@ const DateRangePickerComponent = (props: Props) => {
      */
     /* istanbul ignore next */
     const handleChange = (value: any, field:string) => {
-        value = props.field.name !== "monthInterval" ? moment(value).format("YYYY-MM-DD")
-            : moment(value).utcOffset(0).set({hour:0,minute:0,second:0,millisecond:0}).toISOString()
+        value =
+          props.field.name !== "monthInterval"
+            ? format(value, "yyyy-MM-dd")
+            : format(new Date(value.setHours(0, 0, 0, 0)), "yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
         let prevState = [...dates];
         switch (field) {
             case "start":

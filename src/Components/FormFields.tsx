@@ -5,9 +5,9 @@ import SelectField from "./SelectField";
 import { regex } from "../helpers/validations";
 import DatePickerComponent from "./DatePickerComponent";
 import DateRangePickerComponent from "./DataRangePickerComponent";
-import moment from "moment";
 import { CalendarPickerView } from "@mui/lab";
 import { errorMessages } from "../helpers/messagesConstants"
+import { differenceInDays, format, isSameDay, isBefore } from "date-fns";
 
 /**
  * Items for the Tipo Estrazione and their coresponding fields
@@ -241,21 +241,25 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
             intervalLimit: [1, "months"],
             format: "dd-MM-yyyy",
             disableFuture: false,
-            // minDate: moment().utcOffset(0).startOf('month').set({hour:0,minute:0,second:0,millisecond:0}).toISOString(),
-            maxDate: moment().utcOffset(0).add(1, "months").startOf('month').set({hour:0,minute:0,second:0,millisecond:0}).toISOString(),
+            maxDate: format(
+                new Date(new Date(new Date(new Date().setUTCMonth(new Date().getMonth() + 1)).setHours(0, 0, 0, 0)).setUTCDate(0)),
+                "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+                ),
             rules: {
                 required: errorMessages.REQUIRED,
                 validate: {
                     validateInterval: (dates: Array<any>) => {
-                        let startDate = moment(dates[0]);
-                        let endDate = moment(dates[1]);
-                        return endDate.isSameOrBefore(moment(startDate).add(1, 'months').date(1))
-                            || errorMessages.ONE_MONTH_INTERVAL
+                        let startDate = new Date(dates[0]);
+                        let endDate = new Date(dates[1]);
+                        // the end date should be the 1st of the next month of start date or before that; 
+                        //two dates need to be in the same month
+                        let maxDate = new Date(new Date(new Date(startDate).setUTCDate(2)).setUTCMonth(startDate.getUTCMonth() + 1))
+                        return isBefore(endDate, maxDate) || errorMessages.ONE_MONTH_INTERVAL
                     },
                     checkDates: (dates: Array<any>) => {
-                        let startDate = moment(dates[0]);
-                        let endDate = moment(dates[1]);
-                        return startDate.isBefore(endDate) || startDate.isSame(endDate) || errorMessages.DATES_ORDER
+                        let startDate = new Date(dates[0]);
+                        let endDate = new Date(dates[1]);
+                        return (isBefore(startDate, endDate) || isSameDay(startDate, endDate)) || errorMessages.DATES_ORDER
                     }
                 }
             }
@@ -272,15 +276,16 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
                 required: errorMessages.REQUIRED,
                 validate: {
                     validateInterval: (dates: Array<any>) => {
-                        let startDate = moment(dates[0]);
-                        let endDate = moment(dates[1]);
-                        let interval = endDate.diff(startDate, "days");
-                        return interval <= 91 || errorMessages.DATES_INTERVAL
+                        let startDate = new Date(dates[0]);
+                        let endDate = new Date(dates[1]);
+                        let interval = differenceInDays(startDate, endDate);
+                        // allows 90 days difference
+                        return Math.abs(interval) <= 90 || errorMessages.DATES_INTERVAL
                     },
                     checkDates: (dates: Array<any>) => {
-                        let startDate = moment(dates[0]);
-                        let endDate = moment(dates[1]);
-                        return startDate.isBefore(endDate) || startDate.isSame(endDate) || errorMessages.DATES_ORDER
+                        let startDate = new Date(dates[0]);
+                        let endDate = new Date(dates[1]);
+                        return (isBefore(startDate, endDate) || isSameDay(startDate, endDate)) || errorMessages.DATES_ORDER
                     }
                 }
             }

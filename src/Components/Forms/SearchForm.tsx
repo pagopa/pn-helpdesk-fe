@@ -2,7 +2,6 @@ import { Box, Button, Card, Container, FormHelperText, Grid, Typography } from "
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { FieldsProperties, FieldsProps, FormField, MenuItems } from "../FormFields";
-import moment from 'moment';
 import apiRequests from "../../api/apiRequests";
 import {
     getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType,
@@ -16,26 +15,37 @@ import { base64StringToBlob } from "blob-util";
 import SearchIcon from '@mui/icons-material/Search';
 import ResponseData from "../ResponseData";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { format, subDays } from "date-fns";
 
 /**
  * default values of the form fields
  */
 const defaultFormValues: { [key: string]: any } = {
-    "ticketNumber": "",
-    "taxId": "",
-    "personId": "",
-    "iun": "",
-    "publicAuthorityName": "",
-    "referenceMonth": moment().utcOffset(0).date(1).set({hour:0,minute:0,second:0,millisecond:0}).toISOString(),
-    "Tipo Estrazione": "Ottieni EncCF",
-    "recipientType": "PF",
-    "deanonimization": false,
-    "Date Picker": moment().format("YYYY-MM-DD"),
-    "Time interval": [moment().subtract(90, 'days').format("YYYY-MM-DD"), moment(new Date()).format("YYYY-MM-DD")],
-    "traceId": "",
-    "monthInterval": [moment().utcOffset(0).date(1).set({hour:0,minute:0,second:0,millisecond:0}).toISOString(), 
-        moment().utcOffset(0).set({hour:0,minute:0,second:0,millisecond:0}).toISOString()]
-}
+  "ticketNumber": "",
+  "taxId": "",
+  "personId": "",
+  "iun": "",
+  "publicAuthorityName": "",
+  "Tipo Estrazione": "Ottieni EncCF",
+  "recipientType": "PF",
+  "deanonimization": false,
+  "Date Picker": format(new Date(), "yyyy-MM-dd"),
+  "Time interval": [
+    format(subDays(new Date(), 90), "yyyy-MM-dd"),
+    format(new Date(), "yyyy-MM-dd"),
+  ],
+  "traceId": "",
+  "monthInterval": [
+    format(
+      new Date(new Date(new Date().setUTCDate(1)).setHours(0, 0, 0, 0)),
+      "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+    ),
+    format(
+      new Date(new Date().setHours(0, 0, 0, 0)),
+      "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+    ),
+  ]
+};
 
 /**
  * Generating the app form using the form fields
