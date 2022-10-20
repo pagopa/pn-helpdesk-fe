@@ -15,7 +15,7 @@ import { base64StringToBlob } from "blob-util";
 import SearchIcon from '@mui/icons-material/Search';
 import ResponseData from "../ResponseData";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { format, subDays } from "date-fns";
+import { format, subMonths } from "date-fns";
 
 /**
  * default values of the form fields
@@ -31,7 +31,7 @@ const defaultFormValues: { [key: string]: any } = {
   "deanonimization": false,
   "Date Picker": format(new Date(), "yyyy-MM-dd"),
   "Time interval": [
-    format(subDays(new Date(), 90), "yyyy-MM-dd"),
+    format(subMonths(new Date(), 3), "yyyy-MM-dd"),
     format(new Date(), "yyyy-MM-dd"),
   ],
   "traceId": "",

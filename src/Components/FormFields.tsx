@@ -7,7 +7,7 @@ import DatePickerComponent from "./DatePickerComponent";
 import DateRangePickerComponent from "./DataRangePickerComponent";
 import { CalendarPickerView } from "@mui/lab";
 import { errorMessages } from "../helpers/messagesConstants"
-import { differenceInDays, format, isSameDay, isBefore } from "date-fns";
+import { format, isSameDay, isBefore } from "date-fns";
 
 /**
  * Items for the Tipo Estrazione and their coresponding fields
@@ -278,9 +278,12 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
                     validateInterval: (dates: Array<any>) => {
                         let startDate = new Date(dates[0]);
                         let endDate = new Date(dates[1]);
-                        let interval = differenceInDays(startDate, endDate);
-                        // allows 90 days difference
-                        return Math.abs(interval) <= 90 || errorMessages.DATES_INTERVAL
+                        return (
+                          endDate.getMonth() - startDate.getMonth() < 3 ||
+                          (endDate.getMonth() - startDate.getMonth() === 3 &&
+                            startDate.getDate() >= endDate.getDate()) ||
+                          errorMessages.DATES_INTERVAL
+                        );
                     },
                     checkDates: (dates: Array<any>) => {
                         let startDate = new Date(dates[0]);

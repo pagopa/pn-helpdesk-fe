@@ -103,7 +103,7 @@ const Header = ({email}: any) => {
                     color="inherit"
                     aria-label="menu"
                     onClick={handleOpenModal}
-                    sx={{"padding-right": 0}}
+                    sx={{ paddingRight: 0 }}
                   >
                     <LogoutIcon sx={{ color: "white" }} />
                   </IconButton>
