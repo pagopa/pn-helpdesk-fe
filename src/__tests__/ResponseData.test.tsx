@@ -4,8 +4,7 @@
 
 import React from "react";
 import 'regenerator-runtime/runtime'
-import { fireEvent, render, waitFor, screen, act, cleanup } from '@testing-library/react';
-import { store } from '../redux/store';
+import { render, screen, cleanup } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import ResponseData from '../Components/ResponseData';
 import configureMockStore from 'redux-mock-store'
@@ -27,7 +26,7 @@ describe('ResponseData', () => {
     });
 
     it('renders component', () => {
-        const result = render(
+        render(
             <Provider store={store}>
                 <ResponseData />  
             </Provider>

@@ -1,16 +1,14 @@
 /**
  * @jest-environment jsdom
  */
-import React from "react";
 import 'regenerator-runtime/runtime'
 import '@testing-library/jest-dom/extend-expect';
-import { fireEvent, render, waitFor, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import {BrowserRouter as Router} from 'react-router-dom';
 import 'regenerator-runtime/runtime'
 import { store } from '../redux/store';
 import { Provider } from 'react-redux';
 import SearchPage from '../Pages/SearchPage';
-import * as auth from '../Authentication/auth';
 
 jest.mock('../Components/Forms/SearchForm', () => () => <div data-testid="searchForm">Search Form</div>)
 
@@ -18,29 +16,29 @@ describe('SearchPage', () => {
 
 
     it('renders component', () => {
-      const result = render(
+      render(
           <Provider store={store}>
               <Router>
                   <SearchPage />
               </Router>
           </Provider>  
       );
-      expect(result).toBeTruthy();  
+      expect(screen.getByTestId("searchForm")).toBeTruthy();  
     });
 
     it("renders header and footer", () => {
-        const {getAllByRole} = render(
+        render(
             <Provider store={store}>
                     <Router>
                         <SearchPage />
                     </Router>
                 </Provider> 
         );
-        expect(getAllByRole("banner").length).toEqual(2)
+        expect(screen.getAllByRole("banner").length).toEqual(2)
     });
 
     it("renders form", () => {
-        const {getAllByRole} = render(
+        render(
             <Provider store={store}>
                     <Router>
                         <SearchPage />

@@ -103,7 +103,7 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/api/apiRequestTypes.tsx",
       "<rootDir>/src/Authentication/auth.tsx",
-      "src/_tests_/testReducer.tsx",
+      "<rootDir>/src/__tests__/testReducer.tsx",
       "index.tsx",
       "<rootDir>/src/Components/FormFields.tsx"
     ]

@@ -65,6 +65,7 @@ const ChangePasswordForm = ({ user }: any) => {
 
     return (
         <Box
+            data-testid="ChangePasswordForm"
             display="flex"
             justifyContent="center"
             alignItems="center"

@@ -30,7 +30,7 @@ const props = {
 describe('RadioButtonsGroup Component', () => {
 
   it('renders component', () => {
-    const result = render(<RadioButtonsGroup field={props.field} onChange={props.onChange} value={props.value} />);
+    render(<RadioButtonsGroup field={props.field} onChange={props.onChange} value={props.value} />);
     expect(screen.getAllByRole("radiogroup").length).toEqual(1)
   });
 

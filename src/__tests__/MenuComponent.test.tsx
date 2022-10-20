@@ -4,46 +4,56 @@
 import React from "react";
 import "regenerator-runtime/runtime";
 
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import MenuComponent from "../Components/MenuComponent";
+import { BrowserRouter as Router } from "react-router-dom";
 import { act } from "react-dom/test-utils";
 
 describe("Menu component test", () => {
+ beforeAll(() => {
+   Object.defineProperty(window, "matchMedia", {
+     writable: true,
+     value: (query: string) => ({
+       media: query,
+       matches: query === "(pointer: fine)",
+       onchange: () => {},
+       addEventListener: () => {},
+       removeEventListener: () => {},
+       addListener: () => {},
+       removeListener: () => {},
+       dispatchEvent: () => false,
+     }),
+   });
+ });
+
   it("renders icon of the menu", () => {
-    const result = render(<MenuComponent />);
-    const icon = result.container.querySelector("svg");
+    render(
+      <Router>
+        <MenuComponent />
+      </Router>
+    );
+    const icon = screen.getByRole("button", { name: "menu" });
     expect(icon).toBeTruthy();
   });
 
-//   it("render drawer", async() => {
-//      const result = render(<MenuComponent />);
-//      // const menuBtn = screen.findByRole("button");
-//      // (await menuBtn).click();
-//     //  const text = screen.findByText("Search Page");
-//     //  console.log(text)
-//     //  expect(text).toBeDefined();
-//     // expect(menuBtn).toBeTruthy(); 
-//     // menuBtn.simulate();
-//     //  await act(async() => {
-//     //     (await menuBtn).click();
-//     //     screen.findByText("Search Page").then(res => {
-//     //         console.log(res);
-//     //         expect(res).toBeTruthy();
-//     //     })
-//     //  })
+  it("click button and show menu component", () => {
+    render(
+      <Router>
+        <MenuComponent />
+      </Router>
+    );
+    const icon = screen.getByRole("button", {
+      name: "menu",
+    }) as HTMLButtonElement;
+    expect(icon).toBeTruthy();
+    act(() => {
+      icon.click();
+    });
+    const drawerButton = screen.getByRole("button", {name: "Monitoraggio Piattaforma Notifiche"});
+    act(() => {
+      drawerButton.click();
+    });
+    expect(global.window.location.pathname).toContain("/monitoring");
+  });
 
-//      const button = screen.getByRole("button");
-//      button.click();
-
-//        await act(async () => {
-//          button.click();
-//          await waitFor(async () => {
-//            screen.findByText("Search Page").then(res => {
-//             console.log(res)
-//              expect(res).toBeTruthy();
-//            })
-          
-//          });
-//        });
-//   })
 });

@@ -4,7 +4,7 @@
 import React from "react";
 import 'regenerator-runtime/runtime'
 import '@testing-library/jest-dom/extend-expect';
-import { fireEvent, render, waitFor, screen, act, cleanup } from '@testing-library/react';
+import { fireEvent, waitFor, screen, act, cleanup } from '@testing-library/react';
 import 'regenerator-runtime/runtime'
 import SearchForm from "../Components/Forms/SearchForm";
 import { reducer } from "./testReducer";
@@ -18,12 +18,12 @@ describe('SearchForm', () => {
     });
 
     it('renders component', () => {
-      expect(document.querySelector("form")).toBeTruthy()
+      expect(screen.getByRole("heading", {name: "Ricerca"})).toBeTruthy()
     });
 
     it("renders input fields", async () => {
-        const ticketNumber = document.querySelector("input[id='Numero Ticket']");
-        const fiscalCode = document.querySelector("input[id='Codice Fiscale']");
+        const ticketNumber = screen.getByRole("textbox", {name: "Numero Ticket"});
+        const fiscalCode = screen.getByRole("textbox", {name: "Codice Fiscale"});
         const recipientTypeRadionGroup = screen.getByRole("radiogroup");
         const recipientTypeRadionInputs = screen.getAllByRole("radio");
         expect(ticketNumber).toBeTruthy();
@@ -53,8 +53,8 @@ describe('SearchForm', () => {
     });
 
     it("fill fields and click ricerca", async () => {
-        const ticketNumber = document.querySelector("input[id='Numero Ticket']");
-        const fiscalCode = document.querySelector("input[id='Codice Fiscale']");
+        const ticketNumber = screen.getByRole("textbox", {name: "Numero Ticket"});
+        const fiscalCode = screen.getByRole("textbox", {name: "Codice Fiscale"});
         fireEvent.change(ticketNumber!, { target: { value: "abc" } });
         fireEvent.change(fiscalCode!, { target: { value: "MLLSNT82P65Z404U" } });
         const button = screen.getByRole("button", {
@@ -62,7 +62,7 @@ describe('SearchForm', () => {
             });
         act(() => button.click());
         await waitFor(() => {
-            expect(button).not.toHaveClass("Mui-disabled");
+            expect(button).not.toBeDisabled();
       });
     });
 });

@@ -25,7 +25,6 @@ it('renders', () => {
       <App />
     </Provider>
   );
-  const app = document.querySelector("div.App");
-  expect(app).toBeInTheDocument();
+  expect(screen.getByTestId("App")).toBeTruthy();
 });
 

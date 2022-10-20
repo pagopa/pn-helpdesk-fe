@@ -2,12 +2,8 @@
  * @jest-environment node
  */
 
-import React from "react";
 import 'regenerator-runtime/runtime'
-import apiRequests from "../api/apiRequests";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getOperatorsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType } from "../api/apiRequestTypes";
-import axios from "axios";
-import MockAdapter from "axios-mock-adapter";
+
 
 const sessionStorageMock = {
   getItem: jest.fn(),

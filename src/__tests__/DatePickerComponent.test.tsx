@@ -3,13 +3,10 @@
  */
 import React from "react";
 import 'regenerator-runtime/runtime'
-import { fireEvent, render, waitFor, screen, act } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import {BrowserRouter as Router} from 'react-router-dom';
 import DatePickerComponent from '../Components/DatePickerComponent';
 import { FieldsProps } from '../Components/FormFields';
-import { TextField } from '@mui/material';
-
-// configure({adapter: new Adapter()});
 
 const field:FieldsProps  = {
             name: "referenceMonth",
@@ -24,30 +21,58 @@ const field:FieldsProps  = {
 
 describe('DatePickerComponent', () => {
 
+  beforeAll(() => {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: (query: string) => ({
+      media: query,
+      matches: query === "(pointer: fine)",
+      onchange: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }),
+  });
+  })
+
   it('renders date picker component', () => {
-    const result = render(
+    render(
         <Router>
             <DatePickerComponent field={field} value={new Date().toString()} onChange={jest.fn()} onBlur={jest.fn()}/>
         </Router>
     );
-    expect(result).toBeDefined();
-  });
+    expect(screen.getByLabelText("Mese")).toBeDefined();
+  })
 
-  it('test on change', async () => {
+  it('test changing value', async () => {
     const handleChange = jest.fn();
     const handleBlur = jest.fn();
 
-    render(<DatePickerComponent field={field} value={new Date().toString()} onChange={handleChange} onBlur={handleBlur} />);
-    screen.findByLabelText("Mese").then(async(textfield) => {
-      expect(textfield).toBeTruthy()
-      fireEvent.change(textfield!, { target: { value: "2022-05-01" } });
-      await waitFor(() => {
-        expect(handleChange).toHaveBeenCalled();
-        expect(textfield).toHaveValue("2022-05-01");
-      });
-    });    
-  });
+    render(<DatePickerComponent field={field} value={new Date().toISOString()} onChange={handleChange} onBlur={handleBlur} />);
+    const calendarButton = screen.getByRole("button");
+      expect(calendarButton).toBeTruthy();
+      calendarButton.click();
+      screen.findByRole("button", { name: "Nov" }).then(btn => {
+        btn.click();
+        screen.findByRole("button", { name: "2022" }).then(btnY => {
+          btnY.click();
+          expect(screen.getByRole("textbox")).toHaveValue("2022-11");
+          expect(handleChange).toHaveBeenCalled();
 
+          const onChangeMock = jest.fn();
+          const event = {
+            preventDefault() {},
+            target: { value: "2022-12" },
+          };
+          const field = screen.getByRole("textbox") as HTMLInputElement;
+          fireEvent.change(field, event);
+
+          expect(onChangeMock).toBeCalledWith("2022-12");
+        })
+      });
+  })
 });
  
 

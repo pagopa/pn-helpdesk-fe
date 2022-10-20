@@ -77,6 +77,7 @@ const LoginForm = ({ setUser, setEmail }: any) => {
 
     return (
         <Box
+            data-testid="LoginForm"
             display="flex"
             justifyContent="center"
             alignItems="center"

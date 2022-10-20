@@ -10,16 +10,14 @@ import Footer from '../Components/Footer';
 describe('Footer Component', () => {
 
   it('renders footer', () => {
-    const result = render(<Footer/>);
+    render(<Footer/>);
     expect(screen.getByRole("banner")).toBeDefined();
   });
 
   it('renders footer items', () => {
-    const result = render(<Footer/>);
-    const items = result.container.querySelectorAll(".MuiTypography-body1")
-    expect(items).toHaveLength(3);
-    expect(items[0]).toHaveTextContent("Privacy policy");
-    expect(items[1]).toHaveTextContent("Assistenza");
-    expect(items[2]).toHaveTextContent("Copyright");
+    render(<Footer/>);
+    expect(screen.getByText("Privacy policy")).toBeTruthy();
+    expect(screen.getByText("Assistenza")).toBeTruthy();
+    expect(screen.getByText("Copyright")).toBeTruthy();
   });
 });
