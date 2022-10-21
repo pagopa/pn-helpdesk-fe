@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../../components/header/Header";
-import SearchForm from "../../components/forms/search/SearchForm";
 import { Grid } from "@mui/material";
 import Footer from "../../components/footer/Footer";
 import { useEffect } from "react";

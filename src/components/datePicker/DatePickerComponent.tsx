@@ -62,7 +62,7 @@ const DatePickerComponent = (props: Props) => {
           disableFuture
           onClose={props.onBlur}
           inputFormat={field.format}
-          mask={"____-__-__"} 
+          mask={"__-__-____"} 
           renderInput={(params) => <TextField {...params} onBlur={props.onBlur} required={field.required} />}
         />
     </LocalizationProvider>

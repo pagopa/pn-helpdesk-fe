@@ -91,7 +91,8 @@
       "<rootDir>/src/Authentication/auth.tsx",
       "<rootDir>/src/__tests__/testReducer.tsx",
       "index.tsx",
-      "<rootDir>/src/components/formFields/FormFields.tsx"
+      "<rootDir>/src/components/formFields/FormFields.tsx",
+      "<rootDir>/src/api/*"
     ]
   }
 }

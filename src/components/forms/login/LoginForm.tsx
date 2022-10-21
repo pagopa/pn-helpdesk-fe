@@ -3,8 +3,6 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FieldsProperties, FormField } from "../../formFields/FormFields";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import logo from "../../resources/logo.svg";
 import {login} from "../../../Authentication/auth"
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import { useDispatch } from 'react-redux';

@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '@pagopa/mui-italia';
-import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import { Provider } from 'react-redux';

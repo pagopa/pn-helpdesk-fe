@@ -102,7 +102,7 @@ const DateRangePickerComponent = (props: Props) => {
               onClose={props.onBlur}
               disableFuture={props.field.disableFuture}
               inputFormat={props.field.format || "dd-MM-yyyy"}
-              mask={"____-__-__"}
+              mask={"__-__-____"}
               maxDate={
                 props.field.name === "monthInterval"
                   ? new Date(props.field.maxDate!)
@@ -128,7 +128,7 @@ const DateRangePickerComponent = (props: Props) => {
               onClose={props.onBlur}
               disableFuture={props.field.disableFuture}
               inputFormat={props.field.format || "dd-MM-yyyy"}
-              mask={"____-__-__"}
+              mask={"__-__-____"}
               maxDate={
                 props.field.name === "monthInterval"
                   ? new Date(props.field.maxDate!)
