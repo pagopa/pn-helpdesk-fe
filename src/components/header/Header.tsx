@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { infoMessages } from "../../helpers/messagesConstants"
 import { Divider, Grid, Typography } from '@material-ui/core';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import {logout} from "../../authentication/auth"
+import {logout} from "../../Authentication/auth"
 import { useDispatch } from 'react-redux';
 import * as spinnerActions from "../../redux/spinnerSlice";
 import MenuComponent from '../menu/MenuComponent';

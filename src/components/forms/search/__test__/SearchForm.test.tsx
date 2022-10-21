@@ -60,7 +60,7 @@ describe('SearchForm', () => {
         const button = screen.getByRole("button", {
                 name: 'Ricerca',
             });
-        act(() => button.click());
+        await act(() => button.click());
         await waitFor(() => {
             expect(button).not.toBeDisabled();
       });

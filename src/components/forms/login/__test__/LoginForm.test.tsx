@@ -26,11 +26,15 @@ describe("LoginForm", () => {
     expect(screen.getByTestId("LoginForm")).toBeTruthy();
   });
 
-  it("renders input fields", () => {
+  it("renders input fields", async () => {
     const email = screen.getByRole("textbox", { name: "Email" });
     const password = screen.getByLabelText("Password");
-    expect(email).toBeTruthy();
-    expect(password).toBeTruthy();
+    await act(() => {
+      expect(email).toBeTruthy();
+    });
+    await act(() => {
+      expect(password).toBeTruthy();
+    });
   });
 
   it("renders login button", () => {
@@ -40,8 +44,7 @@ describe("LoginForm", () => {
 
   it("submit form and show errors", async () => {
     const button = screen.getByRole("button", { name: "LOGIN" });
-    userEvent.click(button);
-    act(() => button.click());
+    await act(() => userEvent.click(button));
     await waitFor(() => {
       expect(screen.getByText("Email non corretta")).toBeTruthy();
     });
@@ -59,10 +62,11 @@ describe("LoginForm", () => {
     expect(password).toHaveValue("I7ph_KKSq+ouL^$7");
   });
 
-  it("renders tooltip", () => {
-    screen.getByText("Password dimenticata?").click();
-      expect(screen.getByText("Password dimenticata?")).toBeTruthy();
+  it("renders tooltip", async () => {
+    expect(screen.getByText("Password dimenticata?")).toBeTruthy();
+    await act(() => {
       userEvent.click(screen.getByText("Password dimenticata?"));
-      expect(screen.getByRole("tooltip")).toBeTruthy();
+    }) 
+    expect(screen.getByRole("tooltip")).toBeTruthy();
   });
 });

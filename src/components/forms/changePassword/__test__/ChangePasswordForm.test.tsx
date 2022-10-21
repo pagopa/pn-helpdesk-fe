@@ -9,6 +9,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import { store } from '../../../../redux/store';
 import { Provider } from 'react-redux';
 import ChangePasswordForm from "../ChangePasswordForm";
+import { act } from "react-dom/test-utils";
 
 
 describe('ChangePasswordForm', () => {
@@ -84,7 +85,9 @@ describe('ChangePasswordForm', () => {
         const button = screen.getByRole(/Button/i, {
             name: 'Cambia password',
         });
-        fireEvent.click(button);
+        await act(() => {
+            fireEvent.click(button);
+        })  
         await waitFor(async () => {
             const errors = screen.getAllByText("Password non corretta");
             expect(errors.length).toEqual(2)
@@ -115,7 +118,6 @@ describe('ChangePasswordForm', () => {
         
     const button = screen.getByRole("button");
     expect(button).not.toBeDisabled();
-    button.click();
     })
 });
  

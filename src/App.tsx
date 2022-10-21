@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import SnackbarComponent from './components/snackbar/SnackbarComponent';
-import Router from './router/router';
+import Router from './Router/router';
 import { opened } from "./redux/spinnerSlice";
 
 function App() {

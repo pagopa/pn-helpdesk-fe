@@ -34,28 +34,24 @@ const datePickers: Array<DatePickerType> = [
   {
     label: "Dal",
     view: ["day"],
-    value: "2022-10-01T00:00:00.000Z",
+    value: "2022-10-01",
   },
   {
     label: "Al",
     view: ["day"],
-    value: "2022-10-20T00:00:00.000Z",
+    value: "2022-10-20",
   },
 ];
 
 const fieldProps = {
-  name: "monthInterval",
+  name: "Time interval",
   componentType: "dateRangePicker",
-  label: "Month interval",
+  label: "Time interval",
   hidden: false,
-  required: true,
-  intervalLimit: [1, "months"],
-  format: "dd-MM-yyyy",
-  disableFuture: false,
-  maxDate: format(
-    new Date(new Date(new Date(new Date().setUTCMonth(new Date().getMonth() + 1)).setHours(0,0,0,0)).setUTCDate(0)),
-    "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
-  )
+  required: false,
+  intervalLimit: [3, "months"],
+  disableFuture: true,
+  format: "yyyy-MM-dd"
 };
 
 describe("DateRangePickerComponent", () => {

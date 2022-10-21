@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FieldsProperties, FormField } from "../../formFields/FormFields";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import logo from "../../resources/logo.svg";
-import {login} from "../../../authentication/auth"
+import {login} from "../../../Authentication/auth"
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import { useDispatch } from 'react-redux';
 import * as spinnerActions from "../../../redux/spinnerSlice";

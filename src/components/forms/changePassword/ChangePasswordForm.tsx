@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FieldsProperties, FormField } from "../../formFields/FormFields";
 import LockIcon from '@mui/icons-material/Lock';
 import { errorMessages, infoMessages } from "../../../helpers/messagesConstants";
-import {changePassword} from "../../../authentication/auth"
+import {changePassword} from "../../../Authentication/auth"
 import HelpIcon from '@mui/icons-material/Help';
 import Tooltip from '@mui/material/Tooltip';
 import { useDispatch } from 'react-redux';

@@ -4,7 +4,7 @@
 import React from "react";
 import "regenerator-runtime/runtime";
 import "@testing-library/jest-dom/extend-expect";
-import { screen, within } from "@testing-library/react";
+import { act, screen, within } from "@testing-library/react";
 import Header from "../Header";
 import "regenerator-runtime/runtime";
 import { reducer } from "../../../__tests__/testReducer";
@@ -52,11 +52,13 @@ describe("Header Component", () => {
     expect(modal).toBeDefined();
       await within(modal as HTMLElement)
         .findAllByRole("button")
-        .then(buttons => {
+        .then(async (buttons) => {
           expect(buttons).toHaveLength(2);
-          userEvent.click(screen.getByText("Esci"));
-            expect(window.location.pathname).toBe("/");
-            expect(modal).not.toBeVisible();
+          await act(() => {
+            userEvent.click(screen.getByText("Esci"));
+          })
+          expect(window.location.pathname).toBe("/");
+          expect(modal).not.toBeVisible();
         });
   });
 });

@@ -3,7 +3,7 @@
  */
 import React from "react";
 import 'regenerator-runtime/runtime'
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import {BrowserRouter as Router} from 'react-router-dom';
 import { FieldsProps } from '../../formFields/FormFields';
 import DatePickerComponent from "../DatePickerComponent";
@@ -53,7 +53,9 @@ describe('DatePickerComponent', () => {
     render(<DatePickerComponent field={field} value={new Date().toISOString()} onChange={handleChange} onBlur={handleBlur} />);
     const calendarButton = screen.getByRole("button");
       expect(calendarButton).toBeTruthy();
-      calendarButton.click();
+      await act(() => {
+        calendarButton.click();
+      })
       screen.findByRole("button", { name: "Nov" }).then(btn => {
         btn.click();
         screen.findByRole("button", { name: "2022" }).then(btnY => {
