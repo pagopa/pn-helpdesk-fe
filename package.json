@@ -88,10 +88,10 @@
     },
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/api/apiRequestTypes.tsx",
-      "<rootDir>/src/Authentication/auth.tsx",
+      "<rootDir>/src/authentication/auth.tsx",
       "<rootDir>/src/__tests__/testReducer.tsx",
       "index.tsx",
-      "<rootDir>/src/Components/FormFields.tsx"
+      "<rootDir>/src/components/formFields/FormFields.tsx"
     ]
   }
 }

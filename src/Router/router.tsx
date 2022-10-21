@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import MonitorPage from "../Pages/MonitorPage";
-import LoginPage from '../Pages/LoginPage';
-import SearchPage from '../Pages/SearchPage';
+import MonitorPage from "../pages/monitor/MonitorPage";
+import LoginPage from '../pages/login/LoginPage';
+import SearchPage from '../pages/search/SearchPage';
 import PrivateRoute from "./PrivateRoute"
 
 /**
