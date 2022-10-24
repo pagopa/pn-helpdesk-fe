@@ -11,7 +11,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {logout} from "../../Authentication/auth"
 import { useDispatch } from 'react-redux';
 import * as spinnerActions from "../../redux/spinnerSlice";
-import MenuComponent from '../menu/MenuComponent';
+import NavigationMenu from '../navigationMenu/NavigationMenu';
 /**
  * General component presenting the header of the app.
  */
@@ -80,7 +80,7 @@ const Header = ({email}: any) => {
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
               <Grid container alignItems="center">
-                <MenuComponent />
+                <NavigationMenu />
               </Grid>
             </Grid>
             <Grid item>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import { Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
-const MenuComponent = () => {
+const NavigationMenu = () => {
 
     const [open, setOpen] = useState(false);
 
@@ -63,4 +63,4 @@ const MenuComponent = () => {
   );
 };
 
-export default MenuComponent;
+export default NavigationMenu;

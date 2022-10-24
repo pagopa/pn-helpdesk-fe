@@ -5,11 +5,11 @@ import React from "react";
 import "regenerator-runtime/runtime";
 
 import { render, screen } from "@testing-library/react";
-import MenuComponent from "../MenuComponent";
+import NavigationMenu from "../NavigationMenu";
 import { BrowserRouter as Router } from "react-router-dom";
 import { act } from "react-dom/test-utils";
 
-describe("Menu component test", () => {
+describe("Navigation menu component test", () => {
  beforeAll(() => {
    Object.defineProperty(window, "matchMedia", {
      writable: true,
@@ -29,7 +29,7 @@ describe("Menu component test", () => {
   it("renders icon of the menu", () => {
     render(
       <Router>
-        <MenuComponent />
+        <NavigationMenu />
       </Router>
     );
     const icon = screen.getByRole("button", { name: "menu" });
@@ -39,7 +39,7 @@ describe("Menu component test", () => {
   it("click button and show menu component", () => {
     render(
       <Router>
-        <MenuComponent />
+        <NavigationMenu />
       </Router>
     );
     const icon = screen.getByRole("button", {
