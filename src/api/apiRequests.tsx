@@ -1,20 +1,22 @@
 // import { apiClient } from "./apiClient";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, 
-    getPersonIdType, getPersonTaxIdType, getPersonsLogsType } from "./apiRequestTypes";
+import {
+    getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType,
+    getPersonIdType, getPersonTaxIdType, getPersonsLogsType
+} from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient"
 
 /**
  * Return the person's ID depending on the input received
  * @param {getPersonIdType} data 
  */
-const getPersonId = async (payload: getPersonIdType)  => {
+const getPersonId = async (payload: getPersonIdType) => {
     return await apiClient.getPersonId(payload)
         .then((result) => {
             return result
         })
         .catch((error: any) => {
             throw error;
-        })  
+        })
 }
 
 /**
@@ -22,14 +24,14 @@ const getPersonId = async (payload: getPersonIdType)  => {
  * @param {getPersonTaxIdType} data 
  */
 
-const getPersonTaxId = async (payload: getPersonTaxIdType)  => {
+const getPersonTaxId = async (payload: getPersonTaxIdType) => {
     return await apiClient.getPersonTaxId(payload)
         .then((result) => {
             return result
         })
         .catch((error: any) => {
             throw error;
-        })  
+        })
 }
 
 /**
@@ -38,13 +40,13 @@ const getPersonTaxId = async (payload: getPersonTaxIdType)  => {
  */
 const getPersonsLogs = async (data: getPersonsLogsType) => {
     return await apiClient.getPersonsLogs(data)
-            .then((result: any) => { 
+        .then((result: any) => {
             return result;
-               
+
         })
         .catch((error: any) => {
             throw error;
-        }) 
+        })
 }
 
 /**
@@ -72,7 +74,7 @@ const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
         })
         .catch((error: any) => {
             throw error;
-        })  
+        })
 }
 
 /**
@@ -86,21 +88,37 @@ const getNotificationsMonthlyStatsLogs = async (data: getNotificationsMonthlySta
         })
         .catch((error: any) => {
             throw error;
-        }) 
+        })
 }
 
 /**
  * Extract all log paths by given a specific traceId
  */
 const getLogsProcesses = async (data: getLogsProcessesType) => {
-   return await apiClient.getLogsProcesses(data)
-    .then((result: any) => {
-        return result;
-    })
-    .catch((error: any) => {
-        throw error;
-    }) 
+    return await apiClient.getLogsProcesses(data)
+        .then((result: any) => {
+            return result;
+        })
+        .catch((error: any) => {
+            throw error;
+        })
 }
 
-export default { getPersonId, getPersonTaxId, getPersonsLogs, /*getOperatorsLogs,*/
-    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses }
+const getStatus = async () => {
+    return await apiClient.getStatus()
+        .then((result: any) => {
+            return result;
+        })
+        .catch((error: any) => {
+            if (error.response.status == 500) {
+                console.log(error.response)
+                return error.response;
+            }
+            throw error;
+        })
+}
+
+export default {
+    getPersonId, getPersonTaxId, getPersonsLogs, /*getOperatorsLogs,*/
+    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getStatus
+}

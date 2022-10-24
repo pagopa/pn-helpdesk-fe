@@ -20,3 +20,9 @@ export const infoMessages = {
     PASSWORD_TOOLTIP_MSG: "La password deve contenere almeno 1 lettera minuscola, almeno 1 lettera maiuscola, almeno 1 numero, nessuno spazio, almeno uno tra i caratteri !@#$%^&()_+ e lunghezza almeno 16 caratteri",
     TIMEOUT: "L'intervallo temporale selezionato è troppo grande, selezionarne uno più piccolo"
 }
+
+export const functionalitiesNames: {[key: string]: string} = {
+    NOTIFICATION_CREATE: "Creazione notifiche",
+    NOTIFICATION_VISUALIZZATION: "Operazione di visualizzazione",
+    NOTIFICATION_WORKFLOW: "Workflow"
+}

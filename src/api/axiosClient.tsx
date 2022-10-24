@@ -14,6 +14,18 @@ class Http {
     return this.instance != null ? this.instance : this.initHttp();
   }
 
+  private get httphttpDowntimeLogs(): AxiosInstance {
+    return this.instance != null ? this.instance : this.initHttpDowntimeLogs();
+  }
+
+  initHttpDowntimeLogs() {
+    const httpDowntimeLogs = axios.create({
+      headers,
+    });
+    this.instance = httpDowntimeLogs;
+    return httpDowntimeLogs;
+  }
+
   initHttp() {
     const http = axios.create({
       baseURL: process.env.REACT_APP_API_ENDPOINT,
@@ -29,13 +41,13 @@ class Http {
 
     http.interceptors.request.use(
       (request: any) => {
-          const token = sessionStorage.getItem("token")
-          const accessToken = sessionStorage.getItem("accessToken")
-          request.headers = {
-            ...request.headers, 
-            Authorization: `Bearer ${token}`,
-            Auth: accessToken
-          } 
+        const token = sessionStorage.getItem("token")
+        const accessToken = sessionStorage.getItem("accessToken")
+        request.headers = {
+          ...request.headers,
+          Authorization: `Bearer ${token}`,
+          Auth: accessToken
+        }
         return request
       }
     );
@@ -71,6 +83,10 @@ class Http {
     return this.http.post<T, R>("logs/v1/processes", payload)
   }
 
+  getStatus<T = any, R = AxiosResponse<T>>(): Promise<R> {
+    console.log(this.httphttpDowntimeLogs)
+    return this.httphttpDowntimeLogs.get<T, R>("http://localhost:9091/healthcheck")
+  }
 }
 
 export const http = new Http();
