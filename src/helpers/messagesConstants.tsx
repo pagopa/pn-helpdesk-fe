@@ -17,6 +17,6 @@ export const infoMessages = {
     BAD_REQUEST_RESPONSE: "Informazioni non valide",
     INTERNEL_SERVER_ERROR_RESPONSE: "Errore durante l'elaborazione della richiesta",
     WRONG_CREDENTIALS: "Email o password errate",
-    PASSWORD_TOOLTIP_MSG: "La password deve contenere almeno 1 lettera minuscola, almeno 1 lettera maiuscola, almeno 1 numero, nessuno spazio, almeno uno tra i caratteri !@#$%^&()_+ e lunghezza almeno 16 caratteri",
+    PASSWORD_TOOLTIP_MSG: "La password deve contenere almeno 1 lettera minuscola, almeno 1 lettera maiuscola, almeno 1 numero, nessuno spazio, almeno uno tra i caratteri ^$*.[]{}()?-\"!@#%&/\,><':;|_~`+=+ e lunghezza almeno 16 caratteri",
     TIMEOUT: "L'intervallo temporale selezionato è troppo grande, selezionarne uno più piccolo"
 }

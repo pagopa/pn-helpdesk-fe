@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FieldsProperties, FormField } from "../../formFields/FormFields";
-import {login} from "../../../Authentication/auth"
+import { login } from "../../../Authentication/auth"
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import { useDispatch } from 'react-redux';
 import * as spinnerActions from "../../../redux/spinnerSlice";
@@ -33,9 +33,9 @@ const LoginForm = ({ setUser, setEmail }: any) => {
      */
     const [tooltipOpen, setTooltipOpen] = useState(false);
 
-     /**
-     * form functionalities from react-hook-forms
-     */
+    /**
+    * form functionalities from react-hook-forms
+    */
     const { handleSubmit, control, formState: { errors } } = useForm({
         defaultValues: defaultFormValues,
         mode: 'onSubmit',
@@ -46,7 +46,7 @@ const LoginForm = ({ setUser, setEmail }: any) => {
      * for navigate to other pages 
      */
     const navigate = useNavigate();
-    
+
 
     /**
      * function handling the form submitting
@@ -56,12 +56,12 @@ const LoginForm = ({ setUser, setEmail }: any) => {
     const onSubmit = async (data: { [x: string]: string; }) => {
         dispatch(spinnerActions.updateSpinnerOpened(true));
         setEmail(data.email)
-        await login({email: data.email, password: data.password})
-            .then((user: {[key:string]: any}) => {
-                if(user.challengeName === "NEW_PASSWORD_REQUIRED"){
+        await login({ email: data.email, password: data.password })
+            .then((user: { [key: string]: any }) => {
+                if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
                     dispatch(spinnerActions.updateSpinnerOpened(false));
                     setUser(user)
-                }else{
+                } else {
                     dispatch(spinnerActions.updateSpinnerOpened(false));
                     navigate("/search");
                 }
@@ -80,19 +80,15 @@ const LoginForm = ({ setUser, setEmail }: any) => {
             justifyContent="center"
             alignItems="center"
             minHeight="100vh"
-            sx={{backgroundColor: '#0066CC'}}
+            sx={{ backgroundColor: '#0066CC' }}
         >
             <Card elevation={24} sx={{ width: 1 / 2, padding: "5%", boxShadow: "0px 3px 3px -2px " }}>
                 <Grid container direction="column" rowSpacing={2}>
-                    {/*<Grid item container alignItems="center" justifyContent="center">
-                        <AccountCircleIcon sx={{ height: "15%", width: "15%", color: "#0066CC" }} />
-    </Grid>*/}
                     <Grid item container alignItems="center" justifyContent="center">
-                        <MonogramPagoPACompany color="primary" shape="none"/>
-                        {/*<Box component="img" sx={{ height: "15%", width: "15%", paddingBottom:"2%"}}
-                            alt="logo"
-                            src={logo}
-    />*/}
+                        <Grid item>
+                            <MonogramPagoPACompany color="primary" shape="none" />
+                        </Grid>
+
                     </Grid>
                     <form onSubmit={handleSubmit(data => onSubmit(data))}>
                         <Grid item container direction="column" rowSpacing={3}>
@@ -145,7 +141,6 @@ const LoginForm = ({ setUser, setEmail }: any) => {
                                         <Link sx={{ cursor: "pointer" }} onClick={() => setTooltipOpen(true)}>Password dimenticata?</Link>
                                     </Tooltip>
                                 </Grid>
-
                             </Grid>
                             <Grid item>
                                 <Button sx={{ background: "#0066CC", '&:hover': { background: "#0059B3" } }} fullWidth size="large" type="submit" variant="outlined"><Typography sx={{ color: 'white' }}>LOGIN</Typography></Button>

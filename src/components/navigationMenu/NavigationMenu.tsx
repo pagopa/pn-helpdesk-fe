@@ -37,7 +37,7 @@ const NavigationMenu = () => {
   return (
     <div>
       <IconButton
-        sx={{ color: "white" }}
+        sx={{ color: "white", paddingLeft: 0 }}
         aria-label="menu"
         onClick={handleClick}
       >

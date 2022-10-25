@@ -29,17 +29,22 @@ const ResponseData = () => {
     openedResponseData ?
       <Grid item container direction="column" rowSpacing={2}>
         <Grid item>
-          <Divider/>
+          <Divider />
         </Grid>
         <Grid item container>
-          <Typography variant='h6'>Dati di risposta:</Typography>
+          <Grid item>
+            <Typography variant='h6'>Dati di risposta:</Typography>
+          </Grid>
+
         </Grid>
         <Grid item container>
-          <Typography align="center">
+          <Grid item>
+            <Typography align="center">
               <>
                 {ResponseType[Object.keys(response)[0] as keyof typeof ResponseType]} : {Object.values(response)[0]}
               </>
-          </Typography>
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
       : null

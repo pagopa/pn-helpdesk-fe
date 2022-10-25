@@ -91,7 +91,7 @@ const DateRangePickerComponent = (props: Props) => {
     }
 
     return (
-      <Grid item container direction="row" spacing={2}>
+      <Grid item container spacing={2}>
         <Grid item>
             <DatePicker
               views={dates[0].view}
@@ -116,7 +116,6 @@ const DateRangePickerComponent = (props: Props) => {
                 />
               )}
             />
-          {/* </LocalizationProvider> */}
         </Grid>
         <Grid item>
             <DatePicker

@@ -7,15 +7,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { infoMessages } from "../../helpers/messagesConstants"
 import { Divider, Grid, Typography } from '@material-ui/core';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import {logout} from "../../Authentication/auth"
+import { logout } from "../../Authentication/auth"
 import { useDispatch } from 'react-redux';
 import * as spinnerActions from "../../redux/spinnerSlice";
 import NavigationMenu from '../navigationMenu/NavigationMenu';
 /**
  * General component presenting the header of the app.
  */
-const Header = ({email}: any) => {
+const Header = ({ email }: any) => {
 
   /**
   * the state of the confirmation modal
@@ -24,9 +23,9 @@ const Header = ({email}: any) => {
 
   const navigate = useNavigate();
 
-   /**
-    * dispatch redux actions
-    */
+  /**
+   * dispatch redux actions
+   */
   const dispatch = useDispatch();
 
   /**
@@ -48,7 +47,7 @@ const Header = ({email}: any) => {
   /**
   * Function handling the logging out
   */
- /* istanbul ignore next */
+  /* istanbul ignore next */
   const handleLogOut = () => {
     setOpen(false);
     dispatch(spinnerActions.updateSpinnerOpened(true));
@@ -61,7 +60,7 @@ const Header = ({email}: any) => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
         throw error;
       })
-    
+
   }
 
   return (
@@ -78,36 +77,39 @@ const Header = ({email}: any) => {
           }}
         >
           <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item>
+            <Grid item xs={3}>
               <Grid container alignItems="center">
                 <NavigationMenu />
               </Grid>
             </Grid>
-            <Grid item>
-              <Typography>PagoPA S.p.A.</Typography>
+            <Grid item xs={6}>
+              <Typography align='center'>PagoPA S.p.A.</Typography>
             </Grid>
-            <Grid item>
-              <Grid container alignItems="center">
-                <AccountCircleIcon />
-                <Typography>{email}</Typography>
+            <Grid item xs={3}>
+              <Grid container justifyContent="flex-end" alignItems="center">
+                <Grid item>
+                  <Typography>{email}</Typography>
+                </Grid>
                 <Divider
                   style={{ background: "white" }}
                   orientation="vertical"
                   variant="middle"
                   flexItem
                 />
-                <Tooltip title="Log out">
-                  <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                    onClick={handleOpenModal}
-                    sx={{ paddingRight: 0 }}
-                  >
-                    <LogoutIcon sx={{ color: "white" }} />
-                  </IconButton>
-                </Tooltip>
+                <Grid item>
+                  <Tooltip title="Log out">
+                    <IconButton
+                      size="large"
+                      edge="start"
+                      color="inherit"
+                      aria-label="menu"
+                      onClick={handleOpenModal}
+                      sx={{ paddingRight: 0 }}
+                    >
+                      <LogoutIcon sx={{ color: "white" }} />
+                    </IconButton>
+                  </Tooltip>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
