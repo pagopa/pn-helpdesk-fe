@@ -1,4 +1,4 @@
-import { Box, Button, Card, Container, FormHelperText, Grid, Typography } from "@mui/material";
+import { Button, Card, Container, FormHelperText, Grid, Typography } from "@mui/material";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { FieldsProperties, FieldsProps, FormField, MenuItems } from "../../formFields/FormFields";
@@ -21,30 +21,30 @@ import { format, subMonths } from "date-fns";
  * default values of the form fields
  */
 const defaultFormValues: { [key: string]: any } = {
-  "ticketNumber": "",
-  "taxId": "",
-  "personId": "",
-  "iun": "",
-  "publicAuthorityName": "",
-  "Tipo Estrazione": "Ottieni EncCF",
-  "recipientType": "PF",
-  "deanonimization": false,
-  "Date Picker": format(new Date(), "yyyy-MM-dd"),
-  "Time interval": [
-    format(subMonths(new Date(), 3), "yyyy-MM-dd"),
-    format(new Date(), "yyyy-MM-dd"),
-  ],
-  "traceId": "",
-  "monthInterval": [
-    format(
-      new Date(new Date(new Date().setUTCDate(1)).setHours(0, 0, 0, 0)),
-      "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
-    ),
-    format(
-      new Date(new Date().setHours(0, 0, 0, 0)),
-      "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
-    ),
-  ]
+    "ticketNumber": "",
+    "taxId": "",
+    "personId": "",
+    "iun": "",
+    "publicAuthorityName": "",
+    "Tipo Estrazione": "Ottieni EncCF",
+    "recipientType": "PF",
+    "deanonimization": false,
+    "Date Picker": format(new Date(), "yyyy-MM-dd"),
+    "Time interval": [
+        format(subMonths(new Date(), 3), "yyyy-MM-dd"),
+        format(new Date(), "yyyy-MM-dd"),
+    ],
+    "traceId": "",
+    "monthInterval": [
+        format(
+            new Date(new Date(new Date().setUTCDate(1)).setHours(0, 0, 0, 0)),
+            "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+        ),
+        format(
+            new Date(new Date().setHours(0, 0, 0, 0)),
+            "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+        ),
+    ]
 };
 
 /**
@@ -198,7 +198,7 @@ const SearchForm = () => {
      * handling form submit
      * @param data values from the form
      */
-     /* istanbul ignore next */
+    /* istanbul ignore next */
     const onSubmit = (data: any) => {
         resetStore();
         dispatch(spinnerActions.updateSpinnerOpened(true));
@@ -230,13 +230,13 @@ const SearchForm = () => {
             delete payload["Time interval"]
         }
         // use case 3
-        if(selectedValue === "Ottieni log completi" && payload.hasOwnProperty("taxId")){
+        if (selectedValue === "Ottieni log completi" && payload.hasOwnProperty("taxId")) {
             payload.deanonimization = true
         }
 
         // use case 6
-        if(selectedValue === "Ottieni notifiche di una PA"){
-            payload.referenceMonth  = payload["monthInterval"][0];
+        if (selectedValue === "Ottieni notifiche di una PA") {
+            payload.referenceMonth = payload["monthInterval"][0];
             payload.endMonth = payload["monthInterval"][1];
             delete payload["monthInterval"]
         }
@@ -278,20 +278,20 @@ const SearchForm = () => {
         if (request) {
             request.then(res => {
                 updateSnackbar(res);
-                if((res.data.password && res.data.zip) || res.data.data){
+                if ((res.data.password && res.data.zip) || res.data.data) {
                     updateResponse(
-                    res.data.password ? { password: res.data.password }
-                        :
-                        selectedValue === "Ottieni CF" ? { taxId: res.data.data } : { internalId: res.data.data }
+                        res.data.password ? { password: res.data.password }
+                            :
+                            selectedValue === "Ottieni CF" ? { taxId: res.data.data } : { internalId: res.data.data }
                     );
                     res.data.zip && downloadZip(res.data.zip);
                 }
                 dispatch(spinnerActions.updateSpinnerOpened(false));
             })
-            .catch(error => {
-                updateSnackbar(error.response);
-                dispatch(spinnerActions.updateSpinnerOpened(false));
-            })
+                .catch(error => {
+                    updateSnackbar(error.response);
+                    dispatch(spinnerActions.updateSpinnerOpened(false));
+                })
         }
 
     }
@@ -343,10 +343,10 @@ const SearchForm = () => {
     const disableRicerca = () => {
         const necessaryFields = fields.filter(field => !field.hidden).map(field => field.name)
         const currentValues: any = Object.fromEntries(Object.entries(getValues())
-                .filter(([key]) => necessaryFields.includes(key) && key !== "deanonimization"))
-        if(Object.entries(currentValues).some(([key, value]) => value === "" || value === null)){
+            .filter(([key]) => necessaryFields.includes(key) && key !== "deanonimization"))
+        if (Object.entries(currentValues).some(([key, value]) => value === "" || value === null)) {
             setRicerca(true);
-        }else{
+        } else {
             setRicerca(false);
         }
     }
@@ -355,16 +355,16 @@ const SearchForm = () => {
         <Container>
             <Grid container direction="column" rowSpacing={3}>
                 <Grid item container>
-                    <Box>
+                    <Grid item>
                         <Typography variant="h4">Ricerca</Typography>
-                    </Box>
+                    </Grid>
                 </Grid>
                 <Grid item container rowSpacing={2}>
                     <Card elevation={24} sx={{ width: 1, padding: "5%", boxShadow: "0px 3px 3px -2px " }}>
-                        <Grid container  rowSpacing={2}>
+                        <Grid container rowSpacing={2}>
                             <Grid item>
                                 <form onSubmit={handleSubmit(data => onSubmit(data))}>
-                                    <Grid container item direction="row">
+                                    <Grid item container>
                                         <Grid item container spacing={2} alignItems="center">
                                             {
                                                 fields.map(field => {
@@ -402,27 +402,23 @@ const SearchForm = () => {
                                                 })
                                             }
                                         </Grid>
-                                         <Grid item container direction="row" justifyContent="space-between">
+                                        <Grid item container justifyContent="space-between">
                                             <Grid item >
                                                 <Button size="large" variant="outlined" startIcon={<RestartAltIcon />}
-                                                onClick={() => reset({...defaultFormValues, "Tipo Estrazione": getValues("Tipo Estrazione")})}
-                                                >Resetta filtri</Button>                       
+                                                    onClick={() => reset({ ...defaultFormValues, "Tipo Estrazione": getValues("Tipo Estrazione") })}
+                                                >Resetta filtri</Button>
                                             </Grid>
                                             <Grid item >
                                                 <Button size="large" type="submit" variant="contained" sx={{ background: "#0066CC", '&:hover': { background: "#0059B3" } }} startIcon={<SearchIcon />}
-                                                        disabled={Object.keys(errors).length > 0 || ricerca} 
-                                                >Ricerca</Button>                       
+                                                    disabled={Object.keys(errors).length > 0 || ricerca}
+                                                >Ricerca</Button>
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                 </form>
                             </Grid>
-                            <Grid item xs={12}>
-                                 <ResponseData></ResponseData>
-                            </Grid>
+                            <ResponseData></ResponseData>
                         </Grid>
-                        
-                       
                     </Card>
                 </Grid>
             </Grid>

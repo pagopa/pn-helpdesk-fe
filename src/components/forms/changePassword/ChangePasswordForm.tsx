@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FieldsProperties, FormField } from "../../formFields/FormFields";
 import LockIcon from '@mui/icons-material/Lock';
 import { errorMessages, infoMessages } from "../../../helpers/messagesConstants";
-import {changePassword} from "../../../Authentication/auth"
+import { changePassword } from "../../../Authentication/auth"
 import HelpIcon from '@mui/icons-material/Help';
 import Tooltip from '@mui/material/Tooltip';
 import { useDispatch } from 'react-redux';
@@ -44,7 +44,7 @@ const ChangePasswordForm = ({ user }: any) => {
         reValidateMode: 'onSubmit'
     });
 
-    
+
     /**
      * function handling the form submitting
      * @param data the data from the form
@@ -56,11 +56,11 @@ const ChangePasswordForm = ({ user }: any) => {
             dispatch(spinnerActions.updateSpinnerOpened(false));
             navigate("/search");
         })
-        .catch((error: any) => {
-            dispatch(spinnerActions.updateSpinnerOpened(false));
-            dispatch(snackbarActions.updateSnackbacrOpened(true))
-            dispatch(snackbarActions.updateStatusCode("400"))
-        })
+            .catch((error: any) => {
+                dispatch(spinnerActions.updateSpinnerOpened(false));
+                dispatch(snackbarActions.updateSnackbacrOpened(true))
+                dispatch(snackbarActions.updateStatusCode("400"))
+            })
     }
 
     return (
@@ -70,40 +70,40 @@ const ChangePasswordForm = ({ user }: any) => {
             justifyContent="center"
             alignItems="center"
             minHeight="100vh"
-            sx={{backgroundColor: '#0066CC'}}
+            sx={{ backgroundColor: '#0066CC' }}
         >
             <Card elevation={24} sx={{ width: 1 / 2, padding: "5%", boxShadow: "0px 3px 3px -2px " }}>
                 <Grid container direction="column" rowSpacing={2}>
-                    <Grid item container alignItems="center" justifyContent="center">
+                    <Grid item container justifyContent="center">
                         <LockIcon sx={{ height: "15%", width: "15%", color: "#0066CC" }} />
                     </Grid>
                     <Grid item container alignItems="center" justifyContent="center">
-                        <Box component="span" sx={{ height: "25%", width: "50%", paddingBottom:"2%"}}>
+                        <Grid item sx={{ paddingBottom: "2%" }}>
                             <Typography variant="h4">Cambio password</Typography>
-                        </Box>
+                        </Grid>
                     </Grid>
                     <form onSubmit={handleSubmit(data => onSubmit(data))}>
                         <Grid item container direction="column" rowSpacing={3}>
                             <Grid item container>
-                                <Grid item container>
-                                    <Controller
-                                        control={control}
-                                        name={"newPassword"}
-                                        rules={{
-                                            ...FieldsProperties["Password"].rules,
-                                            validate: {
-                                                newPasswordEquality: () => {
-                                                    return getValues("newPassword") === getValues("newPasswordConfirm") || errorMessages.PSSWORDS_EQUALITY
-                                                }
+                                <Controller
+                                    control={control}
+                                    name={"newPassword"}
+                                    rules={{
+                                        ...FieldsProperties["Password"].rules,
+                                        validate: {
+                                            newPasswordEquality: () => {
+                                                return getValues("newPassword") === getValues("newPasswordConfirm") || errorMessages.PSSWORDS_EQUALITY
                                             }
-                                        }}
-                                        render={({
-                                            field: { onChange, onBlur, value, name, ref },
-                                            fieldState: { invalid, isTouched, isDirty, error },
-                                            formState,
-                                        }) => (
-                                            <>
-                                                <FormField error={error} key={"newPassword"} field={{...FieldsProperties["Password"], label: "Nuova password", 
+                                        }
+                                    }}
+                                    render={({
+                                        field: { onChange, onBlur, value, name, ref },
+                                        fieldState: { invalid, isTouched, isDirty, error },
+                                        formState,
+                                    }) => (
+                                        <>
+                                            <FormField error={error} key={"newPassword"} field={{
+                                                ...FieldsProperties["Password"], label: "Nuova password",
                                                 InputProps: {
                                                     endAdornment: (
                                                         <Tooltip title={infoMessages.PASSWORD_TOOLTIP_MSG} placement="right">
@@ -112,49 +112,46 @@ const ChangePasswordForm = ({ user }: any) => {
                                                             </InputAdornment>
                                                         </Tooltip>
                                                     )
-                                                },}} onChange={onChange} value={value} />
-                                                <FormHelperText error>{errors["newPassword"] ?
-                                                    errors["newPassword"].message
-                                                    : " "}</FormHelperText>
-                                            </>
-                                        )}
-                                    />
-                                </Grid>
+                                                },
+                                            }} onChange={onChange} value={value} />
+                                            <FormHelperText error>{errors["newPassword"] ?
+                                                errors["newPassword"].message
+                                                : " "}</FormHelperText>
+                                        </>
+                                    )}
+                                />
                             </Grid>
                             <Grid item container>
-                                <Grid item container>
-                                    <Controller
-                                        control={control}
-                                        name={"newPasswordConfirm"}
-                                        rules={{
-                                            ...FieldsProperties["Password"].rules,
-                                            validate: {
-                                                newPasswordEquality: () => {
-                                                    return getValues("newPassword") === getValues("newPasswordConfirm") || errorMessages.PSSWORDS_EQUALITY
-                                                }
+                                <Controller
+                                    control={control}
+                                    name={"newPasswordConfirm"}
+                                    rules={{
+                                        ...FieldsProperties["Password"].rules,
+                                        validate: {
+                                            newPasswordEquality: () => {
+                                                return getValues("newPassword") === getValues("newPasswordConfirm") || errorMessages.PSSWORDS_EQUALITY
                                             }
-                                        }}
-                                        render={({
-                                            field: { onChange, onBlur, value, name, ref },
-                                            fieldState: { invalid, isTouched, isDirty, error },
-                                            formState,
-                                        }) => (
-                                            <>
-                                                <FormField error={error} key={"newPasswordConfirm"} field={{...FieldsProperties["Password"], label: "Conferma password"}} onChange={onChange} value={value} />
-                                                <FormHelperText error>{errors["newPasswordConfirm"] ?
-                                                    errors["newPasswordConfirm"].message
-                                                    : " "}</FormHelperText>
-                                            </>
-                                        )}
-                                    />
-                                </Grid>
+                                        }
+                                    }}
+                                    render={({
+                                        field: { onChange, onBlur, value, name, ref },
+                                        fieldState: { invalid, isTouched, isDirty, error },
+                                        formState,
+                                    }) => (
+                                        <>
+                                            <FormField error={error} key={"newPasswordConfirm"} field={{ ...FieldsProperties["Password"], label: "Conferma password" }} onChange={onChange} value={value} />
+                                            <FormHelperText error>{errors["newPasswordConfirm"] ?
+                                                errors["newPasswordConfirm"].message
+                                                : " "}</FormHelperText>
+                                        </>
+                                    )}
+                                />
                             </Grid>
                             <Grid item>
                                 <Button sx={{ background: "#0066CC", '&:hover': { background: "#0059B3" } }} fullWidth size="large" type="submit" variant="outlined"><Typography sx={{ color: 'white' }}>Cambia password</Typography></Button>
                             </Grid>
                         </Grid>
                     </form>
-
                 </Grid>
             </Card>
         </Box>
