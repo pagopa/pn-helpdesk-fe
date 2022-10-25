@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType } from "./apiRequestTypes";
+import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getEventsType } from "./apiRequestTypes";
 
 const headers: Readonly<Record<string, string | boolean>> = {
   Accept: "*/*",
@@ -12,18 +12,6 @@ class Http {
 
   private get http(): AxiosInstance {
     return this.instance != null ? this.instance : this.initHttp();
-  }
-
-  private get httphttpDowntimeLogs(): AxiosInstance {
-    return this.instance != null ? this.instance : this.initHttpDowntimeLogs();
-  }
-
-  initHttpDowntimeLogs() {
-    const httpDowntimeLogs = axios.create({
-      headers,
-    });
-    this.instance = httpDowntimeLogs;
-    return httpDowntimeLogs;
   }
 
   initHttp() {
@@ -83,10 +71,6 @@ class Http {
     return this.http.post<T, R>("logs/v1/processes", payload)
   }
 
-  getStatus<T = any, R = AxiosResponse<T>>(): Promise<R> {
-    console.log(this.httphttpDowntimeLogs)
-    return this.httphttpDowntimeLogs.get<T, R>("http://localhost:9091/healthcheck")
-  }
 }
 
 export const http = new Http();

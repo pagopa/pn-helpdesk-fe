@@ -63,5 +63,15 @@ type getLogsProcessesType = {
     dateFrom: string;
     dateTo: string;
 }
+/**
+ * @typedef {Object} getEventsType
+ */
+ type getEventsType = {
+    status: string;
+    timestamp: string;
+    functionality: Array<string>;
+    sourceType: string;
+    source: string;
+}
 
-export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType }
+export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getEventsType }

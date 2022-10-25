@@ -9,6 +9,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { functionalitiesNames } from "../../helpers/messagesConstants"
 import { format } from "date-fns";
+import { getEventsType } from "../../api/apiRequestTypes";
 
 /**
  * Monitor page
@@ -21,6 +22,16 @@ const MonitorPage = ({ email }: any) => {
   const [rows, setRows] = useState<any[]>([]);
 
   useEffect(() => {
+    const idTokenInterval = setInterval(async () => {
+      getEvents();
+    }, 60000);
+    getEvents();
+    return () => {
+      clearInterval(idTokenInterval);
+    };
+  }, [dispatch]);
+
+  const getEvents = () => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
     apiRequests.getStatus().then((res) => {
       let rows: any[] = [];
@@ -37,6 +48,7 @@ const MonitorPage = ({ email }: any) => {
               functionality: functionalitiesNames[item],
               data: date,
               state: incident.length === 0,
+              functionalityName: item
             };
             rows.push(row);
           });
@@ -46,7 +58,16 @@ const MonitorPage = ({ email }: any) => {
       }
       dispatch(spinnerActions.updateSpinnerOpened(false));
     });
-  }, [dispatch]);
+  };
+
+  const events = ((params: any) => {
+    apiRequests.getEvents(
+      params as getEventsType
+    ).then((res: any) => getEvents())
+    .catch(error => {
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+    });
+  });
 
   const columns = [
     {
@@ -64,7 +85,7 @@ const MonitorPage = ({ email }: any) => {
       type: 'actions',
       width: 400,
       renderCell: ((params: any) => {
-        return params.row.state ? <CheckCircleIcon color="success"/> : <CancelIcon color="error"/>
+        return params.row.state ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />
       }),
       flex: 1,
       minWidth: 100,
@@ -94,23 +115,35 @@ const MonitorPage = ({ email }: any) => {
       sortable: false,
       disableColumnMenu: true,
       getActions: ((params: any) => {
-       return params.row.state ? [<GridActionsCellItem
-          // icon={<SecurityIcon />}
+        return params.row.state ? [<GridActionsCellItem
           label="Inserire KO"
           onClick={() => {
-            console.log("ciao")
+            const payload = [{
+              status: 'KO',
+              timestamp: new Date().toISOString(),
+              functionality: Array(params.row.functionalityName),
+              sourceType: 'ALARM',
+              source: email
+            }]
+            events(payload)
           }}
           showInMenu
         />] : [<GridActionsCellItem
-          // icon={<FileCopyIcon />}
           label="Inserire OK"
           onClick={() => {
-            console.log("ciao")
+            const payload = [{
+              status: 'OK',
+              timestamp: new Date().toISOString(),
+              functionality: [params.row.functionalityName],
+              sourceType: 'ALARM',
+              source: email
+            }]
+            events(payload)
           }}
           showInMenu
         />]
-        
-        }),
+
+      }),
     },
   ];
 
