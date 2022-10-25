@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import DataGridComponent from '../../components/dataGrid/DataGridComponent';
 import MainLayout from "../mainLayout/MainLayout";
 import apiRequests from "../../api/apiRequests";
@@ -19,30 +18,35 @@ const MonitorPage = ({ email }: any) => {
 
   const dispatch = useDispatch();
 
-  const [rows, setRows] = useState(Array());
-
+  const [rows, setRows] = useState<any[]>([]);
 
   useEffect(() => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
-    apiRequests.getStatus().then(res => {
-      let rows = Array();
+    apiRequests.getStatus().then((res) => {
+      let rows: any[] = [];
       if (res && res.data) {
         if (res.data.functionalities) {
           res.data.functionalities.forEach((item: string) => {
-            let incident = res.data.openIncidents.filter((element: any) => element.functionality === item)
-            let date = incident.length == 0 ? "" : incident[0].startDate;
-            console.log(incident)
-            let row = { id: res.data.functionalities.indexOf(item) + 1, functionality: functionalitiesNames[item], data: date, state: incident.length == 0 }
+            let incident = res.data.openIncidents.filter(
+              (element: any) => element.functionality === item
+            );
+            let date = incident.length === 0 ? "" : incident[0].startDate;
+            console.log(incident);
+            let row = {
+              id: res.data.functionalities.indexOf(item) + 1,
+              functionality: functionalitiesNames[item],
+              data: date,
+              state: incident.length === 0,
+            };
             rows.push(row);
-          })
+          });
           setRows(rows);
-          console.log(rows)
+          console.log(rows);
         }
       }
       dispatch(spinnerActions.updateSpinnerOpened(false));
     });
-
-  }, [])
+  }, [dispatch]);
 
   const columns = [
     {
@@ -68,14 +72,16 @@ const MonitorPage = ({ email }: any) => {
     {
       field: 'data',
       headerName: 'Data di creazione',
-      type: 'string',
+      type: 'date',
       width: 400,
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
       renderCell: ((params: any) => {
-        return params.row.data ? format(params.row.data, 'YYYY-MM-DD HH:MM:SS') : ""
+        return params.row.data
+          ? format(new Date(params.row.data), "yyyy-MM-dd hh:mm:ss")
+          : "";
       })
     },
     {
