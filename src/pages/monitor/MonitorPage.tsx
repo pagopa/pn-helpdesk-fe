@@ -1,20 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DataGridComponent from '../Components/DataGridComponent';
-import MainLayout from "./MainLayout";
-import Container, { Fab } from '@mui/material';
-import apiRequests from "../api/apiRequests";
+import DataGridComponent from '../../components/dataGrid/DataGridComponent';
+import MainLayout from "../mainLayout/MainLayout";
+import apiRequests from "../../api/apiRequests";
 import { useDispatch } from 'react-redux';
-import * as spinnerActions from "../redux/spinnerSlice";
-import { Check } from "@mui/icons-material";
-import { green } from "@mui/material/colors";
+import * as spinnerActions from "../../redux/spinnerSlice";
 import { GridActionsCellItem } from "@mui/x-data-grid";
-import MenuIcon from '@mui/icons-material/Menu';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { elem } from "fp-ts/lib/Tree";
-import moment from "moment";
-import { functionalitiesNames } from "../helpers/messagesConstants"
+import { functionalitiesNames } from "../../helpers/messagesConstants"
+import { format } from "date-fns";
 
 /**
  * Monitor page
@@ -80,7 +75,7 @@ const MonitorPage = ({ email }: any) => {
       sortable: false,
       disableColumnMenu: true,
       renderCell: ((params: any) => {
-        return params.row.data ? moment(params.row.data).format('YYYY-MM-DD HH:MM:SS') : ""
+        return params.row.data ? format(params.row.data, 'YYYY-MM-DD HH:MM:SS') : ""
       })
     },
     {
@@ -112,8 +107,6 @@ const MonitorPage = ({ email }: any) => {
         }),
     },
   ];
-
-  const navigate = useNavigate();
 
   return (
     <MainLayout email={email}>
