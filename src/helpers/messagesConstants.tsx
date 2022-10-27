@@ -23,7 +23,7 @@ export const infoMessages = {
 }
 
 export const functionalitiesNames: {[key: string]: string} = {
-    NOTIFICATION_CREATE: "Creazione notifiche",
-    NOTIFICATION_VISUALIZATION: "Operazione di visualizzazione",
-    NOTIFICATION_WORKFLOW: "Workflow"
+    NOTIFICATION_CREATE: "Creazione Notifiche",
+    NOTIFICATION_VISUALIZATION: "Visualizzazione Notifiche",
+    NOTIFICATION_WORKFLOW: "Workflow Notifiche"
 }

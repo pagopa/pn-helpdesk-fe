@@ -30,7 +30,7 @@ class HttpDowntimeLogs {
 
         httpDowntimeLogs.interceptors.request.use(
             (request: any) => {
-                if (request.data) {
+                if (request.url === "/downtime-internal/v1/events") {
                     const token = sessionStorage.getItem("token")
                     const accessToken = sessionStorage.getItem("accessToken")
                     request.headers = {
@@ -48,11 +48,11 @@ class HttpDowntimeLogs {
     }
 
     getStatus<T = any, R = AxiosResponse<T>>(): Promise<R> {
-        return this.httpDowntimeLogs.get<T, R>("http://localhost:9091/healthcheck")
+        return this.httpDowntimeLogs.get<T, R>("/status")
     }
 
     getEvents<T = any, R = AxiosResponse<T>>(payload: getEventsType): Promise<R> {
-        return this.httpDowntimeLogs.post<T, R>("http://localhost:9091/downtime-internal/v1/events", payload)
+        return this.httpDowntimeLogs.post<T, R>("/downtime-internal/v1/events", payload)
     }
 
 }

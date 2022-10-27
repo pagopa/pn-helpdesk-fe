@@ -59,7 +59,19 @@ const MonitorPage = ({ email }: any) => {
       dispatch(spinnerActions.updateSpinnerOpened(false));
     });
   };
-
+  
+  const getCurrentDate = (() => {
+    var currentdate = new Date();
+    var datetime = "" + currentdate.getFullYear() + "-"
+      + (currentdate.getMonth() + 1) + "-"
+      + currentdate.getDate() + "T"
+      + (currentdate.getHours() < 10 ? "0" + currentdate.getHours() : currentdate.getHours()) + ":"
+      + (currentdate.getMinutes() < 10 ? "0" + currentdate.getMinutes() : currentdate.getMinutes()) + ":"
+      + (currentdate.getSeconds() < 10 ? "0" + currentdate.getSeconds() : currentdate.getSeconds()) + "."
+      + "001Z";
+      return datetime;
+  })
+  
   const events = ((params: any) => {
     apiRequests.getEvents(
       params as getEventsType
@@ -101,8 +113,8 @@ const MonitorPage = ({ email }: any) => {
       disableColumnMenu: true,
       renderCell: ((params: any) => {
         return params.row.data
-          ? format(new Date(params.row.data), "yyyy-MM-dd hh:mm:ss")
-          : "";
+        ? format(new Date(params.row.data.slice(0, -5)), "dd-MM-yyyy HH:mm")
+        : "";
       })
     },
     {
@@ -120,7 +132,7 @@ const MonitorPage = ({ email }: any) => {
           onClick={() => {
             const payload = [{
               status: 'KO',
-              timestamp: new Date().toISOString(),
+              timestamp: getCurrentDate(),
               functionality: Array(params.row.functionalityName),
               sourceType: 'ALARM',
               source: email
@@ -133,7 +145,7 @@ const MonitorPage = ({ email }: any) => {
           onClick={() => {
             const payload = [{
               status: 'OK',
-              timestamp: new Date().toISOString(),
+              timestamp: getCurrentDate(),
               functionality: [params.row.functionalityName],
               sourceType: 'ALARM',
               source: email
