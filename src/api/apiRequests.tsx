@@ -4,7 +4,6 @@ import {
     getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getEventsType
 } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient"
-import { httpDowntimeLogs as apiClientDowntimeLogs} from "./axiosClientDowntimeLogs"
 
 /**
  * Return the person's ID depending on the input received
@@ -106,7 +105,7 @@ const getLogsProcesses = async (data: getLogsProcessesType) => {
 }
 
 const getStatus = async () => {
-    return await apiClientDowntimeLogs.getStatus()
+    return await apiClient.getStatus()
         .then((result: any) => {
             return result;
         })
@@ -120,7 +119,7 @@ const getStatus = async () => {
 }
 
 const  getEvents = async (data: getEventsType) => {
-    return await apiClientDowntimeLogs.getEvents(data)
+    return await apiClient.getEvents(data)
         .then((result: any) => {
             return result;
         })

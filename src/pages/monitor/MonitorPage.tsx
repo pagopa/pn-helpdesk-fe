@@ -10,6 +10,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { functionalitiesNames } from "../../helpers/messagesConstants"
 import { format } from "date-fns";
 import { getEventsType } from "../../api/apiRequestTypes";
+import * as snackbarActions from "../../redux/snackbarSlice";
 
 /**
  * Monitor page
@@ -21,6 +22,8 @@ const MonitorPage = ({ email }: any) => {
 
   const [rows, setRows] = useState<any[]>([]);
 
+  const [backEndStatus, setBackEndStatus] = useState<boolean>(true);
+
   useEffect(() => {
     const idTokenInterval = setInterval(async () => {
       getEvents();
@@ -31,9 +34,16 @@ const MonitorPage = ({ email }: any) => {
     };
   }, [dispatch]);
 
+  const updateSnackbar = (response: any) => {
+    dispatch(snackbarActions.updateSnackbacrOpened(true))
+    dispatch(snackbarActions.updateStatusCode(response.status))
+    response.data.message && dispatch(snackbarActions.updateMessage(response.data.message))
+  }
+
   const getEvents = () => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
     apiRequests.getStatus().then((res) => {
+      setBackEndStatus(true);
       let rows: any[] = [];
       if (res && res.data) {
         if (res.data.functionalities) {
@@ -53,13 +63,27 @@ const MonitorPage = ({ email }: any) => {
             rows.push(row);
           });
           setRows(rows);
-          console.log(rows);
         }
       }
       dispatch(spinnerActions.updateSpinnerOpened(false));
-    });
+    }).catch(() => {
+      setBackEndStatus(false);
+      let functionality: string[] = ['NOTIFICATION_CREATE', 'NOTIFICATION_VISUALIZATION', 'NOTIFICATION_WORKFLOW'];
+      let rows: any[] = [];
+      functionality.forEach((item: string) => {
+        let row = {
+          id: functionality.indexOf(item) + 1,
+          functionality: functionalitiesNames[item],
+          data: ""
+        };
+        rows.push(row);
+      });
+      setRows(rows);
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+    }
+    );
   };
-  
+
   const getCurrentDate = (() => {
     var currentdate = new Date();
     var datetime = "" + currentdate.getFullYear() + "-"
@@ -69,16 +93,20 @@ const MonitorPage = ({ email }: any) => {
       + (currentdate.getMinutes() < 10 ? "0" + currentdate.getMinutes() : currentdate.getMinutes()) + ":"
       + (currentdate.getSeconds() < 10 ? "0" + currentdate.getSeconds() : currentdate.getSeconds()) + "."
       + "001Z";
-      return datetime;
+    return datetime;
   })
-  
+
   const events = ((params: any) => {
     apiRequests.getEvents(
       params as getEventsType
-    ).then((res: any) => getEvents())
-    .catch(error => {
-      dispatch(spinnerActions.updateSpinnerOpened(false));
-    });
+    ).then((res: any) => {
+        getEvents() 
+        updateSnackbar(res)
+      })
+      .catch((error: any) => {
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+        updateSnackbar(error.response)
+      });
   });
 
   const columns = [
@@ -97,7 +125,7 @@ const MonitorPage = ({ email }: any) => {
       type: 'actions',
       width: 400,
       renderCell: ((params: any) => {
-        return params.row.state ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />
+        return params.row.state ? <CheckCircleIcon color="success" /> : <CancelIcon color={backEndStatus ? "error" : "disabled"} />
       }),
       flex: 1,
       minWidth: 100,
@@ -111,10 +139,11 @@ const MonitorPage = ({ email }: any) => {
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
+      hide: !backEndStatus,
       renderCell: ((params: any) => {
         return params.row.data
-        ? format(new Date(params.row.data.slice(0, -5)), "dd-MM-yyyy HH:mm")
-        : "";
+          ? format(new Date(params.row.data.slice(0, -5)), "dd-MM-yyyy HH:mm")
+          : "";
       })
     },
     {
@@ -126,6 +155,7 @@ const MonitorPage = ({ email }: any) => {
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
+      hide: !backEndStatus,
       getActions: ((params: any) => {
         return params.row.state ? [<GridActionsCellItem
           label="Inserire KO"
@@ -134,7 +164,7 @@ const MonitorPage = ({ email }: any) => {
               status: 'KO',
               timestamp: getCurrentDate(),
               functionality: Array(params.row.functionalityName),
-              sourceType: 'ALARM',
+              sourceType: 'OPERATOR',
               source: email
             }]
             events(payload)
@@ -146,8 +176,8 @@ const MonitorPage = ({ email }: any) => {
             const payload = [{
               status: 'OK',
               timestamp: getCurrentDate(),
-              functionality: [params.row.functionalityName],
-              sourceType: 'ALARM',
+              functionality: Array(params.row.functionalityName),
+              sourceType: 'OPERATOR',
               source: email
             }]
             events(payload)

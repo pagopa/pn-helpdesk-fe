@@ -71,6 +71,14 @@ class Http {
     return this.http.post<T, R>("logs/v1/processes", payload)
   }
 
+  getStatus<T = any, R = AxiosResponse<T>>(): Promise<R> {
+    return this.http.get<T, R>("/downtime/v1/status")
+  }
+
+  getEvents<T = any, R = AxiosResponse<T>>(payload: getEventsType): Promise<R> {
+    return this.http.post<T, R>("/downtime/v1/events", payload)
+  }
+  
 }
 
 export const http = new Http();
