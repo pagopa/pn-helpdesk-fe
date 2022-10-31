@@ -71,7 +71,6 @@ type getLogsProcessesType = {
     timestamp: string;
     functionality: Array<string>;
     sourceType: string;
-    source: string;
 }
 
 export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getEventsType }

@@ -164,8 +164,7 @@ const MonitorPage = ({ email }: any) => {
               status: 'KO',
               timestamp: getCurrentDate(),
               functionality: Array(params.row.functionalityName),
-              sourceType: 'OPERATOR',
-              source: email
+              sourceType: 'OPERATOR'
             }]
             events(payload)
           }}
@@ -177,8 +176,7 @@ const MonitorPage = ({ email }: any) => {
               status: 'OK',
               timestamp: getCurrentDate(),
               functionality: Array(params.row.functionalityName),
-              sourceType: 'OPERATOR',
-              source: email
+              sourceType: 'OPERATOR'
             }]
             events(payload)
           }}
