@@ -28,7 +28,9 @@ const MonitorPage = ({ email }: any) => {
     const idTokenInterval = setInterval(async () => {
       getEvents();
     }, 60000);
+    dispatch(spinnerActions.updateSpinnerOpened(true));
     getEvents();
+    dispatch(spinnerActions.updateSpinnerOpened(false));
     return () => {
       clearInterval(idTokenInterval);
     };
@@ -41,7 +43,6 @@ const MonitorPage = ({ email }: any) => {
   }
 
   const getEvents = () => {
-    dispatch(spinnerActions.updateSpinnerOpened(true));
     apiRequests.getStatus().then((res) => {
       setBackEndStatus(true);
       let rows: any[] = [];
@@ -65,7 +66,6 @@ const MonitorPage = ({ email }: any) => {
           setRows(rows);
         }
       }
-      dispatch(spinnerActions.updateSpinnerOpened(false));
     }).catch(() => {
       setBackEndStatus(false);
       let functionality: string[] = ['NOTIFICATION_CREATE', 'NOTIFICATION_VISUALIZATION', 'NOTIFICATION_WORKFLOW'];
@@ -79,28 +79,17 @@ const MonitorPage = ({ email }: any) => {
         rows.push(row);
       });
       setRows(rows);
-      dispatch(spinnerActions.updateSpinnerOpened(false));
     }
     );
   };
-
-  const getCurrentDate = (() => {
-    var currentdate = new Date();
-    var datetime = "" + currentdate.getFullYear() + "-"
-      + (currentdate.getMonth() + 1) + "-"
-      + currentdate.getDate() + "T"
-      + (currentdate.getHours() < 10 ? "0" + currentdate.getHours() : currentdate.getHours()) + ":"
-      + (currentdate.getMinutes() < 10 ? "0" + currentdate.getMinutes() : currentdate.getMinutes()) + ":"
-      + (currentdate.getSeconds() < 10 ? "0" + currentdate.getSeconds() : currentdate.getSeconds()) + "."
-      + "001Z";
-    return datetime;
-  })
 
   const events = ((params: any) => {
     apiRequests.getEvents(
       params as getEventsType
     ).then((res: any) => {
+        dispatch(spinnerActions.updateSpinnerOpened(true));
         getEvents() 
+        dispatch(spinnerActions.updateSpinnerOpened(false));
         updateSnackbar(res)
       })
       .catch((error: any) => {
@@ -142,7 +131,7 @@ const MonitorPage = ({ email }: any) => {
       hide: !backEndStatus,
       renderCell: ((params: any) => {
         return params.row.data
-          ? format(new Date(params.row.data.slice(0, -5)), "dd-MM-yyyy HH:mm")
+          ? format(new Date(params.row.data.substring(0, 16)), "dd-MM-yyyy HH:mm")
           : "";
       })
     },
@@ -162,7 +151,7 @@ const MonitorPage = ({ email }: any) => {
           onClick={() => {
             const payload = [{
               status: 'KO',
-              timestamp: getCurrentDate(),
+              timestamp: new Date().toISOString(),
               functionality: Array(params.row.functionalityName),
               sourceType: 'OPERATOR'
             }]
@@ -174,7 +163,7 @@ const MonitorPage = ({ email }: any) => {
           onClick={() => {
             const payload = [{
               status: 'OK',
-              timestamp: getCurrentDate(),
+              timestamp: new Date().toISOString(),
               functionality: Array(params.row.functionalityName),
               sourceType: 'OPERATOR'
             }]
