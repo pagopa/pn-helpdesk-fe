@@ -356,11 +356,11 @@ const SearchForm = () => {
             <Grid container direction="column" rowSpacing={3}>
                 <Grid item container>
                     <Grid item>
-                        <Typography variant="h4">Ricerca</Typography>
+                        <Typography color="text.primary" variant="h4">Ricerca</Typography>
                     </Grid>
                 </Grid>
                 <Grid item container rowSpacing={2}>
-                    <Card elevation={24} sx={{ width: 1, padding: "5%", boxShadow: "0px 3px 3px -2px " }}>
+                    <Card elevation={24} sx={{ width: 1, padding: "5%", boxShadow: "0px 3px 3px -2px ", backgroundColor: "background.paper" }}>
                         <Grid container rowSpacing={2}>
                             <Grid item>
                                 <form onSubmit={handleSubmit(data => onSubmit(data))}>
@@ -404,12 +404,12 @@ const SearchForm = () => {
                                         </Grid>
                                         <Grid item container justifyContent="space-between">
                                             <Grid item >
-                                                <Button size="large" variant="outlined" startIcon={<RestartAltIcon />}
+                                                <Button size="large" variant="outlined" startIcon={<RestartAltIcon />} sx={{ '&:hover': { backgroundColor: "action.hover" } }}
                                                     onClick={() => reset({ ...defaultFormValues, "Tipo Estrazione": getValues("Tipo Estrazione") })}
                                                 >Resetta filtri</Button>
                                             </Grid>
                                             <Grid item >
-                                                <Button size="large" type="submit" variant="contained" sx={{ background: "#0066CC", '&:hover': { background: "#0059B3" } }} startIcon={<SearchIcon />}
+                                                <Button size="large" type="submit" variant="contained" sx={{ backgroundColor: "primary.main", '&:hover': { backgroundColor: "primary.dark" } }} startIcon={<SearchIcon />}
                                                     disabled={Object.keys(errors).length > 0 || ricerca}
                                                 >Ricerca</Button>
                                             </Grid>

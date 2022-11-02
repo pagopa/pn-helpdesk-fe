@@ -64,7 +64,7 @@ const Header = ({ email }: any) => {
   }
 
   return (
-    <AppBar position="static" sx={{ bgcolor: "#0066CC" }}>
+    <AppBar position="static" sx={{ bgcolor: "primary.main" }}>
       <Container>
         <Toolbar
           sx={{
