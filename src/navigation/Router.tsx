@@ -4,6 +4,8 @@ import MonitorPage from "../pages/monitor/MonitorPage";
 import LoginPage from '../pages/login/LoginPage';
 import SearchPage from '../pages/search/SearchPage';
 import PrivateRoute from "./PrivateRoute"
+import AggregationsPage from '../pages/aggregations/AggregationsPage';
+import AggregationDetailPage from '../pages/aggregations/AggregationDetailPage';
 
 /**
  * Create the routing of the page 
@@ -17,6 +19,8 @@ function Router() {
         <Route path="*" element={<Navigate replace to="/search" />} />
         <Route path="/search" element={<PrivateRoute condition="token"><SearchPage email={email}/></PrivateRoute>}/>
         <Route path="/monitoring" element={<PrivateRoute condition="token"><MonitorPage email={email}/></PrivateRoute>}/>
+        <Route path="/aggregations" element={<PrivateRoute condition="token"><AggregationsPage email={email}/></PrivateRoute>}/>
+        <Route path="/aggregation/:aggregateId" element={<PrivateRoute condition="token"><AggregationDetailPage email={email}/></PrivateRoute>}/>
     </Routes>
   );
 }

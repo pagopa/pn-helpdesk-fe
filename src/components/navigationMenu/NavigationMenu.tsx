@@ -15,6 +15,10 @@ const NavigationMenu = () => {
         title: "Monitoraggio Piattaforma Notifiche",
         link: "/monitoring",
       },
+      {
+        title: "Gestione Aggregazioni ApiKey",
+        link: "/aggregations",
+      }
     ];
 
     const toggleDrawer = (status: boolean) =>
