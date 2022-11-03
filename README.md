@@ -1,4 +1,4 @@
-## **Piattaforma notifiche - helpdesk **
+## **Piattaforma notifiche - helpdesk**
 
 ### **Start**
 
