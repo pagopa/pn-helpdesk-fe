@@ -9,7 +9,7 @@ import { Grid, Typography } from '@material-ui/core';
 const Footer = () => {
 
   return (
-    <AppBar sx={{ bgcolor: "#001a33", bottom: 0, top: "auto" }} >
+    <AppBar sx={{ bgcolor: "primary.dark", bottom: 0, top: "auto" }} >
       <Container>
         <Toolbar sx={{ paddingRight: "0px", paddingLeft: "0px", '@media (min-width: 640px)': { paddingRight: "0px", paddingLeft: "0px" } }}>
           <Grid container spacing={2}>

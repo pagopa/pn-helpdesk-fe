@@ -80,9 +80,9 @@ const LoginForm = ({ setUser, setEmail }: any) => {
             justifyContent="center"
             alignItems="center"
             minHeight="100vh"
-            sx={{ backgroundColor: '#0066CC' }}
+            sx={{ backgroundColor: 'primary.main' }}
         >
-            <Card elevation={24} sx={{ width: 1 / 2, padding: "5%", boxShadow: "0px 3px 3px -2px " }}>
+            <Card elevation={24} sx={{ width: 1 / 2, padding: "5%", boxShadow: "0px 3px 3px -2px ", backgroundColor: "background.paper"}}>
                 <Grid container direction="column" rowSpacing={2}>
                     <Grid item container alignItems="center" justifyContent="center">
                         <Grid item>
@@ -143,7 +143,7 @@ const LoginForm = ({ setUser, setEmail }: any) => {
                                 </Grid>
                             </Grid>
                             <Grid item>
-                                <Button sx={{ background: "#0066CC", '&:hover': { background: "#0059B3" } }} fullWidth size="large" type="submit" variant="outlined"><Typography sx={{ color: 'white' }}>LOGIN</Typography></Button>
+                                <Button sx={{ backgroundColor: "primary.main", '&:hover': { backgroundColor: "primary.dark" } }} fullWidth size="large" type="submit" variant="outlined"><Typography sx={{ color: 'white' }}>LOGIN</Typography></Button>
                             </Grid>
                         </Grid>
                     </form>

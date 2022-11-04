@@ -33,13 +33,13 @@ const ResponseData = () => {
         </Grid>
         <Grid item container>
           <Grid item>
-            <Typography variant='h6'>Dati di risposta:</Typography>
+            <Typography color="text.primary" variant='h6'>Dati di risposta:</Typography>
           </Grid>
 
         </Grid>
         <Grid item container>
           <Grid item>
-            <Typography align="center">
+            <Typography align="center" color="text.primary">
               <>
                 {ResponseType[Object.keys(response)[0] as keyof typeof ResponseType]} : {Object.values(response)[0]}
               </>
