@@ -7,7 +7,7 @@ import * as spinnerActions from "../../redux/spinnerSlice";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { functionalitiesNames } from "../../helpers/messagesConstants"
+import { errorMessages, functionalitiesNames } from "../../helpers/messagesConstants"
 import { format } from "date-fns";
 import { getEventsType } from "../../api/apiRequestTypes";
 import * as snackbarActions from "../../redux/snackbarSlice";
@@ -79,6 +79,14 @@ const MonitorPage = ({ email }: any) => {
         rows.push(row);
       });
       setRows(rows);
+      updateSnackbar(
+        {
+          status: 500,
+          data: {
+            message: errorMessages.BACKEND_DOWN_MESSAGE,
+          }
+        }
+      );
     }
     );
   };
@@ -87,11 +95,11 @@ const MonitorPage = ({ email }: any) => {
     apiRequests.getEvents(
       params as getEventsType
     ).then((res: any) => {
-        dispatch(spinnerActions.updateSpinnerOpened(true));
-        getEvents() 
-        dispatch(spinnerActions.updateSpinnerOpened(false));
-        updateSnackbar(res)
-      })
+      dispatch(spinnerActions.updateSpinnerOpened(true));
+      getEvents()
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      updateSnackbar(res)
+    })
       .catch((error: any) => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
         updateSnackbar(error.response)
@@ -151,7 +159,9 @@ const MonitorPage = ({ email }: any) => {
           onClick={() => {
             const payload = [{
               status: 'KO',
-              timestamp: new Date().toISOString(),
+              timestamp: format(
+                new Date(),
+                "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"),
               functionality: Array(params.row.functionalityName),
               sourceType: 'OPERATOR'
             }]
@@ -163,7 +173,9 @@ const MonitorPage = ({ email }: any) => {
           onClick={() => {
             const payload = [{
               status: 'OK',
-              timestamp: new Date().toISOString(),
+              timestamp: format(
+                new Date(),
+                "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"),
               functionality: Array(params.row.functionalityName),
               sourceType: 'OPERATOR'
             }]

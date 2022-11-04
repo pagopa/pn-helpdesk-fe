@@ -9,6 +9,7 @@ export const errorMessages = {
     INCORRECT_EMAIL: "Email non corretta",
     PSSWORDS_EQUALITY: "La nuova password e la conferma password devono essere le stesse",
     ONE_MONTH_INTERVAL: "Le date selezionate devono essere all'interno dello stesso mese",
+    BACKEND_DOWN_MESSAGE: "Servizio offline, contattare l'amministratore di sistema",
 }
 
 export const infoMessages = {
