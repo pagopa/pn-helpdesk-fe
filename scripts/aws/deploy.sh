@@ -93,8 +93,8 @@ DistributionId=$( aws ${profile_option} --region="eu-central-1" cloudformation d
     )
 
 sed -e "s/\${USER_POOL_ID}/${CognitoUserPoolId}/" \
-    -e "s/\${WEB_CLIENT_ID}/${WEB_CLIENT_ID}/" \
-    -e "s/\${DISTRIBUTION_ID}/${DISTRIBUTION_ID}/"  .env.production
+    -e "s/\${WEB_CLIENT_ID}/${CognitoWebClientId}/" \
+    -e "s/\${DISTRIBUTION_ID}/${DistributionId}/"  .env.production
 
 yarn build
 
