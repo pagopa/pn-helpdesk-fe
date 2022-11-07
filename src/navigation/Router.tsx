@@ -7,6 +7,7 @@ import PrivateRoute from "./PrivateRoute"
 import AggregationsPage from '../pages/aggregations/AggregationsPage';
 import AggregationDetailPage from '../pages/aggregations/AggregationDetailPage';
 import AssociationPage from '../pages/aggregations/AssociationPage';
+import PaTransferListPage from '../pages/paTransfer/PaTransferListPage';
 
 /**
  * Create the routing of the page 
@@ -24,6 +25,7 @@ function Router() {
         <Route path="/aggregation/:aggregateId" element={<PrivateRoute condition="token"><AggregationDetailPage email={email}/></PrivateRoute>}/>
         <Route path="/aggregation" element={<PrivateRoute condition="token"><AggregationDetailPage email={email}/></PrivateRoute>}/>
         <Route path="/aggregation/add-pa" element={<PrivateRoute condition="token"><AssociationPage email={email}/></PrivateRoute>}/>
+        <Route path="/pa-transfer" element={<PrivateRoute condition="token"><PaTransferListPage email={email}/></PrivateRoute>}/>
     </Routes>
   );
 }
