@@ -1,3 +1,3 @@
 export type PaColumn = 
-| 'paId'
-| 'paName'
+| 'id'
+| 'name'

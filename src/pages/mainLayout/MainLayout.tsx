@@ -49,7 +49,7 @@ const MainLayout = ({ email, children }: any) => {
       <Grid item>
         <Header email={email} />
       </Grid>
-      <Grid item>
+      <Grid item style={{paddingBottom:"64px"}}>
         {children}
       </Grid>
       <Grid item>

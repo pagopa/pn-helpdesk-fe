@@ -18,10 +18,6 @@ const NavigationMenu = () => {
       {
         title: "Gestione Aggregazioni ApiKey",
         link: "/aggregations",
-      },
-      {
-        title: "Tabella di selezione delle PA",
-        link: "/pa-table",
       }
     ];
 
