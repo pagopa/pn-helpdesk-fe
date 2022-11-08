@@ -1,6 +1,5 @@
 import { DataGrid, gridClasses } from '@mui/x-data-grid';
 import { Box, Typography, Container, Grid, Card } from "@mui/material";
-import { grey } from '@mui/material/colors';
 
 /**
  * @typedef {Object} Columns
@@ -51,7 +50,8 @@ const DataGridComponent = (props: Props) => {
                 disableSelectionOnClick
                 hideFooter={true}
                 experimentalFeatures={{ newEditingApi: true }}
-
+                disableVirtualization
+                
                 sx={{
                   height: '230px',
                   [`& .${gridClasses.row}`]: {
