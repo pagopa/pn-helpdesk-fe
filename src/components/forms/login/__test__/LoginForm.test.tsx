@@ -44,7 +44,7 @@ describe("LoginForm", () => {
 
   it("submit form and show errors", async () => {
     const button = screen.getByRole("button", { name: "LOGIN" });
-    await act(() => userEvent.click(button));
+    userEvent.click(button);
     await waitFor(() => {
       expect(screen.getByText("Email non corretta")).toBeTruthy();
     });
@@ -64,9 +64,7 @@ describe("LoginForm", () => {
 
   it("renders tooltip", async () => {
     expect(screen.getByText("Password dimenticata?")).toBeTruthy();
-    await act(() => {
-      userEvent.click(screen.getByText("Password dimenticata?"));
-    }) 
+    userEvent.click(screen.getByText("Password dimenticata?"));
     expect(screen.getByRole("tooltip")).toBeTruthy();
   });
 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DataGridComponent from "../../components/dataGrid/DataGridComponent";
 import MainLayout from "../mainLayout/MainLayout";
 import apiRequests from "../../api/apiRequests";
@@ -26,26 +26,17 @@ const MonitorPage = ({ email }: any) => {
 
   const [backEndStatus, setBackEndStatus] = useState<boolean>(true);
 
-  useEffect(() => {
-    const idTokenInterval = setInterval(async () => {
-      getEvents();
-    }, 60000);
-    dispatch(spinnerActions.updateSpinnerOpened(true));
-    getEvents();
-    dispatch(spinnerActions.updateSpinnerOpened(false));
-    return () => {
-      clearInterval(idTokenInterval);
-    };
-  }, [dispatch]);
+  const updateSnackbar = useCallback(
+    (response: any) => {
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(response.status));
+      response.data.message &&
+        dispatch(snackbarActions.updateMessage(response.data.message));
+    },
+    [dispatch]
+  );
 
-  const updateSnackbar = (response: any) => {
-    dispatch(snackbarActions.updateSnackbacrOpened(true));
-    dispatch(snackbarActions.updateStatusCode(response.status));
-    response.data.message &&
-      dispatch(snackbarActions.updateMessage(response.data.message));
-  };
-
-  const getEvents = () => {
+  const getEvents = useCallback(() => {
     apiRequests
       .getStatus()
       .then((res) => {
@@ -58,7 +49,6 @@ const MonitorPage = ({ email }: any) => {
                 (element: any) => element.functionality === item
               );
               let date = incident.length === 0 ? "" : incident[0].startDate;
-              console.log(incident);
               let row = {
                 id: res.data.functionalities.indexOf(item) + 1,
                 functionality: functionalitiesNames[item],
@@ -96,7 +86,19 @@ const MonitorPage = ({ email }: any) => {
           },
         });
       });
-  };
+  }, [updateSnackbar]);
+
+  useEffect(() => {
+    const idTokenInterval = setInterval(async () => {
+      getEvents();
+    }, 60000);
+    dispatch(spinnerActions.updateSpinnerOpened(true));
+    getEvents();
+    dispatch(spinnerActions.updateSpinnerOpened(false));
+    return () => {
+      clearInterval(idTokenInterval);
+    };
+  }, [dispatch, getEvents]);
 
   const events = (params: any) => {
     apiRequests
