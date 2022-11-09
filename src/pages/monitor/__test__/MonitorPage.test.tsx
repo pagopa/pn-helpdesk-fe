@@ -87,12 +87,21 @@ describe("MonitorPage", () => {
     });
 
     expect(button).toBeInTheDocument();
+  });
 
-    // userEvent.click(button);
+  it("render button to create an event OK", async () => {
+    await act(async () => {
+      reducer(<MonitorPage email="test@test.com" />);
+    });
 
-    // await waitFor(async () => {
-    //   const snackBar = await screen.findByRole("alert");
-    //   expect(snackBar).toBeInTheDocument();
-    // });
+    const buttons = screen.queryAllByRole("menuitem");
+    expect(buttons).toHaveLength(3);
+
+    userEvent.click(buttons[1]);
+    const button = await screen.findByRole("menuitem", {
+      name: "Inserire OK",
+    });
+
+    expect(button).toBeInTheDocument();
   });
 });

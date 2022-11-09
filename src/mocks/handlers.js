@@ -9,19 +9,6 @@ export const handlers = [
           "NOTIFICATION_VISUALIZATION",
           "NOTIFICATION_WORKFLOW",
         ],
-        openIncidents: [],
-      })
-    );
-  }),
-
-  rest.get("http://localhost/downtime/v1/status", (req, res, ctx) => {
-    return res(
-      ctx.json({
-        functionalities: [
-          "NOTIFICATION_CREATE",
-          "NOTIFICATION_VISUALIZATION",
-          "NOTIFICATION_WORKFLOW",
-        ],
         openIncidents: [
           {
             functionality: "NOTIFICATION_VISUALIZATION",

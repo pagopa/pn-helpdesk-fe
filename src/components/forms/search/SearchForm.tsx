@@ -353,6 +353,7 @@ const SearchForm = () => {
         })
         .catch((error) => {
           updateSnackbar(error.response);
+
           dispatch(spinnerActions.updateSpinnerOpened(false));
         });
     }
@@ -365,8 +366,8 @@ const SearchForm = () => {
   const updateSnackbar = (response: any) => {
     dispatch(snackbarActions.updateSnackbacrOpened(true));
     dispatch(snackbarActions.updateStatusCode(response.status));
-    response.data.message &&
-      dispatch(snackbarActions.updateMessage(response.data.message));
+    response.data.detail &&
+      dispatch(snackbarActions.updateMessage(response.data.detail));
   };
 
   /**
