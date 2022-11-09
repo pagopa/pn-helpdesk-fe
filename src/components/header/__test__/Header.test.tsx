@@ -36,7 +36,7 @@ describe("Header Component", () => {
     expect(modal).toBeDefined();
     await within(modal as HTMLElement)
       .findAllByRole("button")
-      .then(buttons => {
+      .then((buttons) => {
         expect(buttons).toHaveLength(2);
         userEvent.click(screen.getByText("Annulla"));
         expect(screen.getByText("Annulla")).not.toBeVisible();
@@ -50,15 +50,15 @@ describe("Header Component", () => {
     userEvent.click(button);
     const modal = screen.getByRole("dialog");
     expect(modal).toBeDefined();
-      await within(modal as HTMLElement)
-        .findAllByRole("button")
-        .then(async (buttons) => {
-          expect(buttons).toHaveLength(2);
-          await act(() => {
-            userEvent.click(screen.getByText("Esci"));
-          })
-          expect(window.location.pathname).toBe("/");
-          expect(modal).not.toBeVisible();
+    await within(modal as HTMLElement)
+      .findAllByRole("button")
+      .then(async (buttons) => {
+        expect(buttons).toHaveLength(2);
+        await act(() => {
+          userEvent.click(screen.getByText("Esci"));
         });
+        expect(window.location.pathname).toBe("/");
+        expect(modal).not.toBeVisible();
+      });
   });
 });

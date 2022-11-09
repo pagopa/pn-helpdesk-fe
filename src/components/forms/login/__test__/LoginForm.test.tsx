@@ -66,7 +66,7 @@ describe("LoginForm", () => {
     expect(screen.getByText("Password dimenticata?")).toBeTruthy();
     await act(() => {
       userEvent.click(screen.getByText("Password dimenticata?"));
-    }) 
+    });
     expect(screen.getByRole("tooltip")).toBeTruthy();
   });
 });

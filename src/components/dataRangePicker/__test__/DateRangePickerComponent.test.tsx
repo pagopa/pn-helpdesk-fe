@@ -3,7 +3,7 @@
  */
 import React from "react";
 import "regenerator-runtime/runtime";
-import { render,screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { CalendarPickerView, LocalizationProvider } from "@mui/lab";
 import { format } from "date-fns";
@@ -51,7 +51,7 @@ const fieldProps = {
   required: false,
   intervalLimit: [3, "months"],
   disableFuture: true,
-  format: "yyyy-MM-dd"
+  format: "yyyy-MM-dd",
 };
 
 describe("DateRangePickerComponent", () => {

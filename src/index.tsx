@@ -1,19 +1,17 @@
-import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom/client';
-import { CssBaseline, ThemeProvider } from '@mui/material';
-import { theme } from '@pagopa/mui-italia';
-import reportWebVitals from './reportWebVitals';
-import App from './App';
-import { Provider } from 'react-redux';
-import { store } from "./redux/store"
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom/client";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { theme } from "@pagopa/mui-italia";
+import reportWebVitals from "./reportWebVitals";
+import App from "./App";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { it } from "date-fns/locale";
 
-
-
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>

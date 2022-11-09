@@ -1,25 +1,25 @@
-import React from 'react';
-import 'regenerator-runtime/runtime'
-import { render, screen } from '@testing-library/react';
-import App from '../App';
-import { Provider } from 'react-redux';
-import configureMockStore from 'redux-mock-store'
+import React from "react";
+import "regenerator-runtime/runtime";
+import { render, screen } from "@testing-library/react";
+import App from "../App";
+import { Provider } from "react-redux";
+import configureMockStore from "redux-mock-store";
 
 const mockStore = configureMockStore([]);
 const store = mockStore({
   response: {
     opened: false,
-    responseData: {}
+    responseData: {},
   },
   snackbar: {
-    opened: false
+    opened: false,
   },
   spinner: {
-    opened: false
-  }
+    opened: false,
+  },
 });
 
-it('renders', () => {
+it("renders", () => {
   render(
     <Provider store={store}>
       <App />
@@ -27,4 +27,3 @@ it('renders', () => {
   );
   expect(screen.getByTestId("App")).toBeTruthy();
 });
-

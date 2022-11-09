@@ -1,9 +1,9 @@
 import React from "react";
-import SearchForm from '../../components/forms/search/SearchForm';
+import SearchForm from "../../components/forms/search/SearchForm";
 import MainLayout from "../mainLayout/MainLayout";
 
 /**
- * Component containing all objects of the app representing the whole page 
+ * Component containing all objects of the app representing the whole page
  * @component
  */
 const SearchPage = ({ email }: any) => {
@@ -12,6 +12,6 @@ const SearchPage = ({ email }: any) => {
       <SearchForm />
     </MainLayout>
   );
-}
+};
 
 export default SearchPage;
