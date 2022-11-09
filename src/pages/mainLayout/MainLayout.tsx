@@ -7,7 +7,7 @@ import { logout, refreshToken } from "../../Authentication/auth";
 import { useNavigate } from "react-router-dom";
 
 /**
- * Main layout of the application with header and footer 
+ * Main layout of the application with header and footer
  * @component
  */
 const MainLayout = ({ email, children }: any) => {
@@ -49,9 +49,7 @@ const MainLayout = ({ email, children }: any) => {
       <Grid item>
         <Header email={email} />
       </Grid>
-      <Grid item>
-        {children}
-      </Grid>
+      <Grid item>{children}</Grid>
       <Grid item>
         <Footer />
       </Grid>

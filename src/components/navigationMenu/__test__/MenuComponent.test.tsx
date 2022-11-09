@@ -10,21 +10,21 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { act } from "react-dom/test-utils";
 
 describe("Navigation menu component test", () => {
- beforeAll(() => {
-   Object.defineProperty(window, "matchMedia", {
-     writable: true,
-     value: (query: string) => ({
-       media: query,
-       matches: query === "(pointer: fine)",
-       onchange: () => {},
-       addEventListener: () => {},
-       removeEventListener: () => {},
-       addListener: () => {},
-       removeListener: () => {},
-       dispatchEvent: () => false,
-     }),
-   });
- });
+  beforeAll(() => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: (query: string) => ({
+        media: query,
+        matches: query === "(pointer: fine)",
+        onchange: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        addListener: () => {},
+        removeListener: () => {},
+        dispatchEvent: () => false,
+      }),
+    });
+  });
 
   it("renders icon of the menu", () => {
     render(
@@ -49,11 +49,12 @@ describe("Navigation menu component test", () => {
     act(() => {
       icon.click();
     });
-    const drawerButton = screen.getByRole("button", {name: "Monitoraggio Piattaforma Notifiche"});
+    const drawerButton = screen.getByRole("button", {
+      name: "Monitoraggio Piattaforma Notifiche",
+    });
     act(() => {
       drawerButton.click();
     });
     expect(global.window.location.pathname).toContain("/monitoring");
   });
-
 });

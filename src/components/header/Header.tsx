@@ -1,24 +1,32 @@
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Tooltip } from '@mui/material';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { infoMessages } from "../../helpers/messagesConstants"
-import { Divider, Grid, Typography } from '@material-ui/core';
-import { logout } from "../../Authentication/auth"
-import { useDispatch } from 'react-redux';
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import LogoutIcon from "@mui/icons-material/Logout";
+import {
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Tooltip,
+} from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { infoMessages } from "../../helpers/messagesConstants";
+import { Divider, Grid, Typography } from "@material-ui/core";
+import { logout } from "../../Authentication/auth";
+import { useDispatch } from "react-redux";
 import * as spinnerActions from "../../redux/spinnerSlice";
-import NavigationMenu from '../navigationMenu/NavigationMenu';
+import NavigationMenu from "../navigationMenu/NavigationMenu";
 /**
  * General component presenting the header of the app.
  */
 const Header = ({ email }: any) => {
-
   /**
-  * the state of the confirmation modal
-  */
+   * the state of the confirmation modal
+   */
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -29,24 +37,24 @@ const Header = ({ email }: any) => {
   const dispatch = useDispatch();
 
   /**
-  * Function closing the confirmation modal
-  */
+   * Function closing the confirmation modal
+   */
   /* istanbul ignore next */
   const handleCloseModal = () => {
     setOpen(false);
   };
 
   /**
-  * Function opening the confirmation modal after the log out button is click
-  */
+   * Function opening the confirmation modal after the log out button is click
+   */
   /* istanbul ignore next */
   const handleOpenModal = () => {
     setOpen(true);
-  }
+  };
 
   /**
-  * Function handling the logging out
-  */
+   * Function handling the logging out
+   */
   /* istanbul ignore next */
   const handleLogOut = () => {
     setOpen(false);
@@ -59,9 +67,8 @@ const Header = ({ email }: any) => {
       .catch((error: any) => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
         throw error;
-      })
-
-  }
+      });
+  };
 
   return (
     <AppBar position="static" sx={{ bgcolor: "primary.main" }}>
@@ -83,7 +90,7 @@ const Header = ({ email }: any) => {
               </Grid>
             </Grid>
             <Grid item xs={6}>
-              <Typography align='center'>PagoPA S.p.A.</Typography>
+              <Typography align="center">PagoPA S.p.A.</Typography>
             </Grid>
             <Grid item xs={3}>
               <Grid container justifyContent="flex-end" alignItems="center">
@@ -136,6 +143,6 @@ const Header = ({ email }: any) => {
       </Dialog>
     </AppBar>
   );
-}
+};
 
 export default Header;
