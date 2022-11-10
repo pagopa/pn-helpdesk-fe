@@ -81,7 +81,9 @@ describe("MonitorPage", () => {
     const buttons = screen.queryAllByRole("menuitem");
     expect(buttons).toHaveLength(3);
 
-    userEvent.click(buttons[0]);
+    const user = userEvent.setup();
+    await user.click(buttons[0]);
+
     const button = await screen.findByRole("menuitem", {
       name: "Inserire KO",
     });
@@ -97,7 +99,9 @@ describe("MonitorPage", () => {
     const buttons = screen.queryAllByRole("menuitem");
     expect(buttons).toHaveLength(3);
 
-    userEvent.click(buttons[1]);
+    const user = userEvent.setup();
+    await user.click(buttons[1]);
+
     const button = await screen.findByRole("menuitem", {
       name: "Inserire OK",
     });
