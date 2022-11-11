@@ -4,7 +4,7 @@
 
 import { act, screen } from "@testing-library/react";
 import "regenerator-runtime/runtime";
-import { reducer } from "../../../__tests__/testReducer";
+import { reducer } from "../../../mocks/mockReducer";
 import { rest } from "msw";
 import { server } from "../../../mocks/server";
 import DataGridComponent from "../DataGridComponent";

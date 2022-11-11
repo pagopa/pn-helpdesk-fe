@@ -85,19 +85,9 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "<rootDir>/src/**/*.tsx"
-    ],
-    "moduleNameMapper": {
-      ".+\\.(css|styl|less|sass|scss|woff|woff2)$": "identity-obj-proxy",
-      "\\.(gif|ttf|eot|svg|img|png)$": "<rootDir>/__mocks__/fileMock.js"
-    },
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/src/api/apiRequestTypes.tsx",
-      "<rootDir>/src/Authentication/auth.tsx",
-      "<rootDir>/src/__tests__/testReducer.tsx",
-      "index.tsx",
-      "<rootDir>/src/components/formFields/FormFields.tsx",
-      "<rootDir>/src/api/*"
+      "**/src/components/**",
+      "**/src/pages/**",
+      "!**/src/components/formFields/**"
     ]
   }
 }

@@ -21,7 +21,28 @@ export const handlers = [
   }),
 
   rest.post("http://localhost/downtime/v1/events", (req, res, ctx) => {
-    // console.log("request post");
     return res(ctx.json({ message: "Operazione completata con successo" }));
+  }),
+
+  rest.post("http://localhost/persons/v1/person-id", (req, res, ctx) => {
+    const mockResponse = {
+      data: "PF-2dfc9690-a648-4462-986d-769d90752e6f",
+      message: "Operazione completata con successo"
+    };
+    return res(ctx.json(mockResponse));
+  }),
+
+  rest.post("http://localhost/logs/v1/persons", (req, res, ctx) => {
+    const mockResponse = {
+      detail: "Errore nell'elaborazione della richiesta",
+    };
+    return res(ctx.json(mockResponse));
+  }),
+
+  rest.post("http://localhost/logs/v1/notifications/monthly", (req, res, ctx) => {
+    const mockResponse = {
+      detail: "Errore nell'elaborazione della richiesta",
+    };
+    return res(ctx.json(mockResponse));
   }),
 ];

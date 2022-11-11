@@ -3,13 +3,11 @@
  */
 import React from "react";
 import "regenerator-runtime/runtime";
-import { render, screen } from "@testing-library/react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { CalendarPickerView, LocalizationProvider } from "@mui/lab";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { it as itLocale } from "date-fns/locale";
+import { screen } from "@testing-library/react";
+import { CalendarPickerView } from "@mui/lab";
 import userEvent from "@testing-library/user-event";
 import DateRangePickerComponent from "../DataRangePickerComponent";
+import { reducer } from "../../../mocks/mockReducer";
 
 /**
  * @typedef {Object} DatePicker
@@ -50,7 +48,6 @@ const fieldProps = {
   required: false,
   intervalLimit: [3, "months"],
   disableFuture: true,
-  format: "yyyy-MM-dd",
 };
 
 describe("DateRangePickerComponent", () => {
@@ -70,47 +67,85 @@ describe("DateRangePickerComponent", () => {
     });
   });
 
-  it("renders component", () => {
-    render(
-      <LocalizationProvider locale={itLocale} dateAdapter={AdapterDateFns}>
-        <Router>
-          <DateRangePickerComponent
-            field={fieldProps}
-            datePickers={datePickers}
-            onChange={jest.fn()}
-            required={true}
-            onBlur={jest.fn()}
-          />
-        </Router>
-      </LocalizationProvider>
+  it("renders component with certain values", async () => {
+    reducer(
+      <DateRangePickerComponent
+        field={fieldProps}
+        datePickers={datePickers}
+        onChange={jest.fn()}
+        required={true}
+        onBlur={jest.fn()}
+      />
     );
-    expect(screen.getByText("Dal")).toBeTruthy();
-    expect(screen.getByText("Al")).toBeTruthy();
+    const inputs = await screen.findAllByRole("textbox");
+    expect(inputs.length).toBe(2);
+
+    const dal = (await screen.findByRole("textbox", {
+      name: "Dal",
+    })) as HTMLInputElement;
+    const al = (await screen.findByRole("textbox", {
+      name: "Al",
+    })) as HTMLInputElement;
+
+    expect(dal).toBeInTheDocument();
+    expect(al).toBeInTheDocument();
+
+    expect(dal.value).toBe("01-10-2022");
+    expect(al.value).toBe("20-10-2022");
   });
 
-  it("test on change", async () => {
-    render(
-      <LocalizationProvider locale={itLocale} dateAdapter={AdapterDateFns}>
-        <Router>
-          <DateRangePickerComponent
-            field={fieldProps}
-            datePickers={datePickers}
-            onChange={() => console.log("change")}
-            required={true}
-            onBlur={jest.fn()}
-          />
-        </Router>
-      </LocalizationProvider>
+  it("test changing dal value", async () => {
+    const mockChangeFn = jest.fn();
+    reducer(
+      <DateRangePickerComponent
+        field={fieldProps}
+        datePickers={datePickers}
+        onChange={mockChangeFn}
+        required={true}
+        onBlur={jest.fn()}
+      />
     );
-    const logSpy = jest.spyOn(console, "log");
+
+    const user = userEvent.setup();
+    const inputs = await screen.findAllByRole("textbox");
+    expect(inputs.length).toBe(2);
+
     await screen.findAllByRole("button").then((buttons) => {
       const dalButton = buttons[0];
-      expect(dalButton).toBeTruthy();
-      userEvent.click(dalButton);
-      screen.findByRole("button", { name: "14" }).then((dayButton) => {
-        userEvent.click(dayButton);
-        expect(screen.getAllByRole("textbox")[0]).toHaveValue("14-10-2022");
-        expect(logSpy).toBeCalled();
+      expect(dalButton).toBeInTheDocument();
+
+      screen.findByRole("button", { name: "14" }).then(async (dayButton) => {
+        await user.click(dayButton);
+        expect(inputs[0]).toHaveValue("14-10-2022");
+        expect(mockChangeFn).toBeCalled();
+      });
+    });
+  });
+
+  it("test changing al value", async () => {
+    const mockChangeFn = jest.fn();
+    reducer(
+      <DateRangePickerComponent
+        field={fieldProps}
+        datePickers={datePickers}
+        onChange={mockChangeFn}
+        required={true}
+        onBlur={jest.fn()}
+      />
+    );
+
+    const user = userEvent.setup();
+    const inputs = await screen.findAllByRole("textbox");
+    expect(inputs.length).toBe(2);
+
+    await screen.findAllByRole("button").then((buttons) => {
+      const alButton = buttons[1];
+      expect(alButton).toBeInTheDocument();
+
+      screen.findByRole("button", { name: "14" }).then(async (dayButton) => {
+        await user.click(dayButton);
+        expect(inputs[1]).toHaveValue("14-10-2022");
+        expect(mockChangeFn).toBeCalled();
       });
     });
   });
