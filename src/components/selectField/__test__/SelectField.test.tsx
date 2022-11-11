@@ -4,7 +4,6 @@
 import React from "react";
 import 'regenerator-runtime/runtime'
 import { render, screen } from '@testing-library/react';
-import 'regenerator-runtime/runtime'
 import SelectField from '../SelectField';
 
 const props = {
@@ -24,7 +23,7 @@ describe('SelectField Component', () => {
 
   it('renders component', () => {
     render(<SelectField field={props.field} value={props.value} onChange={props.onChange}  />);
-    expect(screen.getByTestId("selectMenu")).toBeTruthy();
+    expect(screen.getByTestId("selectMenu")).toBeInTheDocument();
   });
 
 });
