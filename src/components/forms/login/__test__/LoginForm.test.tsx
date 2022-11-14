@@ -13,7 +13,6 @@ import {
 import { reducer } from "../../../../mocks/mockReducer";
 import userEvent from "@testing-library/user-event";
 import LoginForm from "../LoginForm";
-import * as auth from "../../../../Authentication/auth";
 
 describe("LoginForm", () => {
   const setEmailMock = jest.fn();
@@ -53,27 +52,6 @@ describe("LoginForm", () => {
     ).toBeInTheDocument();
   });
 
-  it("fill fields", async () => {
-    const email = screen.getByRole("textbox", {
-      name: "Email",
-    }) as HTMLInputElement;
-    const password = screen.getByLabelText("Password") as HTMLInputElement;
-    const user = userEvent.setup();
-
-    await act(async () => {
-      await user.clear(email);
-      await user.type(email, "test@test.com");
-    });
-
-    await act(async () => {
-      await user.clear(password);
-      await user.type(password, "I7ph_KKSq+ouL^$7");
-    });
-
-    expect(email.value).toEqual("test@test.com");
-    expect(password.value).toEqual("I7ph_KKSq+ouL^$7");
-  });
-
   it("open and close the tooltip", async () => {
     const forgotPassword = screen.getByText("Password dimenticata?");
     expect(forgotPassword).toBeInTheDocument();
@@ -89,7 +67,7 @@ describe("LoginForm", () => {
 
     const email = screen.getByRole("textbox", {
       name: "Email",
-    }) as HTMLInputElement;
+    });
     await act(async () => {
       await user.click(email);
     });
