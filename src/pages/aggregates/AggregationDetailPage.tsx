@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../mainLayout/MainLayout";
 import { useParams } from "react-router-dom";
-import AggregationDetailForm from "../../components/aggregation/AggregationDetailForm";
+import AggregationDetailForm from "../../components/aggregates/AggregationDetailForm";
 import { CardContent, Card, CardHeader, Box, Typography, Button, Breadcrumbs, Link, Pagination, Grid, IconButton } from "@mui/material";
 import BusinessIcon from '@mui/icons-material/Business';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
@@ -25,7 +25,7 @@ const AggregationDetailPage = ({email}: any) => {
     };
 
     const handleClickSposta = () => {
-       alert("Da implementare");
+       navigate(`/aggregation/pa-transfer`);
     };
 
     const getFormTitle = () => {
@@ -96,8 +96,7 @@ const AggregationDetailPage = ({email}: any) => {
                             </Typography>
                         } 
                         action={
-                            <Grid container> 
-                                <Grid item>
+                            <>
                                     <Button
                                         variant="contained"
                                         type="submit"
@@ -105,22 +104,19 @@ const AggregationDetailPage = ({email}: any) => {
                                         onClick={handleClickSposta}
                                         startIcon={<ArrowRightAltIcon />}
                                     >
-                                        Sposta PA
+                                        Trasferisci PA
                                     </Button>
-                                </Grid>
-                                <Grid item ml={2}>
                                     <Button
                                         variant="contained"
                                         type="submit"
                                         size="small"
                                         onClick={handleClickAggiungi}
                                         startIcon={<DomainAddIcon />}
+                                        sx={{ml:2}}
                                     >
                                         Associa PA
                                     </Button>
-                                </Grid>
-                                
-                            </Grid>
+                            </>
                         }
                     />
                     <CardContent>

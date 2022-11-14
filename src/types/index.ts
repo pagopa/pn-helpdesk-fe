@@ -1,12 +1,12 @@
 import { Column, Item, Sort } from './tableTypes';
-import { Aggregation } from './aggregation';
-import { AggregationColumn } from './aggregationColumn';
 import { PaColumn } from './paColumn';
+import { AggregateSummary, GetAggregateParams, GetAggregateResponse } from './Aggregates';
 export type {
     Column,
     Item,
     Sort,
-    Aggregation,
-    AggregationColumn,
-    PaColumn
+    PaColumn,
+    AggregateSummary,
+    GetAggregateParams,
+    GetAggregateResponse
 }

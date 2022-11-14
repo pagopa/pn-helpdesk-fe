@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { CardContent, Card, CardHeader, Button, Grid, Typography, Box, Badge, Breadcrumbs, Link } from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { CardContent, Card, CardHeader, Button, Grid, Typography, Box, Badge, Breadcrumbs, Link, AccordionDetails, Accordion, AccordionSummary } from "@mui/material";
 import PaList from "./PaList";
 import PaTable from "./PaTable";
 import PaFilterTable from './PaFilterTable';
 import BusinessIcon from '@mui/icons-material/Business';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const PaAssociation = () => {
     const [paList, setPaList] = useState([
@@ -44,14 +45,18 @@ const PaAssociation = () => {
         else
             selectedPaListCopy.splice(indexPa,1);
 
-            setPaSelectedList(selectedPaListCopy);
+        setPaSelectedList(selectedPaListCopy);
     }
+
+    useEffect(() => {
+        console.log("Render")
+    },[handleSelection]);
     
     return (
             <>
             <Box px={2}>
                 <Breadcrumbs aria-label="breadcrumb">
-                    <Link underline="hover" color="inherit" href="/aggregations">
+                    <Link underline="hover" color="inherit" href="/aggregates">
                         Gestione Aggregazioni ApiKey
                     </Link>
                     <Link
@@ -66,14 +71,57 @@ const PaAssociation = () => {
             </Box>
 
             <Box px={2} mt={2}>
-                
-
                 <Grid container>
                     <Typography gutterBottom variant="h5" component="div">
                         Associa PA
                     </Typography>
                 </Grid>
+
                 <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Accordion>
+                            <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                            >
+                                <Typography variant="h6" component="div">
+                                    Riepilogo Aggregazione
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Grid container direction={"column"} spacing={1}>
+                                    <Grid item>
+                                        <strong>Nome aggregazione:</strong>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography>Comuni Lombardia</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <strong>Descrizione aggregazione:</strong>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography>Aggregazione dei comuni della regione Lombardia</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <strong>Usage plan:</strong>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography>Medium</Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <strong>PA Associate:</strong>
+                                    </Grid>
+                                    <Grid item>
+                                        <PaList paList={[{id:"cx100", name:"Comune di Como"}, {id:"cx101", name:"Comune di Bergamo"}]} handleSelection={undefined} />
+                                    </Grid>
+                                </Grid>
+                            </AccordionDetails>
+                        </Accordion>
+                    </Grid>
+                </Grid>
+
+                <Grid container spacing={2} sx={{marginTop:1}}>
                     <Grid item xs={3}>
                         <Card>
                             <CardHeader

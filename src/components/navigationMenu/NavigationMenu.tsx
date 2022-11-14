@@ -17,11 +17,11 @@ const NavigationMenu = () => {
       },
       {
         title: "Gestione Aggregazioni ApiKey",
-        link: "/aggregations",
+        link: "/aggregates",
       },
       {
         title: "Trasferimento di PA",
-        link: "/pa-transfer",
+        link: "/aggregation/pa-transfer",
       }
     ];
 

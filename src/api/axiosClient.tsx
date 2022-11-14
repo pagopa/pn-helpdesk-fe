@@ -1,5 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import _ from "lodash";
+import { GetAggregateParams, GetAggregateResponse } from "../types";
 import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType } from "./apiRequestTypes";
+import { getAggregatesResponseMockPag1, getAggregatesResponseMockPag2 } from "./mockFile";
 
 const headers: Readonly<Record<string, string | boolean>> = {
   Accept: "*/*",
@@ -69,6 +72,30 @@ class Http {
 
   getLogsProcesses<T = any, R = AxiosResponse<T>>(payload: getLogsProcessesType): Promise<R> {
     return this.http.post<T, R>("logs/v1/processes", payload)
+  }
+
+  getAggregates(payload: GetAggregateParams): Promise<GetAggregateResponse> {
+    //return this.http.get<GetAggregateResponse>(ENHANCE_ROUTE_WITH_QUERY('aggregate', payload));
+    console.log("call getAggregates with payload", payload);
+    return new Promise((resolve, reject) => {
+      if(payload.name === "error") {
+        reject("Errore di sistema");
+      } else if(payload.lastEvaluatedId === "") {
+        console.log("response", getAggregatesResponseMockPag1);
+        resolve(getAggregatesResponseMockPag1)
+      } else if(payload.lastEvaluatedId === "agg10") {
+        console.log("response", getAggregatesResponseMockPag2);
+        resolve(getAggregatesResponseMockPag2)
+      }  
+        
+    })
+  } 
+
+  deleteAggregate(id: string): Promise<string> {
+    //return this.http.delete<string>("aggregate");
+    return new Promise((resolve) => {
+      resolve(id);
+    })
   }
 
 }

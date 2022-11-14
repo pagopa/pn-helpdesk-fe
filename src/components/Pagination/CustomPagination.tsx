@@ -15,8 +15,6 @@ type Props = {
   pagesToShow?: Array<number>;
   /** custom style */
   sx?: SxProps;
-  /** event tracking function callback for page size */
-  eventTrackingCallbackPageSize?: (pageSize: number) => void;
 };
 
 const getA11yPaginationLabels = (
@@ -54,10 +52,9 @@ export default function CustomPagination({
   onPageRequest,
   elementsPerPage = [10, 20, 50, 100, 200, 500],
   pagesToShow,
-  sx,
-  eventTrackingCallbackPageSize,
+  sx
 }: Props) {
-  const size = paginationData.size || elementsPerPage[0];
+  const limit = paginationData.limit || elementsPerPage[0];
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -70,12 +67,11 @@ export default function CustomPagination({
   };
 
   const handleChangeElementsPerPage = (selectedSize: number) => {
-    if (size !== selectedSize) {
-      paginationData.size = selectedSize;
+    if (limit !== selectedSize) {
+      paginationData.limit = selectedSize;
       // reset current page
       paginationData.page = 0;
       onPageRequest(paginationData);
-      if(eventTrackingCallbackPageSize) eventTrackingCallbackPageSize(selectedSize);
     }
     handleClose();
   };
@@ -100,7 +96,7 @@ export default function CustomPagination({
           endIcon={<ArrowDropDown />}
           aria-label={'Righe per pagina'}
         >
-          {size}
+          {limit}
         </Button>
         <Menu
           id="basic-menu"
@@ -127,35 +123,33 @@ export default function CustomPagination({
         data-testid="pageSelector"
         className="page-selector"
       >
-        {paginationData.totalElements > size && (
-          <Pagination
-            sx={{ display: 'flex' }}
-            aria-label={'Menu Paginazione'}
-            color="primary"
-            variant="text"
-            shape="circular"
-            page={paginationData.page + 1}
-            count={Math.ceil(paginationData.totalElements / size)}
-            getItemAriaLabel={getA11yPaginationLabels}
-            renderItem={(props2) => {
-              if (
-                pagesToShow &&
-                props2.type === 'page' &&
-                props2.page !== null &&
-                pagesToShow.indexOf(props2.page) === -1
-              ) {
-                return null;
-              }
-              return <PaginationItem {...props2} sx={{ border: 'none' }} />;
-            }}
-            onChange={(_event: ChangeEvent<unknown>, value: number) =>
-              onPageRequest({
-                ...paginationData,
-                page: value - 1,
-              })
+        <Pagination
+          sx={{ display: 'flex' }}
+          aria-label={'Menu Paginazione'}
+          color="primary"
+          variant="text"
+          shape="circular"
+          page={paginationData.page + 1}
+          count={Math.ceil(paginationData.total / limit)}
+          getItemAriaLabel={getA11yPaginationLabels}
+          renderItem={(props2) => {
+            if (
+              pagesToShow &&
+              props2.type === 'page' &&
+              props2.page !== null &&
+              pagesToShow.indexOf(props2.page) === -1
+            ) {
+              return null;
             }
-          />
-        )}
+            return <PaginationItem {...props2} sx={{ border: 'none' }} />;
+          }}
+          onChange={(_event: ChangeEvent<unknown>, value: number) =>
+            onPageRequest({
+              ...paginationData,
+              page: value - 1,
+            })
+          }
+        />
       </Grid>
     </Grid>
   );

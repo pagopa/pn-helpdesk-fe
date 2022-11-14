@@ -361,6 +361,12 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
             },
         },
     },
+    "Nome aggregazione": {
+        name: "name",
+        componentType: "textfield",
+        label: "Nome aggregazione",
+        hidden: false
+    }
 }
 
 /**

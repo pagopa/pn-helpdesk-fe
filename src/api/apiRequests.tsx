@@ -1,4 +1,5 @@
 // import { apiClient } from "./apiClient";
+import { GetAggregateParams } from "../types";
 import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, 
     getPersonIdType, getPersonTaxIdType, getPersonsLogsType } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient"
@@ -102,5 +103,25 @@ const getLogsProcesses = async (data: getLogsProcessesType) => {
     }) 
 }
 
+const getAggregates = async (data: GetAggregateParams) => {
+    return await apiClient.getAggregates(data)
+        .then((result: any) => {
+            return result;
+        })
+        .catch((error: any) => {
+            throw error;
+        }) 
+}
+
+const deleteAggregate = async (id: string) => {
+    return await apiClient.deleteAggregate(id)
+        .then((result: any) => {
+            return result;
+        })
+        .catch((error: any) => {
+            throw error;
+        }) 
+}
+
 export default { getPersonId, getPersonTaxId, getPersonsLogs, /*getOperatorsLogs,*/
-    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses }
+    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getAggregates, deleteAggregate }

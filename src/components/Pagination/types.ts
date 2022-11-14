@@ -1,7 +1,7 @@
 export type PaginationData = {
   page: number;
-  size: number;
-  totalElements: number;
+  limit: number;
+  total: number;
 };
 
 export type A11yPaginationLabelsTypes = "next" | "previous" | "page" | "first" | "last";

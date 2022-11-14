@@ -11,7 +11,7 @@ import {
   import { styled } from '@mui/material/styles';
   import { visuallyHidden } from '@mui/utils';
   
-  import { Column, Item, Sort, Aggregation } from '../../types';
+  import { Column, Item, Sort } from '../../types';
   
   type Props<ColumnId> = {
     /** Table columns */
@@ -54,8 +54,11 @@ import {
       }
       `
     );
+
+    const EmptyRow = () => <TableRow>
+      <TableCell colSpan={columns.length || 1}>Non ci sono elementi da visualizzare</TableCell>
+    </TableRow>
   
-    // TODO: gestire colore grigio di sfondo con variabile tema
     return (
       <Root>
         <TableContainer sx={{ marginBottom: '10px' }}>
@@ -94,20 +97,25 @@ import {
               </TableRow>
             </TableHead>
             <TableBody sx={{ backgroundColor: 'background.paper' }}>
-                {rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        sx={{ width: column.width, borderBottom: 'none', cursor: column.onClick ? 'pointer': 'auto' }}
-                        align={column.align}
-                        onClick={() => column.onClick && column.onClick(row, column)}
-                      >
-                        {column.getCellLabel(row[column.id as keyof Aggregation], row)}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+              {rows.length > 0 
+                ? 
+                  rows.map((row) => (
+                    <TableRow key={row.id}>
+                      {columns.map((column) => (
+                        <TableCell
+                          key={column.id}
+                          sx={{ width: column.width, borderBottom: 'none', cursor: column.onClick ? 'pointer': 'auto' }}
+                          align={column.align}
+                          onClick={() => column.onClick && column.onClick(row, column)}
+                        >
+                          {column.getCellLabel(row[column.id], row)}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                : 
+                  <EmptyRow />
+              }
             </TableBody>
           </Table>
         </TableContainer>

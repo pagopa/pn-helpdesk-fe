@@ -8,20 +8,22 @@ import IconButton from '@mui/material/IconButton';
 
 type Props = {
     paList : Array<any>,
-    handleSelection:(pa: any, selected: boolean) => void
+    handleSelection: undefined | Function
 }
 
 const PaList = ({paList, handleSelection} : Props) => {
     return (
         <>
-            <List>
+            {paList.length > 0 && <List>
                 {paList.map((pa) => (
                     <ListItemButton 
                         key={`list-${pa.id}`} 
                         secondaryAction={
-                            <IconButton edge="end" aria-label="delete" onClick={(evt) => handleSelection(pa, false)}>
-                                <ClearIcon />
-                            </IconButton>
+                            handleSelection !== undefined ? (
+                                <IconButton edge="end" aria-label="delete" onClick={(evt) => handleSelection(pa, false)}>
+                                    <ClearIcon />
+                                </IconButton>
+                            ) : ""
                         }
                         divider={true}
                     >
@@ -31,7 +33,7 @@ const PaList = ({paList, handleSelection} : Props) => {
                     </ListItemButton >
                 ))
                 }
-            </List>
+            </List>}
             {paList.length > 0 && <Pagination count={1}/>}
        
         </>
