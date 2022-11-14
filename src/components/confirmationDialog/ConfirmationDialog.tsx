@@ -7,48 +7,53 @@ import {
     DialogTitle,
     Button
 } from '@mui/material';
+import { Options } from './ConfirmationTypes';
 
 type Props = {
-    open: boolean;
-    title: string;
-    message: string;
-    handleClose: () => void;
-    handleConfirm: () => void;
+    open: boolean,
+    options: Options,
+    onCancel: () => void,
+    onConfirm: () => void,
+    onClose: () => void,
 }
 
 /**
- * This modal is displayed when the user needs to allow an oction.
+ * This modal is displayed when the useConfirm is called with a resolve and reject function.
  * @param title title to show
  * @param message message to show
  * @param open flag to hide/show modal
- * @param handleClose function that is called when modal is closed
- * @param handleConfirm function that is called when confirm button is clicked
+ * @param onCancel function that is called when modal is closed
+ * @param onConfirm function that is called when confirm button is clicked
  */
 const ConfirmationDialog = ({
     open,
-    title,
-    message,
-    handleClose,
-    handleConfirm
+    options,
+    onCancel,
+    onConfirm,
+    onClose,
 } : Props) => {
+    const { title, message} = options;
+
     return (
         <Dialog
             open={open}
-            onClose={handleClose}
+            onClose={onCancel}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
         >
-            <DialogTitle id="alert-dialog-title">
-                {title}
-            </DialogTitle>
+            {
+                title && <DialogTitle id="alert-dialog-title">
+                    {title}
+                </DialogTitle>
+            }
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
                     {message}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Annulla</Button>
-                <Button onClick={handleConfirm} autoFocus>Conferma</Button>
+                <Button onClick={onCancel}>Annulla</Button>
+                <Button onClick={onConfirm} autoFocus>Conferma</Button>
             </DialogActions>
         </Dialog>
     );

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Column, Item } from "../../types";
 import ItemsTable from '../table/table';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -14,6 +14,7 @@ import { PaginationData } from "../../components/Pagination/types";
 import apiRequests from '../../api/apiRequests';
 import CustomPagination from "../../components/Pagination/CustomPagination";
 import { calculatePages } from "../../helpers/pagination.utility";
+import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
 
 type AggregateColumn = 
 | 'id'
@@ -29,6 +30,8 @@ type AggregateColumn =
 const AggregatesTable = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const confirmDialog = useConfirmDialog();
 
     const filters = useSelector(filtersSelector);
 
@@ -71,13 +74,12 @@ const AggregatesTable = () => {
     const handlePaginationChange = (paginationData: PaginationData) => {
       dispatch(setPagination({ limit: paginationData.limit, page: paginationData.page }));
     };
-    
-    const handleDelete = (id: string) => {
+
+    const callDelete = (id: string) => {
       dispatch(spinnerActions.updateSpinnerOpened(true));
       apiRequests.deleteAggregate(id)
         .then(
           res => {
-            dispatch(spinnerActions.updateSpinnerOpened(false));
             dispatch(snackbarActions.updateStatusCode("200"));
             dispatch(snackbarActions.updateSnackbacrOpened(true));
             dispatch(snackbarActions.updateMessage("Aggregazione eliminata con successo"));
@@ -88,9 +90,19 @@ const AggregatesTable = () => {
           err => {
             dispatch(snackbarActions.updateSnackbacrOpened(true));
             dispatch(snackbarActions.updateStatusCode("400"));
+          }
+        )
+        .finally(
+          () => {
             dispatch(spinnerActions.updateSpinnerOpened(false));
           }
         )
+    }
+    
+    const handleClickDelete = (id: string) => {
+      confirmDialog({title: "Elimina aggregazione", message: "Sicuro di voler effettuare l'operazione?"})
+        .then(() => callDelete(id))
+        .catch(() => {});
     }
 
     const pagesToShow: Array<number> = calculatePages(
@@ -155,7 +167,7 @@ const AggregatesTable = () => {
             return <DeleteIcon sx={{ color: red[500] }} />;
           },
           onClick(row: Item) {
-            handleDelete(row.id);
+            handleClickDelete(row.id);
           },
         }
       ];
