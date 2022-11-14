@@ -7,7 +7,7 @@ import FilterTableAggregates from "../forms/filterTableAggregates/FilterTableAgg
 import * as spinnerActions from "../../redux/spinnerSlice";
 import * as snackbarActions from "../../redux/snackbarSlice";
 import { useNavigate } from "react-router-dom";
-import { GetAggregateParams } from "../../types";
+import { getAggregateParams } from "../../api/apiRequestTypes";
 import { useSelector, useDispatch } from 'react-redux';
 import { filtersSelector, paginationSelector, aggregatesSelector, setPagination, setAggregates } from '../../redux/aggregateSlice';
 import { PaginationData } from "../../components/Pagination/types";
@@ -41,7 +41,7 @@ const AggregatesTable = () => {
       //take the lastEvaluated id and name from the pagesKey array using page as index.
       const lastEvaluatedId = paginationData.page === 0 ? "" : paginationData.pagesKey[paginationData.page - 1].lastEvaluatedId;
       const lastEvaluatedName = paginationData.page === 0 ? "" : paginationData.pagesKey[paginationData.page - 1].lastEvaluatedName;
-      let params : GetAggregateParams = {
+      let params : getAggregateParams = {
         name: filters.name,
         limit: paginationData.limit,
         lastEvaluatedId,
@@ -164,7 +164,7 @@ const AggregatesTable = () => {
     }));
 
     function handleRowClick(row: Item) {
-      navigate(`/aggregation/${row.aggregateId}`);
+      navigate(`/aggregate/${row.aggregateId}`);
     }
     
     return (

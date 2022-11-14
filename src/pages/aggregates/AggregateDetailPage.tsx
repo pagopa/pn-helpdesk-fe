@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../mainLayout/MainLayout";
 import { useParams } from "react-router-dom";
-import AggregationDetailForm from "../../components/aggregates/AggregationDetailForm";
+import AggregationDetailForm from "../../components/aggregates/AggregateDetailForm";
 import { CardContent, Card, CardHeader, Box, Typography, Button, Breadcrumbs, Link, Pagination, Grid, IconButton } from "@mui/material";
 import BusinessIcon from '@mui/icons-material/Business';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
@@ -12,20 +12,20 @@ import CreateIcon from '@mui/icons-material/Create';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
 /**
- * AggregationDetail page
+ * AggregateDetail page
  * @component
  */
-const AggregationDetailPage = ({email}: any) => {
+const AggregateDetailPage = ({email}: any) => {
     const { aggregateId } = useParams();
     const isCreate = !aggregateId;
 
     const navigate = useNavigate();
     const handleClickAggiungi = () => {
-        navigate(`/aggregation/add-pa`);
+        navigate(`/aggregate/add-pa`);
     };
 
     const handleClickSposta = () => {
-       navigate(`/aggregation/pa-transfer`);
+       navigate(`/aggregate/pa-transfer`);
     };
 
     const getFormTitle = () => {
@@ -69,7 +69,7 @@ const AggregationDetailPage = ({email}: any) => {
         <MainLayout email={email}>
             <Box px={3}>
                 <Breadcrumbs aria-label="breadcrumb">
-                    <Link underline="hover" color="inherit" href="/aggregations">
+                    <Link underline="hover" color="inherit" href="/aggregates">
                         Gestione Aggregazioni ApiKey
                     </Link>
                     <Typography color="text.primary">Dettaglio aggregazione</Typography>
@@ -129,4 +129,4 @@ const AggregationDetailPage = ({email}: any) => {
         </MainLayout>
     );
 }
-export default AggregationDetailPage;
+export default AggregateDetailPage;

@@ -13,7 +13,7 @@ const AggregatesPage = ({email}: any) => {
   const navigate = useNavigate();
 
   const handleClickCrea = () => {
-    navigate(`/aggregation`);
+    navigate(`/aggregate`);
   };
 
   return (

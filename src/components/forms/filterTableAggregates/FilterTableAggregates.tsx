@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Grid, Button, Box, FormHelperText, InputAdornment } from "@mui/material";
 import { useSelector, useDispatch } from 'react-redux';
 import { filtersSelector, setFilters } from '../../../redux/aggregateSlice';
-import { GetAggregateParams } from '../../../types';
+import { getAggregateParams } from '../../../api/apiRequestTypes';
 
 const FilterTableAggregates = () => {
     const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const FilterTableAggregates = () => {
         reValidateMode: 'onSubmit'
     });
 
-    const onSubmit = (data : GetAggregateParams) => {
+    const onSubmit = (data : getAggregateParams) => {
         dispatch(setFilters(data));
     }
 

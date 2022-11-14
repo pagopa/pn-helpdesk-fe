@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AggregateSummary, GetAggregateParams, GetAggregateResponse } from '../types'
+import { AggregateSummary } from '../types'
+import { getAggregateParams, getAggregateResponse } from '../api/apiRequestTypes';
 import type { RootState } from './store'
 
 interface KeyPage {
@@ -48,13 +49,13 @@ export const aggregateSlice = createSlice({
             state.pagination.limit = action.payload.limit;
             state.pagination.page = action.payload.page;
         },
-        setFilters: (state, action: PayloadAction<GetAggregateParams>) => {
+        setFilters: (state, action: PayloadAction<getAggregateParams>) => {
             state.filters.name = action.payload.name!;
             // reset pagination
             state.pagination.page = 0;
             state.pagination.pagesKey = [];
         },
-        setAggregates: (state, action: PayloadAction<GetAggregateResponse>) => {
+        setAggregates: (state, action: PayloadAction<getAggregateResponse>) => {
             state.aggregates = action.payload.items;
             state.pagination.total = action.payload.total;
 

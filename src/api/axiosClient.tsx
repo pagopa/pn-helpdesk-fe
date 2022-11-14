@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { GetAggregateParams, GetAggregateResponse } from "../types";
 import { getAggregatesResponseMockPag1, getAggregatesResponseMockPag2 } from "./mockFile";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAggregationsListType, getAssociatedPaListType, getAggregationMovePaType } from "./apiRequestTypes";
+import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAggregateResponse } from "./apiRequestTypes";
 import { agg_list, pa_list } from "./pa_agg_response";
 
 const headers: Readonly<Record<string, string | boolean>> = {
@@ -74,7 +73,7 @@ class Http {
     return this.http.post<T, R>("logs/v1/processes", payload)
   }
 
-  getAggregates(payload: GetAggregateParams): Promise<GetAggregateResponse> {
+  getAggregates(payload: getAggregateParams): Promise<getAggregateResponse> {
     //return this.http.get<GetAggregateResponse>(ENHANCE_ROUTE_WITH_QUERY('aggregate', payload));
     console.log("call getAggregates with payload", payload);
     return new Promise((resolve, reject) => {
@@ -96,11 +95,6 @@ class Http {
     return new Promise((resolve) => {
       resolve(id);
     })
-  }
-
-  getAggregationsList<T = any, R = AxiosResponse<T>>(payload?: getAggregationsListType): Promise<R> {
-    /* return this.http.post<T, R>(`/aggregate`, payload) */
-    return Promise.resolve(agg_list as unknown as R)
   }
 
   getAssociatedPaList<T = any, R = AxiosResponse<T>>(id: string, payload?: getAssociatedPaListType): Promise<R> {

@@ -1,7 +1,6 @@
 // import { apiClient } from "./apiClient";
-import { GetAggregateParams } from "../types";
 import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, 
-    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAggregationsListType, getAssociatedPaListType, getAggregationMovePaType } from "./apiRequestTypes";
+    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient"
 
 /**
@@ -103,7 +102,7 @@ const getLogsProcesses = async (data: getLogsProcessesType) => {
     }) 
 }
 
-const getAggregates = async (data: GetAggregateParams) => {
+const getAggregates = async (data: getAggregateParams) => {
     return await apiClient.getAggregates(data)
         .then((result: any) => {
             return result;
@@ -122,19 +121,6 @@ const deleteAggregate = async (id: string) => {
             throw error;
         }) 
 }
-
-/**
- * Move PAs to another aggregation
- */
- const getAggregationsList = async () => {
-    return await apiClient.getAggregationsList()
-     .then((result: any) => {
-         return result;
-     })
-     .catch((error: any) => {
-         throw error;
-     }) 
- }
 
  /**
  * Move PAs to another aggregation
@@ -163,4 +149,4 @@ const deleteAggregate = async (id: string) => {
  }
 
 export default { getPersonId, getPersonTaxId, getPersonsLogs, /*getOperatorsLogs,*/
-    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getAggregationsList, getAssociatedPaList, getAggregationMovePa }
+    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getAssociatedPaList, getAggregationMovePa, getAggregates, deleteAggregate }

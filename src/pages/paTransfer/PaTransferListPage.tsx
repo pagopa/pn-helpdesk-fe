@@ -32,11 +32,11 @@ const PaTransferListPage = ({ email }: any) => {
     const [checked, setChecked]: any = useState([]);
 
     useEffect(() => {
-        getAggregations();
+        getAggregates();
     }, []);
 
-    const getAggregations = () => {
-        let request = apiRequests.getAggregationsList()
+    const getAggregates = () => {
+        let request = apiRequests.getAggregates({})
         if (request) {
             request
                 .then(res => {

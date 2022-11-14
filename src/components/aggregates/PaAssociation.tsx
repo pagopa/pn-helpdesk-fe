@@ -62,7 +62,7 @@ const PaAssociation = () => {
                     <Link
                         underline="hover"
                         color="inherit"
-                        href="/aggregation/1-a"
+                        href="/aggregate/1-a"
                     >
                         Dettaglio aggregazione
                     </Link>

@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../mainLayout/MainLayout";
 import { useParams } from "react-router-dom";
-import AggregationDetailForm from "../../components/aggregates/AggregationDetailForm";
+import AggregationDetailForm from "../../components/aggregates/AggregateDetailForm";
 import { CardContent, Card, CardHeader, Box, Grid, Typography, Button } from "@mui/material";
 import BusinessIcon from '@mui/icons-material/Business';
 import ListIcon from '@mui/icons-material/List';

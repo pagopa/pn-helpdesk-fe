@@ -1,3 +1,5 @@
+import { AggregateSummary } from "../types";
+
 /**
  * @typedef {Object} getPersonIdType
  */
@@ -65,21 +67,6 @@ type getLogsProcessesType = {
 }
 
 /**
- * @typedef {Object} getAggregationsListType
- */
-type getAggregationsListType = {
-    items: [{
-        id: string,
-        name: string,
-        usagePlanTemplate: string,
-        createdAt: string,
-        lastUpdate: string
-    }],
-    lastEvaluatedId?: string,
-    lastEvaluatedName?: string
-}
-
-/**
  * @typedef {Object} getAssociatedPaListType
  */
 type getAssociatedPaListType = {
@@ -99,4 +86,24 @@ type getAggregationMovePaType = {
     }]
 }
 
-export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAggregationsListType, getAssociatedPaListType, getAggregationMovePaType }
+/**
+ * @typedef {Object} getAggregateParams
+ */
+type getAggregateParams = {
+    name?: string,
+    limit?: number,
+    lastEvaluatedId?: string,
+    lastEvaluatedName?: string
+}
+
+/**
+ * @typedef {Object} getAggregateResponse
+ */
+type getAggregateResponse = {
+    items: Array<AggregateSummary>
+    lastEvaluatedId: string,
+    lastEvaluatedName: string,
+    total: number
+}
+
+export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAggregateResponse }

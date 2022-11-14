@@ -21,7 +21,7 @@ const NavigationMenu = () => {
       },
       {
         title: "Trasferimento di PA",
-        link: "/aggregation/pa-transfer",
+        link: "/aggregate/pa-transfer",
       }
     ];
 
