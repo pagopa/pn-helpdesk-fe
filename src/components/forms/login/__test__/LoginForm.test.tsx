@@ -74,65 +74,6 @@ describe("LoginForm", () => {
     expect(password.value).toEqual("I7ph_KKSq+ouL^$7");
   });
 
-  it("submit form with inputs", async () => {
-    jest.mock("aws-amplify");
-    jest.spyOn(auth, "login").mockResolvedValue({
-      username: "asdcsv",
-    });
-
-    const email = screen.getByRole("textbox", {
-      name: "Email",
-    }) as HTMLInputElement;
-    const password = screen.getByLabelText("Password") as HTMLInputElement;
-
-    const user = userEvent.setup();
-    await act(async () => {
-      await user.clear(email);
-      await user.type(email, "test@test.com");
-    });
-    expect(email.value).toEqual("test@test.com");
-
-    await act(async () => {
-      await user.clear(password);
-      await user.type(password, "Test_Cognito_2.!");
-    });
-    expect(password.value).toEqual("Test_Cognito_2.!");
-
-    const button = screen.getByRole("button", { name: "LOGIN" });
-    await act(async () => await user.click(button));
-    expect(setEmailMock).toHaveBeenCalled();
-  });
-
-  it("submit form with inputs and get NEW_PASSWORD_REQUIRED", async () => {
-    jest.mock("aws-amplify");
-    jest.spyOn(auth, "login").mockResolvedValue({
-      username: "asdcsv",
-      challengeName: "NEW_PASSWORD_REQUIRED",
-    });
-
-    const email = screen.getByRole("textbox", {
-      name: "Email",
-    }) as HTMLInputElement;
-    const password = screen.getByLabelText("Password") as HTMLInputElement;
-
-    const user = userEvent.setup();
-    await act(async () => {
-      await user.clear(email);
-      await user.type(email, "test@test.com");
-    });
-    expect(email.value).toEqual("test@test.com");
-
-    await act(async () => {
-      await user.clear(password);
-      await user.type(password, "Test_Cognito_2.!");
-    });
-    expect(password.value).toEqual("Test_Cognito_2.!");
-
-    const button = screen.getByRole("button", { name: "LOGIN" });
-    await act(async () => await user.click(button));
-    expect(setEmailMock).toHaveBeenCalled();
-  });
-
   it("open and close the tooltip", async () => {
     const forgotPassword = screen.getByText("Password dimenticata?");
     expect(forgotPassword).toBeInTheDocument();
