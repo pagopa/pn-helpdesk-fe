@@ -49,7 +49,7 @@ describe("DatePickerComponent", () => {
       name: "Mese",
     }) as HTMLInputElement;
     expect(input).toBeInTheDocument();
-    expect(input.value).toBe("2022-11");
+    expect(input).toHaveValue("2022-11");
   });
 
   it("test changing value", async () => {
@@ -71,7 +71,7 @@ describe("DatePickerComponent", () => {
     fireEvent.change(input, {
       target: { value: "2022-11" },
     });
-    expect(input.value).toBe("2022-11");
+    expect(input).toHaveValue("2022-11");
     expect(handleChange).toHaveBeenCalled();
   });
 });

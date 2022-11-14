@@ -53,6 +53,6 @@ describe("RadioButtonsGroup Component", () => {
     expect(
       screen.getByRole("radio", { name: "Persona Giuridica" })
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("radio").length).toBe(2);
+    expect(screen.getAllByRole("radio")).toHaveLength(2);
   });
 });

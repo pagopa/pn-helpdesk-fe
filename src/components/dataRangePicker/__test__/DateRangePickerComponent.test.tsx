@@ -77,20 +77,20 @@ describe("DateRangePickerComponent", () => {
       />
     );
     const inputs = await screen.findAllByRole("textbox");
-    expect(inputs.length).toBe(2);
+    expect(inputs).toHaveLength(2);
 
-    const dal = (await screen.findByRole("textbox", {
+    const dal = await screen.findByRole("textbox", {
       name: "Dal",
-    })) as HTMLInputElement;
-    const al = (await screen.findByRole("textbox", {
+    });
+    const al = await screen.findByRole("textbox", {
       name: "Al",
-    })) as HTMLInputElement;
+    });
 
     expect(dal).toBeInTheDocument();
     expect(al).toBeInTheDocument();
 
-    expect(dal.value).toBe("01-10-2022");
-    expect(al.value).toBe("20-10-2022");
+    expect(dal).toHaveValue("01-10-2022");
+    expect(al).toHaveValue("20-10-2022");
   });
 
   it("test changing dal value", async () => {
@@ -106,7 +106,7 @@ describe("DateRangePickerComponent", () => {
     );
 
     const inputs = await screen.findAllByRole("textbox");
-    expect(inputs.length).toBe(2);
+    expect(inputs).toHaveLength(2);
 
     fireEvent.change(inputs[0], {
       target: { value: "14-10-2022" },
@@ -128,7 +128,7 @@ describe("DateRangePickerComponent", () => {
     );
 
     const inputs = await screen.findAllByRole("textbox");
-    expect(inputs.length).toBe(2);
+    expect(inputs).toHaveLength(2);
 
     fireEvent.change(inputs[1], {
       target: { value: "14-10-2022" },

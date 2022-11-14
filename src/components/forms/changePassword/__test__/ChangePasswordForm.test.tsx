@@ -54,6 +54,6 @@ describe("ChangePasswordForm", () => {
     });
 
     const errors = await screen.findAllByText("Password non corretta");
-    expect(errors.length).toEqual(2);
+    expect(errors).toHaveLength(2);
   });
 });
