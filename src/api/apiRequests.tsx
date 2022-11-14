@@ -1,7 +1,7 @@
 // import { apiClient } from "./apiClient";
 import { GetAggregateParams } from "../types";
 import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, 
-    getPersonIdType, getPersonTaxIdType, getPersonsLogsType } from "./apiRequestTypes";
+    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAggregationsListType, getAssociatedPaListType, getAggregationMovePaType } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient"
 
 /**
@@ -123,5 +123,44 @@ const deleteAggregate = async (id: string) => {
         }) 
 }
 
+/**
+ * Move PAs to another aggregation
+ */
+ const getAggregationsList = async () => {
+    return await apiClient.getAggregationsList()
+     .then((result: any) => {
+         return result;
+     })
+     .catch((error: any) => {
+         throw error;
+     }) 
+ }
+
+ /**
+ * Move PAs to another aggregation
+ */
+  const getAssociatedPaList = async (id: string, data?: getAssociatedPaListType) => {
+    return await apiClient.getAssociatedPaList(id)
+     .then((result: any) => {
+         return result;
+     })
+     .catch((error: any) => {
+         throw error;
+     }) 
+ }
+
+/**
+ * Move PAs to another aggregation
+ */
+ const getAggregationMovePa = async (id: string, data?: getAggregationMovePaType) => {
+    return await apiClient.getAggregationMovePa(id)
+     .then((result: any) => {
+         return result;
+     })
+     .catch((error: any) => {
+         throw error;
+     }) 
+ }
+
 export default { getPersonId, getPersonTaxId, getPersonsLogs, /*getOperatorsLogs,*/
-    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getAggregates, deleteAggregate }
+    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getAggregationsList, getAssociatedPaList, getAggregationMovePa }

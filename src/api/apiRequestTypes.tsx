@@ -64,4 +64,39 @@ type getLogsProcessesType = {
     dateTo: string;
 }
 
-export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType }
+/**
+ * @typedef {Object} getAggregationsListType
+ */
+type getAggregationsListType = {
+    items: [{
+        id: string,
+        name: string,
+        usagePlanTemplate: string,
+        createdAt: string,
+        lastUpdate: string
+    }],
+    lastEvaluatedId?: string,
+    lastEvaluatedName?: string
+}
+
+/**
+ * @typedef {Object} getAssociatedPaListType
+ */
+type getAssociatedPaListType = {
+    items: [{
+        id: string,
+        name: string
+    }]
+}
+
+/**
+ * @typedef {Object} getAggregationMovePaType
+ */
+type getAggregationMovePaType = {
+    items: [{
+        id: string,
+        name: string
+    }]
+}
+
+export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAggregationsListType, getAssociatedPaListType, getAggregationMovePaType }

@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import _ from "lodash";
 import { GetAggregateParams, GetAggregateResponse } from "../types";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType } from "./apiRequestTypes";
 import { getAggregatesResponseMockPag1, getAggregatesResponseMockPag2 } from "./mockFile";
+import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAggregationsListType, getAssociatedPaListType, getAggregationMovePaType } from "./apiRequestTypes";
+import { agg_list, pa_list } from "./pa_agg_response";
 
 const headers: Readonly<Record<string, string | boolean>> = {
   Accept: "*/*",
@@ -32,13 +32,13 @@ class Http {
 
     http.interceptors.request.use(
       (request: any) => {
-          const token = sessionStorage.getItem("token")
-          const accessToken = sessionStorage.getItem("accessToken")
-          request.headers = {
-            ...request.headers, 
-            Authorization: `Bearer ${token}`,
-            Auth: accessToken
-          } 
+        const token = sessionStorage.getItem("token")
+        const accessToken = sessionStorage.getItem("accessToken")
+        request.headers = {
+          ...request.headers,
+          Authorization: `Bearer ${token}`,
+          Auth: accessToken
+        }
         return request
       }
     );
@@ -98,6 +98,20 @@ class Http {
     })
   }
 
+  getAggregationsList<T = any, R = AxiosResponse<T>>(payload?: getAggregationsListType): Promise<R> {
+    /* return this.http.post<T, R>(`/aggregate`, payload) */
+    return Promise.resolve(agg_list as unknown as R)
+  }
+
+  getAssociatedPaList<T = any, R = AxiosResponse<T>>(id: string, payload?: getAssociatedPaListType): Promise<R> {
+    /* return this.http.post<T, R>(`/aggregate/${id}/associated-pa`, payload) */
+    return Promise.resolve(pa_list as unknown as R)
+  }
+
+  getAggregationMovePa<T = any, R = AxiosResponse<T>>(id: string, payload?: getAggregationMovePaType): Promise<R> {
+    /* return this.http.post<T, R>(`/aggregate/${id}/move-pa`, payload) */
+    return Promise.resolve({ status: 200 } as unknown as R)
+  }
 }
 
 export const http = new Http();
