@@ -14,7 +14,9 @@ import { Auth } from "aws-amplify";
 describe("ChangePasswordForm", () => {
   it("renders component", () => {
     reducer(<ChangePasswordForm />);
-    expect(screen.getByTestId("ChangePasswordForm")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Cambio password" })
+    ).toBeInTheDocument();
   });
 
   it("renders title", () => {

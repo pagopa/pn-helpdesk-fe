@@ -3,9 +3,8 @@
  */
 import React from "react";
 import "regenerator-runtime/runtime";
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { CalendarPickerView } from "@mui/lab";
-import userEvent from "@testing-library/user-event";
 import DateRangePickerComponent from "../DataRangePickerComponent";
 import { reducer } from "../../../mocks/mockReducer";
 
@@ -106,20 +105,14 @@ describe("DateRangePickerComponent", () => {
       />
     );
 
-    const user = userEvent.setup();
     const inputs = await screen.findAllByRole("textbox");
     expect(inputs.length).toBe(2);
 
-    await screen.findAllByRole("button").then((buttons) => {
-      const dalButton = buttons[0];
-      expect(dalButton).toBeInTheDocument();
-
-      screen.findByRole("button", { name: "14" }).then(async (dayButton) => {
-        await user.click(dayButton);
-        expect(inputs[0]).toHaveValue("14-10-2022");
-        expect(mockChangeFn).toBeCalled();
-      });
+    fireEvent.change(inputs[0], {
+      target: { value: "14-10-2022" },
     });
+    expect(inputs[0]).toHaveValue("14-10-2022");
+    expect(mockChangeFn).toBeCalled();
   });
 
   it("test changing al value", async () => {
@@ -134,19 +127,13 @@ describe("DateRangePickerComponent", () => {
       />
     );
 
-    const user = userEvent.setup();
     const inputs = await screen.findAllByRole("textbox");
     expect(inputs.length).toBe(2);
 
-    await screen.findAllByRole("button").then((buttons) => {
-      const alButton = buttons[1];
-      expect(alButton).toBeInTheDocument();
-
-      screen.findByRole("button", { name: "14" }).then(async (dayButton) => {
-        await user.click(dayButton);
-        expect(inputs[1]).toHaveValue("14-10-2022");
-        expect(mockChangeFn).toBeCalled();
-      });
+    fireEvent.change(inputs[1], {
+      target: { value: "14-10-2022" },
     });
+    expect(inputs[1]).toHaveValue("14-10-2022");
+    expect(mockChangeFn).toBeCalled();
   });
 });

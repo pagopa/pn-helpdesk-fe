@@ -14,11 +14,7 @@ describe("LoginPage", () => {
     reducer(<LoginPage setEmail={jest.fn()} />);
   });
 
-  it("includes change password form", () => {
+  it("includes login form", () => {
     expect(screen.getByText("LOGIN")).toBeInTheDocument();
-  });
-
-  it("renders login form component", () => {
-    expect(screen.getByTestId("LoginForm")).toBeInTheDocument();
   });
 });

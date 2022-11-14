@@ -3,12 +3,10 @@
  */
 import React from "react";
 import "regenerator-runtime/runtime";
-import { screen } from "@testing-library/react";
+import { fireEvent, screen } from "@testing-library/react";
 import { FieldsProps } from "../../formFields/FormFields";
 import DatePickerComponent from "../DatePickerComponent";
 import { reducer } from "../../../mocks/mockReducer";
-import userEvent from "@testing-library/user-event";
-import { act } from "react-test-renderer";
 
 const field: FieldsProps = {
   name: "referenceMonth",
@@ -66,30 +64,14 @@ describe("DatePickerComponent", () => {
         onBlur={handleBlur}
       />
     );
-    const calendarButton = await screen.findByRole("button");
-    expect(calendarButton).toBeInTheDocument();
-    const user = userEvent.setup();
+    const input = (await screen.findByRole("textbox", {
+      name: "Mese",
+    })) as HTMLInputElement;
 
-    await act(async () => {
-      await user.click(calendarButton);
+    fireEvent.change(input, {
+      target: { value: "2022-11" },
     });
-
-    screen.findByRole("button", { name: "Nov" }).then(async (btn) => {
-      await act(async () => {
-        await user.click(btn);
-      });
-
-      screen.findByRole("button", { name: "2022" }).then(async (btnY) => {
-        await act(async () => {
-          await user.click(btnY);
-        });
-
-        const input = (await screen.findByRole("textbox", {
-          name: "Mese",
-        })) as HTMLInputElement;
-        expect(input.value).toBe("2022-11");
-        expect(handleChange).toHaveBeenCalled();
-      });
-    });
+    expect(input.value).toBe("2022-11");
+    expect(handleChange).toHaveBeenCalled();
   });
 });

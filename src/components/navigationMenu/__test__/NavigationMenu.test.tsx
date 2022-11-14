@@ -4,7 +4,11 @@
 import React from "react";
 import "regenerator-runtime/runtime";
 
-import { render, screen } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import NavigationMenu from "../NavigationMenu";
 import { BrowserRouter as Router } from "react-router-dom";
 import { act } from "react-dom/test-utils";
@@ -88,5 +92,35 @@ describe("NavigationMenu Component", () => {
     await act(async () => {
       await user.keyboard("[ShiftLeft]");
     });
+  });
+
+  it("simulate click escape", async () => {
+    render(
+      <Router>
+        <NavigationMenu />
+      </Router>
+    );
+    const icon = screen.getByRole("button", {
+      name: "menu",
+    }) as HTMLButtonElement;
+    expect(icon).toBeInTheDocument();
+
+    const user = userEvent.setup();
+
+    await act(async () => {
+      await user.click(icon);
+    });
+
+    const drawerButton = await screen.findByText(
+      "Monitoraggio Piattaforma Notifiche"
+    );
+    expect(drawerButton).toBeInTheDocument();
+
+    await act(async () => {
+      await user.keyboard("{Escape}");
+    });
+    await waitForElementToBeRemoved(() =>
+      screen.queryByText("Monitoraggio Piattaforma Notifiche")
+    );
   });
 });

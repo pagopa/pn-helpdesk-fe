@@ -13,7 +13,7 @@ import {
 import { reducer } from "../../../../mocks/mockReducer";
 import userEvent from "@testing-library/user-event";
 import LoginForm from "../LoginForm";
-import { Auth } from "aws-amplify";
+import * as auth from "../../../../Authentication/auth";
 
 describe("LoginForm", () => {
   const setEmailMock = jest.fn();
@@ -25,7 +25,9 @@ describe("LoginForm", () => {
   });
 
   it("renders component", () => {
-    expect(screen.getByTestId("LoginForm")).toBeInTheDocument();
+    expect(
+      screen.getByRole("img", { name: "PagoPA (Monogram)" })
+    ).toBeInTheDocument();
   });
 
   it("renders input fields", async () => {
@@ -74,7 +76,9 @@ describe("LoginForm", () => {
 
   it("submit form with inputs", async () => {
     jest.mock("aws-amplify");
-    jest.spyOn(Auth, "signIn").mockReturnValue(new Promise(() => "mock user"));
+    jest.spyOn(auth, "login").mockResolvedValue({
+      username: "asdcsv",
+    });
 
     const email = screen.getByRole("textbox", {
       name: "Email",
@@ -90,9 +94,39 @@ describe("LoginForm", () => {
 
     await act(async () => {
       await user.clear(password);
-      await user.type(password, "I7ph_KKSq+ouL^$7");
+      await user.type(password, "Test_Cognito_2.!");
     });
-    expect(password.value).toEqual("I7ph_KKSq+ouL^$7");
+    expect(password.value).toEqual("Test_Cognito_2.!");
+
+    const button = screen.getByRole("button", { name: "LOGIN" });
+    await act(async () => await user.click(button));
+    expect(setEmailMock).toHaveBeenCalled();
+  });
+
+  it("submit form with inputs and get NEW_PASSWORD_REQUIRED", async () => {
+    jest.mock("aws-amplify");
+    jest.spyOn(auth, "login").mockResolvedValue({
+      username: "asdcsv",
+      challengeName: "NEW_PASSWORD_REQUIRED",
+    });
+
+    const email = screen.getByRole("textbox", {
+      name: "Email",
+    }) as HTMLInputElement;
+    const password = screen.getByLabelText("Password") as HTMLInputElement;
+
+    const user = userEvent.setup();
+    await act(async () => {
+      await user.clear(email);
+      await user.type(email, "test@test.com");
+    });
+    expect(email.value).toEqual("test@test.com");
+
+    await act(async () => {
+      await user.clear(password);
+      await user.type(password, "Test_Cognito_2.!");
+    });
+    expect(password.value).toEqual("Test_Cognito_2.!");
 
     const button = screen.getByRole("button", { name: "LOGIN" });
     await act(async () => await user.click(button));
