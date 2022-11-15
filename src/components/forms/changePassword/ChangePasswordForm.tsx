@@ -36,6 +36,20 @@ const defaultFormValues: { [key: string]: string } = {
  */
 const ChangePasswordForm = ({ user }: any) => {
   /**
+   * form fields
+   */
+  const fields: Array<{ [key: string]: string }> = [
+    {
+      name: "newPassword",
+      label: "Nuova password",
+    },
+    {
+      name: "newPasswordConfirm",
+      label: "Conferma password",
+    },
+  ];
+
+  /**
    * dispatch redux actions
    */
   const dispatch = useDispatch();
@@ -109,100 +123,63 @@ const ChangePasswordForm = ({ user }: any) => {
           </Grid>
           <form onSubmit={handleSubmit((data) => onSubmit(data))}>
             <Grid item container direction="column" rowSpacing={3}>
-              <Grid item container>
-                <Controller
-                  control={control}
-                  name={"newPassword"}
-                  rules={{
-                    ...FieldsProperties["Password"].rules,
-                    validate: {
-                      newPasswordEquality: () => {
-                        return (
-                          getValues("newPassword") ===
-                            getValues("newPasswordConfirm") ||
-                          errorMessages.PSSWORDS_EQUALITY
-                        );
+              {fields.map((currentField) => (
+                <Grid item container key={currentField.name}>
+                  <Controller
+                    control={control}
+                    name={currentField.name}
+                    rules={{
+                      ...FieldsProperties["password"].rules,
+                      validate: {
+                        newPasswordEquality: () => {
+                          return (
+                            getValues(fields[0].name) ===
+                              getValues(fields[1].name) ||
+                            errorMessages.PSSWORDS_EQUALITY
+                          );
+                        },
                       },
-                    },
-                  }}
-                  render={({
-                    field: { onChange, onBlur, value, name, ref },
-                    fieldState: { invalid, isTouched, isDirty, error },
-                    formState,
-                  }) => (
-                    <>
-                      <FormField
-                        error={error}
-                        key={"newPassword"}
-                        field={{
-                          ...FieldsProperties["Password"],
-                          label: "Nuova password",
-                          InputProps: {
-                            endAdornment: (
-                              <Tooltip
-                                title={infoMessages.PASSWORD_TOOLTIP_MSG}
-                                placement="right"
-                              >
-                                <InputAdornment position="end">
-                                  <HelpIcon />
-                                </InputAdornment>
-                              </Tooltip>
-                            ),
-                          },
-                        }}
-                        onChange={onChange}
-                        value={value}
-                      />
-                      <FormHelperText error>
-                        {errors["newPassword"]
-                          ? errors["newPassword"].message
-                          : " "}
-                      </FormHelperText>
-                    </>
-                  )}
-                />
-              </Grid>
-              <Grid item container>
-                <Controller
-                  control={control}
-                  name={"newPasswordConfirm"}
-                  rules={{
-                    ...FieldsProperties["Password"].rules,
-                    validate: {
-                      newPasswordEquality: () => {
-                        return (
-                          getValues("newPassword") ===
-                            getValues("newPasswordConfirm") ||
-                          errorMessages.PSSWORDS_EQUALITY
-                        );
-                      },
-                    },
-                  }}
-                  render={({
-                    field: { onChange, onBlur, value, name, ref },
-                    fieldState: { invalid, isTouched, isDirty, error },
-                    formState,
-                  }) => (
-                    <>
-                      <FormField
-                        error={error}
-                        key={"newPasswordConfirm"}
-                        field={{
-                          ...FieldsProperties["Password"],
-                          label: "Conferma password",
-                        }}
-                        onChange={onChange}
-                        value={value}
-                      />
-                      <FormHelperText error>
-                        {errors["newPasswordConfirm"]
-                          ? errors["newPasswordConfirm"].message
-                          : " "}
-                      </FormHelperText>
-                    </>
-                  )}
-                />
-              </Grid>
+                    }}
+                    render={({
+                      field: { onChange, onBlur, value, name, ref },
+                      fieldState: { invalid, isTouched, isDirty, error },
+                      formState,
+                    }) => (
+                      <>
+                        <FormField
+                          error={error}
+                          key={currentField.name}
+                          field={{
+                            ...FieldsProperties["password"],
+                            label: currentField.label,
+                            InputProps: {
+                              endAdornment:
+                                currentField.name === "newPassword" ? (
+                                  <Tooltip
+                                    title={infoMessages.PASSWORD_TOOLTIP_MSG}
+                                    placement="right"
+                                  >
+                                    <InputAdornment position="end">
+                                      <HelpIcon />
+                                    </InputAdornment>
+                                  </Tooltip>
+                                ) : null,
+                            },
+                          }}
+                          onChange={onChange}
+                          value={value}
+                        />
+                        <FormHelperText error>
+                          {errors[currentField.name]
+                            ? errors[currentField.name].message
+                            : " "}
+                        </FormHelperText>
+                      </>
+                    )}
+                  />
+                </Grid>
+              ))}
+
               <Grid item>
                 <Button
                   sx={{
