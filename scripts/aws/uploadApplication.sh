@@ -105,4 +105,11 @@ DistributionId=$( aws ${profile_option} --region="eu-south-1" cloudformation des
       ".Stacks[0].Outputs | .[] | select(.OutputKey==\"DistributionId\") | .OutputValue" \
     )
 
+DistributionDomainName=$( aws ${profile_option} --region="eu-south-1" cloudformation describe-stacks \
+      --stack-name "pn-logextractor-frontend-${environment}" | jq -r \
+      ".Stacks[0].Outputs | .[] | select(.OutputKey==\"DistributionDomainName\") | .OutputValue" \
+    )
+
 aws cloudfront create-invalidation ${profile_option} --region eu-south-1 --distribution-id ${DistributionId} --paths "/*"
+
+echo "Deployed to "${DistributionDomainName}
