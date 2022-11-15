@@ -360,7 +360,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     label: "Deanonimizzazione dati",
     hidden: false,
   },
-  Email: {
+  email: {
     name: "email",
     componentType: "textfield",
     label: "Email",
@@ -373,7 +373,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
       },
     },
   },
-  Password: {
+  password: {
     name: "password",
     componentType: "textfield",
     label: "Password",

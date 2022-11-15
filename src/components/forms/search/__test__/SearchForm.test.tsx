@@ -5,7 +5,6 @@ import React from "react";
 import "regenerator-runtime/runtime";
 import "@testing-library/jest-dom/extend-expect";
 import { screen, act, cleanup } from "@testing-library/react";
-import "regenerator-runtime/runtime";
 import { reducer } from "../../../../mocks/mockReducer";
 import SearchForm from "../SearchForm";
 import userEvent from "@testing-library/user-event";
@@ -19,7 +18,7 @@ describe("SearchForm", () => {
 
   it("renders component", () => {
     expect(
-      screen.getByRole("heading", { name: "Ricerca" })
+      screen.getByRole("heading", { name: /Ricerca/i })
     ).toBeInTheDocument();
   });
 

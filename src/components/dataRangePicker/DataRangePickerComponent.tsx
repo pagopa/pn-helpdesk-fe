@@ -39,7 +39,7 @@ type Props = {
   /**
    * the limit of the difference between the start date and the end date
    */
-  intervalLimit?: Array<Number | string>;
+  intervalLimit?: Array<number | string>;
   /**
    * if the field is required
    */
@@ -69,7 +69,8 @@ const DateRangePickerComponent = (props: Props) => {
    * @param value  the selected date
    * @param field which field is changed
    */
-  const handleChange = (value: any, field: string) => {
+  /* istanbul ignore next */
+  const handleChange = (value: any, field: number) => {
     value =
       props.field.name !== "monthInterval"
         ? format(value, "yyyy-MM-dd")
@@ -79,11 +80,11 @@ const DateRangePickerComponent = (props: Props) => {
           );
     let prevState = [...dates];
     switch (field) {
-      case "start":
+      case 0:
         prevState[0] = { ...prevState[0], value: value };
         setDates(prevState);
         break;
-      case "end":
+      case 1:
         prevState[1] = { ...prevState[1], value: value };
         setDates(prevState);
         break;
@@ -93,56 +94,33 @@ const DateRangePickerComponent = (props: Props) => {
 
   return (
     <Grid item container spacing={2}>
-      <Grid item>
-        <DatePicker
-          views={dates[0].view}
-          key={dates[0].label}
-          label={dates[0].label}
-          value={dates[0].value}
-          onChange={(e) => handleChange(e, "start")}
-          onClose={props.onBlur}
-          disableFuture={props.field.disableFuture}
-          inputFormat={props.field.format || "dd-MM-yyyy"}
-          mask={"__-__-____"}
-          maxDate={
-            props.field.name === "monthInterval"
-              ? new Date(props.field.maxDate!)
-              : undefined
-          }
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              onBlur={props.onBlur}
-              required={props.required}
-            />
-          )}
-        />
-      </Grid>
-      <Grid item>
-        <DatePicker
-          views={dates[1].view}
-          key={dates[1].label}
-          label={dates[1].label}
-          value={dates[1].value}
-          onChange={(e) => handleChange(e, "end")}
-          onClose={props.onBlur}
-          disableFuture={props.field.disableFuture}
-          inputFormat={props.field.format || "dd-MM-yyyy"}
-          mask={"__-__-____"}
-          maxDate={
-            props.field.name === "monthInterval"
-              ? new Date(props.field.maxDate!)
-              : undefined
-          }
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              onBlur={props.onBlur}
-              required={props.required}
-            />
-          )}
-        />
-      </Grid>
+      {dates.map((date, index) => (
+        <Grid item key={index}>
+          <DatePicker
+            views={date.view}
+            key={date.label}
+            label={date.label}
+            value={date.value}
+            onChange={(e) => handleChange(e, index)}
+            onClose={props.onBlur}
+            disableFuture={props.field.disableFuture}
+            inputFormat={props.field.format || "dd-MM-yyyy"}
+            mask={"__-__-____"}
+            maxDate={
+              props.field.name === "monthInterval"
+                ? new Date(props.field.maxDate!)
+                : undefined
+            }
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                onBlur={props.onBlur}
+                required={props.required}
+              />
+            )}
+          />
+        </Grid>
+      ))}
     </Grid>
   );
 };

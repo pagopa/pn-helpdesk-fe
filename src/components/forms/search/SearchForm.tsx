@@ -426,7 +426,7 @@ const SearchForm = () => {
         <Grid item container>
           <Grid item>
             <Typography color="text.primary" variant="h4">
-              Ricerca
+              Ricerca ed Estrazione Dati
             </Typography>
           </Grid>
         </Grid>
