@@ -5,7 +5,7 @@ import React from "react";
 import "regenerator-runtime/runtime";
 import "@testing-library/jest-dom/extend-expect";
 import SnackbarComponent from "../SnackbarComponent";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import configureMockStore from "redux-mock-store";
 import { Provider } from "react-redux";
 
@@ -70,26 +70,22 @@ describe("SnackbarComponent  Component", () => {
     );
   });
 
-  it("renders component with status 502 and click close button", () => {
+  it("renders component with status 502 and click close button", async () => {
     let store = mockStore({
       snackbar: {
         opened: true,
         statusCode: "502",
       },
     });
-    render(
+    const { container } = render(
       <Provider store={store}>
         <SnackbarComponent />
       </Provider>
     );
-    expect(screen.getByRole("alert")).toBeInTheDocument();
-    expect(screen.getByRole("alert")).toHaveTextContent(
+    const snackbar = screen.getByRole("alert");
+    expect(snackbar).toBeInTheDocument();
+    expect(snackbar).toHaveTextContent(
       "Errore durante l'elaborazione della richiesta"
     );
-
-    const closeButton = screen.queryByRole("button", {
-      name: "Close",
-    }) as HTMLButtonElement;
-    fireEvent.click(closeButton);
   });
 });

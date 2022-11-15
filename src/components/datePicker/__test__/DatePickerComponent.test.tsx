@@ -47,7 +47,7 @@ describe("DatePickerComponent", () => {
     );
     const input = screen.getByRole("textbox", {
       name: "Mese",
-    }) as HTMLInputElement;
+    });
     expect(input).toBeInTheDocument();
     expect(input).toHaveValue("2022-11");
   });
@@ -64,9 +64,9 @@ describe("DatePickerComponent", () => {
         onBlur={handleBlur}
       />
     );
-    const input = (await screen.findByRole("textbox", {
+    const input = await screen.findByRole("textbox", {
       name: "Mese",
-    })) as HTMLInputElement;
+    });
 
     fireEvent.change(input, {
       target: { value: "2022-11" },

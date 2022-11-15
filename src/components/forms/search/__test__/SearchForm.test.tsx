@@ -85,12 +85,12 @@ describe("SearchForm", () => {
   });
 
   it("fill fields and click resetta filtri", async () => {
-    const ticketNumber = (await screen.findByRole("textbox", {
+    const ticketNumber = await screen.findByRole("textbox", {
       name: "Numero Ticket",
-    })) as HTMLInputElement;
-    const fiscalCode = (await screen.findByRole("textbox", {
+    });
+    const fiscalCode = await screen.findByRole("textbox", {
       name: "Codice Fiscale",
-    })) as HTMLInputElement;
+    });
 
     const user = userEvent.setup();
 
@@ -107,14 +107,14 @@ describe("SearchForm", () => {
       name: "Resetta filtri",
     });
     await act(() => user.click(button));
-    expect(ticketNumber.value).toEqual("");
-    expect(fiscalCode.value).toEqual("");
+    expect(ticketNumber).toHaveValue("");
+    expect(fiscalCode).toHaveValue("");
   });
 
   it("change Tipo estrazione", async () => {
     const selectMenu = screen.getByRole("button", {
       name: "Ottieni EncCF",
-    }) as HTMLButtonElement;
+    });
     expect(selectMenu).toBeInTheDocument();
 
     const user = userEvent.setup();
@@ -131,7 +131,7 @@ describe("SearchForm", () => {
   it("change Tipo estrazione to Ottieni log completi and make request", async () => {
     const selectMenu = screen.getByRole("button", {
       name: "Ottieni EncCF",
-    }) as HTMLButtonElement;
+    });
     expect(selectMenu).toBeInTheDocument();
 
     const user = userEvent.setup();
@@ -168,7 +168,7 @@ describe("SearchForm", () => {
   it("change Tipo estrazione to Ottieni notifiche di una PA and make request", async () => {
     const selectMenu = screen.getByRole("button", {
       name: "Ottieni EncCF",
-    }) as HTMLButtonElement;
+    });
     expect(selectMenu).toBeInTheDocument();
 
     const user = userEvent.setup();

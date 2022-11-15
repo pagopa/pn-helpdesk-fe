@@ -49,7 +49,7 @@ describe("NavigationMenu Component", () => {
     );
     const icon = screen.getByRole("button", {
       name: "menu",
-    }) as HTMLButtonElement;
+    });
     expect(icon).toBeInTheDocument();
 
     const user = userEvent.setup();
@@ -75,7 +75,7 @@ describe("NavigationMenu Component", () => {
     );
     const icon = screen.getByRole("button", {
       name: "menu",
-    }) as HTMLButtonElement;
+    });
     expect(icon).toBeInTheDocument();
 
     const user = userEvent.setup();
@@ -102,7 +102,7 @@ describe("NavigationMenu Component", () => {
     );
     const icon = screen.getByRole("button", {
       name: "menu",
-    }) as HTMLButtonElement;
+    });
     expect(icon).toBeInTheDocument();
 
     const user = userEvent.setup();

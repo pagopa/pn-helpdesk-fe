@@ -15,7 +15,7 @@ import { reducer } from "../../../mocks/mockReducer";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 
-const email = "test@test.com";
+const email = "test";
 
 describe("Header Component", () => {
   it("renders header", () => {
@@ -49,7 +49,7 @@ describe("Header Component", () => {
     expect(modalButtons).toHaveLength(2);
     const esciButton = screen.getByRole("button", {
       name: "Annulla",
-    }) as HTMLButtonElement;
+    });
 
     await act(async () => {
       await user.click(esciButton);
@@ -61,7 +61,7 @@ describe("Header Component", () => {
   it("simulate log out button click and Esci after that", async () => {
     reducer(<Header email={email} />);
 
-    const button = screen.getAllByRole("button")[1] as HTMLButtonElement;
+    const button = screen.getAllByRole("button")[1];
     const user = userEvent.setup();
     await act(async () => {
       await user.click(button);
@@ -70,13 +70,11 @@ describe("Header Component", () => {
     const modal = await screen.findByRole("dialog");
     expect(modal).toBeInTheDocument();
 
-    const modalButtons = await within(modal as HTMLElement).findAllByRole(
-      "button"
-    );
+    const modalButtons = await within(modal).findAllByRole("button");
     expect(modalButtons).toHaveLength(2);
     const esciButton = screen.getByRole("button", {
       name: "Esci",
-    }) as HTMLButtonElement;
+    });
 
     await act(async () => {
       await user.click(esciButton);
