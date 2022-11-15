@@ -9,7 +9,7 @@ import PrivateRoute from "./PrivateRoute";
  * Create the routing of the page
  */
 function Router() {
-  const [email, setEmail] = useState("test@test.com");
+  const [email, setEmail] = useState("");
 
   return (
     <Routes>

@@ -32,6 +32,11 @@ const defaultFormValues: { [key: string]: string } = {
  */
 const LoginForm = ({ setUser, setEmail }: any) => {
   /**
+   * form fields
+   */
+  const fields = ["email", "password"];
+
+  /**
    * dispatch redux actions
    */
   const dispatch = useDispatch();
@@ -110,37 +115,12 @@ const LoginForm = ({ setUser, setEmail }: any) => {
           </Grid>
           <form onSubmit={handleSubmit((data) => onSubmit(data))}>
             <Grid item container direction="column" rowSpacing={3}>
-              <Grid item container>
-                <Controller
-                  control={control}
-                  name={"email"}
-                  rules={FieldsProperties["Email"].rules}
-                  render={({
-                    field: { onChange, onBlur, value, name, ref },
-                    fieldState: { invalid, isTouched, isDirty, error },
-                    formState,
-                  }) => (
-                    <>
-                      <FormField
-                        error={error}
-                        key={"email"}
-                        field={FieldsProperties["Email"]}
-                        onChange={onChange}
-                        value={value}
-                      />
-                      <FormHelperText error>
-                        {errors["email"] ? errors["email"].message : " "}
-                      </FormHelperText>
-                    </>
-                  )}
-                />
-              </Grid>
-              <Grid item container>
-                <Grid item container>
+              {fields.map((field) => (
+                <Grid item container key={field}>
                   <Controller
                     control={control}
-                    name={"password"}
-                    rules={FieldsProperties["Password"].rules}
+                    name={field}
+                    rules={FieldsProperties[field].rules}
                     render={({
                       field: { onChange, onBlur, value, name, ref },
                       fieldState: { invalid, isTouched, isDirty, error },
@@ -149,36 +129,37 @@ const LoginForm = ({ setUser, setEmail }: any) => {
                       <>
                         <FormField
                           error={error}
-                          key={"password"}
-                          field={FieldsProperties["Password"]}
+                          key={field}
+                          field={FieldsProperties[field]}
                           onChange={onChange}
                           value={value}
                         />
                         <FormHelperText error>
-                          {errors["password"]
-                            ? errors["password"].message
-                            : " "}
+                          {errors[field] ? errors[field].message : " "}
                         </FormHelperText>
                       </>
                     )}
                   />
+                  {field === "password" && (
+                    <Grid item container justifyContent="flex-end">
+                      <Tooltip
+                        onClose={() => setTooltipOpen(false)}
+                        open={tooltipOpen}
+                        placement="bottom"
+                        title="In caso di smarrimento della password contattare l'amministratore di sistema per richiedere il reset"
+                      >
+                        <Link
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => setTooltipOpen(true)}
+                        >
+                          Password dimenticata?
+                        </Link>
+                      </Tooltip>
+                    </Grid>
+                  )}
                 </Grid>
-                <Grid item container justifyContent="flex-end">
-                  <Tooltip
-                    onClose={() => setTooltipOpen(false)}
-                    open={tooltipOpen}
-                    placement="bottom"
-                    title="In caso di smarrimento della password contattare l'amministratore di sistema per richiedere il reset"
-                  >
-                    <Link
-                      sx={{ cursor: "pointer" }}
-                      onClick={() => setTooltipOpen(true)}
-                    >
-                      Password dimenticata?
-                    </Link>
-                  </Tooltip>
-                </Grid>
-              </Grid>
+              ))}
+
               <Grid item>
                 <Button
                   sx={{
