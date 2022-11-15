@@ -21,7 +21,7 @@ describe("SearchPage", () => {
 
   it("renders form", () => {
     expect(
-      screen.getByRole("heading", { name: "Ricerca" })
+      screen.getByRole("heading", { name: /Ricerca/i })
     ).toBeInTheDocument();
   });
 });
