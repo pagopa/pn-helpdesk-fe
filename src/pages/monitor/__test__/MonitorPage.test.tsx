@@ -15,7 +15,7 @@ describe("MonitorPage", () => {
 
   it("render component with running BE", async () => {
     await act(async () => {
-      reducer(<MonitorPage email="test@test.com" />);
+      reducer(<MonitorPage email="" />);
     });
     expect(
       screen.getByRole("heading", {
@@ -26,7 +26,7 @@ describe("MonitorPage", () => {
 
   it("render data grid with 4 columns and 4 rows", async () => {
     await act(async () => {
-      reducer(<MonitorPage email="test@test.com" />);
+      reducer(<MonitorPage email="" />);
     });
 
     const columns = await screen.findAllByRole("columnheader");
@@ -37,7 +37,7 @@ describe("MonitorPage", () => {
 
   it("render functionalities", async () => {
     await act(async () => {
-      reducer(<MonitorPage email="test@test.com" />);
+      reducer(<MonitorPage email="" />);
     });
 
     const notificationVisualization = await screen.findByText(
@@ -58,7 +58,7 @@ describe("MonitorPage", () => {
     );
 
     await act(async () => {
-      reducer(<MonitorPage email="test@test.com" />);
+      reducer(<MonitorPage email="" />);
     });
 
     expect(
@@ -77,7 +77,7 @@ describe("MonitorPage", () => {
 
   it("click button to create an event KO", async () => {
     await act(async () => {
-      reducer(<MonitorPage email="test@test.com" />);
+      reducer(<MonitorPage email="" />);
     });
 
     const buttons = screen.queryAllByRole("menuitem");
@@ -118,7 +118,7 @@ describe("MonitorPage", () => {
     );
 
     await act(async () => {
-      reducer(<MonitorPage email="test@test.com" />);
+      reducer(<MonitorPage email="" />);
     });
 
     const buttons = screen.queryAllByRole("menuitem");

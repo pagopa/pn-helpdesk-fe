@@ -110,7 +110,7 @@ describe("DataGridComponent", () => {
 
   it("render 3 functionalities", async () => {
     await act(async () => {
-      reducer(<MonitorPage email="test@test.com" />);
+      reducer(<MonitorPage email="" />);
     });
 
     const notificationVisualization = await screen.findByText(
@@ -131,7 +131,7 @@ describe("DataGridComponent", () => {
     );
 
     await act(async () => {
-      reducer(<MonitorPage email="test@test.com" />);
+      reducer(<MonitorPage email="" />);
     });
 
     expect(
