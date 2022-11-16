@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MainLayout from "../mainLayout/MainLayout";
 import { useParams } from "react-router-dom";
@@ -10,22 +10,41 @@ import ItemsTable from '../../components/table/table';
 import { Column, Item, PaColumn } from "../../types";
 import CreateIcon from '@mui/icons-material/Create';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import apiRequests from "../../api/apiRequests";
 
 /**
  * AggregateDetail page
  * @component
  */
-const AggregateDetailPage = ({email}: any) => {
+const AggregateDetailPage = ({ email }: any) => {
     const { aggregateId } = useParams();
     const isCreate = !aggregateId;
-
+    const [agg, setAgg]: any = useState(undefined)
+    const [pas, setPas]: any = useState(undefined)
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!isCreate) {
+            let request = apiRequests.getAggregateDetails(aggregateId)
+            if (request) {
+                request
+                    .then(res => {
+                        setAgg(res);
+                    })
+                    .catch(err => {
+                        console.log("Errore: ", err)
+                    })
+            }
+            getAssociatedPas(aggregateId);
+        }
+    }, []);
+
     const handleClickAggiungi = () => {
         navigate(`/aggregate/${aggregateId}/add-pa`);
     };
 
     const handleClickSposta = () => {
-       navigate(`/aggregate/${aggregateId}/pa-transfer`);
+        navigate(`/aggregate/pa-transfer`, { state: { agg: { id: aggregateId, name: agg?.name } } });
     };
 
     const getFormTitle = () => {
@@ -35,16 +54,18 @@ const AggregateDetailPage = ({email}: any) => {
         </Typography>
     }
 
-    const paList = [
-        {
-            id: "cx1",
-            name: "Comune di Milano"
-        },
-        {
-            id: "cx2",
-            name: "Comune di Roma"
+    const getAssociatedPas = (aggregateId: string) => {
+        let request = apiRequests.getAssociatedPaList(aggregateId)
+        if (request) {
+            request
+                .then(res => {
+                    setPas(res.items);
+                })
+                .catch(err => {
+                    console.log("Errore: ", err)
+                })
         }
-    ];
+    }
 
     const columns: Array<Column<PaColumn>> = [
         {
@@ -59,11 +80,6 @@ const AggregateDetailPage = ({email}: any) => {
             },
         }
     ];
-
-    const rows: Array<Item> = paList.map((n, i) => ({
-        ...n,
-        id: n.name + i.toString(),
-    }));
 
     return (
         <MainLayout email={email}>
@@ -80,47 +96,47 @@ const AggregateDetailPage = ({email}: any) => {
                 <Card>
                     <CardHeader sx={{ px: 3, pt: 4, pb: 1 }} avatar={<CreateIcon />} title={getFormTitle()} />
                     <CardContent>
-                        <AggregationDetailForm isCreate={isCreate} />
+                        <AggregationDetailForm isCreate={isCreate} agg={agg} />
                     </CardContent>
                 </Card>
             </Box>
 
             {!isCreate && <Box px={3} mt={2}>
                 <Card>
-                    <CardHeader 
-                        sx={{ px: 3, pt: 4, pb: 1 }} 
-                        avatar={<BusinessIcon />} 
+                    <CardHeader
+                        sx={{ px: 3, pt: 4, pb: 1 }}
+                        avatar={<BusinessIcon />}
                         title={
                             <Typography gutterBottom variant="h5" component="div">
                                 PA Associate
                             </Typography>
-                        } 
+                        }
                         action={
                             <>
-                                    <Button
-                                        variant="contained"
-                                        type="submit"
-                                        size="small"
-                                        onClick={handleClickSposta}
-                                        startIcon={<ArrowRightAltIcon />}
-                                    >
-                                        Trasferisci PA
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        type="submit"
-                                        size="small"
-                                        onClick={handleClickAggiungi}
-                                        startIcon={<DomainAddIcon />}
-                                        sx={{ml:2}}
-                                    >
-                                        Associa PA
-                                    </Button>
+                                <Button
+                                    variant="contained"
+                                    type="submit"
+                                    size="small"
+                                    onClick={handleClickSposta}
+                                    startIcon={<ArrowRightAltIcon />}
+                                >
+                                    Trasferisci PA
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    type="submit"
+                                    size="small"
+                                    onClick={handleClickAggiungi}
+                                    startIcon={<DomainAddIcon />}
+                                    sx={{ ml: 2 }}
+                                >
+                                    Associa PA
+                                </Button>
                             </>
                         }
                     />
                     <CardContent>
-                        <ItemsTable columns={columns} rows={rows} />
+                        <ItemsTable columns={columns} rows={pas || []} />
                         <Pagination count={1} />
                     </CardContent>
                 </Card>

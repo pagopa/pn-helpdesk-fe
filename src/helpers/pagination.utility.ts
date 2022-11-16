@@ -6,9 +6,9 @@ function calcDisplayedPages(
   ): Array<number> {
     // if displayedPages is odd, we show the same number of page before and after
     // if displayedPages is even, we show more pages before than after if we are navigating forward, the opposite if we are navigating backward
-    /* eslint-disable functional/no-let */
+    // eslint-disable functional/no-let
     let firstPageToDisplay = 0;
-    /* eslint-disable functional/no-let */
+    // eslint-disable functional/no-let
     let lastPageToDisplay = 0;
     if (numOfDisplayedPages % 2 === 0) {
       firstPageToDisplay =
@@ -37,7 +37,7 @@ function calcDisplayedPages(
     // fill pages to display
     const displayedPages: Array<number> = [];
     for (let i = firstPageToDisplay; i <= lastPageToDisplay; i++) {
-      /* eslint-disable functional/immutable-data */
+      // eslint-disable functional/immutable-data
       displayedPages.push(i);
     }
     return displayedPages;

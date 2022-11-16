@@ -81,6 +81,35 @@ type getAssociatedPaListType = {
  */
  type getAssociatedPaListResponse = {
     items: Array<Pa>
+ }
+
+/**
+ * @typedef {Object} createAggregateType
+ */
+type createAggregateType = {
+    name: string,
+    description: string,
+    usagePlanId: string
+}
+
+/**
+* @typedef {Object} modifyAggregateType
+*/
+type modifyAggregateType = {
+    name: string,
+    description: string,
+    usagePlanId: string
+}
+
+/**
+ * @typedef {Object} getAggregateDetailsType
+ */
+type getAggregateDetailsType = {
+    id: string,
+    name: string,
+    usagePlanTemplate: string,
+    createdAt: string,
+    lastUpdate: string
 }
 
 /**
@@ -134,4 +163,19 @@ type addPaResponse = {
     unprocessedPA: Array<string>
 }
 
-export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, getAssociatedPaListResponse, getAggregateResponse, addPaResponse }
+/**
+ * @typedef {Object} getUsagePlansType
+ */
+ type getUsagePlansType = {
+    items: [
+        {
+            id: string,
+            name: string,
+            quota: number,
+            rate: number,
+            burst: number
+        }
+    ]
+}
+
+export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, getAssociatedPaListResponse, getAggregateResponse, addPaResponse, getUsagePlansType, createAggregateType, modifyAggregateType, getAggregateDetailsType }

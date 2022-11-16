@@ -1,12 +1,34 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Grid, TextField, FormControl, Select, MenuItem, InputLabel, Button, Tooltip, InputAdornment, OutlinedInput, Box } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
+import apiRequests from "../../api/apiRequests";
+import { createAggregateType } from "../../api/apiRequestTypes";
+import { useNavigate } from "react-router-dom";
 
-type Props = { isCreate:boolean };
+type Props = { isCreate: boolean, agg: any };
 
-const AggregationDetailForm = ({isCreate} : Props) => {
+const AggregationDetailForm = ({ isCreate, agg }: Props) => {
+    const confirmDialog = useConfirmDialog();
+    const navigate = useNavigate();
+    const defAgg = { id: "", name: "", usagePlan: { id: "", name: "", quota: 0, rate: 0, burst: 0 }, createdAt: "", lastUpdate: "", associatedPa: 0 }
+    const [aggregate, setAggregate]: any = useState(defAgg);
+    const [usagePlans, setUsagePlans]: any = useState(undefined);
+    useEffect(() => {
+        setAggregate(agg)
+        let request = apiRequests.getUsagePlans()
+        if (request) {
+            request
+                .then(res => {
+                    setUsagePlans(res.items);
+                })
+                .catch(err => {
+                    console.log("Errore: ", err)
+                })
+        }
+    }, [agg])
 
     const emptyValues = {
         aggregationName: "",
@@ -24,10 +46,10 @@ const AggregationDetailForm = ({isCreate} : Props) => {
         usagePlan: yup.string()
     });
 
-    const initialValues = (aggregation:any) => {
-        if(!aggregation)
+    const initialValues = (aggregation: any) => {
+        if (!aggregation)
             return emptyValues;
-        
+
         return {
             aggregationName: aggregation.aggregationName,
             aggregationDescription: aggregation.aggregationDescription,
@@ -38,24 +60,6 @@ const AggregationDetailForm = ({isCreate} : Props) => {
             burst: aggregation.burst
         }
     }
-
-    const mockAggregation = {
-        aggregationName: "Comuni Lombardia",
-        aggregationDescription: "Aggregazione dei comuni della regione Lombardia",
-        usagePlan: "Medium",
-        quota: 5000,
-        rate: 1000,
-        burst: 300
-    }
-
-    const formik = useFormik({
-        initialValues: initialValues(isCreate ? null : mockAggregation),
-        validationSchema,
-        /** onSubmit populates filters */
-        onSubmit: (values: any) => {
-          
-        },
-    });
 
     const usagePlanList = [
         {
@@ -78,14 +82,113 @@ const AggregationDetailForm = ({isCreate} : Props) => {
         }
     ]
 
-    const handleChangeUsagePlan = async (evt:any) => {
-        const {value, name} = evt.target;
-        let indexUsagePlan = usagePlanList.findIndex(item => item.name === value);
+    const aggregationData = {
+        aggregationName: aggregate?.name,
+        aggregationDescription: aggregate?.description || "Descrizione aggregazione",
+        usagePlan: aggregate?.usagePlan?.name,
+        quota: aggregate?.usagePlan?.quota,
+        rate: aggregate?.usagePlan?.rate,
+        burst: aggregate?.usagePlan?.burst
+    }
 
-        await formik.setFieldValue("quota", usagePlanList[indexUsagePlan].quota);
-        await formik.setFieldValue("burst", usagePlanList[indexUsagePlan].burst);
-        await formik.setFieldValue("rate", usagePlanList[indexUsagePlan].rate);
+    const formik = useFormik({
+        initialValues: initialValues(isCreate ? null : aggregationData),
+        enableReinitialize: true,
+        validationSchema,
+        /** onSubmit populates filters */
+        onSubmit: (values: any) => {
+
+        },
+    });
+
+    const handleChangeUsagePlan = async (evt: any) => {
+        const { value, name } = evt.target;
+        let indexUsagePlan = usagePlans.findIndex((item: { name: any; }) => item.name === value);
+        await formik.setFieldValue("quota", usagePlans[indexUsagePlan].quota);
+        await formik.setFieldValue("burst", usagePlans[indexUsagePlan].burst);
+        await formik.setFieldValue("rate", usagePlans[indexUsagePlan].rate);
         await formik.setFieldValue(name, value);
+    }
+
+    const handleCreateClick = () => {
+        confirmDialog({ title: "Crea aggregato", message: "Sicuro di voler creare questo aggregato?" })
+            .then(() => {
+                handleCreate()
+            })
+            .catch(() => { });
+    }
+
+    const handleSaveClick = () => {
+        confirmDialog({ title: "Salva modifiche", message: "Sicuro di voler salvare le modifiche?" })
+            .then(() => {
+                handleSave()
+            })
+            .catch(() => { });
+    }
+
+    const handleDeleteClick = () => {
+        confirmDialog({ title: "Elimina modifiche", message: "Sicuro di voler eliminare le modifiche?" })
+            .then(() => {
+                handleDelete()
+            })
+            .catch(() => { });
+    }
+
+    const handleCreate = () => {
+        // POST /aggregate
+        const payload = {
+            name: formik.values.aggregationName,
+            description: formik.values.aggregationDescription,
+            usagePlanId: usagePlans?.findIndex((item: { name: any; }) => item.name === formik.values.usagePlan).toString(),
+        }
+        // returns random id
+        let request = apiRequests.createAggregate(payload)
+        if (request) {
+            request
+                .then(res => {
+                    console.log(res);
+                    formik.resetForm();
+                    navigate(`/aggregate/${res}`);
+                })
+                .catch(err => {
+                    console.log("Errore: ", err)
+                })
+        }
+    }
+
+    const handleSave = () => {
+        // PUT /aggregate/{id}
+        const payload: createAggregateType = {
+            name: formik.values.aggregationName,
+            description: formik.values.aggregationDescription,
+            usagePlanId: usagePlans?.findIndex((item: { name: any; }) => item.name === formik.values.usagePlan).toString(),
+        }
+        // returns id
+        let request = apiRequests.modifyAggregate(payload, agg.id)
+        if (request) {
+            request
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log("Errore: ", err)
+                })
+        }
+    }
+
+    const handleDelete = () => {
+        // DELETE /aggregate/{id}
+        const payload = agg.id
+        let request = apiRequests.deleteAggregate(payload)
+        if (request) {
+            request
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log("Errore: ", err)
+                })
+        }
     }
 
     const CreateButton = <Button
@@ -93,6 +196,7 @@ const AggregationDetailForm = ({isCreate} : Props) => {
         type="submit"
         size="small"
         disabled={!formik.isValid}
+        onClick={handleCreateClick}
     >
         Crea
     </Button>
@@ -102,6 +206,8 @@ const AggregationDetailForm = ({isCreate} : Props) => {
         type="submit"
         size="small"
         disabled={!formik.isValid}
+        onClick={handleSaveClick}
+
     >
         Salva
     </Button>
@@ -112,16 +218,17 @@ const AggregationDetailForm = ({isCreate} : Props) => {
         size="small"
         color="error"
         disabled={!formik.isValid}
+        onClick={handleDeleteClick}
     >
         Elimina
     </Button>
 
-    const IconWithTooltip = ({title} : any) => (
+    const IconWithTooltip = ({ title }: any) => (
         <Tooltip title={title}>
-            <HelpOutlineIcon  />
+            <HelpOutlineIcon />
         </Tooltip>
     );
-    
+
     return (
         <form onSubmit={formik.handleSubmit}>
             <Grid container spacing="2" direction="column">
@@ -162,7 +269,7 @@ const AggregationDetailForm = ({isCreate} : Props) => {
                                 onChange={(evt) => handleChangeUsagePlan(evt)}
                                 size="small"
                             >
-                                {usagePlanList.map((item, index) => {
+                                {usagePlans?.map((item: any, index: number) => {
                                     return <MenuItem key={`${item.name}-${index}`} value={item.name}>{item.name}</MenuItem>
                                 })}
                             </Select>
@@ -247,11 +354,11 @@ const AggregationDetailForm = ({isCreate} : Props) => {
                             </Grid>
                         </>
                     )}
-                    
+
                 </Grid>
             </Grid>
-            
-            
+
+
         </form>
     )
 }

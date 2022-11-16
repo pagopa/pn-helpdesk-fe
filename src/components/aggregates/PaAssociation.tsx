@@ -166,7 +166,7 @@ const PaAssociation = ({idAggregate} : Props) => {
                 </Grid>
         </Grid>
         </>
-        
+
     );
 }
 export default PaAssociation;

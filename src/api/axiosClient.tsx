@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { getAggregatesResponseMockPag1, getAggregatesResponseMockPag2 } from "./mockFile";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, addPaResponse } from "./apiRequestTypes";
+import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, addPaResponse, createAggregateType, modifyAggregateType, getUsagePlansType } from "./apiRequestTypes";
 import { aggregate, agg_list, pa_list, pa_list_associated } from "./pa_agg_response";
 import { Aggregate, Pa } from "../types";
 
@@ -78,18 +78,39 @@ class Http {
     //return this.http.get<GetAggregateResponse>(ENHANCE_ROUTE_WITH_QUERY('aggregate', payload));
     console.log("call getAggregates with payload", payload);
     return new Promise((resolve, reject) => {
-      if(payload.name === "error") {
+      if (payload.name === "error") {
         reject("Errore di sistema");
-      } else if(payload.lastEvaluatedId === "") {
+      } else if (payload.lastEvaluatedId === "") {
         console.log("response", getAggregatesResponseMockPag1);
         resolve(getAggregatesResponseMockPag1)
-      } else if(payload.lastEvaluatedId === "agg10") {
+      } else if (payload.lastEvaluatedId === "agg10") {
         console.log("response", getAggregatesResponseMockPag2);
         resolve(getAggregatesResponseMockPag2)
-      }  
-        
+      }
+
     })
-  } 
+  }
+
+  getAggregateDetails<T = any, R = AxiosResponse<T>>(id: string): Promise<R> {
+    /* return this.http.get<T, R>(`/aggregate/${id}`) */
+    const agg = agg_list.items.find(agg => agg.id === id)
+    return Promise.resolve(agg as unknown as R)
+  }
+
+  createAggregate(payload: createAggregateType): Promise<string> {
+    //return this.http.post<string>("aggregate");
+    return new Promise((resolve) => {
+      const id = Math.floor((Math.random() * 100) + 1).toString();
+      resolve(id);
+    })
+  }
+
+  modifyAggregate(payload: modifyAggregateType, id: string): Promise<string> {
+    //return this.http.put<string>("aggregate");
+    return new Promise((resolve) => {
+      resolve(id);
+    })
+  }
 
   deleteAggregate(id: string): Promise<string> {
     //return this.http.delete<string>("aggregate");
@@ -135,6 +156,35 @@ class Http {
       unprocessedPA: ['Comune di Milano', 'Comune di Sondrio', 'Comune di Napoli', 'Comune di Palermo', 'Comune di Arezzo']
     }
     return Promise.resolve(response);
+  }
+
+  getUsagePlans<T = any, R = AxiosResponse<T>>(payload?: getUsagePlansType): Promise<R> {
+    /* return this.http.post<T, R>(`/usage-plans */
+    return Promise.resolve({
+      items: [
+        {
+          id: "0",
+          name: "Small",
+          quota: 1000,
+          rate: 100,
+          burst: 30
+        },
+        {
+          id: "1",
+          name: "Medium",
+          quota: 5000,
+          rate: 1000,
+          burst: 300
+        },
+        {
+          id: "2",
+          name: "Large",
+          quota: 10000,
+          rate: 2000,
+          burst: 600
+        }
+      ]
+    } as unknown as R)
   }
 }
 
