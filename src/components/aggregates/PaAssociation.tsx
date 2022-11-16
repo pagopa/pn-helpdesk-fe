@@ -39,21 +39,21 @@ const PaAssociation = () => {
     const handleSelection = (pa: any, selected: boolean) => {
         let indexPa = paSelectedList.findIndex((item) => item.id === pa.id);
         let selectedPaListCopy = [...paSelectedList];
-        
-        if(selected)
+
+        if (selected)
             selectedPaListCopy.push(pa);
         else
-            selectedPaListCopy.splice(indexPa,1);
+            selectedPaListCopy.splice(indexPa, 1);
 
         setPaSelectedList(selectedPaListCopy);
     }
 
     useEffect(() => {
         console.log("Render")
-    },[handleSelection]);
-    
+    }, [handleSelection]);
+
     return (
-            <>
+        <>
             <Box px={2}>
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link underline="hover" color="inherit" href="/aggregates">
@@ -81,9 +81,9 @@ const PaAssociation = () => {
                     <Grid item xs={12}>
                         <Accordion>
                             <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1a-content"
+                                id="panel1a-header"
                             >
                                 <Typography variant="h6" component="div">
                                     Riepilogo Aggregazione
@@ -113,7 +113,7 @@ const PaAssociation = () => {
                                         <strong>PA Associate:</strong>
                                     </Grid>
                                     <Grid item>
-                                        <PaList paList={[{id:"cx100", name:"Comune di Como"}, {id:"cx101", name:"Comune di Bergamo"}]} handleSelection={undefined} />
+                                        <PaList paList={[{ id: "cx100", name: "Comune di Como" }, { id: "cx101", name: "Comune di Bergamo" }]} handleSelection={undefined} />
                                     </Grid>
                                 </Grid>
                             </AccordionDetails>
@@ -121,7 +121,7 @@ const PaAssociation = () => {
                     </Grid>
                 </Grid>
 
-                <Grid container spacing={2} sx={{marginTop:1}}>
+                <Grid container spacing={2} sx={{ marginTop: 1 }}>
                     <Grid item xs={3}>
                         <Card>
                             <CardHeader
@@ -132,24 +132,24 @@ const PaAssociation = () => {
                                 }
                                 title={
                                     <Typography variant="h6" component="div">
-                                         PA Selezionate
+                                        PA Selezionate
                                     </Typography>
                                 }
                             />
                             <CardContent>
                                 <PaList paList={paSelectedList} handleSelection={handleSelection} />
-                                
+
                                 {paSelectedList.length !== 0 && <Box mt={2} alignSelf="flex-end">
                                     <Button
-                                            variant="outlined"
-                                            type="submit"
-                                            size="small"
-                                        >
+                                        variant="outlined"
+                                        type="submit"
+                                        size="small"
+                                    >
                                         Salva
                                     </Button>
                                 </Box>
                                 }
-                                
+
                             </CardContent>
                         </Card>
                     </Grid>
@@ -170,9 +170,9 @@ const PaAssociation = () => {
                     </Grid>
                 </Grid>
             </Box>
-            
+
         </>
-        
+
     );
 }
 export default PaAssociation;

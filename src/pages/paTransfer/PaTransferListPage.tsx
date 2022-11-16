@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import MainLayout from "../mainLayout/MainLayout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
     Autocomplete,
     TextField,
@@ -21,7 +21,10 @@ import { getAggregationMovePaType } from "../../api/apiRequestTypes";
 
 const PaTransferListPage = ({ email }: any) => {
     const navigate = useNavigate();
+    const location: any = useLocation();
+    const params = useParams();
     const dispatch = useDispatch();
+    const aggParam = location?.state?.agg ?? null;
     const [renderedAggList, setRenderedAggList]: any = useState(undefined)
     const [input1Value, setInput1Value]: any = useState(undefined);
     const [input2Value, setInput2Value]: any = useState(undefined);
@@ -32,11 +35,11 @@ const PaTransferListPage = ({ email }: any) => {
     const [checked, setChecked]: any = useState([]);
 
     useEffect(() => {
-        getAggregates();
+        getAggregates();  
     }, []);
 
     const getAggregates = () => {
-        let request = apiRequests.getAggregates({})
+        let request = apiRequests.getAggregates({ lastEvaluatedId: "" })
         if (request) {
             request
                 .then(res => {
@@ -153,6 +156,7 @@ const PaTransferListPage = ({ email }: any) => {
                         onChange={handleChangeInput1}
                         options={renderedAggList?.items || [{ id: 'Caricamento', name: 'Caricamento' }]}
                         sx={{ width: 500 }}
+                        value={renderedAggList?.items.find((item: any) => item.id === aggParam?.id) || null}
                         getOptionLabel={(option: any) => option.name}
                         renderInput={(params) => <TextField {...params} label="Aggregazione di partenza" />}
                     />
