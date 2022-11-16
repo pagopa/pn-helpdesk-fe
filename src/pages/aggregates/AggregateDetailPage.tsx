@@ -24,7 +24,6 @@ const AggregateDetailPage = ({ email }: any) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // call /aggregate/aggregateId
         if (!isCreate) {
             let request = apiRequests.getAggregateDetails(aggregateId)
             if (request) {

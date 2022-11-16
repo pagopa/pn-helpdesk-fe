@@ -35,7 +35,8 @@ const PaTransferListPage = ({ email }: any) => {
     const [checked, setChecked]: any = useState([]);
 
     useEffect(() => {
-        getAggregates();  
+        getAggregates();
+        aggParam && handleChangeInput1(null, aggParam);
     }, []);
 
     const getAggregates = () => {
@@ -79,7 +80,7 @@ const PaTransferListPage = ({ email }: any) => {
 
     const getPas1 = (e: any, value: any) => {
         setPaList1(undefined)
-        let idAggregation = value?.id
+        let idAggregation = aggParam?.id ?? value?.id
         let request = apiRequests.getAssociatedPaList(idAggregation)
         if (request) {
             request
@@ -156,7 +157,8 @@ const PaTransferListPage = ({ email }: any) => {
                         onChange={handleChangeInput1}
                         options={renderedAggList?.items || [{ id: 'Caricamento', name: 'Caricamento' }]}
                         sx={{ width: 500 }}
-                        value={renderedAggList?.items.find((item: any) => item.id === aggParam?.id) || null}
+                        /* defaultValue={renderedAggList?.items?.find((item: any) => item.id === aggParam?.id) || null} */
+                        defaultValue={aggParam || null}
                         getOptionLabel={(option: any) => option.name}
                         renderInput={(params) => <TextField {...params} label="Aggregazione di partenza" />}
                     />
