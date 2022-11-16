@@ -1,6 +1,7 @@
 // import { apiClient } from "./apiClient";
+import { Pa } from "../types";
 import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, 
-    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams } from "./apiRequestTypes";
+    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAssociablePaListResponse, getAggregateResponse, addPaResponse } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient"
 
 /**
@@ -125,7 +126,7 @@ const deleteAggregate = async (id: string) => {
  /**
  * Move PAs to another aggregation
  */
-  const getAssociatedPaList = async (id: string, data?: getAssociatedPaListType) => {
+  const getAssociatedPaList = async (id: string, data?: getAssociatedPaListType) : Promise<getAssociatedPaListType> => {
     return await apiClient.getAssociatedPaList(id)
      .then((result: any) => {
          return result;
@@ -148,5 +149,35 @@ const deleteAggregate = async (id: string) => {
      }) 
  }
 
+const getAssociablePaList = async (name?: string) : Promise<getAssociablePaListResponse> => {
+    return await apiClient.getAssociablePaList(name)
+        .then((result: any) => {
+            return result;
+        })
+        .catch((error: any) => {
+            throw error;
+        }) 
+}
+
+const getAggregate = async (id: string) : Promise<getAggregateResponse> => {
+    return await apiClient.getAggregate(id)
+        .then((result: any) => {
+            return result;
+        })
+        .catch((error: any) => {
+            throw error;
+        }) 
+}
+
+const addPa = async (id: string, paSelectedList: Array<Pa>) : Promise<addPaResponse> => {
+    return await apiClient.addPa(id, paSelectedList)
+        .then((result: any) => {
+            return result;
+        })
+        .catch((error: any) => {
+            throw error;
+        }) 
+}
+
 export default { getPersonId, getPersonTaxId, getPersonsLogs, /*getOperatorsLogs,*/
-    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getAssociatedPaList, getAggregationMovePa, getAggregates, deleteAggregate }
+    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getAssociatedPaList, getAggregationMovePa, getAggregates, deleteAggregate, getAssociablePaList, getAggregate, addPa }

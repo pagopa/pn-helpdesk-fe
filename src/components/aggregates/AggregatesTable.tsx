@@ -176,7 +176,7 @@ const AggregatesTable = () => {
     }));
 
     function handleRowClick(row: Item) {
-      navigate(`/aggregate/${row.aggregateId}`);
+      navigate(`/aggregate/${row.id}`);
     }
     
     return (

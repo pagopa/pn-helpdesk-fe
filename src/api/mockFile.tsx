@@ -1,6 +1,6 @@
-import { getAggregateResponse } from "./apiRequestTypes";
+import { getAggregatesResponse } from "./apiRequestTypes";
 
-const getAggregatesResponseMockPag1 : getAggregateResponse = {
+const getAggregatesResponseMockPag1 : getAggregatesResponse = {
     lastEvaluatedId: "agg10",
     lastEvaluatedName: "Comuni Palermo",
     total: 13,
@@ -68,7 +68,7 @@ const getAggregatesResponseMockPag1 : getAggregateResponse = {
     ]
 }
 
-const getAggregatesResponseMockPag2 : getAggregateResponse = {
+const getAggregatesResponseMockPag2 : getAggregatesResponse = {
   lastEvaluatedId: "",
   lastEvaluatedName: "",
   total: 13,

@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { getAggregatesResponseMockPag1, getAggregatesResponseMockPag2 } from "./mockFile";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAggregateResponse } from "./apiRequestTypes";
-import { agg_list, pa_list } from "./pa_agg_response";
+import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, addPaResponse } from "./apiRequestTypes";
+import { aggregate, agg_list, pa_list, pa_list_associated } from "./pa_agg_response";
+import { Aggregate, Pa } from "../types";
 
 const headers: Readonly<Record<string, string | boolean>> = {
   Accept: "*/*",
@@ -73,7 +74,7 @@ class Http {
     return this.http.post<T, R>("logs/v1/processes", payload)
   }
 
-  getAggregates(payload: getAggregateParams): Promise<getAggregateResponse> {
+  getAggregates(payload: getAggregateParams): Promise<getAggregatesResponse> {
     //return this.http.get<GetAggregateResponse>(ENHANCE_ROUTE_WITH_QUERY('aggregate', payload));
     console.log("call getAggregates with payload", payload);
     return new Promise((resolve, reject) => {
@@ -99,12 +100,41 @@ class Http {
 
   getAssociatedPaList<T = any, R = AxiosResponse<T>>(id: string, payload?: getAssociatedPaListType): Promise<R> {
     /* return this.http.post<T, R>(`/aggregate/${id}/associated-pa`, payload) */
-    return Promise.resolve(pa_list as unknown as R)
+    console.log("call getAssociatedPaList with payload", id);
+    return Promise.resolve(pa_list_associated as unknown as R)
   }
 
   getAggregationMovePa<T = any, R = AxiosResponse<T>>(id: string, payload?: getAggregationMovePaType): Promise<R> {
     /* return this.http.post<T, R>(`/aggregate/${id}/move-pa`, payload) */
     return Promise.resolve({ status: 200 } as unknown as R)
+  }
+
+  getAssociablePaList<T = any, R = AxiosResponse<T>>(name?: string): Promise<getAssociablePaListResponse> {
+    //return this.http.get<GetAggregateResponse>(ENHANCE_ROUTE_WITH_QUERY('aggregate/associable-pa', name));
+    console.log("call getAssociablePaList with payload", name);
+    let pa_list : getAssociablePaListResponse = { items: [] };
+    for(let i = 0; i < 7000; i++) {
+        pa_list.items.push({
+            id:"pa_"+i,
+            name:"Pa indice " + i
+        })
+    }
+    return Promise.resolve(pa_list)
+  }
+
+  getAggregate(id:string): Promise<Aggregate> {
+    console.log("call getAggregate with payload", id);
+    return Promise.resolve(aggregate);
+  }
+
+  addPa(id: string, selectedPaList: Array<Pa>): Promise <addPaResponse> {
+    //return this.http.post<GetAggregateResponse>('aggregate/${id}/add-pa', selectedPaList);
+    let response : addPaResponse = {
+      processed: 0,
+      unprocessed: 5,
+      unprocessedPA: ['Comune di Milano', 'Comune di Sondrio', 'Comune di Napoli', 'Comune di Palermo', 'Comune di Arezzo']
+    }
+    return Promise.resolve(response);
   }
 }
 

@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useState } from "react";
 import Alert from '@mui/material/Alert';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
-import { updateSnackbacrOpened, opened, statusCode, message } from "../../redux/snackbarSlice";
+import { updateSnackbacrOpened, opened, statusCode, message, autoHideDuration } from "../../redux/snackbarSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import { infoMessages } from "../../helpers/messagesConstants"
 import Slide, { SlideProps } from '@mui/material/Slide';
@@ -21,6 +21,7 @@ function TransitionDown(props: TransitionProps) {
  */
 enum Severity {
   "OK" = "success",
+  "Accepted" = "warning",
   "Bad Request" = "error",
   "Internal Server Error" = "error",
   "Gateway Timeout" = "error",
@@ -32,6 +33,7 @@ enum Severity {
  */
 const defaultSeverityMessage: {[key: string]: string} = {
   "OK": infoMessages.OK_RESPONSE,
+  "Accepted": infoMessages.ACCEPTED_RESPONSE,
   "Bad Request": infoMessages.BAD_REQUEST_RESPONSE,
   "Internal Server Error": infoMessages.INTERNEL_SERVER_ERROR_RESPONSE,
   "Gateway Timeout": infoMessages.TIMEOUT,
@@ -52,6 +54,8 @@ const SnackbarComponent = () => {
 
     const snackbarMessage: any = useSelector(message);
 
+    const autoHide: number | null = useSelector(autoHideDuration);
+
     const dispatch = useDispatch();
 
     /**
@@ -69,7 +73,9 @@ const SnackbarComponent = () => {
     /* istanbul ignore next */
     const getSeverity = () => {
       if(status){
-        if(status >= 200 && status < 300){
+        if(status == 202){
+          setSeverity("Accepted")
+        }else if(status >= 200 && status < 300){
           setSeverity("OK")
         }else if(status >= 400 && status < 500){
           setSeverity("Bad Request")
@@ -85,7 +91,7 @@ const SnackbarComponent = () => {
 
     return(
         <Snackbar open={snackbarOpened}
-                autoHideDuration={2000}
+                autoHideDuration={autoHide}
                 
                 sx={{'@media (min-width: 630px)': { top: "75px"}}}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}

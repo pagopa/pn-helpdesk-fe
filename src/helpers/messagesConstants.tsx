@@ -9,11 +9,13 @@ export const errorMessages = {
     INCORRECT_EMAIL: "Email non corretta",
     PSSWORDS_EQUALITY: "La nuova password e la conferma password devono essere le stesse",
     ONE_MONTH_INTERVAL: "Le date selezionate devono essere all'interno dello stesso mese",
+    MIN_LENGTH: (length: number = 5) => `Inserire almeno ${length} caratteri`
 }
 
 export const infoMessages = {
     LOGOUT_CONFIRMATION: "Uscire dall'applicazione?",
     OK_RESPONSE: "Operazione completata con successo",
+    ACCEPTED_RESPONSE: "La richiesta è stata eseguita parzialmente",
     BAD_REQUEST_RESPONSE: "Informazioni non valide",
     INTERNEL_SERVER_ERROR_RESPONSE: "Errore durante l'elaborazione della richiesta",
     WRONG_CREDENTIALS: "Email o password errate",

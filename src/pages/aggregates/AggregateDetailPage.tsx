@@ -21,11 +21,11 @@ const AggregateDetailPage = ({email}: any) => {
 
     const navigate = useNavigate();
     const handleClickAggiungi = () => {
-        navigate(`/aggregate/add-pa`);
+        navigate(`/aggregate/${aggregateId}/add-pa`);
     };
 
     const handleClickSposta = () => {
-       navigate(`/aggregate/pa-transfer`);
+       navigate(`/aggregate/${aggregateId}/pa-transfer`);
     };
 
     const getFormTitle = () => {
