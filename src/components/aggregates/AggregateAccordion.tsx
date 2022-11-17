@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Grid, Typography, AccordionDetails, Accordion, AccordionSummary } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Aggregate } from '../../types';
@@ -8,6 +8,7 @@ import * as spinnerActions from "../../redux/spinnerSlice";
 import * as snackbarActions from "../../redux/snackbarSlice";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import * as routes from '../../navigation/routes';
 
 type Props = {
     idAggregate: string | undefined
@@ -38,7 +39,7 @@ const AggregateAccordion = ({idAggregate} : Props) => {
                     dispatch(snackbarActions.updateSnackbacrOpened(true));
                     dispatch(snackbarActions.updateStatusCode("400"));
                     dispatch(spinnerActions.updateSpinnerOpened(false));
-                    navigate(`/aggregate/${idAggregate}`);
+                    navigate(routes.GET_UPDATE_AGGREGATE_PATH(idAggregate!));
                 }
             ).finally(
                 () => dispatch(spinnerActions.updateSpinnerOpened(false))

@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CardContent, Card, CardHeader, Button, Grid, Typography, Box, Badge, Breadcrumbs, Link, AccordionDetails, Accordion, AccordionSummary } from "@mui/material";
 import PaList from "./PaList";
 import PaTable from "./PaTable";
 import PaFilterTable from './PaFilterTable';
-import { useParams, useNavigate } from "react-router-dom";
+import { matchPath, useNavigate, useLocation } from "react-router-dom";
 import { Aggregate, Pa } from '../../types';
 import apiRequests from '../../api/apiRequests';
 import * as spinnerActions from "../../redux/spinnerSlice";
@@ -13,12 +13,16 @@ import CustomCard from '../customCard/CustomCard';
 import { CardActionType, CardHeaderType } from '../customCard/types';
 import BusinessIcon from '@mui/icons-material/Business';
 import useConfirmDialog from '../confirmationDialog/useConfirmDialog';
+import * as routes from '../../navigation/routes';
 
 type Props = {
     idAggregate: string | undefined
 }
 const PaAssociation = ({idAggregate} : Props) => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { pathname } = location;
+    console.log(matchPath({path: routes.ADD_PA}, pathname));
     const dispatch = useDispatch();
     const confirmDialog = useConfirmDialog();
     const [associablePaList, setAssociablePaList] = useState<Array<Pa>>([]);
@@ -38,7 +42,7 @@ const PaAssociation = ({idAggregate} : Props) => {
                     dispatch(snackbarActions.updateSnackbacrOpened(true));
                     dispatch(snackbarActions.updateStatusCode("400"));
                     dispatch(spinnerActions.updateSpinnerOpened(false));
-                    navigate(`/aggregate/${idAggregate}`);
+                    navigate(routes.GET_UPDATE_AGGREGATE_PATH(idAggregate!));
                 }
             ).finally(
                 () => dispatch(spinnerActions.updateSpinnerOpened(false))
@@ -141,7 +145,7 @@ const PaAssociation = ({idAggregate} : Props) => {
           () => {
             dispatch(snackbarActions.updateSnackbacrOpened(true));
             dispatch(spinnerActions.updateSpinnerOpened(false));
-            navigate(`/aggregate/${idAggregate}`);
+            navigate(routes.GET_UPDATE_AGGREGATE_PATH(idAggregate!));
           }
         )
     }

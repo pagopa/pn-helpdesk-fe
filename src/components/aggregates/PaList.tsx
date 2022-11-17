@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -7,7 +7,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import { Pa } from '../../types';
 import usePagination from '../../hooks/usePagination';
-import CustomPagination from '../Pagination/CustomPagination';
+import CustomPagination from '../pagination/CustomPagination';
 
 type Props = {
     paList : Array<Pa>,

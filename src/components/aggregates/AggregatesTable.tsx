@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Column, Item } from "../../types";
 import ItemsTable from '../table/table';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -10,11 +10,12 @@ import { useNavigate } from "react-router-dom";
 import { getAggregateParams } from "../../api/apiRequestTypes";
 import { useSelector, useDispatch } from 'react-redux';
 import { filtersSelector, paginationSelector, aggregatesSelector, setPagination, setAggregates } from '../../redux/aggregateSlice';
-import { PaginationData } from "../../components/Pagination/types";
+import { PaginationData } from "../pagination/types";
 import apiRequests from '../../api/apiRequests';
-import CustomPagination from "../../components/Pagination/CustomPagination";
+import CustomPagination from "../pagination/CustomPagination";
 import { calculatePages } from "../../helpers/pagination.utility";
 import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
+import * as routes from '../../navigation/routes';
 
 type AggregateColumn = 
 | 'id'
@@ -176,7 +177,7 @@ const AggregatesTable = () => {
     }));
 
     function handleRowClick(row: Item) {
-      navigate(`/aggregate/${row.id}`);
+      navigate(routes.GET_UPDATE_AGGREGATE_PATH(row.id));
     }
     
     return (

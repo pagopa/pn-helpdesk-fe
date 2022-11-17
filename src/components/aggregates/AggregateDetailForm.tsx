@@ -7,6 +7,7 @@ import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
 import apiRequests from "../../api/apiRequests";
 import { createAggregateType } from "../../api/apiRequestTypes";
 import { useNavigate } from "react-router-dom";
+import * as routes from '../../navigation/routes';
 
 type Props = { isCreate: boolean, agg: any };
 
@@ -148,7 +149,7 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
                 .then(res => {
                     console.log(res);
                     formik.resetForm();
-                    navigate(`/aggregate/${res}`);
+                    navigate(routes.GET_UPDATE_AGGREGATE_PATH(res));
                 })
                 .catch(err => {
                     console.log("Errore: ", err)

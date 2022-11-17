@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import MainLayout from "../mainLayout/MainLayout";
 import { useParams } from "react-router-dom";
 import AggregationDetailForm from "../../components/aggregates/AggregateDetailForm";
-import { CardContent, Card, CardHeader, Box, Typography, Button, Breadcrumbs, Link, Pagination, Grid, IconButton } from "@mui/material";
+import { CardContent, Card, CardHeader, Box, Typography, Button, Link, Pagination, Grid, IconButton } from "@mui/material";
 import BusinessIcon from '@mui/icons-material/Business';
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import ItemsTable from '../../components/table/table';
@@ -11,21 +11,23 @@ import { Column, Item, PaColumn } from "../../types";
 import CreateIcon from '@mui/icons-material/Create';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import apiRequests from "../../api/apiRequests";
+import * as routes from '../../navigation/routes';
+import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
 
 /**
  * AggregateDetail page
  * @component
  */
 const AggregateDetailPage = ({ email }: any) => {
-    const { aggregateId } = useParams();
-    const isCreate = !aggregateId;
+    const { idAggregate } = useParams();
+    const isCreate = !idAggregate;
     const [agg, setAgg]: any = useState(undefined)
     const [pas, setPas]: any = useState(undefined)
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!isCreate) {
-            let request = apiRequests.getAggregateDetails(aggregateId)
+            let request = apiRequests.getAggregateDetails(idAggregate)
             if (request) {
                 request
                     .then(res => {
@@ -35,16 +37,16 @@ const AggregateDetailPage = ({ email }: any) => {
                         console.log("Errore: ", err)
                     })
             }
-            getAssociatedPas(aggregateId);
+            getAssociatedPas(idAggregate);
         }
     }, []);
 
     const handleClickAggiungi = () => {
-        navigate(`/aggregate/${aggregateId}/add-pa`);
+        navigate(routes.GET_ADD_PA_PATH(idAggregate!));
     };
 
     const handleClickSposta = () => {
-        navigate(`/aggregate/pa-transfer`, { state: { agg: { id: aggregateId, name: agg?.name } } });
+        navigate(routes.TRANSFER_PA, { state: { agg: { id: idAggregate, name: agg?.name } } });
     };
 
     const getFormTitle = () => {
@@ -54,8 +56,8 @@ const AggregateDetailPage = ({ email }: any) => {
         </Typography>
     }
 
-    const getAssociatedPas = (aggregateId: string) => {
-        let request = apiRequests.getAssociatedPaList(aggregateId)
+    const getAssociatedPas = (idAggregate: string) => {
+        let request = apiRequests.getAssociatedPaList(idAggregate)
         if (request) {
             request
                 .then(res => {
@@ -81,15 +83,17 @@ const AggregateDetailPage = ({ email }: any) => {
         }
     ];
 
+    const breadcrumbsLinks = [
+        {
+            linkLabel: 'Gestione Aggregazioni ApiKey',
+            linkRoute: routes.AGGREGATES
+        }
+    ]
+
     return (
         <MainLayout email={email}>
             <Box px={3}>
-                <Breadcrumbs aria-label="breadcrumb">
-                    <Link underline="hover" color="inherit" href="/aggregates">
-                        Gestione Aggregazioni ApiKey
-                    </Link>
-                    <Typography color="text.primary">Dettaglio aggregazione</Typography>
-                </Breadcrumbs>
+                <Breadcrumbs currentLocationLabel="Dettaglio aggregazione" links={breadcrumbsLinks} />
             </Box>
 
             <Box px={3} mt={2}>

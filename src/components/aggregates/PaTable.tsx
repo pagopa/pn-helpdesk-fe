@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -13,7 +13,7 @@ import { Pa } from '../../types';
 import { FieldsProperties } from "../formFields/FormFields";
 import FilterTable from "../forms/filterTable/FilterTable";
 import usePagination from '../../hooks/usePagination';
-import CustomPagination from '../Pagination/CustomPagination';
+import CustomPagination from '../pagination/CustomPagination';
 
 type Props = {
     paList : Array<Pa>,

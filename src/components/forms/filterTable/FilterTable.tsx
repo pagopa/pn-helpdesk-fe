@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react' 
-import { FieldsProperties, FormField, FieldsProps } from '../../formFields/FormFields';
+import { useEffect } from 'react' 
+import { FormField, FieldsProps } from '../../formFields/FormFields';
 import { Controller, useForm } from "react-hook-form";
-import { Grid, Button, Box, FormHelperText, InputAdornment } from "@mui/material";
-import { useSelector, useDispatch } from 'react-redux';
-import { filtersSelector, setFilters } from '../../../redux/aggregateSlice';
-import { getAggregateParams } from '../../../api/apiRequestTypes';
+import { Grid, Button, FormHelperText } from "@mui/material";
 
 const defaultValues : { [key: string]: any } = {
     name: ""

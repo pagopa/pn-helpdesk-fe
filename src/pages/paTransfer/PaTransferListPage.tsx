@@ -10,14 +10,15 @@ import {
     ListItemIcon,
     Button,
     Checkbox,
-    Container,
-
+    Container
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import apiRequests from "../../api/apiRequests";
 import * as snackbarActions from "../../redux/snackbarSlice";
 import { useDispatch } from 'react-redux';
 import { getAggregationMovePaType } from "../../api/apiRequestTypes";
+import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
+import * as routes from '../../navigation/routes';
 
 const PaTransferListPage = ({ email }: any) => {
     const navigate = useNavigate();
@@ -148,8 +149,23 @@ const PaTransferListPage = ({ email }: any) => {
         getPas2(undefined, input2Value);
     }
 
+    const breadcrumbsLinks = aggParam ? [
+        {
+            linkLabel: 'Gestione Aggregazioni ApiKey',
+            linkRoute: routes.AGGREGATES
+        },
+        {
+            linkLabel: 'Dettaglio Aggregazione',
+            linkRoute: routes.GET_UPDATE_AGGREGATE_PATH(aggParam.id!)
+        }
+    ] : [];
+
     return (
         <MainLayout email={email}>
+            {aggParam && <Container>
+                <Breadcrumbs currentLocationLabel="Trasferimento di PA" links={breadcrumbsLinks} />
+            </Container>}
+
             <Container><h1>Trasferimento di PA</h1></Container>
             <Container style={{ marginTop: 20 }}>
                 <div className="agg-selection" style={{ display: 'flex', gap: 350 }}>

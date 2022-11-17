@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import MenuIcon from '@mui/icons-material/Menu';
 import { Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
+import * as routes from '../../navigation/routes';
+
 const NavigationMenu = () => {
 
     const [open, setOpen] = useState(false);
@@ -17,11 +19,11 @@ const NavigationMenu = () => {
       },
       {
         title: "Gestione Aggregazioni ApiKey",
-        link: "/aggregates",
+        link: routes.AGGREGATES
       },
       {
         title: "Trasferimento di PA",
-        link: "/aggregate/pa-transfer",
+        link: routes.TRANSFER_PA
       }
     ];
 

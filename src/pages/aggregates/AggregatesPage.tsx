@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import AggregatesTable from "../../components/aggregates/AggregatesTable";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import * as routes from '../../navigation/routes';
 
 /**
  * Aggregates page
@@ -13,7 +14,7 @@ const AggregatesPage = ({email}: any) => {
   const navigate = useNavigate();
 
   const handleClickCrea = () => {
-    navigate(`/aggregate`);
+    navigate(routes.AGGREGATE);
   };
 
   return (
