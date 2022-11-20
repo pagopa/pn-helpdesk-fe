@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import {
     Table,
     TableBody,
@@ -6,90 +6,78 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Checkbox,
-    Pagination
+    Checkbox
 } from '@mui/material';
-import { Pa } from '../../types';
-import { FieldsProperties } from "../formFields/FormFields";
-import FilterTable from "../forms/filterTable/FilterTable";
+
+
 import usePagination from '../../hooks/usePagination';
 import CustomPagination from '../pagination/CustomPagination';
+import { Pa } from '../../types'
 
-type Props = {
-    paList : Array<Pa>,
-    handleSelection:(pa: any, selected: boolean) => void,
+type PaBodyTableRowProps = {
+    pa: Pa,
+    onSelect?: (pa: Pa, selected: boolean) => void
 }
 
-const PaTable = ({paList, handleSelection}: Props) => {
-    
-    const fields = [FieldsProperties["Nome PA"]];
+const PaBodyTableRow = ({pa, onSelect} : PaBodyTableRowProps) => {
 
-    const [filters, setFilters] = useState({name: ""}); 
-    
-    const handleFiltersSubmit = (filters: any) => {
-        setFilters(filters);
-    }
-
-    const handleChange = (evt: any, pa: Pa) => {
+    const handleChange = (evt: React.ChangeEvent<HTMLInputElement>, pa: Pa) => {
         let checked = evt.target.checked;
-        handleSelection(pa, checked);
+        onSelect!(pa, checked);
     };
 
-    const filterPredicate = (pa: Pa) => {
-        return pa.name.toUpperCase().indexOf(filters.name.toUpperCase()) !== -1;
-    }
+    return (
+        <TableRow>
+            {onSelect && <TableCell>
+                    <Checkbox id={`check-${pa.id}`} name={`input-check-${pa.id}`} checked={pa.selected} onChange={ (evt) => handleChange(evt, pa) }/>
+                </TableCell>
+            }
+            <TableCell>{pa.name}</TableCell>
+        </TableRow>
+    )
+}
 
-    const paListFiltered = useMemo(() => {
-        console.time("Predicato");
-        let fil = filters.name ? paList.filter(filterPredicate) : paList;
-        console.timeEnd("Predicato");
+type PaTableHeadProps = {
+    onSelect?: (pa: Pa, selected: boolean) => void
+}
+const PaTableHead = ({onSelect} : PaTableHeadProps) => {
 
-        return fil;
-    }, [filters.name, paList.length]);
+    return (
+        <TableRow>
+            {onSelect && <TableCell width={"10%"}></TableCell>}
+            <TableCell width={onSelect ? "90%" : "100%"}>Nome PA</TableCell>
+        </TableRow>
+    )
+}
 
-    const { handlePaginationChange, limit, page, pagesToShow, slicedList, total } = usePagination(paListFiltered, 5); 
+
+type PaTableProps = {
+    paList: Array<Pa>,
+    onSelect?: (pa: Pa, selected: boolean) => void
+}
+
+const PaTable = ({paList, onSelect}: PaTableProps) => {
+    const head = <PaTableHead onSelect={onSelect} />;
+    
+    const { handlePaginationChange, limit, page, pagesToShow, slicedList, total } = usePagination(paList, 5); 
+    
+    const rows = slicedList.map((pa) => (
+        <PaBodyTableRow key={`row-${pa.id}`} pa={pa} onSelect={onSelect} />
+    ))
 
     return (
         <>
-            <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} filters={filters} />
             <TableContainer sx={{ marginBottom: '10px' }}>
-                <Table stickyHeader aria-label='Tabella di item'>
+                <Table stickyHeader aria-label='Tabella di Pubbliche amministrazioni'>
                     <TableHead>
-                        <TableRow>
-                            <TableCell width={"10%"}></TableCell>
-                            <TableCell width={"90%"}>Nome PA</TableCell>
-                        </TableRow>
+                        {head}
                     </TableHead>
                     <TableBody sx={{ backgroundColor: 'background.paper' }}>
-                        {slicedList.map((pa) => (
-                            <TableRow key={`row-${pa.id}`}>
-                                <TableCell>
-                                    <Checkbox id={`check-${pa.id}`} name={`input-check-${pa.id}`} checked={pa.selected} onChange={ (evt) => handleChange(evt, pa) }/>
-                                </TableCell>
-                                <TableCell>{pa.name}</TableCell>
-                            </TableRow>
-                        ))}
+                        {rows}
                     </TableBody>
                 </Table>
             </TableContainer>
-            {/* <table>
-                <thead>
-                    <th style={{width:"10%"}}></th>
-                    <th style={{width:"90%"}}> Nome PA</th>
-                </thead>
-                <tbody>
-                {slicedList.map((pa, ind) => (
-                            <tr key={ `row-${pa.id}`}>
-                                <td>
-                                    <input type="checkbox" id={`check-${pa.id}`} name={`input-check-${pa.id}`} checked={pa.selected} onChange={ (evt) => handleChange(evt, pa) }/>
-                                </td>
-                                <td>{pa.name}</td>
-                            </tr>
-                        ))}
-                </tbody>
-            </table> */}
-            
-            {paListFiltered.length > 0 && <CustomPagination 
+            {paList.length > 0 && <CustomPagination 
                     paginationData={{
                         limit: limit,
                         page: page,
@@ -109,6 +97,7 @@ const PaTable = ({paList, handleSelection}: Props) => {
                 />
             }
         </>
-    );
+        
+    )
 }
 export default PaTable;

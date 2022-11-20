@@ -13,7 +13,16 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import apiRequests from "../../api/apiRequests";
 import * as routes from '../../navigation/routes';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
-
+import usePagination from '../../hooks/usePagination';
+import CustomPagination from '../../components/pagination/CustomPagination';
+import { useSelector, useDispatch } from 'react-redux';
+import * as snackbarActions from "../../redux/snackbarSlice";
+import * as spinnerActions from "../../redux/spinnerSlice";
+import CustomCard from '../../components/customCard/CustomCard';
+import { CardActionType, CardHeaderType } from '../../components/customCard/types';
+import PaTable from "../../components/aggregates/PaTable";
+import AggregateForm from "../../components/forms/aggregate/AggregateForm";
+import { UsagePlan } from "../../types/UsagePlan";
 /**
  * AggregateDetail page
  * @component
@@ -21,25 +30,47 @@ import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
 const AggregateDetailPage = ({ email }: any) => {
     const { idAggregate } = useParams();
     const isCreate = !idAggregate;
-    const [agg, setAgg]: any = useState(undefined)
-    const [pas, setPas]: any = useState(undefined)
+    const dispatch = useDispatch();
+    const [agg, setAgg]: any = useState(undefined);
+    const [pas, setPas]: any = useState([]);
+    const [usagePlans, setUsagePlans] = useState<Array<UsagePlan>>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!isCreate) {
-            let request = apiRequests.getAggregateDetails(idAggregate)
-            if (request) {
-                request
-                    .then(res => {
-                        setAgg(res);
-                    })
-                    .catch(err => {
-                        console.log("Errore: ", err)
-                    })
-            }
-            getAssociatedPas(idAggregate);
+        //Race condition
+        let ignore = false;
+        
+        let requestList = [apiRequests.getUsagePlans()];
+
+        if(!isCreate) {
+            requestList.push(apiRequests.getAggregateDetails(idAggregate))
+            requestList.push(apiRequests.getAssociatedPaList(idAggregate))
         }
-    }, []);
+        
+        dispatch(spinnerActions.updateSpinnerOpened(true));
+        Promise.all(requestList)
+            .then(responses => {
+                if(!ignore) {
+                    setUsagePlans(responses[0].items);
+                
+                    if(!isCreate) {
+                        setAgg(responses[1]);
+                        setPas(responses[2].items);
+                    }
+                }
+            })
+            .catch(errors => {
+                dispatch(snackbarActions.updateSnackbacrOpened(true));
+                dispatch(snackbarActions.updateStatusCode("400"));
+                dispatch(snackbarActions.updateMessage(`Errore nel caricamento dei dati`));
+                navigate(routes.AGGREGATES);
+            })
+            .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
+
+        return () => { 
+            ignore = true;
+        }
+    }, [idAggregate]);
 
     const handleClickAggiungi = () => {
         navigate(routes.GET_ADD_PA_PATH(idAggregate!));
@@ -56,39 +87,51 @@ const AggregateDetailPage = ({ email }: any) => {
         </Typography>
     }
 
-    const getAssociatedPas = (idAggregate: string) => {
-        let request = apiRequests.getAssociatedPaList(idAggregate)
-        if (request) {
-            request
-                .then(res => {
-                    setPas(res.items);
-                })
-                .catch(err => {
-                    console.log("Errore: ", err)
-                })
-        }
-    }
-
-    const columns: Array<Column<PaColumn>> = [
-        {
-            id: 'name',
-            label: 'Nome PA',
-            width: '100%',
-            getCellLabel(value: string) {
-                return value;
-            },
-            onClick(row: Item) {
-                return;
-            },
-        }
-    ];
-
     const breadcrumbsLinks = [
         {
             linkLabel: 'Gestione Aggregazioni ApiKey',
             linkRoute: routes.AGGREGATES
         }
     ]
+
+    const formCardHeader : CardHeaderType = {
+        avatar: <CreateIcon />, 
+        title: getFormTitle(),
+        sx: { px: 3, pt: 4, pb: 1 }
+    };
+
+    const formCardBody = <AggregateForm isCreate={isCreate} agg={agg} usagePlans={usagePlans} />;//<AggregationDetailForm isCreate={isCreate} agg={agg} />;
+
+    const associatedPasCardHeader : CardHeaderType = {
+        title: <Typography gutterBottom variant="h5" component="div">
+            PA Associate
+        </Typography>,
+        avatar: <BusinessIcon />,
+        action: <>
+            <Button
+                variant="contained"
+                type="submit"
+                size="small"
+                onClick={handleClickSposta}
+                startIcon={<ArrowRightAltIcon />}
+            >
+                Trasferisci PA
+            </Button>
+            <Button
+                variant="contained"
+                type="submit"
+                size="small"
+                onClick={handleClickAggiungi}
+                startIcon={<DomainAddIcon />}
+                sx={{ ml: 2 }}
+            >
+                Associa PA
+            </Button>
+        </>,
+        sx: {px: 3, pt: 4, pb: 1}
+    }
+
+    const associatedPasCardBody = <PaTable paList={pas} />;
 
     return (
         <MainLayout email={email}>
@@ -97,53 +140,19 @@ const AggregateDetailPage = ({ email }: any) => {
             </Box>
 
             <Box px={3} mt={2}>
-                <Card>
-                    <CardHeader sx={{ px: 3, pt: 4, pb: 1 }} avatar={<CreateIcon />} title={getFormTitle()} />
-                    <CardContent>
-                        <AggregationDetailForm isCreate={isCreate} agg={agg} />
-                    </CardContent>
-                </Card>
+                <CustomCard 
+                    cardId='form-card'
+                    cardHeader={formCardHeader}
+                    cardBody={formCardBody}
+                />
             </Box>
 
             {!isCreate && <Box px={3} mt={2}>
-                <Card>
-                    <CardHeader
-                        sx={{ px: 3, pt: 4, pb: 1 }}
-                        avatar={<BusinessIcon />}
-                        title={
-                            <Typography gutterBottom variant="h5" component="div">
-                                PA Associate
-                            </Typography>
-                        }
-                        action={
-                            <>
-                                <Button
-                                    variant="contained"
-                                    type="submit"
-                                    size="small"
-                                    onClick={handleClickSposta}
-                                    startIcon={<ArrowRightAltIcon />}
-                                >
-                                    Trasferisci PA
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    type="submit"
-                                    size="small"
-                                    onClick={handleClickAggiungi}
-                                    startIcon={<DomainAddIcon />}
-                                    sx={{ ml: 2 }}
-                                >
-                                    Associa PA
-                                </Button>
-                            </>
-                        }
-                    />
-                    <CardContent>
-                        <ItemsTable columns={columns} rows={pas || []} />
-                        <Pagination count={1} />
-                    </CardContent>
-                </Card>
+                <CustomCard
+                    cardId='associated-pa-card'
+                    cardHeader={associatedPasCardHeader}
+                    cardBody={associatedPasCardBody}
+                />
             </Box>
             }
         </MainLayout>

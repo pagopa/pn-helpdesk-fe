@@ -9,18 +9,20 @@ import * as snackbarActions from "../../redux/snackbarSlice";
 import { useNavigate } from "react-router-dom";
 import { getAggregateParams } from "../../api/apiRequestTypes";
 import { useSelector, useDispatch } from 'react-redux';
-import { filtersSelector, paginationSelector, aggregatesSelector, setPagination, setAggregates } from '../../redux/aggregateSlice';
+import { filtersSelector, paginationSelector, aggregatesSelector, setPagination, setAggregates, resetState, setFilters } from '../../redux/aggregateSlice';
 import { PaginationData } from "../pagination/types";
 import apiRequests from '../../api/apiRequests';
 import CustomPagination from "../pagination/CustomPagination";
 import { calculatePages } from "../../helpers/pagination.utility";
 import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
 import * as routes from '../../navigation/routes';
+import { FieldsProperties } from "../formFields/FormFields";
+import FilterTable from "../forms/filterTable/FilterTable";
 
 type AggregateColumn = 
 | 'id'
 | 'name'
-| 'usagePlanTemplate'
+| 'usagePlan'
 | 'createdAt'
 | 'lastUpdate'
 
@@ -54,16 +56,16 @@ const AggregatesTable = () => {
       apiRequests.getAggregates(params)
         .then(
           res => {
-            dispatch(spinnerActions.updateSpinnerOpened(false));
             dispatch(setAggregates(res));
           }
         ).catch(
           err => {
             dispatch(snackbarActions.updateSnackbacrOpened(true));
             dispatch(snackbarActions.updateStatusCode("400"));
-            dispatch(spinnerActions.updateSpinnerOpened(false));
+            dispatch(snackbarActions.updateMessage("Non è stato possibile ottenere i dati richiesti"));
+            dispatch(resetState());
           }
-        )
+        ).finally(() => {dispatch(spinnerActions.updateSpinnerOpened(false))})
     }
 
     useEffect(
@@ -126,7 +128,7 @@ const AggregatesTable = () => {
             },
         },
         {
-            id: 'usagePlanTemplate',
+            id: 'usagePlan',
             label: 'Usage plan',
             width: '20%',
             sortable: false,
@@ -179,10 +181,17 @@ const AggregatesTable = () => {
     function handleRowClick(row: Item) {
       navigate(routes.GET_UPDATE_AGGREGATE_PATH(row.id));
     }
+
+    const handleFiltersSubmit = (filters: any) => {
+      dispatch(setFilters(filters));
+    }
+
+    const fields = [FieldsProperties["Nome aggregazione"]];
     
     return (
       <>
-        <FilterTableAggregates />
+        {/* <FilterTableAggregates /> */}
+        <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} filters={filters} />
         <ItemsTable columns={columns} rows={rows} />
         <CustomPagination
           paginationData={{

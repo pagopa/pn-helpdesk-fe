@@ -1,6 +1,6 @@
 import TextFieldComponent from "../textField/TextFieldComponent"
 import RadioButtonsGroup from "../radioButtonsGroup/RadioButtonsGroup";
-import { Checkbox, FormControlLabel, Grid} from "@mui/material";
+import { Checkbox, FormControlLabel, Grid, InputAdornment, Tooltip} from "@mui/material";
 import SelectField from "../selectField/SelectField";
 import { regex } from "../../helpers/validations";
 import DatePickerComponent from "../datePicker/DatePickerComponent";
@@ -8,7 +8,7 @@ import DateRangePickerComponent from "../dataRangePicker/DataRangePickerComponen
 import { CalendarPickerView } from "@mui/lab";
 import { errorMessages } from "../../helpers/messagesConstants"
 import { format, isSameDay, isBefore } from "date-fns";
-
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 /**
  * Items for the Tipo Estrazione and their coresponding fields
  */
@@ -22,6 +22,12 @@ let MenuItems: {[key: string]: Array<string>} = {
     "Ottieni log completi": ["ticketNumber", "taxId", "iun", "personId"],
     "Ottieni log di processo": ["traceId", "Time interval"]
 }
+
+const HelpIconWithTooltip = ({ title }: any) => (
+    <Tooltip title={title}>
+        <HelpOutlineIcon />
+    </Tooltip>
+);
 
 /**
  * @typedef {Object} FieldsProps
@@ -100,6 +106,10 @@ type FieldsProps = {
      * disabling future for date range pickers
      */
     disableFuture?: boolean
+    /**
+     * disabling field
+     */
+    disabled?: boolean
 }
 
 /**
@@ -378,6 +388,64 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
                 message: errorMessages.MIN_LENGTH(3)
             }
         }
+    },
+    "Nome Aggregazione": {
+        name: "name",
+        componentType: "textfield",
+        label: "Nome Aggregazione",
+        size: "33%",
+        hidden: false,
+        rules: {
+            required: errorMessages.REQUIRED
+        }
+    },
+    "Descrizione Aggregazione": {
+        name: "description",
+        componentType: "textfield",
+        label: "Descrizione Aggregazione",
+        size: "67%",
+        hidden: false,
+        rules: {
+            required: errorMessages.REQUIRED
+        }
+    },
+    "Usage Plan": {
+        name: "usagePlanName",
+        componentType: "select",
+        label: "Usage Plan",
+        size: "33%",
+        hidden: false,
+        rules: {
+            required: errorMessages.REQUIRED
+        },
+        selectItems: []
+    },
+    "Rate": {
+        name: "rate",
+        componentType: "textfield",
+        label: "Rate",
+        size: "33%",
+        hidden: false,
+        InputProps: {
+            endAdornment: <InputAdornment position="end">
+                <HelpIconWithTooltip title="Numero di richieste permesse al secondo" />
+            </InputAdornment>
+        },
+        disabled: true
+    },
+    "Burst": {
+        name: "burst",
+        componentType: "textfield",
+        label: "Burst",
+        size: "33%",
+        hidden: false,
+        InputProps: {
+            endAdornment: <InputAdornment position="end">
+                <HelpIconWithTooltip title="Numero di richieste permesse in concorrenza" />
+            </InputAdornment>
+        },
+        disabled: true
+
     }
 }
 

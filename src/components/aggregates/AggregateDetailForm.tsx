@@ -8,12 +8,15 @@ import apiRequests from "../../api/apiRequests";
 import { createAggregateType } from "../../api/apiRequestTypes";
 import { useNavigate } from "react-router-dom";
 import * as routes from '../../navigation/routes';
-
+import { useSelector, useDispatch } from 'react-redux';
+import * as snackbarActions from "../../redux/snackbarSlice";
+import * as spinnerActions from "../../redux/spinnerSlice";
 type Props = { isCreate: boolean, agg: any };
 
 const AggregationDetailForm = ({ isCreate, agg }: Props) => {
     const confirmDialog = useConfirmDialog();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const defAgg = { id: "", name: "", usagePlan: { id: "", name: "", quota: 0, rate: 0, burst: 0 }, createdAt: "", lastUpdate: "", associatedPa: 0 }
     const [aggregate, setAggregate]: any = useState(defAgg);
     const [usagePlans, setUsagePlans]: any = useState(undefined);
@@ -35,7 +38,6 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
         aggregationName: "",
         aggregationDescription: "",
         usagePlan: "",
-        quota: "",
         rate: "",
         burst: ""
     };
@@ -56,38 +58,15 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
             aggregationDescription: aggregation.aggregationDescription,
             AWSApiKey: aggregation.AWSApiKey,
             usagePlan: aggregation.usagePlan,
-            quota: aggregation.quota,
             rate: aggregation.rate,
             burst: aggregation.burst
         }
     }
 
-    const usagePlanList = [
-        {
-            name: "Small",
-            quota: 1000,
-            rate: 100,
-            burst: 30
-        },
-        {
-            name: "Medium",
-            quota: 5000,
-            rate: 1000,
-            burst: 300
-        },
-        {
-            name: "Large",
-            quota: 10000,
-            rate: 2000,
-            burst: 600
-        }
-    ]
-
     const aggregationData = {
         aggregationName: aggregate?.name,
         aggregationDescription: aggregate?.description || "Descrizione aggregazione",
         usagePlan: aggregate?.usagePlan?.name,
-        quota: aggregate?.usagePlan?.quota,
         rate: aggregate?.usagePlan?.rate,
         burst: aggregate?.usagePlan?.burst
     }
@@ -105,7 +84,6 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
     const handleChangeUsagePlan = async (evt: any) => {
         const { value, name } = evt.target;
         let indexUsagePlan = usagePlans.findIndex((item: { name: any; }) => item.name === value);
-        await formik.setFieldValue("quota", usagePlans[indexUsagePlan].quota);
         await formik.setFieldValue("burst", usagePlans[indexUsagePlan].burst);
         await formik.setFieldValue("rate", usagePlans[indexUsagePlan].rate);
         await formik.setFieldValue(name, value);
@@ -143,17 +121,23 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
             usagePlanId: usagePlans?.findIndex((item: { name: any; }) => item.name === formik.values.usagePlan).toString(),
         }
         // returns random id
+        dispatch(spinnerActions.updateSpinnerOpened(true));
         let request = apiRequests.createAggregate(payload)
         if (request) {
             request
                 .then(res => {
-                    console.log(res);
                     formik.resetForm();
+                    dispatch(snackbarActions.updateSnackbacrOpened(true));
+                    dispatch(snackbarActions.updateStatusCode("200"));
+                    dispatch(snackbarActions.updateMessage(`Aggregato creato con successo`));
                     navigate(routes.GET_UPDATE_AGGREGATE_PATH(res));
                 })
                 .catch(err => {
-                    console.log("Errore: ", err)
+                    dispatch(snackbarActions.updateSnackbacrOpened(true));
+                    dispatch(snackbarActions.updateStatusCode("400"));
+                    dispatch(snackbarActions.updateMessage(`Non è stato possibile creare l'aggregato`));
                 })
+                .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
         }
     }
 
@@ -165,21 +149,28 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
             usagePlanId: usagePlans?.findIndex((item: { name: any; }) => item.name === formik.values.usagePlan).toString(),
         }
         // returns id
+        dispatch(spinnerActions.updateSpinnerOpened(true));
         let request = apiRequests.modifyAggregate(payload, agg.id)
         if (request) {
             request
                 .then(res => {
-                    console.log(res);
+                    dispatch(snackbarActions.updateSnackbacrOpened(true));
+                    dispatch(snackbarActions.updateStatusCode("200"));
+                    dispatch(snackbarActions.updateMessage(`Aggregato modificato con successo`));
                 })
                 .catch(err => {
-                    console.log("Errore: ", err)
+                    dispatch(snackbarActions.updateSnackbacrOpened(true));
+                    dispatch(snackbarActions.updateStatusCode("400"));
+                    dispatch(snackbarActions.updateMessage(`Non è stato possibile modificare l'aggregato`));
                 })
+                .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
         }
     }
 
     const handleDelete = () => {
         // DELETE /aggregate/{id}
         const payload = agg.id
+        dispatch(spinnerActions.updateSpinnerOpened(false));
         let request = apiRequests.deleteAggregate(payload)
         if (request) {
             request
@@ -187,8 +178,11 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
                     console.log(res);
                 })
                 .catch(err => {
-                    console.log("Errore: ", err)
+                    dispatch(snackbarActions.updateSnackbacrOpened(true));
+                    dispatch(snackbarActions.updateStatusCode("400"));
+                    dispatch(snackbarActions.updateMessage(`Non è stato possibile eliminare l'aggregato`));
                 })
+                .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
         }
     }
 
@@ -258,7 +252,7 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
                             size="small"
                         />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                         <FormControl fullWidth>
                             <InputLabel id="usage-plan-label">Usage plan</InputLabel>
                             <Select
@@ -276,7 +270,7 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={3}>
+                    {/* <Grid item xs={3}>
                         <FormControl fullWidth variant="outlined">
                             <InputLabel htmlFor="quota">Quota</InputLabel>
 
@@ -296,8 +290,8 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
                                 }
                             />
                         </FormControl>
-                    </Grid>
-                    <Grid item xs={3}>
+                    </Grid> */}
+                    <Grid item xs={4}>
                         <FormControl fullWidth variant="outlined">
                             <InputLabel htmlFor="rate">Rate</InputLabel>
 
@@ -318,7 +312,7 @@ const AggregationDetailForm = ({ isCreate, agg }: Props) => {
                             />
                         </FormControl>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={4}>
                         <FormControl fullWidth variant="outlined">
                             <InputLabel htmlFor="burst">Burst</InputLabel>
 

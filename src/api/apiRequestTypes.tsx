@@ -87,6 +87,7 @@ type getAssociatedPaListType = {
  * @typedef {Object} createAggregateType
  */
 type createAggregateType = {
+    id?: string,
     name: string,
     description: string,
     usagePlanId: string

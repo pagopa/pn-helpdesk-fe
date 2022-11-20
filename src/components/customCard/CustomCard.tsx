@@ -31,7 +31,13 @@ const CustomCard = ({cardId, cardHeader, cardBody, cardActions} : Props) => {
           px: 2,
         }}
       >
-        <CardHeader sx={cardHeader.sx ? cardHeader.sx : null} title={cardHeader.title ? (cardHeader.title) : null} avatar={cardHeader.avatar ? cardHeader.avatar : null} className="card-header" />
+        <CardHeader 
+          sx={cardHeader.sx ? cardHeader.sx : null} 
+          title={cardHeader.title ? (cardHeader.title) : null} 
+          avatar={cardHeader.avatar ? cardHeader.avatar : null}
+          action={cardHeader.action ? cardHeader.action : null} 
+          className="card-header" 
+        />
         <CardContent sx={{ padding: 0, mt: 2, mb:2, ':last-child': { padding: 0 } }}>
           {cardBody}
         </CardContent>

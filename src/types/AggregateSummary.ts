@@ -1,7 +1,7 @@
 export interface AggregateSummary {
     id: string,
     name: string,
-    usagePlanTemplate: string,
+    usagePlan: string,
     createdAt: string,
     lastUpdate?: string
 }

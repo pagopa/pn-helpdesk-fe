@@ -1,8 +1,6 @@
-import { useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import { ListSubheader, Pagination } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import { Pa } from '../../types';
@@ -15,7 +13,6 @@ type Props = {
 }
 
 const PaList = ({paList, handleSelection} : Props) => {
-    console.log("render Pa List");
     const { handlePaginationChange, limit, page, pagesToShow, slicedList, total } = usePagination(paList);
     return (
         <>

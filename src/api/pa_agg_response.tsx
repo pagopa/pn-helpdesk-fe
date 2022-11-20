@@ -1,11 +1,11 @@
 import { Pa } from "../types";
 import { getAssociablePaListResponse } from "./apiRequestTypes";
-
 const agg_list = {
     items: [
         {
             id: "agg_1",
             name: "Aggregation 1",
+            description: "Descrizione Aggregation 1",
             usagePlan: {
                 id: "0",
                 name: "Small",
@@ -20,6 +20,7 @@ const agg_list = {
         {
             id: "agg_2",
             name: "Aggregation 2",
+            description: "Descrizione Aggregation 2",
             usagePlan: {
                 id: "1",
                 name: "Medium",
@@ -34,6 +35,7 @@ const agg_list = {
         {
             id: "agg_3",
             name: "Aggregation 3",
+            description: "Descrizione Aggregation 3",
             usagePlan: {
                 id: "2",
                 name: "Large",
@@ -111,7 +113,7 @@ const pa_list = {
             name: "Comune di Torino",
         }
     ]
-}
+};
 
 const pa_list_associated = {
     items: [
@@ -176,7 +178,7 @@ const pa_list_associated = {
             name: "Comune di Bologna",
         }
     ]
-}
+};
 
 const aggregate = {
     id: "agg1",
@@ -190,7 +192,33 @@ const aggregate = {
         burst: 100
     },
     createdAt: "2022-11-10"
-}
+};
+
+const usage_plan_list = {
+    items: [
+        {
+        id: "0",
+        name: "Small",
+        quota: 1000,
+        rate: 100,
+        burst: 30
+        },
+        {
+        id: "1",
+        name: "Medium",
+        quota: 5000,
+        rate: 1000,
+        burst: 300
+        },
+        {
+        id: "2",
+        name: "Large",
+        quota: 10000,
+        rate: 2000,
+        burst: 600
+        }
+    ]
+};
 
 
-export { agg_list, pa_list, aggregate, pa_list_associated }
+export { agg_list, pa_list, aggregate, pa_list_associated, usage_plan_list }

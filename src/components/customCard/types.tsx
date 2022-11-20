@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 export interface CardHeaderType {
     avatar?: ReactNode,
     title?: ReactNode,
+    action?: ReactNode,
     sx?: SxProps
 }
 

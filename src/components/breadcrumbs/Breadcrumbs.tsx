@@ -15,7 +15,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     color: `${theme.palette.text.primary} !important`,
-    texDecoration: 'none !important',
+    textDecoration: 'none !important',
     '&:hover, &:focus': {
       textDecoration: 'underline !important',
     },

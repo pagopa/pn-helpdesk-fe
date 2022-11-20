@@ -8,61 +8,61 @@ const getAggregatesResponseMockPag1 : getAggregatesResponse = {
       {
         id: "agg_1",
         name: "Comuni Milano",
-        usagePlanTemplate: "Large",
+        usagePlan: "Large",
         createdAt: "2022-11-10 10:00:00"
       },
       {
         id: "agg_2",
         name: "Comuni Como",
-        usagePlanTemplate: "Medium",
+        usagePlan: "Medium",
         createdAt: "2022-11-10 10:00:00"
       },
       {
         id: "agg_3",
         name: "Comuni Bergamo",
-        usagePlanTemplate: "Medium",
+        usagePlan: "Medium",
         createdAt: "2022-11-10 10:00:00"
       },
       {
         id: "agg_4",
         name: "Comuni Bologna",
-        usagePlanTemplate: "Medium",
+        usagePlan: "Medium",
         createdAt: "2022-11-10 10:00:00"
       },
       {
         id: "agg_5",
         name: "Comuni Pisa",
-        usagePlanTemplate: "Medium",
+        usagePlan: "Medium",
         createdAt: "2022-11-10 10:00:00"
       },
       {
         id: "agg_6",
         name: "Comuni Livorno",
-        usagePlanTemplate: "Medium",
+        usagePlan: "Medium",
         createdAt: "2022-11-10 10:00:00"
       },
       {
         id: "agg_7",
         name: "Comuni Roma",
-        usagePlanTemplate: "Large",
+        usagePlan: "Large",
         createdAt: "2022-11-10 10:00:00"
       },
       {
         id: "agg_8",
         name: "Comuni Napoli",
-        usagePlanTemplate: "Medium",
+        usagePlan: "Medium",
         createdAt: "2022-11-10 10:00:00"
       },
       {
         id: "agg_9",
         name: "Comuni Catania",
-        usagePlanTemplate: "Medium",
+        usagePlan: "Medium",
         createdAt: "2022-11-10 10:00:00"
       },
       {
         id: "agg_10",
         name: "Comuni Palermo",
-        usagePlanTemplate: "Medium",
+        usagePlan: "Medium",
         createdAt: "2022-11-10 10:00:00"
       },
     ]
@@ -76,19 +76,19 @@ const getAggregatesResponseMockPag2 : getAggregatesResponse = {
     {
       id: "agg_11",
       name: "Comuni Messina",
-      usagePlanTemplate: "Large",
+      usagePlan: "Large",
       createdAt: "2022-11-10 10:00:00"
     },
     {
       id: "agg_12",
       name: "Comuni Aosta",
-      usagePlanTemplate: "Medium",
+      usagePlan: "Medium",
       createdAt: "2022-11-10 10:00:00"
     },
     {
       id: "agg_13",
       name: "Comuni Empoli",
-      usagePlanTemplate: "Medium",
+      usagePlan: "Medium",
       createdAt: "2022-11-10 10:00:00"
     }
   ]

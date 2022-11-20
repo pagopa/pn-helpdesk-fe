@@ -54,6 +54,7 @@ const TextFieldComponent = (props: Props) => {
               () => {}
             }
             onChange={props.onChange}
+            disabled={props.field.disabled}
             />
     )
 }

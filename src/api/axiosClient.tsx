@@ -1,8 +1,9 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { getAggregatesResponseMockPag1, getAggregatesResponseMockPag2 } from "./mockFile";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, addPaResponse, createAggregateType, modifyAggregateType, getUsagePlansType } from "./apiRequestTypes";
-import { aggregate, agg_list, pa_list, pa_list_associated } from "./pa_agg_response";
+import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, addPaResponse, createAggregateType, modifyAggregateType, getUsagePlansType, getAggregateResponse, getAssociatedPaListResponse } from "./apiRequestTypes";
+import { aggregate, agg_list, pa_list, pa_list_associated, usage_plan_list } from "./pa_agg_response";
 import { Aggregate, Pa } from "../types";
+import { compileRoute } from "../helpers/api.utility";
 
 const headers: Readonly<Record<string, string | boolean>> = {
   Accept: "*/*",
@@ -19,7 +20,7 @@ class Http {
 
   initHttp() {
     const http = axios.create({
-      baseURL: process.env.REACT_APP_API_ENDPOINT,
+      baseURL: "",
       headers,
     });
 
@@ -74,15 +75,19 @@ class Http {
     return this.http.post<T, R>("logs/v1/processes", payload)
   }
 
-  getAggregates(payload: getAggregateParams): Promise<getAggregatesResponse> {
-    //return this.http.get<GetAggregateResponse>(ENHANCE_ROUTE_WITH_QUERY('aggregate', payload));
+  getAggregates<T = getAggregatesResponse, R = AxiosResponse<T>>(payload: getAggregateParams): Promise<getAggregatesResponse> {
+    // return this.http.get<getAggregatesResponse, R>(compileRoute({
+    //   prefix: 'api-key-backoffice',
+    //   path: 'aggregate', 
+    //   query: payload
+    // }));
     console.log("call getAggregates with payload", payload);
     return new Promise((resolve, reject) => {
       if (payload.name === "error") {
         reject("Errore di sistema");
       } else if (payload.lastEvaluatedId === "") {
         console.log("response", getAggregatesResponseMockPag1);
-        resolve(getAggregatesResponseMockPag1)
+        resolve(getAggregatesResponseMockPag1);
       } else if (payload.lastEvaluatedId === "agg10") {
         console.log("response", getAggregatesResponseMockPag2);
         resolve(getAggregatesResponseMockPag2)
@@ -92,37 +97,65 @@ class Http {
   }
 
   getAggregateDetails<T = any, R = AxiosResponse<T>>(id: string): Promise<R> {
-    /* return this.http.get<T, R>(`/aggregate/${id}`) */
-    const agg = agg_list.items.find(agg => agg.id === id)
+    // return this.http.get<getAggregateResponse, R>(compileRoute({
+    //   prefix: "api-key-backoffice",
+    //   path: "aggregate/:id",
+    //   params: {
+    //     id: id
+    //   }
+    // }));
+    let foundAgg = agg_list.items.find(agg => agg.id === id);
+    const agg = foundAgg ? foundAgg : aggregate;
     return Promise.resolve(agg as unknown as R)
   }
 
-  createAggregate(payload: createAggregateType): Promise<string> {
-    //return this.http.post<string>("aggregate");
+  createAggregate<T = string, R = AxiosResponse<T>>(payload: createAggregateType): Promise<string> {
+    // return this.http.post<string, R>(compileRoute({
+    //   prefix: "api-key-backoffice",
+    //   path: "aggregate"
+    // }), payload);
     return new Promise((resolve) => {
       const id = Math.floor((Math.random() * 100) + 1).toString();
       resolve(id);
     })
   }
 
-  modifyAggregate(payload: modifyAggregateType, id: string): Promise<string> {
-    //return this.http.put<string>("aggregate");
+  modifyAggregate<T = string, R = AxiosResponse<T>>(payload: modifyAggregateType, id: string): Promise<string> {
+    // return this.http.put<string, R>(compileRoute({
+    //   prefix: "api-key-backoffice",
+    //   path: "aggregate/:id",
+    //   params: {
+    //     id: id
+    //   }
+    // }), payload);
     return new Promise((resolve) => {
       resolve(id);
     })
   }
 
-  deleteAggregate(id: string): Promise<string> {
-    //return this.http.delete<string>("aggregate");
+  deleteAggregate<T = string, R = AxiosResponse<T>>(id: string): Promise<string> {
+    // return this.http.delete<string, R>(compileRoute({
+    //   prefix: "api-key-backoffice",
+    //   path: "aggregate/:id",
+    //   params: {
+    //     id: id
+    //   }
+    // }));
     return new Promise((resolve) => {
       resolve(id);
     })
   }
 
-  getAssociatedPaList<T = any, R = AxiosResponse<T>>(id: string, payload?: getAssociatedPaListType): Promise<R> {
-    /* return this.http.post<T, R>(`/aggregate/${id}/associated-pa`, payload) */
+  getAssociatedPaList<T = any, R = AxiosResponse<T>>(id: string): Promise<getAssociatedPaListResponse> {
+    // return this.http.get<T, R>(compileRoute({
+    //   prefix: "api-key-backoffice",
+    //   path: "aggregate/:id/associated-pa",
+    //   params: {
+    //     id: id
+    //   }
+    // }));
     console.log("call getAssociatedPaList with payload", id);
-    return Promise.resolve(pa_list_associated as unknown as R)
+    return Promise.resolve(pa_list_associated as unknown as getAssociatedPaListResponse)
   }
 
   getAggregationMovePa<T = any, R = AxiosResponse<T>>(id: string, payload?: getAggregationMovePaType): Promise<R> {
@@ -143,11 +176,6 @@ class Http {
     return Promise.resolve(pa_list)
   }
 
-  getAggregate(id:string): Promise<Aggregate> {
-    console.log("call getAggregate with payload", id);
-    return Promise.resolve(aggregate);
-  }
-
   addPa(id: string, selectedPaList: Array<Pa>): Promise <addPaResponse> {
     //return this.http.post<GetAggregateResponse>('aggregate/${id}/add-pa', selectedPaList);
     let response : addPaResponse = {
@@ -158,33 +186,12 @@ class Http {
     return Promise.resolve(response);
   }
 
-  getUsagePlans<T = any, R = AxiosResponse<T>>(payload?: getUsagePlansType): Promise<R> {
-    /* return this.http.post<T, R>(`/usage-plans */
-    return Promise.resolve({
-      items: [
-        {
-          id: "0",
-          name: "Small",
-          quota: 1000,
-          rate: 100,
-          burst: 30
-        },
-        {
-          id: "1",
-          name: "Medium",
-          quota: 5000,
-          rate: 1000,
-          burst: 300
-        },
-        {
-          id: "2",
-          name: "Large",
-          quota: 10000,
-          rate: 2000,
-          burst: 600
-        }
-      ]
-    } as unknown as R)
+  getUsagePlans<T = any, R = AxiosResponse<T>>(): Promise<any> {
+    // return this.http.get<T, R>(compileRoute({
+    //   prefix: "api-key-backoffice",
+    //   path: `usage-plan`,
+    // }));
+    return Promise.resolve(usage_plan_list);
   }
 }
 

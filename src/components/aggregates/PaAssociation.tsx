@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { CardContent, Card, CardHeader, Button, Grid, Typography, Box, Badge, Breadcrumbs, Link, AccordionDetails, Accordion, AccordionSummary } from "@mui/material";
+import { useCallback, useEffect, useState } from 'react';
+import { Button, Grid, Typography, Badge } from "@mui/material";
 import PaList from "./PaList";
-import PaTable from "./PaTable";
-import PaFilterTable from './PaFilterTable';
-import { matchPath, useNavigate, useLocation } from "react-router-dom";
-import { Aggregate, Pa } from '../../types';
+import AssociablePaTable from "./AssociablePaTable";
+import { useNavigate } from "react-router-dom";
+import { Pa } from '../../types';
 import apiRequests from '../../api/apiRequests';
 import * as spinnerActions from "../../redux/spinnerSlice";
 import * as snackbarActions from "../../redux/snackbarSlice";
@@ -20,13 +19,9 @@ type Props = {
 }
 const PaAssociation = ({idAggregate} : Props) => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const { pathname } = location;
-    console.log(matchPath({path: routes.ADD_PA}, pathname));
     const dispatch = useDispatch();
     const confirmDialog = useConfirmDialog();
     const [associablePaList, setAssociablePaList] = useState<Array<Pa>>([]);
-    // const [paSelectedList, setPaSelectedList] = useState<Array<any>>([]);
 
     useEffect(() => {
         dispatch(spinnerActions.updateSpinnerOpened(true));
@@ -34,7 +29,7 @@ const PaAssociation = ({idAggregate} : Props) => {
         apiRequests.getAssociablePaList("")
             .then(
                 (response) => {
-                    setAssociablePaList(response.items.map((pa) => {return{...pa, selected: false}}));
+                    setAssociablePaList(response.items);
                 }
             )
             .catch(
@@ -49,14 +44,17 @@ const PaAssociation = ({idAggregate} : Props) => {
             )
     }, [idAggregate])
 
-    const handleSelection = (pa: any, selected: boolean) => {
-        let indexPa = associablePaList.findIndex((item) => item.id === pa.id);
+    const handleSelection = useCallback(
+        (pa: any, selected: boolean)  => {
+            let indexPa = associablePaList.findIndex((item) => item.id === pa.id);
 
-        let associablePaListCopy = [...associablePaList];
-        associablePaListCopy[indexPa].selected = selected;
+            let associablePaListCopy = [...associablePaList];
+            associablePaListCopy[indexPa].selected = selected;
 
-        setAssociablePaList(associablePaListCopy);
-    }
+            setAssociablePaList(associablePaListCopy);
+        
+        }, [associablePaList]
+    )
 
     const associablePaCardHeader : CardHeaderType = {
         title: <Typography variant="h6" component="div">
@@ -64,7 +62,7 @@ const PaAssociation = ({idAggregate} : Props) => {
         </Typography>
     }
 
-    const associablePaCardBody = <PaTable paList={associablePaList} handleSelection={handleSelection} />;
+    const associablePaCardBody = <AssociablePaTable paList={associablePaList} handleSelection={handleSelection} />;
 
     const paSelectedList = associablePaList.filter((pa) => pa.selected);
 
@@ -77,15 +75,11 @@ const PaAssociation = ({idAggregate} : Props) => {
         </Badge>
     }
 
-    const selectedPaCardBody = useMemo(
-        () => {
-            return (
-                <PaList 
-                    paList={paSelectedList}
-                    handleSelection={handleSelection}
-                />
-            )
-    }, [paSelectedList]
+    const selectedPaCardBody = (
+        <PaList 
+            paList={paSelectedList}
+            handleSelection={handleSelection}
+        />
     );
 
     const selectedPaCardAction : Array<CardActionType> = [{

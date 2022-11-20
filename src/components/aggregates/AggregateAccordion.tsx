@@ -21,7 +21,7 @@ const AggregateAccordion = ({idAggregate} : Props) => {
 
     useEffect(() => {
         dispatch(spinnerActions.updateSpinnerOpened(true));
-        const getAggregateRequest = apiRequests.getAggregate(idAggregate!);
+        const getAggregateRequest = apiRequests.getAggregateDetails(idAggregate!);
         const getAssociatedPaListRequest = apiRequests.getAssociatedPaList(idAggregate!);
 
         Promise.all([getAggregateRequest, getAssociatedPaListRequest])
@@ -75,7 +75,7 @@ const AggregateAccordion = ({idAggregate} : Props) => {
                         <strong>Usage plan:</strong>
                     </Grid>
                     <Grid item>
-                        <Typography>{aggregate?.usagePlan.name}</Typography>
+                        <Typography>{aggregate?.usagePlan?.name}</Typography>
                     </Grid>
                     <Grid item>
                         <strong>PA Associate:</strong>
