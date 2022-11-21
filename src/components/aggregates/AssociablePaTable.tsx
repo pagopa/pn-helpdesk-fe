@@ -1,21 +1,7 @@
-import { useEffect, useMemo, useState, memo, SyntheticEvent } from 'react';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Checkbox,
-    Pagination
-} from '@mui/material';
+import { useMemo, useState } from 'react';
 import { Pa } from '../../types';
 import { FieldsProperties } from "../formFields/FormFields";
 import FilterTable from "../forms/filterTable/FilterTable";
-import usePagination from '../../hooks/usePagination';
-import CustomPagination from '../pagination/CustomPagination';
-import ItemsTable from '../table/table';
-import { Column, Item, PaColumn } from "../../types";
 import PaTable from './PaTable';
 
 type Props = {

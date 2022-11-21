@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PaginationData } from "../components/pagination/types";
+import { PaginationData } from "../components/Pagination/types";
 import { calculatePages } from "../helpers/pagination.utility";
 
 const usePagination = (list : Array<any>, displayedPage : number = 2) => {

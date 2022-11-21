@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { Button, Grid, Menu, MenuItem, Pagination, PaginationItem, SxProps } from '@mui/material';
+import { Button, Grid, Menu, MenuItem, Pagination as MuiPagination, PaginationItem, SxProps } from '@mui/material';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 
 import { PaginationData, A11yPaginationLabelsTypes } from './types';
@@ -47,7 +47,7 @@ const getA11yPaginationLabels = (
 };
 
 /** Selfcare custom table available pages component */
-export default function CustomPagination({
+export default function Pagination({
   paginationData,
   onPageRequest,
   elementsPerPage = [5, 10, 20, 50, 100],
@@ -123,7 +123,7 @@ export default function CustomPagination({
         data-testid="pageSelector"
         className="page-selector"
       >
-        <Pagination
+        <MuiPagination
           sx={{ display: 'flex' }}
           aria-label={'Menu Paginazione'}
           color="primary"

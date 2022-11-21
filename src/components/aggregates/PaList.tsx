@@ -5,7 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import { Pa } from '../../types';
 import usePagination from '../../hooks/usePagination';
-import CustomPagination from '../pagination/CustomPagination';
+import CustomPagination from '../Pagination/Pagination';
 
 type Props = {
     paList : Array<Pa>,

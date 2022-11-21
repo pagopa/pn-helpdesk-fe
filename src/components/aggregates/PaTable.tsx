@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
     Table,
     TableBody,
@@ -9,9 +8,8 @@ import {
     Checkbox
 } from '@mui/material';
 
-
 import usePagination from '../../hooks/usePagination';
-import CustomPagination from '../pagination/CustomPagination';
+import CustomPagination from '../Pagination/Pagination';
 import { Pa } from '../../types'
 
 type PaBodyTableRowProps = {
