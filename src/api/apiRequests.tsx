@@ -2,7 +2,7 @@
 import { formatDate } from "../helpers/formatter.utility";
 import { Pa } from "../types";
 import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, 
-    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAssociatedPaListType, getAggregationMovePaType, getAggregateParams, getAssociablePaListResponse, getAggregateResponse, addPaResponse, modifyAggregateType, createAggregateType, getUsagePlansType, getAssociatedPaListResponse } from "./apiRequestTypes";
+    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAssociatedPaListType, getAggregateParams, getAssociablePaListResponse, getAggregateResponse, addPaResponse, modifyAggregateType, createAggregateType, getUsagePlansType, getAssociatedPaListResponse } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient"
 
 /**
@@ -110,14 +110,14 @@ const getLogsProcesses = async (data: getLogsProcessesType) => {
 const getAggregates = async (data: getAggregateParams) => {
     return await apiClient.getAggregates(data)
         .then((result) => {
-            // const items = result.data.items.map(
-            //     (agg) => ({...agg, createdAt: formatDate(agg.createdAt, true), lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``}) 
-            // )
-            // return {
-            //     ...result.data,
-            //     items
-            // };
-            return result;
+            const items = result.data.items.map(
+                (agg) => ({...agg, createdAt: formatDate(agg.createdAt, true), lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``}) 
+            )
+
+            return {
+                ...result.data,
+                items
+            };
         })
         .catch((error: any) => {
             throw error;
@@ -129,8 +129,8 @@ const getAggregates = async (data: getAggregateParams) => {
 */
 const getAggregateDetails = (id: string) => {
     return apiClient.getAggregateDetails(id)
-        .then((result: any) => {
-            return result;
+        .then((result) => {
+            return result.data;
         })
         .catch((error: any) => {
             throw error;
@@ -143,7 +143,7 @@ const getAggregateDetails = (id: string) => {
 const createAggregate = async (data: createAggregateType) => {
     return await apiClient.createAggregate(data)
         .then((result: any) => {
-            return result;
+            return result.data;
         })
         .catch((error: any) => {
             throw error;
@@ -156,7 +156,7 @@ const createAggregate = async (data: createAggregateType) => {
 const modifyAggregate = async (data: modifyAggregateType, id: string) => {
     return await apiClient.modifyAggregate(data, id)
         .then((result: any) => {
-            return result;
+            return result.data;
         })
         .catch((error: any) => {
             throw error;
@@ -169,7 +169,7 @@ const modifyAggregate = async (data: modifyAggregateType, id: string) => {
 const deleteAggregate = async (id: string) => {
     return await apiClient.deleteAggregate(id)
         .then((result: any) => {
-            return result;
+            return result.data;
         })
         .catch((error: any) => {
             throw error;
@@ -177,19 +177,18 @@ const deleteAggregate = async (id: string) => {
 }
 
  /**
- * Get associated PAs given an aggregation
+ * Get associated PAs given an aggregation id
  */
   const getAssociatedPaList = (id: string) => {
     return apiClient.getAssociatedPaList(id)
         .then((result) => {
-            // const items = result.data.items.map(
-            //     (pa) => ({...pa, selected: false}) 
-            // )
-            // return {
-            //     ...result.data,
-            //     items
-            // };
-            return result;
+            const items = result.data.items.map(
+                (pa) => ({...pa, selected: false}) 
+            )
+            return {
+                ...result.data,
+                items
+            };
         })
         .catch((error: any) => {
             throw error;
@@ -199,10 +198,10 @@ const deleteAggregate = async (id: string) => {
 /**
  * Move PAs to another aggregation
  */
-const getAggregationMovePa = async (id: string, data?: getAggregationMovePaType) => {
-    return await apiClient.getAggregationMovePa(id)
+const movePa = async (id: string, data?: Array<Pa>) => {
+    return await apiClient.movePa(id, data)
      .then((result: any) => {
-         return result;
+         return result.data;
      })
      .catch((error: any) => {
          throw error;
@@ -212,7 +211,7 @@ const getAggregationMovePa = async (id: string, data?: getAggregationMovePaType)
 const getAssociablePaList = (name?: string) : Promise<getAssociablePaListResponse> => {
     return apiClient.getAssociablePaList(name)
         .then((result: any) => {
-            return result;
+            return result.data;
         })
         .catch((error: any) => {
             throw error;
@@ -222,7 +221,7 @@ const getAssociablePaList = (name?: string) : Promise<getAssociablePaListRespons
 const addPa = async (id: string, paSelectedList: Array<Pa>) : Promise<addPaResponse> => {
     return await apiClient.addPa(id, paSelectedList)
         .then((result: any) => {
-            return result;
+            return result.data;
         })
         .catch((error: any) => {
             throw error;
@@ -235,7 +234,7 @@ const addPa = async (id: string, paSelectedList: Array<Pa>) : Promise<addPaRespo
 const getUsagePlans = async () => {
     return await apiClient.getUsagePlans()
         .then((result: any) => {
-            return result;
+            return result.data;
         })
         .catch((error: any) => {
             throw error;
@@ -244,5 +243,5 @@ const getUsagePlans = async () => {
 
 export default {
     getPersonId, getPersonTaxId, getPersonsLogs, /*getOperatorsLogs,*/
-    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getAssociatedPaList, getAggregationMovePa, getAggregates, modifyAggregate, createAggregate, getAggregateDetails, deleteAggregate, getUsagePlans, addPa, getAssociablePaList
+    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getAssociatedPaList, movePa, getAggregates, modifyAggregate, createAggregate, getAggregateDetails, deleteAggregate, getUsagePlans, addPa, getAssociablePaList
 }

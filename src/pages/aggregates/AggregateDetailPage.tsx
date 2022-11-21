@@ -32,8 +32,6 @@ const AggregateDetailPage = ({ email }: any) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        //Race condition
-        let ignore = false;
         
         let requestList = [apiRequests.getUsagePlans()];
 
@@ -45,13 +43,11 @@ const AggregateDetailPage = ({ email }: any) => {
         dispatch(spinnerActions.updateSpinnerOpened(true));
         Promise.all(requestList)
             .then(responses => {
-                if(!ignore) {
-                    setUsagePlans(responses[0].items);
-                
-                    if(!isCreate) {
-                        setAgg(responses[1]);
-                        setPas(responses[2].items);
-                    }
+                setUsagePlans(responses[0].items);
+            
+                if(!isCreate) {
+                    setAgg(responses[1]);
+                    setPas(responses[2].items);
                 }
             })
             .catch(errors => {
@@ -62,9 +58,6 @@ const AggregateDetailPage = ({ email }: any) => {
             })
             .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
 
-        return () => { 
-            ignore = true;
-        }
     }, [idAggregate]);
 
     const handleClickAggiungi = () => {

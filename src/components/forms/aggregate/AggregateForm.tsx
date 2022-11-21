@@ -27,7 +27,7 @@ const defaultFormValues: FormType = {
     burst: 0
 }
 
-type Props = { isCreate: boolean, agg: Aggregate, usagePlans: Array<UsagePlan> };
+type Props = { isCreate: boolean, agg: Aggregate | undefined, usagePlans: Array<UsagePlan> };
 
 const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
     const dispatch = useDispatch();
@@ -79,14 +79,14 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
     }, [values.usagePlanName])
 
     useEffect(() => {
-        if(Object.keys(agg).length != 0) {
+        if(agg && Object.keys(agg).length != 0) {
             reset({
-                id: agg.id,
-                name: agg.name,
-                description: agg.description,
-                usagePlanName: agg.usagePlan.name,
-                rate: agg.usagePlan.rate,
-                burst: agg.usagePlan.burst
+                id: agg?.id,
+                name: agg?.name,
+                description: agg?.description,
+                usagePlanName: agg?.usagePlan.name,
+                rate: agg?.usagePlan.rate,
+                burst: agg?.usagePlan.burst
             })
         }
     }, [agg])
@@ -132,7 +132,7 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
         }
         // returns id
         dispatch(spinnerActions.updateSpinnerOpened(true));
-        let request = apiRequests.modifyAggregate(payload, agg.id)
+        let request = apiRequests.modifyAggregate(payload, agg!.id)
         if (request) {
             request
                 .then(res => {
@@ -151,7 +151,7 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
 
     const handleDelete = () => {
         // DELETE /aggregate/{id}
-        const payload = agg.id
+        const payload = agg!.id
         dispatch(spinnerActions.updateSpinnerOpened(false));
         let request = apiRequests.deleteAggregate(payload)
         if (request) {

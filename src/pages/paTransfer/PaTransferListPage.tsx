@@ -16,9 +16,9 @@ import SendIcon from '@mui/icons-material/Send';
 import apiRequests from "../../api/apiRequests";
 import * as snackbarActions from "../../redux/snackbarSlice";
 import { useDispatch } from 'react-redux';
-import { getAggregationMovePaType } from "../../api/apiRequestTypes";
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
 import * as routes from '../../navigation/routes';
+import { Pa } from "../../types";
 
 const PaTransferListPage = ({ email }: any) => {
     const navigate = useNavigate();
@@ -33,7 +33,7 @@ const PaTransferListPage = ({ email }: any) => {
     const [paList2, setPaList2]: any = useState(undefined);
     const [isInput2Disabled, setIsInput2Disabled]: any = useState(true);
     const [areInputsEqual, setAreInputsEqual]: any = useState(false);
-    const [checked, setChecked]: any = useState([]);
+    const [checked, setChecked] = useState<Array<Pa>>([]);
 
     useEffect(() => {
         getAggregates();
@@ -119,10 +119,7 @@ const PaTransferListPage = ({ email }: any) => {
     }
 
     const handleTransfer = () => {
-        const payload: getAggregationMovePaType | any = {
-            items: [...checked]
-        }
-        let request = apiRequests.getAggregationMovePa(input2Value.id, payload)
+        let request = apiRequests.movePa(input2Value.id, checked)
         if (request) {
             request
                 .then(res => {
