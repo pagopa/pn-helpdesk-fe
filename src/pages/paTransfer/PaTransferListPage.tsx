@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MainLayout from "../mainLayout/MainLayout";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {
@@ -160,6 +160,54 @@ const PaTransferListPage = ({ email }: any) => {
         }
     ] : [];
 
+    const list2 = useMemo(() => {
+        console.log("Re-Render list2")
+        return (
+            <List style={{ backgroundColor: 'white', width: 500, height: 500, overflow: 'auto' }}>
+                {!areInputsEqual && paList2 && paList2?.items?.length < 1 ? <ListItem>La lista è vuota</ListItem>
+                    : paList2?.items?.map((pa: any) => (
+                        <ListItem key={pa.id}>
+                            <ListItemIcon>
+                                <Checkbox
+                                    disabled
+                                    checked={false}
+                                    edge="start"
+                                    tabIndex={-1}
+                                    disableRipple
+                                    inputProps={{ 'aria-labelledby': pa.id }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText id={pa.id} primary={pa.name} />
+                        </ListItem>
+                    ))
+
+                }
+            </List>
+        )
+    }, [paList2])
+
+    const list1 = useMemo(() => {
+        return (
+            <List style={{ backgroundColor: 'white', width: 500, height: 500, overflow: 'auto' }}>
+                {paList1 && paList1?.items?.length < 1 ? <ListItem>La lista è vuota</ListItem>
+                    : paList1?.items?.map((pa: any, ind: number) => (
+                        <ListItem key={pa.id}>
+                            <ListItemIcon>
+                                <Checkbox
+                                    onChange={() => addToChecked(pa)}
+                                    edge="start"
+                                    tabIndex={-1}
+                                    disableRipple
+                                    inputProps={{ 'aria-labelledby': pa.id }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText id={pa.id} primary={pa.name} />
+                        </ListItem>
+                    ))}
+            </List>
+        )
+    }, [paList1])
+
     return (
         <MainLayout email={email}>
             {aggParam && <Container>
@@ -188,48 +236,13 @@ const PaTransferListPage = ({ email }: any) => {
                     />
                 </div>
                 <div className="transfer-list" style={{ display: 'flex', gap: 100, marginTop: 50 }}>
-                    <List style={{ backgroundColor: 'white', width: 500, height: 500, overflow: 'auto' }}>
-                        {paList1 && paList1?.items?.length < 1 ? <ListItem>La lista è vuota</ListItem>
-                            : paList1?.items?.map((pa: any, ind: number) => (
-                                <ListItem key={pa.id}>
-                                    <ListItemIcon>
-                                        <Checkbox
-                                            onChange={() => addToChecked(pa)}
-                                            edge="start"
-                                            tabIndex={-1}
-                                            disableRipple
-                                            inputProps={{ 'aria-labelledby': pa.id }}
-                                        />
-                                    </ListItemIcon>
-                                    <ListItemText id={pa.id} primary={pa.name} />
-                                </ListItem>
-                            ))}
-                    </List>
+                    {list1}
                     <div style={{ width: 150, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                         {(isInput2Disabled || areInputsEqual || !input1Value || !input2Value || checked?.length < 1) ?
                             <Button variant="contained" disabled>Trasferisci<SendIcon fontSize="small" style={{ marginLeft: 10 }} /></Button>
                             : <Button variant="contained" onClick={handleTransfer}>Trasferisci<SendIcon fontSize="small" style={{ marginLeft: 10 }} /></Button>}
                     </div>
-                    <List style={{ backgroundColor: 'white', width: 500, height: 500, overflow: 'auto' }}>
-                        {!areInputsEqual && paList2 && paList2?.items?.length < 1 ? <ListItem>La lista è vuota</ListItem>
-                            : paList2?.items?.map((pa: any) => (
-                                <ListItem key={pa.id}>
-                                    <ListItemIcon>
-                                        <Checkbox
-                                            disabled
-                                            checked={false}
-                                            edge="start"
-                                            tabIndex={-1}
-                                            disableRipple
-                                            inputProps={{ 'aria-labelledby': pa.id }}
-                                        />
-                                    </ListItemIcon>
-                                    <ListItemText id={pa.id} primary={pa.name} />
-                                </ListItem>
-                            ))
-
-                        }
-                    </List>
+                    {list2}
                 </div>
             </Container>
         </MainLayout>

@@ -13,7 +13,6 @@ import apiRequests from "../../../api/apiRequests";
 import { createAggregateType } from "../../../api/apiRequestTypes";
 import { UsagePlan } from '../../../types/UsagePlan';
 import * as routes from '../../../navigation/routes';
-import _ from 'lodash';
 
 type FormType = {
     [k: string]: any
@@ -80,7 +79,7 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
     }, [values.usagePlanName])
 
     useEffect(() => {
-        if(!_.isEmpty(agg)) {
+        if(Object.keys(agg).length != 0) {
             reset({
                 id: agg.id,
                 name: agg.name,
