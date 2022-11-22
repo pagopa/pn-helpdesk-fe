@@ -85,19 +85,14 @@ CognitoWebClientId=$( aws ${profile_option} --region="eu-central-1" cloudformati
       ".Stacks[0].Outputs | .[] | select(.OutputKey==\"CognitoWebClientId\") | .OutputValue" \
     )
 
-DistributionDomainName=$( aws ${profile_option} --region="eu-south-1" cloudformation describe-stacks \
+ApiDomain=$( aws ${profile_option} --region="eu-south-1" cloudformation describe-stacks \
       --stack-name "pn-logextractor-${environment}" | jq -r \
-      ".Stacks[0].Outputs | .[] | select(.OutputKey==\"DistributionDomainName\") | .OutputValue" \
-    )
-
-DistributionId=$( aws ${profile_option} --region="eu-south-1" cloudformation describe-stacks \
-      --stack-name "pn-logextractor-${environment}" | jq -r \
-      ".Stacks[0].Outputs | .[] | select(.OutputKey==\"DistributionId\") | .OutputValue" \
+      ".Stacks[0].Outputs | .[] | select(.OutputKey==\"ApiDomain\") | .OutputValue" \
     )
 
 sed -e "s/\${USER_POOL_ID}/${CognitoUserPoolId}/" \
     -e "s/\${WEB_CLIENT_ID}/${CognitoWebClientId}/" \
-    -e "s/\${DISTRIBUTION_DOMAIN_NAME}/${DistributionDomainName}/"  .env.template > .env.production 
+    -e "s/\${API_DOMAIN}/${ApiDomain}/"  .env.template > .env.production 
 
 yarn build
 
@@ -105,4 +100,16 @@ cd build
 
 aws s3 sync ${profile_option} --region eu-south-1 . s3://pn-logextractor-${environment}-hosting
 
+DistributionId=$( aws ${profile_option} --region="eu-south-1" cloudformation describe-stacks \
+      --stack-name "pn-logextractor-frontend-${environment}" | jq -r \
+      ".Stacks[0].Outputs | .[] | select(.OutputKey==\"DistributionId\") | .OutputValue" \
+    )
+
+DistributionDomainName=$( aws ${profile_option} --region="eu-south-1" cloudformation describe-stacks \
+      --stack-name "pn-logextractor-frontend-${environment}" | jq -r \
+      ".Stacks[0].Outputs | .[] | select(.OutputKey==\"DistributionDomainName\") | .OutputValue" \
+    )
+
 aws cloudfront create-invalidation ${profile_option} --region eu-south-1 --distribution-id ${DistributionId} --paths "/*"
+
+echo "Deployed to "${DistributionDomainName}
