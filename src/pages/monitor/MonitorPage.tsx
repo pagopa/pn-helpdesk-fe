@@ -36,6 +36,10 @@ const MonitorPage = ({ email }: any) => {
     [dispatch]
   );
 
+  // const convertGMTtoLocalTime = function (date: Date) {
+  //   return date.toLocaleString();
+  // };
+
   const getEvents = useCallback(() => {
     apiRequests
       .getStatus()
@@ -152,10 +156,7 @@ const MonitorPage = ({ email }: any) => {
       hide: !backEndStatus,
       renderCell: (params: any) => {
         return params.row.data
-          ? format(
-              new Date(params.row.data.substring(0, 16)),
-              "dd-MM-yyyy HH:mm"
-            )
+          ? format(new Date(params.row.data), "dd-MM-yyyy HH:mm")
           : "";
       },
     },
