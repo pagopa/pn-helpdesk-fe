@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { getAggregatesResponseMockPag1, getAggregatesResponseMockPag2 } from "./mockFile";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, addPaResponse, createAggregateType, modifyAggregateType, getUsagePlansType, getAggregateResponse, getAssociatedPaListResponse } from "./apiRequestTypes";
+import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, addPaResponse, createAggregateType, modifyAggregateType, getUsagePlansType, getAggregateResponse, getAssociatedPaListResponse, aggregateId } from "./apiRequestTypes";
 import { aggregate, agg_list, pa_list, pa_list_associated, usage_plan_list } from "./pa_agg_response";
 import { Aggregate, Pa } from "../types";
 import { compileRoute } from "../helpers/api.utility";
@@ -20,7 +20,7 @@ class Http {
 
   initHttp() {
     const http = axios.create({
-      baseURL: "",
+      baseURL: process.env.REACT_APP_API_ENDPOINT,
       headers,
     });
 
@@ -105,7 +105,7 @@ class Http {
     return this._mock(agg);
   }
 
-  createAggregate<T = string>(payload: createAggregateType): Promise<AxiosResponse<T>> {
+  createAggregate<T = aggregateId>(payload: createAggregateType): Promise<AxiosResponse<T>> {
     if(!process.env.REACT_APP_MOCK_API) { 
       return this.http.post(compileRoute({
         prefix: "api-key-bo",
@@ -117,7 +117,7 @@ class Http {
     return this._mock(id);
   }
 
-  modifyAggregate<T = string>(payload: modifyAggregateType, id: string): Promise<AxiosResponse<T>> {
+  modifyAggregate<T = aggregateId>(payload: modifyAggregateType, id: string): Promise<AxiosResponse<T>> {
     if(!process.env.REACT_APP_MOCK_API) { 
       return this.http.put(compileRoute({
         prefix: "api-key-bo",
@@ -168,8 +168,8 @@ class Http {
     return this._mock(pa_list);
   }
 
-  movePa<T = any, R = AxiosResponse<T>>(id: string, data?: Array<Pa>): Promise<R> {
-    /* return this.http.post<T, R>(`/aggregate/${id}/move-pa`, payload) */
+  movePa<T = addPaResponse>(id: string, data: Array<Pa>): Promise<AxiosResponse<T>> {
+    let payload = {items: data};
     if(!process.env.REACT_APP_MOCK_API) { 
       return this.http.post(compileRoute({
         prefix: "api-key-bo",
@@ -177,9 +177,14 @@ class Http {
         params: {
           id: id
         }
-      }), data);
+      }), payload);
     }
-    return Promise.resolve({ status: 200 } as unknown as R)
+    let response : addPaResponse = {
+      processed: 0,
+      unprocessed: 5,
+      unprocessedPA: ['Comune di Milano', 'Comune di Sondrio', 'Comune di Napoli', 'Comune di Palermo', 'Comune di Arezzo']
+    }
+    return this._mock(response);
   }
 
   getAssociablePaList<T = getAssociablePaListResponse>(name?: string): Promise<AxiosResponse<T>> {

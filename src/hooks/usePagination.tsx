@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { PaginationData } from "../components/Pagination/types";
 import { calculatePages } from "../helpers/pagination.utility";
 
+export const DEFAULT_PAGINATION_LIMIT = 5;
 const usePagination = (list : Array<any>, displayedPage : number = 2) => {
-    const [paginationData, setPaginationData] = useState({page: 0, limit: 5});
+    const [paginationData, setPaginationData] = useState({page: 0, limit: DEFAULT_PAGINATION_LIMIT});
     const totalElements = list.length;
 
     // This function check wheter is needed to remove exceeding pages when from the props list are removed items. 

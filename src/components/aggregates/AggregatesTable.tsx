@@ -189,8 +189,7 @@ const AggregatesTable = () => {
     
     return (
       <>
-        {/* <FilterTableAggregates /> */}
-        <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} filters={filters} />
+        <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} />
         <ItemsTable columns={columns} rows={rows} />
         <CustomPagination
           paginationData={{

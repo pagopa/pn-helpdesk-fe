@@ -119,31 +119,42 @@ const PaTransferListPage = ({ email }: any) => {
     }
 
     const handleTransfer = () => {
-        let request = apiRequests.movePa(input2Value.id, checked)
-        if (request) {
-            request
-                .then(res => {
-                    dispatch(snackbarActions.updateSnackbacrOpened(true))
-                    dispatch(snackbarActions.updateStatusCode(res.status))
-                    if (res.status === 200) {
-                        dispatch(snackbarActions.updateMessage("PA trasferite con successo"));
-                    }
-                    else {
-                        console.log("Status: ", res.status)
-                        dispatch(snackbarActions.updateMessage("Errore nel trasferimento delle PA"));
-                    }
+        apiRequests.movePa(input2Value.id, checked)
+            .then(res => {
 
-                })
-                .catch(err => {
-                    dispatch(snackbarActions.updateSnackbacrOpened(true))
-                    dispatch(snackbarActions.updateStatusCode(400))
-                    dispatch(snackbarActions.updateMessage("Errore nel trasferimento delle PA"))
-                    console.log("Errore: ", err)
-                })
-        }
-        setChecked([]);
-        getPas1(undefined, input1Value);
-        getPas2(undefined, input2Value);
+                let statusCode = "200";
+                let message = "";
+
+                if(res.processed === checked.length) {
+                    message = "Tutte le PA sono state associate con successo";
+                } else {
+                    if(res.processed === 0) {
+                        message = "Non è stato possibile associare le PA selezionate";
+                        statusCode = "400";
+                    } else {
+                        message = "Riscontrati problemi nell'associazione delle seguenti PA : " + res.unprocessedPA.toString() + ". Le restanti PA selezionate sono state salvate con successo";
+                        statusCode = "202"
+                    }
+                }
+            
+                dispatch(snackbarActions.updateMessage(message));
+                dispatch(snackbarActions.updateStatusCode(statusCode));
+                dispatch(snackbarActions.updateAutoHideDuration(null));
+                dispatch(snackbarActions.updateSnackbacrOpened(true));
+
+                //Refresh lists
+                setChecked([]);
+                getPas1(undefined, input1Value);
+                getPas2(undefined, input2Value);
+
+            })
+            .catch(err => {
+                dispatch(snackbarActions.updateSnackbacrOpened(true))
+                dispatch(snackbarActions.updateStatusCode(400))
+                dispatch(snackbarActions.updateMessage("Errore nel trasferimento delle PA"))
+                console.log("Errore: ", err)
+            })
+        
     }
 
     const breadcrumbsLinks = aggParam ? [

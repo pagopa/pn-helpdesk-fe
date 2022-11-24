@@ -67,16 +67,6 @@ type getLogsProcessesType = {
 }
 
 /**
- * @typedef {Object} getAssociatedPaListType
- */
-type getAssociatedPaListType = {
-    items: [{
-        id: string,
-        name: string
-    }]
-}
-
-/**
  * @typedef {Object} getAssociatedPaListResponse
  */
  type getAssociatedPaListResponse = {
@@ -169,4 +159,11 @@ type addPaResponse = {
     ]
 }
 
-export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAssociatedPaListType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, getAssociatedPaListResponse, getAggregateResponse, addPaResponse, getUsagePlansType, createAggregateType, modifyAggregateType, getAggregateDetailsType }
+/**
+ * @typedef {Object} aggregateId
+ */
+type aggregateId = {
+    id: string
+}
+
+export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, getAssociatedPaListResponse, getAggregateResponse, addPaResponse, getUsagePlansType, createAggregateType, modifyAggregateType, getAggregateDetailsType, aggregateId }

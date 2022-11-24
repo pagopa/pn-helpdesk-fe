@@ -25,9 +25,15 @@ const PaBodyTableRow = ({pa, onSelect} : PaBodyTableRowProps) => {
     };
 
     return (
-        <TableRow>
+        <TableRow data-testid="paTable-row">
             {onSelect && <TableCell>
-                    <Checkbox id={`check-${pa.id}`} name={`input-check-${pa.id}`} checked={pa.selected} onChange={ (evt) => handleChange(evt, pa) }/>
+                    <Checkbox 
+                        id={`check-${pa.id}`} 
+                        name={`input-check-${pa.id}`} 
+                        checked={pa.selected} 
+                        data-testid={`paTable-row-checkbox-${pa.id}`}
+                        onChange={ (evt) => handleChange(evt, pa) }
+                    />
                 </TableCell>
             }
             <TableCell>{pa.name}</TableCell>
@@ -41,7 +47,7 @@ type PaTableHeadProps = {
 const PaTableHead = ({onSelect} : PaTableHeadProps) => {
 
     return (
-        <TableRow>
+        <TableRow data-testid="paTable-head">
             {onSelect && <TableCell width={"10%"}></TableCell>}
             <TableCell width={onSelect ? "90%" : "100%"}>Nome PA</TableCell>
         </TableRow>
@@ -65,7 +71,7 @@ const PaTable = ({paList, onSelect}: PaTableProps) => {
 
     return (
         <>
-            <TableContainer sx={{ marginBottom: '10px' }}>
+            <TableContainer sx={{ marginBottom: '10px' }} data-testid="paTable">
                 <Table stickyHeader aria-label='Tabella di Pubbliche amministrazioni'>
                     <TableHead>
                         {head}

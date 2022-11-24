@@ -404,10 +404,7 @@ let FieldsProperties: {[key: string]: FieldsProps} = {
         componentType: "textfield",
         label: "Descrizione Aggregazione",
         size: "67%",
-        hidden: false,
-        rules: {
-            required: errorMessages.REQUIRED
-        }
+        hidden: false
     },
     "Usage Plan": {
         name: "usagePlanName",

@@ -1,10 +1,11 @@
 import MainLayout from "../mainLayout/MainLayout";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Box, Grid, Typography } from "@mui/material";
 import PaAssociation from "../../components/aggregates/PaAssociation";
 import AggregateAccordion from '../../components/aggregates/AggregateAccordion';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
 import * as routes from '../../navigation/routes';
+import { Aggregate } from "../../types";
 
 /**
  * PaAssociationPage
@@ -12,7 +13,8 @@ import * as routes from '../../navigation/routes';
  */
 const PaAssociationPage = ({email}: any) => {
     const { idAggregate } = useParams();
-
+    const location : any = useLocation();
+    const aggregate = location?.state?.aggregate as Aggregate;
     const breadcrumbsLinks = [
         {
             linkLabel: 'Gestione Aggregazioni ApiKey',
@@ -39,7 +41,7 @@ const PaAssociationPage = ({email}: any) => {
 
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <AggregateAccordion idAggregate={idAggregate} />
+                        <AggregateAccordion aggregate={aggregate} />
                     </Grid>
                 </Grid>
 

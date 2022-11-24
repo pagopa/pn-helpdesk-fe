@@ -18,6 +18,7 @@ import { CardHeaderType } from '../../components/customCard/types';
 import PaTable from "../../components/aggregates/PaTable";
 import AggregateForm from "../../components/forms/aggregate/AggregateForm";
 import { UsagePlan } from "../../types/UsagePlan";
+import { Aggregate } from "../../types";
 /**
  * AggregateDetail page
  * @component
@@ -60,11 +61,11 @@ const AggregateDetailPage = ({ email }: any) => {
 
     }, [idAggregate]);
 
-    const handleClickAggiungi = () => {
-        navigate(routes.GET_ADD_PA_PATH(idAggregate!));
+    const handleClickAdd = () => {
+        navigate(routes.GET_ADD_PA_PATH(idAggregate!), { state: { aggregate: {...agg, associatedPa: pas} as Aggregate } });
     };
 
-    const handleClickSposta = () => {
+    const handleClickTransfer = () => {
         navigate(routes.TRANSFER_PA, { state: { agg: { id: idAggregate, name: agg?.name } } });
     };
 
@@ -100,7 +101,7 @@ const AggregateDetailPage = ({ email }: any) => {
                 variant="contained"
                 type="submit"
                 size="small"
-                onClick={handleClickSposta}
+                onClick={handleClickTransfer}
                 startIcon={<ArrowRightAltIcon />}
             >
                 Trasferisci PA
@@ -109,7 +110,7 @@ const AggregateDetailPage = ({ email }: any) => {
                 variant="contained"
                 type="submit"
                 size="small"
-                onClick={handleClickAggiungi}
+                onClick={handleClickAdd}
                 startIcon={<DomainAddIcon />}
                 sx={{ ml: 2 }}
             >

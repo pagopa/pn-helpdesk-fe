@@ -2,7 +2,7 @@
 import { formatDate } from "../helpers/formatter.utility";
 import { Pa } from "../types";
 import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, 
-    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAssociatedPaListType, getAggregateParams, getAssociablePaListResponse, getAggregateResponse, addPaResponse, modifyAggregateType, createAggregateType, getUsagePlansType, getAssociatedPaListResponse } from "./apiRequestTypes";
+    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAggregateParams, getAssociablePaListResponse, getAggregateResponse, addPaResponse, modifyAggregateType, createAggregateType, getUsagePlansType, getAssociatedPaListResponse } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient"
 
 /**
@@ -105,7 +105,7 @@ const getLogsProcesses = async (data: getLogsProcessesType) => {
 }
 
 /**
-* Get a list of all the aggregations
+* Get a list of all the aggregates
 */
 const getAggregates = async (data: getAggregateParams) => {
     return await apiClient.getAggregates(data)
@@ -182,6 +182,29 @@ const deleteAggregate = async (id: string) => {
   const getAssociatedPaList = (id: string) => {
     return apiClient.getAssociatedPaList(id)
         .then((result) => {
+            return result.data;
+        })
+        .catch((error: any) => {
+            throw error;
+        })
+}
+
+/**
+ * Move PAs to another aggregation
+ */
+const movePa = async (id: string, data: Array<Pa>) => {
+    return await apiClient.movePa(id, data)
+     .then((result) => {
+         return result.data;
+     })
+     .catch((error: any) => {
+         throw error;
+     }) 
+}
+
+const getAssociablePaList = (name?: string) => {
+    return apiClient.getAssociablePaList(name)
+        .then((result) => {
             const items = result.data.items.map(
                 (pa) => ({...pa, selected: false}) 
             )
@@ -192,34 +215,14 @@ const deleteAggregate = async (id: string) => {
         })
         .catch((error: any) => {
             throw error;
-        })
-}
-
-/**
- * Move PAs to another aggregation
- */
-const movePa = async (id: string, data?: Array<Pa>) => {
-    return await apiClient.movePa(id, data)
-     .then((result: any) => {
-         return result.data;
-     })
-     .catch((error: any) => {
-         throw error;
-     }) 
- }
-
-const getAssociablePaList = (name?: string) : Promise<getAssociablePaListResponse> => {
-    return apiClient.getAssociablePaList(name)
-        .then((result: any) => {
-            return result.data;
-        })
-        .catch((error: any) => {
-            throw error;
         }) 
 }
 
-const addPa = async (id: string, paSelectedList: Array<Pa>) : Promise<addPaResponse> => {
-    return await apiClient.addPa(id, paSelectedList)
+const addPa = async (id: string, paSelectedList: Array<Pa>) => {
+    //Remove selected attribute from pa objects
+    let paList = paSelectedList.map((pa) => ({id: pa.id, name: pa.name}));
+
+    return await apiClient.addPa(id, paList)
         .then((result: any) => {
             return result.data;
         })

@@ -9,25 +9,26 @@ import CustomPagination from '../Pagination/Pagination';
 
 type Props = {
     paList : Array<Pa>,
-    handleSelection: undefined | Function
+    handleSelection?: (pa: Pa, selected: boolean) => void
 }
 
 const PaList = ({paList, handleSelection} : Props) => {
     const { handlePaginationChange, limit, page, pagesToShow, slicedList, total } = usePagination(paList);
     return (
         <>
-            {slicedList.length > 0 && <List>
+            {slicedList.length > 0 && <List data-testid="paList">
                 {slicedList.map((pa) => (
                     <ListItemButton 
                         key={`list-${pa.id}`} 
                         secondaryAction={
                             handleSelection !== undefined ? (
-                                <IconButton edge="end" aria-label="delete" onClick={(evt) => handleSelection(pa, false)}>
+                                <IconButton edge="end" aria-label="delete" data-testid={`paList-deleteButton-${pa.id}`} onClick={(evt) => handleSelection(pa, false)}>
                                     <ClearIcon />
                                 </IconButton>
                             ) : ""
                         }
                         divider={true}
+                        data-testid="paList-item"
                     >
                         <ListItemText
                             primary={pa.name}

@@ -3,20 +3,19 @@ import { FormField, FieldsProps } from '../../formFields/FormFields';
 import { Controller, useForm } from "react-hook-form";
 import { Grid, Button, FormHelperText } from "@mui/material";
 
-const defaultValues : { [key: string]: any } = {
-    name: ""
-} 
-
 type Props = {
     fields: Array<FieldsProps>,
-    onFiltersSubmit: (data: any) => void,
-    filters: any
+    onFiltersSubmit: (data: any) => void
 };
 
-const FilterTable = ({fields, onFiltersSubmit, filters} : Props) => {
+const FilterTable = ({fields, onFiltersSubmit} : Props) => {
 
-    const { handleSubmit, control, formState: { errors }, getValues, reset } = useForm({
-        defaultValues: defaultValues,
+    const setDefaultValues = () : {[key: string]: any} => {
+        return fields.reduce((res, f) => ({...res, [f.name] : ""}), {});
+    }
+
+    const { handleSubmit, control, formState: { errors, isDirty }, reset } = useForm({
+        defaultValues: setDefaultValues(),
         mode: 'onSubmit',
         reValidateMode: 'onSubmit'
     });
@@ -25,15 +24,12 @@ const FilterTable = ({fields, onFiltersSubmit, filters} : Props) => {
         onFiltersSubmit(data);
     }
 
-    useEffect(() => {
-        reset(filters);
-    }, [filters]);
-
-    const cleanFilters = () => {
-        onFiltersSubmit(defaultValues);
+    const clearFilters = () => {
+        onFiltersSubmit(setDefaultValues());
+        reset(setDefaultValues());
     };
 
-    const isFilterApplied = Object.keys(filters).some(key => filters[key]);
+    const isFilterApplied = isDirty;
 
     return (
         
@@ -74,7 +70,7 @@ const FilterTable = ({fields, onFiltersSubmit, filters} : Props) => {
                     </Grid>
                     <Grid item>
                         <Button
-                            onClick={cleanFilters}
+                            onClick={clearFilters}
                             type="submit"
                             disabled={!isFilterApplied}
                         >

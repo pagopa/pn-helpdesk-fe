@@ -55,7 +55,7 @@ import {
       `
     );
 
-    const EmptyRow = () => <TableRow>
+    const emptyRow = <TableRow>
       <TableCell colSpan={columns.length || 1}>Non ci sono elementi da visualizzare</TableCell>
     </TableRow>
   
@@ -114,7 +114,7 @@ import {
                     </TableRow>
                   ))
                 : 
-                  <EmptyRow />
+                  emptyRow
               }
             </TableBody>
           </Table>

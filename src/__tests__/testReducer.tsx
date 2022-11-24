@@ -23,6 +23,18 @@ function reducer(
       },
       spinner: {
         opened: false
+      },
+      aggregate: {
+        aggregates : [],
+        filters : {
+            name : ""
+        },
+        pagination : {
+            limit : 10,
+            page: 0,
+            total: 0,
+            pagesKey: []
+        }
       }
     });
     return (

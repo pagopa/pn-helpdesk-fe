@@ -41,26 +41,6 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
         FieldsProperties["Burst"]
     ];
 
-    const initialValues = () : FormType => {
-        return {
-            // id: agg.id,
-            // name: agg.name,
-            // description: agg.description,
-            // usagePlan: agg.usagePlan.name,
-            // rate: agg.usagePlan.rate,
-            // burst: agg.usagePlan.burst
-            id: "agg1",
-            name: "Comuni Lombardia",
-            description: "Aggregazione dei comuni della Lombardia",
-            usagePlanName: "Medium",
-            rate: 100,
-            burst: 200
-        }
-        //if(!agg) return defaultFormValues;
-
-        
-    }
-
     const { handleSubmit, control, watch, formState: { errors, dirtyFields, isValid },
     reset, resetField, getValues, clearErrors, setValue } = useForm({
         mode: 'onChange',
@@ -110,7 +90,7 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
                     dispatch(snackbarActions.updateSnackbacrOpened(true));
                     dispatch(snackbarActions.updateStatusCode("200"));
                     dispatch(snackbarActions.updateMessage(`Aggregato creato con successo`));
-                    navigate(routes.GET_UPDATE_AGGREGATE_PATH(res));
+                    navigate(routes.GET_UPDATE_AGGREGATE_PATH(res.id));
                 })
                 .catch(err => {
                     dispatch(snackbarActions.updateSnackbacrOpened(true));
