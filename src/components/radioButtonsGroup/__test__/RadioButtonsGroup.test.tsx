@@ -38,4 +38,21 @@ describe("RadioButtonsGroup Component", () => {
     );
     expect(screen.getAllByRole("radiogroup").length).toEqual(1);
   });
+
+  it("renders options", () => {
+    render(
+      <RadioButtonsGroup
+        field={props.field}
+        onChange={props.onChange}
+        value={props.value}
+      />
+    );
+    expect(
+      screen.getByRole("radio", { name: "Persona Fisica" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("radio", { name: "Persona Giuridica" })
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("radio")).toHaveLength(2);
+  });
 });

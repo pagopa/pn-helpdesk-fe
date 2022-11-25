@@ -4,116 +4,56 @@
 import React from "react";
 import "regenerator-runtime/runtime";
 import "@testing-library/jest-dom/extend-expect";
-import { fireEvent, render, waitFor, screen } from "@testing-library/react";
-import { BrowserRouter as Router } from "react-router-dom";
-import { store } from "../../../../redux/store";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import ChangePasswordForm from "../ChangePasswordForm";
-import { act } from "react-dom/test-utils";
+import { reducer } from "../../../../mocks/mockReducer";
+import userEvent from "@testing-library/user-event";
+import { act } from "react-test-renderer";
 
 describe("ChangePasswordForm", () => {
   it("renders component", () => {
-    render(
-      <Provider store={store}>
-        <Router>
-          <ChangePasswordForm />
-        </Router>
-      </Provider>
-    );
-    expect(screen.getByTestId("ChangePasswordForm")).toBeTruthy();
+    reducer(<ChangePasswordForm />);
+    expect(
+      screen.getByRole("heading", { name: "Cambio password" })
+    ).toBeInTheDocument();
   });
 
   it("renders title", () => {
-    render(
-      <Provider store={store}>
-        <Router>
-          <ChangePasswordForm />
-        </Router>
-      </Provider>
-    );
-    expect(screen.getByText("Cambio password")).toBeTruthy();
+    reducer(<ChangePasswordForm />);
+    expect(screen.getByText("Cambio password")).toBeInTheDocument();
   });
 
   it("renders button", () => {
-    render(
-      <Provider store={store}>
-        <Router>
-          <ChangePasswordForm />
-        </Router>
-      </Provider>
-    );
+    reducer(<ChangePasswordForm />);
     const button = screen.getByRole(/Button/i, {
       name: "Cambia password",
     });
-    expect(button).toBeTruthy();
+    expect(button).toBeInTheDocument();
   });
 
   it("renders new password field", () => {
-    render(
-      <Provider store={store}>
-        <Router>
-          <ChangePasswordForm />
-        </Router>
-      </Provider>
-    );
+    reducer(<ChangePasswordForm />);
     const field = screen.getByLabelText("Nuova password");
-    expect(field).toBeTruthy();
+    expect(field).toBeInTheDocument();
   });
 
   it("renders confirm new password field", () => {
-    render(
-      <Provider store={store}>
-        <Router>
-          <ChangePasswordForm />
-        </Router>
-      </Provider>
-    );
+    reducer(<ChangePasswordForm />);
     const field = screen.getByLabelText("Conferma password");
-    expect(field).toBeTruthy();
+    expect(field).toBeInTheDocument();
   });
 
   it("click button and show errors", async () => {
-    render(
-      <Provider store={store}>
-        <Router>
-          <ChangePasswordForm />
-        </Router>
-      </Provider>
-    );
+    reducer(<ChangePasswordForm />);
     const button = screen.getByRole(/Button/i, {
       name: "Cambia password",
     });
-    await act(() => {
-      fireEvent.click(button);
-    });
-    await waitFor(async () => {
-      const errors = screen.getAllByText("Password non corretta");
-      expect(errors.length).toEqual(2);
-    });
-  });
-
-  it("fill inputs and click button", async () => {
-    render(
-      <Provider store={store}>
-        <Router>
-          <ChangePasswordForm />
-        </Router>
-      </Provider>
-    );
-
-    const newPassword = screen.getByLabelText("Nuova password");
-    fireEvent.change(newPassword!, { target: { value: "Test_Cognito_2.!" } });
-    await waitFor(() => {
-      expect(newPassword).toHaveValue("Test_Cognito_2.!");
+    const user = userEvent.setup();
+    await act(async () => {
+      await user.click(button);
     });
 
-    const confirmPassword = screen.getByLabelText("Nuova password");
-    fireEvent.change(newPassword!, { target: { value: "Test_Cognito_2.!" } });
-    await waitFor(() => {
-      expect(confirmPassword).toHaveValue("Test_Cognito_2.!");
-    });
-
-    const button = screen.getByRole("button");
-    expect(button).not.toBeDisabled();
+    const errors = await screen.findAllByText("Password non corretta");
+    expect(errors).toHaveLength(2);
   });
 });

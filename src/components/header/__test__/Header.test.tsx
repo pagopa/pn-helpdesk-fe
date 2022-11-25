@@ -4,61 +4,84 @@
 import React from "react";
 import "regenerator-runtime/runtime";
 import "@testing-library/jest-dom/extend-expect";
-import { act, screen, within } from "@testing-library/react";
+import {
+  screen,
+  waitForElementToBeRemoved,
+  within,
+} from "@testing-library/react";
 import Header from "../Header";
 import "regenerator-runtime/runtime";
-import { reducer } from "../../../__tests__/testReducer";
+import { reducer } from "../../../mocks/mockReducer";
 import userEvent from "@testing-library/user-event";
+import { act } from "react-dom/test-utils";
 
-const email = "test@test.com";
+const email = "test";
 
 describe("Header Component", () => {
   it("renders header", () => {
     reducer(<Header email={email} />);
-    expect(screen.getByRole("banner")).toBeDefined();
+    expect(screen.getByRole("banner")).toBeInTheDocument();
   });
 
   it("renders header items", () => {
     reducer(<Header email={email} />);
-    expect(screen.getByText("PagoPA S.p.A.")).toBeTruthy();
-    expect(screen.getByText(email)).toBeTruthy();
+    expect(screen.getByText("PagoPA S.p.A.")).toBeInTheDocument();
+    expect(screen.getByText(email)).toBeInTheDocument();
     const buttons = screen.getAllByRole("button");
     expect(buttons).toHaveLength(2);
-    const icon = screen.getByTestId("MenuIcon");
-    expect(icon).toBeDefined();
   });
 
-  it("simulate log out button click", async () => {
+  it("simulate log out button click and Anulla after that", async () => {
     reducer(<Header email={email} />);
-    const button = screen.getByTestId("LogoutIcon") as HTMLButtonElement;
-    userEvent.click(button);
-    const modal = screen.getByRole("dialog");
-    expect(modal).toBeDefined();
-    await within(modal as HTMLElement)
-      .findAllByRole("button")
-      .then((buttons) => {
-        expect(buttons).toHaveLength(2);
-        userEvent.click(screen.getByText("Annulla"));
-        expect(screen.getByText("Annulla")).not.toBeVisible();
-      });
+
+    const button = screen.getAllByRole("button")[1] as HTMLButtonElement;
+    const user = userEvent.setup();
+    await act(async () => {
+      await user.click(button);
+    });
+
+    const modal = await screen.findByRole("dialog");
+    expect(modal).toBeInTheDocument();
+
+    const modalButtons = await within(modal as HTMLElement).findAllByRole(
+      "button"
+    );
+    expect(modalButtons).toHaveLength(2);
+    const esciButton = screen.getByRole("button", {
+      name: "Annulla",
+    });
+
+    await act(async () => {
+      await user.click(esciButton);
+    });
+    await waitForElementToBeRemoved(() => screen.queryByRole("dialog"));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("simulate log out", async () => {
-    jest.setTimeout(10000);
+  it("simulate log out button click and Esci after that", async () => {
     reducer(<Header email={email} />);
-    const button = screen.getByTestId("LogoutIcon") as HTMLButtonElement;
-    userEvent.click(button);
-    const modal = screen.getByRole("dialog");
-    expect(modal).toBeDefined();
-    await within(modal as HTMLElement)
-      .findAllByRole("button")
-      .then(async (buttons) => {
-        expect(buttons).toHaveLength(2);
-        await act(() => {
-          userEvent.click(screen.getByText("Esci"));
-        });
-        expect(window.location.pathname).toBe("/");
-        expect(modal).not.toBeVisible();
-      });
+
+    const button = screen.getAllByRole("button")[1];
+    const user = userEvent.setup();
+    await act(async () => {
+      await user.click(button);
+    });
+
+    const modal = await screen.findByRole("dialog");
+    expect(modal).toBeInTheDocument();
+
+    const modalButtons = await within(modal).findAllByRole("button");
+    expect(modalButtons).toHaveLength(2);
+    const esciButton = screen.getByRole("button", {
+      name: "Esci",
+    });
+
+    await act(async () => {
+      await user.click(esciButton);
+    });
+
+    await waitForElementToBeRemoved(() => screen.queryByRole("dialog"));
+    expect(window.location.pathname).toBe("/");
+    expect(modal).not.toBeVisible();
   });
 });

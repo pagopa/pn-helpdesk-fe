@@ -13,6 +13,8 @@ export const errorMessages = {
     "La nuova password e la conferma password devono essere le stesse",
   ONE_MONTH_INTERVAL:
     "Le date selezionate devono essere all'interno dello stesso mese",
+  BACKEND_DOWN_MESSAGE:
+    "Servizio offline, contattare l'amministratore di sistema",
 };
 
 export const infoMessages = {
@@ -27,4 +29,10 @@ export const infoMessages = {
     "La password deve contenere almeno 1 lettera minuscola, almeno 1 lettera maiuscola, almeno 1 numero, nessuno spazio, almeno uno tra i caratteri ^$*.[]{}()?-\"!@#%&/,><':;|_~`+=+ e lunghezza almeno 16 caratteri",
   TIMEOUT:
     "L'intervallo temporale selezionato è troppo grande, selezionarne uno più piccolo",
+};
+
+export const functionalitiesNames: { [key: string]: string } = {
+  NOTIFICATION_CREATE: "Creazione Notifiche",
+  NOTIFICATION_VISUALIZATION: "Visualizzazione Notifiche",
+  NOTIFICATION_WORKFLOW: "Workflow Notifiche",
 };
