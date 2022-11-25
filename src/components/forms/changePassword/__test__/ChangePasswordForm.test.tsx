@@ -4,56 +4,116 @@
 import React from "react";
 import "regenerator-runtime/runtime";
 import "@testing-library/jest-dom/extend-expect";
-import { screen } from "@testing-library/react";
+import { fireEvent, render, waitFor, screen } from "@testing-library/react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { store } from "../../../../redux/store";
+import { Provider } from "react-redux";
 import ChangePasswordForm from "../ChangePasswordForm";
-import { reducer } from "../../../../mocks/mockReducer";
-import userEvent from "@testing-library/user-event";
-import { act } from "react-test-renderer";
+import { act } from "react-dom/test-utils";
 
 describe("ChangePasswordForm", () => {
   it("renders component", () => {
-    reducer(<ChangePasswordForm />);
-    expect(
-      screen.getByRole("heading", { name: "Cambio password" })
-    ).toBeInTheDocument();
+    render(
+      <Provider store={store}>
+        <Router>
+          <ChangePasswordForm />
+        </Router>
+      </Provider>
+    );
+    expect(screen.getByTestId("ChangePasswordForm")).toBeTruthy();
   });
 
   it("renders title", () => {
-    reducer(<ChangePasswordForm />);
-    expect(screen.getByText("Cambio password")).toBeInTheDocument();
+    render(
+      <Provider store={store}>
+        <Router>
+          <ChangePasswordForm />
+        </Router>
+      </Provider>
+    );
+    expect(screen.getByText("Cambio password")).toBeTruthy();
   });
 
   it("renders button", () => {
-    reducer(<ChangePasswordForm />);
+    render(
+      <Provider store={store}>
+        <Router>
+          <ChangePasswordForm />
+        </Router>
+      </Provider>
+    );
     const button = screen.getByRole(/Button/i, {
       name: "Cambia password",
     });
-    expect(button).toBeInTheDocument();
+    expect(button).toBeTruthy();
   });
 
   it("renders new password field", () => {
-    reducer(<ChangePasswordForm />);
+    render(
+      <Provider store={store}>
+        <Router>
+          <ChangePasswordForm />
+        </Router>
+      </Provider>
+    );
     const field = screen.getByLabelText("Nuova password");
-    expect(field).toBeInTheDocument();
+    expect(field).toBeTruthy();
   });
 
   it("renders confirm new password field", () => {
-    reducer(<ChangePasswordForm />);
+    render(
+      <Provider store={store}>
+        <Router>
+          <ChangePasswordForm />
+        </Router>
+      </Provider>
+    );
     const field = screen.getByLabelText("Conferma password");
-    expect(field).toBeInTheDocument();
+    expect(field).toBeTruthy();
   });
 
   it("click button and show errors", async () => {
-    reducer(<ChangePasswordForm />);
+    render(
+      <Provider store={store}>
+        <Router>
+          <ChangePasswordForm />
+        </Router>
+      </Provider>
+    );
     const button = screen.getByRole(/Button/i, {
       name: "Cambia password",
     });
-    const user = userEvent.setup();
-    await act(async () => {
-      await user.click(button);
+    await act(() => {
+      fireEvent.click(button);
+    });
+    await waitFor(async () => {
+      const errors = screen.getAllByText("Password non corretta");
+      expect(errors.length).toEqual(2);
+    });
+  });
+
+  it("fill inputs and click button", async () => {
+    render(
+      <Provider store={store}>
+        <Router>
+          <ChangePasswordForm />
+        </Router>
+      </Provider>
+    );
+
+    const newPassword = screen.getByLabelText("Nuova password");
+    fireEvent.change(newPassword!, { target: { value: "Test_Cognito_2.!" } });
+    await waitFor(() => {
+      expect(newPassword).toHaveValue("Test_Cognito_2.!");
     });
 
-    const errors = await screen.findAllByText("Password non corretta");
-    expect(errors).toHaveLength(2);
+    const confirmPassword = screen.getByLabelText("Nuova password");
+    fireEvent.change(newPassword!, { target: { value: "Test_Cognito_2.!" } });
+    await waitFor(() => {
+      expect(confirmPassword).toHaveValue("Test_Cognito_2.!");
+    });
+
+    const button = screen.getByRole("button");
+    expect(button).not.toBeDisabled();
   });
 });

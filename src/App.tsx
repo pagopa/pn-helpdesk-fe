@@ -9,7 +9,7 @@ function App() {
   const openedSpinner = useSelector(opened);
 
   return (
-    <div>
+    <div data-testid="App">
       <BrowserRouter>
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

@@ -8,7 +8,7 @@ export interface SpinnerState {
 const initialState: SpinnerState = {
   opened: false,
 };
-
+/* istanbul ignore next */
 export const spinnerSlice = createSlice({
   name: "spinner",
   initialState,

@@ -3,10 +3,10 @@
  */
 import React from "react";
 import "regenerator-runtime/runtime";
-import { fireEvent, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { BrowserRouter as Router } from "react-router-dom";
 import { FieldsProps } from "../../formFields/FormFields";
 import DatePickerComponent from "../DatePickerComponent";
-import { reducer } from "../../../mocks/mockReducer";
 
 const field: FieldsProps = {
   name: "referenceMonth",
@@ -36,42 +36,54 @@ describe("DatePickerComponent", () => {
     });
   });
 
-  it("renders date picker component with value", () => {
-    reducer(
-      <DatePickerComponent
-        field={field}
-        value="2022-11"
-        onChange={jest.fn()}
-        onBlur={jest.fn()}
-      />
+  it("renders date picker component", () => {
+    render(
+      <Router>
+        <DatePickerComponent
+          field={field}
+          value={new Date().toString()}
+          onChange={jest.fn()}
+          onBlur={jest.fn()}
+        />
+      </Router>
     );
-    const input = screen.getByRole("textbox", {
-      name: "Mese",
-    });
-    expect(input).toBeInTheDocument();
-    expect(input).toHaveValue("2022-11");
+    expect(screen.getByLabelText("Mese")).toBeDefined();
   });
 
   it("test changing value", async () => {
     const handleChange = jest.fn();
     const handleBlur = jest.fn();
 
-    reducer(
+    render(
       <DatePickerComponent
         field={field}
-        value={"2022-09"}
+        value={new Date().toISOString()}
         onChange={handleChange}
         onBlur={handleBlur}
       />
     );
-    const input = await screen.findByRole("textbox", {
-      name: "Mese",
+    const calendarButton = screen.getByRole("button");
+    expect(calendarButton).toBeTruthy();
+    await act(() => {
+      calendarButton.click();
     });
+    screen.findByRole("button", { name: "Nov" }).then((btn) => {
+      btn.click();
+      screen.findByRole("button", { name: "2022" }).then((btnY) => {
+        btnY.click();
+        expect(screen.getByRole("textbox")).toHaveValue("2022-11");
+        expect(handleChange).toHaveBeenCalled();
 
-    fireEvent.change(input, {
-      target: { value: "2022-11" },
+        const onChangeMock = jest.fn();
+        const event = {
+          preventDefault() {},
+          target: { value: "2022-12" },
+        };
+        const field = screen.getByRole("textbox") as HTMLInputElement;
+        fireEvent.change(field, event);
+
+        expect(onChangeMock).toBeCalledWith("2022-12");
+      });
     });
-    expect(input).toHaveValue("2022-11");
-    expect(handleChange).toHaveBeenCalled();
   });
 });

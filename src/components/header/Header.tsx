@@ -39,6 +39,7 @@ const Header = ({ email }: any) => {
   /**
    * Function closing the confirmation modal
    */
+  /* istanbul ignore next */
   const handleCloseModal = () => {
     setOpen(false);
   };
@@ -46,6 +47,7 @@ const Header = ({ email }: any) => {
   /**
    * Function opening the confirmation modal after the log out button is click
    */
+  /* istanbul ignore next */
   const handleOpenModal = () => {
     setOpen(true);
   };
@@ -53,6 +55,7 @@ const Header = ({ email }: any) => {
   /**
    * Function handling the logging out
    */
+  /* istanbul ignore next */
   const handleLogOut = () => {
     setOpen(false);
     dispatch(spinnerActions.updateSpinnerOpened(true));
