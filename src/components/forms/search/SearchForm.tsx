@@ -147,8 +147,8 @@ const SearchForm = () => {
       setFields(filterFields(MenuItems[selectedValue]));
       disableRicerca();
       resetStore();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
@@ -157,7 +157,6 @@ const SearchForm = () => {
    * "Ottieni log completi" so some fields are hidden and some are shown according
    * to which fields are filled
    */
-  /* istanbul ignore next */
   useEffect(() => {
     let neededFields: string[] = [];
     disableRicerca();
@@ -251,7 +250,6 @@ const SearchForm = () => {
    * handling form submit
    * @param data values from the form
    */
-  /* istanbul ignore next */
   const onSubmit = (data: any) => {
     resetStore();
     dispatch(spinnerActions.updateSpinnerOpened(true));
@@ -303,7 +301,6 @@ const SearchForm = () => {
    * Create request depending on the use case
    * @param payload the request paylod
    */
-  /* istanbul ignore next */
   const createRequest = (payload: any) => {
     let request = undefined;
     switch (selectedValue) {
@@ -353,6 +350,7 @@ const SearchForm = () => {
         })
         .catch((error) => {
           updateSnackbar(error.response);
+
           dispatch(spinnerActions.updateSpinnerOpened(false));
         });
     }
@@ -365,8 +363,8 @@ const SearchForm = () => {
   const updateSnackbar = (response: any) => {
     dispatch(snackbarActions.updateSnackbacrOpened(true));
     dispatch(snackbarActions.updateStatusCode(response.status));
-    response.data.message &&
-      dispatch(snackbarActions.updateMessage(response.data.message));
+    response.data.detail &&
+      dispatch(snackbarActions.updateMessage(response.data.detail));
   };
 
   /**
@@ -389,7 +387,6 @@ const SearchForm = () => {
    * downloading zip file
    * @param zip file in base64
    */
-  /* istanbul ignore next */
   const downloadZip = (zip: string) => {
     var file = base64StringToBlob(zip, "application/zip");
     var fileURL = URL.createObjectURL(file);
@@ -429,7 +426,7 @@ const SearchForm = () => {
         <Grid item container>
           <Grid item>
             <Typography color="text.primary" variant="h4">
-              Ricerca
+              Ricerca ed Estrazione Dati
             </Typography>
           </Grid>
         </Grid>
@@ -445,7 +442,10 @@ const SearchForm = () => {
           >
             <Grid container rowSpacing={2}>
               <Grid item>
-                <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+                <form
+                  onSubmit={handleSubmit((data) => onSubmit(data))}
+                  style={{ width: "100%" }}
+                >
                   <Grid item container>
                     <Grid item container spacing={2} alignItems="center">
                       {fields.map((field) => {
