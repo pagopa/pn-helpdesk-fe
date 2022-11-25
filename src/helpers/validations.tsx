@@ -4,6 +4,7 @@ export const regex = {
     /^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1})$/i,
   UNIQUE_IDENTIFIER_PATTERN: /^[A-Za-z0-9~\-_]*$/,
   PASSWORD:
+    //eslint-disable-next-line
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )[\w!@#$%^&()+."\-\?{}`~[\]*=|;:'<>,\/\\]{16,}$/,
   EMAIL:
     /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,15}$/,

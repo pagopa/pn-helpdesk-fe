@@ -10,13 +10,13 @@ import Footer from "../Footer";
 describe("Footer Component", () => {
   it("renders footer", () => {
     render(<Footer />);
-    expect(screen.getByRole("banner")).toBeDefined();
+    expect(screen.getByRole("banner")).toBeInTheDocument();
   });
 
   it("renders footer items", () => {
     render(<Footer />);
-    expect(screen.getByText("Privacy policy")).toBeTruthy();
-    expect(screen.getByText("Assistenza")).toBeTruthy();
-    expect(screen.getByText("Copyright")).toBeTruthy();
+    expect(screen.getByText("Privacy policy")).toBeInTheDocument();
+    expect(screen.getByText("Assistenza")).toBeInTheDocument();
+    expect(screen.getByText("Copyright")).toBeInTheDocument();
   });
 });
