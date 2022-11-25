@@ -5,73 +5,68 @@ import React from "react";
 import "regenerator-runtime/runtime";
 import "@testing-library/jest-dom/extend-expect";
 import {
+  fireEvent,
+  waitFor,
   screen,
   act,
   cleanup,
-  waitForElementToBeRemoved,
 } from "@testing-library/react";
-import { reducer } from "../../../../mocks/mockReducer";
+import { reducer } from "../../../../__tests__/testReducer";
 import userEvent from "@testing-library/user-event";
 import LoginForm from "../LoginForm";
 
 describe("LoginForm", () => {
-  const setEmailMock = jest.fn();
-
   afterEach(cleanup);
 
   beforeEach(() => {
-    reducer(<LoginForm setEmail={setEmailMock} />);
+    reducer(<LoginForm />);
   });
 
   it("renders component", () => {
-    expect(
-      screen.getByRole("img", { name: "PagoPA (Monogram)" })
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("LoginForm")).toBeTruthy();
   });
 
   it("renders input fields", async () => {
     const email = screen.getByRole("textbox", { name: "Email" });
     const password = screen.getByLabelText("Password");
-    expect(email).toBeInTheDocument();
-    expect(password).toBeInTheDocument();
+    await act(() => {
+      expect(email).toBeTruthy();
+    });
+    await act(() => {
+      expect(password).toBeTruthy();
+    });
   });
 
   it("renders login button", () => {
     const button = screen.getByRole("button", { name: "LOGIN" });
-    expect(button).toBeInTheDocument();
+    expect(button).toBeTruthy();
   });
 
-  it("submit form without inputs", async () => {
+  it("submit form and show errors", async () => {
     const button = screen.getByRole("button", { name: "LOGIN" });
-    const user = userEvent.setup();
-    await act(async () => await user.click(button));
-
-    expect(await screen.findByText("Email non corretta")).toBeInTheDocument();
-    expect(
-      await screen.findByText("Password non corretta")
-    ).toBeInTheDocument();
+    await act(() => userEvent.click(button));
+    await waitFor(() => {
+      expect(screen.getByText("Email non corretta")).toBeTruthy();
+    });
+    await waitFor(() => {
+      expect(screen.getByText("Password non corretta")).toBeTruthy();
+    });
   });
 
-  it("open and close the tooltip", async () => {
-    const forgotPassword = screen.getByText("Password dimenticata?");
-    expect(forgotPassword).toBeInTheDocument();
+  it("fill fields", () => {
+    const email = screen.getByRole("textbox", { name: "Email" });
+    const password = screen.getByLabelText("Password");
+    fireEvent.change(email!, { target: { value: "test@test.com" } });
+    fireEvent.change(password!, { target: { value: "I7ph_KKSq+ouL^$7" } });
+    expect(email).toHaveValue("test@test.com");
+    expect(password).toHaveValue("I7ph_KKSq+ouL^$7");
+  });
 
-    const user = userEvent.setup();
-
-    await act(async () => {
-      await user.click(forgotPassword);
+  it("renders tooltip", async () => {
+    expect(screen.getByText("Password dimenticata?")).toBeTruthy();
+    await act(() => {
+      userEvent.click(screen.getByText("Password dimenticata?"));
     });
-
-    const tooltip = await screen.findByRole("tooltip");
-    expect(tooltip).toBeInTheDocument();
-
-    const email = screen.getByRole("textbox", {
-      name: "Email",
-    });
-    await act(async () => {
-      await user.click(email);
-    });
-    await waitForElementToBeRemoved(() => screen.queryByRole("tooltip"));
-    expect(tooltip).not.toBeInTheDocument();
+    expect(screen.getByRole("tooltip")).toBeTruthy();
   });
 });

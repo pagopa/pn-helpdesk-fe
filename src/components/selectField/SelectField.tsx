@@ -26,6 +26,7 @@ const SelectField = (props: Props) => {
     <FormControl sx={{ minWidth: 250 }}>
       <InputLabel id={field.label}>{field.label}</InputLabel>
       <Select
+        data-testid="selectMenu"
         labelId={field.label}
         id={field.label}
         label={field.label}

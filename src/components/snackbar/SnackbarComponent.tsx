@@ -36,7 +36,7 @@ enum Severity {
  * @readonly
  */
 const defaultSeverityMessage: { [key: string]: string } = {
-  "OK": infoMessages.OK_RESPONSE,
+  OK: infoMessages.OK_RESPONSE,
   "Bad Request": infoMessages.BAD_REQUEST_RESPONSE,
   "Internal Server Error": infoMessages.INTERNEL_SERVER_ERROR_RESPONSE,
   "Gateway Timeout": infoMessages.TIMEOUT,
@@ -63,6 +63,7 @@ const SnackbarComponent = () => {
    * @param   {Event | SyntheticEvent<any, Event>} e the close event
    * @param   {SnackbarCloseReason} reson the reason of closing
    */
+  /* istanbul ignore next */
   const handleClose = (
     event?: Event | SyntheticEvent<any, Event>,
     reason: SnackbarCloseReason = "escapeKeyDown"
@@ -72,6 +73,7 @@ const SnackbarComponent = () => {
     }
   };
 
+  /* istanbul ignore next */
   const getSeverity = () => {
     if (status) {
       if (status >= 200 && status < 300) {

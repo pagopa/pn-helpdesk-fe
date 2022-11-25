@@ -6,7 +6,6 @@ import {
   getPersonIdType,
   getPersonTaxIdType,
   getPersonsLogsType,
-  getEventsType,
 } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient";
 
@@ -116,40 +115,11 @@ const getLogsProcesses = async (data: getLogsProcessesType) => {
     });
 };
 
-const getStatus = async () => {
-  return await apiClient
-    .getStatus()
-    .then((result: any) => {
-      return result;
-    })
-    .catch((error: any) => {
-      if (error.response.status === 500) {
-        return error.response;
-      }
-      throw error;
-    });
-};
-
-const getEvents = async (data: getEventsType) => {
-  return await apiClient
-    .getEvents(data)
-    .then((result: any) => {
-      return result;
-    })
-    .catch((error: any) => {
-      throw error;
-    });
-};
-
-const apiRequests = {
+export default {
   getPersonId,
   getPersonTaxId,
   getPersonsLogs /*getOperatorsLogs,*/,
   getNotificationsInfoLogs,
   getNotificationsMonthlyStatsLogs,
   getLogsProcesses,
-  getStatus,
-  getEvents,
 };
-
-export default apiRequests;

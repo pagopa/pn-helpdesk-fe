@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 const MainLayout = ({ email, children }: any) => {
   const navigate = useNavigate();
 
+  /* istanbul ignore next */
   useEffect(() => {
     const idTokenInterval = setInterval(async () => {
       await refreshToken();

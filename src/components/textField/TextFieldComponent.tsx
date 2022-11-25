@@ -48,11 +48,7 @@ const TextFieldComponent = (props: Props) => {
       variant="outlined"
       error={props.error ? true : false}
       onBlur={props.value && props.value.length ? props.onBlur : () => {}}
-      onChange={(e) =>
-        field.name === "taxId"
-          ? props.onChange(e.target.value.toUpperCase())
-          : props.onChange(e)
-      }
+      onChange={props.onChange}
     />
   );
 };
