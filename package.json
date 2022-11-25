@@ -42,7 +42,7 @@
     "generate:api": "rimraf generated && mkdir generated && gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/pn-logextractor-be/develop/docs/openapi/swagger.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false",
     "test:coverage": "react-scripts test --watchAll=false --ci --coverage --testResultsProcessor=jest-sonar-reporter",
     "eject": "react-scripts eject"
   },
