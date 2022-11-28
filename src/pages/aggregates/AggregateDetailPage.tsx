@@ -17,8 +17,8 @@ import CustomCard from '../../components/customCard/CustomCard';
 import { CardHeaderType } from '../../components/customCard/types';
 import PaTable from "../../components/aggregates/PaTable";
 import AggregateForm from "../../components/forms/aggregate/AggregateForm";
-import { UsagePlan } from "../../types/UsagePlan";
-import { Aggregate } from "../../types";
+import { getAggregateResponse, UsagePlan } from "../../api/apiRequestTypes";
+
 /**
  * AggregateDetail page
  * @component
@@ -62,7 +62,7 @@ const AggregateDetailPage = ({ email }: any) => {
     }, [idAggregate]);
 
     const handleClickAdd = () => {
-        navigate(routes.GET_ADD_PA_PATH(idAggregate!), { state: { aggregate: {...agg, associatedPa: pas} as Aggregate } });
+        navigate(routes.ADD_PA, { state: { aggregate: {...agg, associatedPa: pas} as getAggregateResponse } });
     };
 
     const handleClickTransfer = () => {

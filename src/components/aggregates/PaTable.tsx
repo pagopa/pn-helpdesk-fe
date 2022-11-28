@@ -7,10 +7,9 @@ import {
     TableRow,
     Checkbox
 } from '@mui/material';
-
+import { Pa } from '../../api/apiRequestTypes';
 import usePagination from '../../hooks/usePagination';
 import CustomPagination from '../Pagination/Pagination';
-import { Pa } from '../../types'
 
 type PaBodyTableRowProps = {
     pa: Pa,

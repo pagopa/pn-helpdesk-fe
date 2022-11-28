@@ -2,7 +2,7 @@ import { fireEvent, RenderResult, waitFor, screen, within } from '@testing-libra
 import apiRequests from '../../../api/apiRequests';
 import PaList from '../PaList';
 import { reducer } from '../../../__tests__/testReducer';
-import {pa_list} from '../../../api/pa_agg_response';
+import {pa_list} from '../../../api/mock_agg_response';
 import { DEFAULT_PAGINATION_LIMIT } from '../../../hooks/usePagination';
 
 describe("  PaList without selection", () => {

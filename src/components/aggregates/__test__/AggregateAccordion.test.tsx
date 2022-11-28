@@ -2,7 +2,7 @@ import { fireEvent, RenderResult, waitFor, screen, within, act } from '@testing-
 import apiRequests from '../../../api/apiRequests';
 import PaList from '../PaList';
 import { reducer } from '../../../__tests__/testReducer';
-import { aggregate, pa_list_associated } from '../../../api/pa_agg_response';
+import { aggregate, pa_list_associated } from '../../../api/mock_agg_response';
 import AggregateAccordion from '../AggregateAccordion';
 
 describe("AggregateAccordion", () => {

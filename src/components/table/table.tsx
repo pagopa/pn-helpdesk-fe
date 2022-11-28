@@ -11,7 +11,7 @@ import {
   import { styled } from '@mui/material/styles';
   import { visuallyHidden } from '@mui/utils';
   
-  import { Column, Item, Sort } from '../../types';
+  import { Column, Item, Sort } from './tableTypes';
   
   type Props<ColumnId> = {
     /** Table columns */

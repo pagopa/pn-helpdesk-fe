@@ -1,8 +1,7 @@
 // import { apiClient } from "./apiClient";
 import { formatDate } from "../helpers/formatter.utility";
-import { Pa } from "../types";
 import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, 
-    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAggregateParams, getAssociablePaListResponse, getAggregateResponse, addPaResponse, modifyAggregateType, createAggregateType, getUsagePlansType, getAssociatedPaListResponse } from "./apiRequestTypes";
+    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAggregateParams, modifyAggregateType, createAggregateType, AggregateSummary, Pa } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient"
 
 /**
@@ -111,7 +110,11 @@ const getAggregates = async (data: getAggregateParams) => {
     return await apiClient.getAggregates(data)
         .then((result) => {
             const items = result.data.items.map(
-                (agg) => ({...agg, createdAt: formatDate(agg.createdAt, true), lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``}) 
+                (agg) => ({
+                    ...agg, 
+                    createdAt: formatDate(agg.createdAt, true), 
+                    lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``
+                } as AggregateSummary) 
             )
 
             return {

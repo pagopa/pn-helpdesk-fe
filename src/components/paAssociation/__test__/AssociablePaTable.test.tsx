@@ -1,15 +1,15 @@
 import { fireEvent, RenderResult, waitFor, screen, within, act } from '@testing-library/react';
-import apiRequests from '../../../api/apiRequests';
-import PaTable from '../PaTable';
+import AssociablePaTable from '../AssociablePaTable';
 import { reducer } from '../../../__tests__/testReducer';
 import {pa_list} from '../../../api/mock_agg_response';
 import { DEFAULT_PAGINATION_LIMIT } from '../../../hooks/usePagination';
 
-describe("PaTable without selection", () => {
+describe(" AssociablePaTable without selection", () => {
     let result: RenderResult | undefined;
     let mockedData = pa_list.items;
+    let mockHandleSelection = jest.fn();
     beforeEach(() => {
-        result = reducer(<PaTable paList={mockedData} />);
+        result = reducer(<AssociablePaTable paList={mockedData} handleSelection={mockHandleSelection} />);
     })
     it("renders", () => {
         const itemsPerPageSelector = result?.queryByTestId('itemsPerPageSelector');
@@ -34,25 +34,32 @@ describe("PaTable without selection", () => {
         const tableRows = result?.queryAllByTestId('paTable-row');
         expect(tableRows).toHaveLength(mockedData.length);
     })
-})
 
-describe("PaTable with selection", () => {
-    let result: RenderResult | undefined;
-    let mockedData = pa_list.items;
-    let mockHandleSelection = jest.fn();
-    beforeEach(() => {
-        result = reducer(<PaTable paList={mockedData} onSelect={mockHandleSelection}/>);
+    it("filters pa by name", async () => {
+        const nameInput = screen.getByRole("textbox", {name: "Nome PA"});
+        const filterButton = screen.getByRole("button", {name: "Filtra"});
+        const clearFiltersButton = screen.getByRole("button", {name: "Rimuovi Filtri"});
+
+        fireEvent.change(nameInput!, { target: { value: "abcd" } });
+        fireEvent.click(filterButton);
+        await waitFor(() => {
+            expect(filterButton).not.toBeDisabled();
+            expect(clearFiltersButton).not.toBeDisabled();
+            const tableRows = result?.queryAllByTestId('paTable-row');
+            expect(tableRows).toHaveLength(0);
+        });
     })
-    it("handle selection click", () => {
-        const itemsPerPageSelector = result?.queryByTestId('itemsPerPageSelector');
-        expect(itemsPerPageSelector).toBeInTheDocument();
-        const tableRows = result?.queryAllByTestId('paTable-row');
-        expect(tableRows).toHaveLength(DEFAULT_PAGINATION_LIMIT); //default pagination limit is 5
+
+    it("handle selection", async () => {
         const firstRowCheckboxMui = result?.getByTestId(`paTable-row-checkbox-${mockedData[0].id}`);
         const firstRowCheckboxElement = firstRowCheckboxMui?.querySelector('input[type="checkbox"]');
+
         fireEvent.click(firstRowCheckboxElement!);
-        //expect(firstRowCheckboxElement).toBeChecked();
-        expect(mockHandleSelection).toBeCalledTimes(1);
-        expect(mockHandleSelection).toBeCalledWith(mockedData[0], true);
-    });
+        
+        await waitFor(() => {
+            expect(mockHandleSelection).toBeCalledTimes(1);
+            expect(mockHandleSelection).toBeCalledWith(mockedData[0], true);
+        })
+       
+    })
 })

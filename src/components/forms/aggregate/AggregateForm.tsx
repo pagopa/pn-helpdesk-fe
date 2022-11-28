@@ -1,17 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Grid, Button, FormHelperText } from '@mui/material';
-import { Controller, useForm, useWatch } from "react-hook-form";
-import { useSelector, useDispatch } from 'react-redux';
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-import { Aggregate } from '../../../types';
-import { FieldsProperties, FieldsProps, FormField, MenuItems } from "../../formFields/FormFields";
+import { FieldsProperties, FormField } from "../../formFields/FormFields";
 import useConfirmDialog from "../../confirmationDialog/useConfirmDialog";
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import * as spinnerActions from "../../../redux/spinnerSlice";
 import apiRequests from "../../../api/apiRequests";
-import { createAggregateType } from "../../../api/apiRequestTypes";
-import { UsagePlan } from '../../../types/UsagePlan';
+import { createAggregateType, getAggregateResponse, UsagePlan } from "../../../api/apiRequestTypes";
 import * as routes from '../../../navigation/routes';
 
 type FormType = {
@@ -27,7 +24,7 @@ const defaultFormValues: FormType = {
     burst: 0
 }
 
-type Props = { isCreate: boolean, agg: Aggregate | undefined, usagePlans: Array<UsagePlan> };
+type Props = { isCreate: boolean, agg: getAggregateResponse | undefined, usagePlans: Array<UsagePlan> };
 
 const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
     const dispatch = useDispatch();
@@ -41,8 +38,7 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
         FieldsProperties["Burst"]
     ];
 
-    const { handleSubmit, control, watch, formState: { errors, dirtyFields, isValid },
-    reset, resetField, getValues, clearErrors, setValue } = useForm({
+    const { control, watch, formState: { errors, isValid }, reset, clearErrors, setValue } = useForm({
         mode: 'onChange',
         reValidateMode: "onChange",
         defaultValues: defaultFormValues
@@ -59,7 +55,7 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
     }, [values.usagePlanName])
 
     useEffect(() => {
-        if(agg && Object.keys(agg).length != 0) {
+        if(agg && Object.keys(agg).length !== 0) {
             reset({
                 id: agg?.id,
                 name: agg?.name,

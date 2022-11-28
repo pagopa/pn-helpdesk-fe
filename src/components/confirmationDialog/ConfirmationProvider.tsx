@@ -1,12 +1,8 @@
 import { useState, useCallback, Fragment, ReactNode } from "react";
-import ConfirmationContext from "./ConfirmationContext";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { Options } from "./ConfirmationTypes";
-
-type Props = {
-    children: ReactNode;
-    defaultOptions: Options
-}
+import { createContext } from "react";
+import { ContextType } from "./ConfirmationTypes";
 
 const INITIAL_OPTIONS : Options = {
     title: "Conferma operazione",
@@ -20,7 +16,13 @@ const buildOptions = (defaultOptions: Options, options: Options) => {
     return { title,message }
 }
 
-const ConfirmationProvider = ({ children, defaultOptions = {} } : any) => {
+export const ConfirmationContext = createContext<ContextType | undefined>(undefined);
+
+type Props = {
+  children: ReactNode;
+  defaultOptions?: Options
+}
+export const ConfirmationProvider = ({ children, defaultOptions = {} } : Props) => {
     const [options, setOptions] = useState(INITIAL_OPTIONS);
     const [resolveReject, setResolveReject] = useState<Array<any>>([]);
     const [resolve, reject] = resolveReject;
@@ -58,12 +60,9 @@ const ConfirmationProvider = ({ children, defaultOptions = {} } : any) => {
         <ConfirmationDialog
           open={resolveReject.length === 2}
           options={buildOptions(defaultOptions, options)}
-          onClose={handleClose}
           onCancel={handleCancel}
           onConfirm={handleConfirm}
         />
       </Fragment>
     );
 };
-
-export default ConfirmationProvider;

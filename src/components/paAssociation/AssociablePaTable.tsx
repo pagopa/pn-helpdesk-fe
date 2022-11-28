@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
-import { Pa } from '../../types';
+import { useMemo, useState, useCallback } from 'react';
+import { Pa } from '../../api/apiRequestTypes';
 import { FieldsProperties } from "../formFields/FormFields";
 import FilterTable from "../forms/filterTable/FilterTable";
-import PaTable from './PaTable';
+import PaTable from '../aggregates/PaTable';
 
 type Props = {
     paList : Array<Pa>,
@@ -11,19 +11,19 @@ type Props = {
 
 const AssociablePaTable = ({paList, handleSelection}: Props) => {
     
-    const fields = [FieldsProperties["Nome PA"]];
+    const fields = useMemo(() => [FieldsProperties["Nome PA"]], []);
 
     const [filters, setFilters] = useState({name: ""}); 
     
-    const handleFiltersSubmit = (filters: any) => {
+    const handleFiltersSubmit = useCallback((filters: any) => {
         setFilters(filters);
-    }
-
-    const filterPredicate = (pa: Pa) => {
-        return pa.name.toUpperCase().indexOf(filters.name.toUpperCase()) !== -1;
-    }
+    }, [])
 
     const paListFiltered = useMemo(() => {
+        const filterPredicate = (pa: Pa) => {
+            return pa.name.toUpperCase().indexOf(filters.name.toUpperCase()) !== -1;
+        }
+
         return filters.name ? paList.filter(filterPredicate) : paList;
     }, [filters.name, paList.length]);
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react' 
+import { memo } from 'react' 
 import { FormField, FieldsProps } from '../../formFields/FormFields';
 import { Controller, useForm } from "react-hook-form";
 import { Grid, Button, FormHelperText } from "@mui/material";
@@ -8,7 +8,7 @@ type Props = {
     onFiltersSubmit: (data: any) => void
 };
 
-const FilterTable = ({fields, onFiltersSubmit} : Props) => {
+const FilterTable = memo(({fields, onFiltersSubmit} : Props) => {
 
     const setDefaultValues = () : {[key: string]: any} => {
         return fields.reduce((res, f) => ({...res, [f.name] : ""}), {});
@@ -82,6 +82,6 @@ const FilterTable = ({fields, onFiltersSubmit} : Props) => {
         </form>
        
     )
-}
+})
 
 export default FilterTable;

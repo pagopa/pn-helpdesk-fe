@@ -1,24 +1,25 @@
 import Table from '../table';
 import { reducer } from '../../../__tests__/testReducer';
 import { fireEvent, RenderResult, waitFor, screen, within, act } from '@testing-library/react';
-import { Column, Item } from '../../../types';
+import { Column, Item, Sort } from "../tableTypes";
 
 describe("Table tests", () => {
     let result : RenderResult | undefined;
     const handleColumnClick = jest.fn();
+    const handleSort = jest.fn();
     type MockColumn = 'id' | 'name';
     const columns: Array<Column<MockColumn>> = [
         {
             id: 'id',
             label: 'Id column',
             width: '50%',
-            sortable: false,
+            sortable: true,
             getCellLabel(value: string) {
               return value;
             },
             onClick(row: Item, col: Column<MockColumn>) {
               handleColumnClick(row, col);
-            },
+            }
         },
         {
             id: 'name',
@@ -38,8 +39,13 @@ describe("Table tests", () => {
         { id: 'row-3', 'name': 'Row 3-1' }
     ];
 
+    const sort: Sort<'Id column'> = {
+        orderBy: 'Id column',
+        order: 'asc',
+    };
+
     beforeEach(() => {
-        result = reducer(<Table columns={columns} rows={rows} />);
+        result = reducer(<Table columns={columns} rows={rows} sort={sort} onChangeSorting={handleSort} />);
     })
 
     it("renders table", () => {
@@ -77,4 +83,15 @@ describe("Table tests", () => {
         expect(handleColumnClick).toBeCalledTimes(1);
         expect(handleColumnClick).toBeCalledWith(rows[0], columns[0]);
     });
+
+    it('sorts a column', () => {
+        const table = screen.getByRole('table');
+        const tableHead = table.querySelector('thead');
+        const firstColumn = tableHead!.querySelector('th');
+        const sortButton = within(firstColumn!).getByRole('button');
+        expect(sortButton).toBeInTheDocument();
+        fireEvent.click(sortButton);
+        expect(handleSort).toBeCalledTimes(1);
+        expect(handleSort).toBeCalledWith({ order: 'asc', orderBy: 'id' });
+      });
 });

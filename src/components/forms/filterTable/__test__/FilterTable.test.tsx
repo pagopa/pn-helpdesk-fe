@@ -16,13 +16,11 @@ describe("FilterTable tests", () => {
         jest.resetAllMocks();
         jest.clearAllMocks();
         jest.restoreAllMocks();
-        result = undefined;
     })
 
     const getButtons = () => {
         const filterButton = screen.getByRole("button", {name: "Filtra"});
         const clearFiltersButton = screen.getByRole("button", {name: "Rimuovi Filtri"});
-
 
         return {filterButton, clearFiltersButton};
     }
@@ -51,10 +49,10 @@ describe("FilterTable tests", () => {
         const { clearFiltersButton } = getButtons();
         expect(clearFiltersButton).toBeDisabled();
 
-        act(() => { fireEvent.change(input!, { target: { value: "abcd" } }) });
+        fireEvent.change(input!, { target: { value: "abcd" } });
         await waitFor(() => expect(clearFiltersButton).not.toBeDisabled());
 
-        act(() => { fireEvent.click(clearFiltersButton)});
+        fireEvent.click(clearFiltersButton);
         await waitFor(() => expect(mockSubmitFn).toBeCalledWith({[fields[0].name]: ""}));
     })
 })

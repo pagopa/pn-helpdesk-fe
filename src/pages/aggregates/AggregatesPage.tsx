@@ -13,7 +13,7 @@ import * as routes from '../../navigation/routes';
 const AggregatesPage = ({email}: any) => {
   const navigate = useNavigate();
 
-  const handleClickCrea = () => {
+  const handleClickNew = () => {
     navigate(routes.AGGREGATE);
   };
 
@@ -33,7 +33,7 @@ const AggregatesPage = ({email}: any) => {
                   variant="contained"
                   type="submit"
                   size="small"
-                  onClick={handleClickCrea}
+                  onClick={handleClickNew}
                   startIcon={<GroupAddIcon />}
                 >
                   Nuova aggregazione

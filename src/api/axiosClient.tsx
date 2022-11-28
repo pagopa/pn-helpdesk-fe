@@ -1,9 +1,31 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { getAggregatesResponseMockPag1, getAggregatesResponseMockPag2 } from "./mockFile";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getPersonIdType, getPersonsLogsType, getPersonTaxIdType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, addPaResponse, createAggregateType, modifyAggregateType, getUsagePlansType, getAggregateResponse, getAssociatedPaListResponse, aggregateId } from "./apiRequestTypes";
-import { aggregate, agg_list, pa_list, pa_list_associated, usage_plan_list } from "./pa_agg_response";
-import { Aggregate, Pa } from "../types";
 import { compileRoute } from "../helpers/api.utility";
+import { 
+  getLogsProcessesType, 
+  getNotificationsInfoLogsType, 
+  getNotificationsMonthlyStatsLogsType, 
+  getPersonIdType, 
+  getPersonsLogsType, 
+  getPersonTaxIdType, 
+  getAggregateParams, 
+  getAggregatesResponse, 
+  Pa,
+  getAssociablePaListResponse, 
+  addPaResponse, 
+  createAggregateType, 
+  modifyAggregateType, 
+  getUsagePlansType, 
+  getAggregateResponse, 
+  getAssociatedPaListResponse, 
+  aggregateId, 
+} from "./apiRequestTypes";
+import { 
+  aggregate, 
+  agg_list, 
+  pa_list,
+  usage_plan_list, 
+  aggregates_list 
+} from "./mock_agg_response";
 
 const headers: Readonly<Record<string, string | boolean>> = {
   Accept: "*/*",
@@ -85,8 +107,7 @@ class Http {
       );
     }
 
-    console.log("call getAggregates with payload", payload);
-    return this._mock(getAggregatesResponseMockPag1);
+    return this._mock(aggregates_list);
   }
 
   getAggregateDetails<T = getAggregateResponse>(id: string): Promise<AxiosResponse<T>> {
@@ -156,15 +177,6 @@ class Http {
       }));
     }
     
-    // console.log("call getAssociatedPaList with payload", id);
-    // return Promise.resolve(pa_list_associated as unknown as getAssociatedPaListResponse)
-    let pa_list : getAssociablePaListResponse = { items: [] };
-    for(let i = 0; i < 200; i++) {
-        pa_list.items.push({
-            id:"pa_"+i,
-            name:"Pa indice " + i
-        })
-    }
     return this._mock(pa_list);
   }
 
@@ -195,7 +207,6 @@ class Http {
       }));
     }
 
-    console.log("call getAssociablePaList with payload", name);
     let pa_list : getAssociablePaListResponse = { items: [] };
     for(let i = 0; i < 7000; i++) {
         pa_list.items.push({

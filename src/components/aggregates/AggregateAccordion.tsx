@@ -1,17 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Grid, Typography, AccordionDetails, Accordion, AccordionSummary, Stack } from "@mui/material";
+import { Grid, Typography, AccordionDetails, Accordion, AccordionSummary } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Aggregate } from '../../types';
 import PaList from './PaList';
-import apiRequests from '../../api/apiRequests';
-import * as spinnerActions from "../../redux/spinnerSlice";
-import * as snackbarActions from "../../redux/snackbarSlice";
-import { useDispatch } from 'react-redux';
-import { useNavigate } from "react-router-dom";
-import * as routes from '../../navigation/routes';
+import { getAggregateResponse } from "../../api/apiRequestTypes";
 
 type Props = {
-    aggregate: Aggregate
+    aggregate: getAggregateResponse
 }
 
 const AggregateAccordion = ({aggregate} : Props) => {

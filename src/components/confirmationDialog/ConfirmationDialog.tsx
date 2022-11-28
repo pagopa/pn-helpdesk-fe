@@ -13,7 +13,6 @@ type Props = {
     options: Options,
     onCancel: () => void,
     onConfirm: () => void,
-    onClose: () => void,
 }
 
 /**
@@ -28,8 +27,7 @@ const ConfirmationDialog = ({
     open,
     options,
     onCancel,
-    onConfirm,
-    onClose,
+    onConfirm
 } : Props) => {
     const { title, message} = options;
 
@@ -41,16 +39,16 @@ const ConfirmationDialog = ({
             aria-describedby="alert-dialog-description"
         >
             {
-                title && <DialogTitle id="alert-dialog-title">
+                title && <DialogTitle id="alert-dialog-title" data-testid="dialog-title">
                     {title}
                 </DialogTitle>
             }
             <DialogContent>
-                <DialogContentText id="alert-dialog-description">
+                <DialogContentText id="alert-dialog-description" data-testid="dialog-description">
                     {message}
                 </DialogContentText>
             </DialogContent>
-            <DialogActions>
+            <DialogActions data-testid="dialog-actions">
                 <Button onClick={onCancel}>Annulla</Button>
                 <Button onClick={onConfirm} autoFocus>Conferma</Button>
             </DialogActions>

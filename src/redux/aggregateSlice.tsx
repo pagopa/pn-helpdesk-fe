@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { AggregateSummary } from '../types'
-import { getAggregateParams, getAggregatesResponse } from '../api/apiRequestTypes';
+import { AggregateSummary, getAggregateParams, getAggregatesResponse } from '../api/apiRequestTypes';
 import type { RootState } from './store'
 
 interface KeyPage {

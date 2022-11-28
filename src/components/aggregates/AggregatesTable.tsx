@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Column, Item } from "../../types";
+import { Column, Item } from "../table/tableTypes";
 import ItemsTable from '../table/table';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { red } from "@mui/material/colors";

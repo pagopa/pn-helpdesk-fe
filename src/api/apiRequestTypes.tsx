@@ -1,4 +1,3 @@
-import { Aggregate, AggregateSummary, Pa } from "../types";
 
 /**
  * @typedef {Object} getPersonIdType
@@ -114,6 +113,17 @@ type getAggregateParams = {
 }
 
 /**
+ * @typedef {Object} AggregateSummary
+ */
+type AggregateSummary = {
+    id: string,
+    name: string,
+    usagePlan: string,
+    createdAt: string,
+    lastUpdate?: string
+}
+
+/**
  * @typedef {Object} getAggregatesResponse
  */
 type getAggregatesResponse = {
@@ -124,6 +134,15 @@ type getAggregatesResponse = {
 }
 
 /**
+ * @typedef {Object} Pa
+ */
+type Pa = {
+    name: string,
+    id: string,
+    selected?: boolean
+}
+
+/**
  * @typedef {Object} getAssociablePaListResponse
  */
 type getAssociablePaListResponse = {
@@ -131,9 +150,28 @@ type getAssociablePaListResponse = {
 }
 
 /**
+ * @typedef {Object} UsagePlan
+ */
+type UsagePlan = {
+    id: string,
+    name: string,
+    quota: number,
+    rate: number,
+    burst: number
+}
+
+/**
  * @typedef {Object} getAggregateResponse
  */
-type getAggregateResponse = Aggregate;
+type getAggregateResponse = {
+    id: string,
+    name: string,
+    description: string,
+    usagePlan: UsagePlan,
+    createdAt: string,
+    lastUpdate?: string,
+    associatedPa?: Array<Pa>
+}
 
 /**
  * @typedef {Object} addPaResponse
@@ -166,4 +204,4 @@ type aggregateId = {
     id: string
 }
 
-export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAggregateParams, getAggregatesResponse, getAssociablePaListResponse, getAssociatedPaListResponse, getAggregateResponse, addPaResponse, getUsagePlansType, createAggregateType, modifyAggregateType, getAggregateDetailsType, aggregateId }
+export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAggregateParams, AggregateSummary, getAggregatesResponse, Pa, getAssociablePaListResponse, getAssociatedPaListResponse, UsagePlan, getAggregateResponse, addPaResponse, getUsagePlansType, createAggregateType, modifyAggregateType, getAggregateDetailsType, aggregateId }

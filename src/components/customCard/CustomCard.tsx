@@ -25,7 +25,7 @@ const CustomCard = ({cardId, cardHeader, cardBody, cardActions} : Props) => {
       <Card
         key={cardId}
         raised
-        data-testid="itemCard"
+        data-testid="customCard"
         sx={{
           mb: 2,
           px: 2,

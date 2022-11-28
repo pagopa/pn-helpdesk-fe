@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import MainLayout from "../mainLayout/MainLayout";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
     Autocomplete,
     TextField,
@@ -18,12 +18,10 @@ import * as snackbarActions from "../../redux/snackbarSlice";
 import { useDispatch } from 'react-redux';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
 import * as routes from '../../navigation/routes';
-import { Pa } from "../../types";
+import { Pa } from "../../api/apiRequestTypes";
 
 const PaTransferListPage = ({ email }: any) => {
-    const navigate = useNavigate();
     const location: any = useLocation();
-    const params = useParams();
     const dispatch = useDispatch();
     const aggParam = location?.state?.agg ?? null;
     const [renderedAggList, setRenderedAggList]: any = useState(undefined)
@@ -169,7 +167,6 @@ const PaTransferListPage = ({ email }: any) => {
     ] : [];
 
     const list2 = useMemo(() => {
-        console.log("Re-Render list2")
         return (
             <List style={{ backgroundColor: 'white', width: 500, height: 500, overflow: 'auto' }}>
                 {!areInputsEqual && paList2 && paList2?.items?.length < 1 ? <ListItem>La lista è vuota</ListItem>

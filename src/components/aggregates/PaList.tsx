@@ -3,9 +3,9 @@ import ListItemButton from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
-import { Pa } from '../../types';
 import usePagination from '../../hooks/usePagination';
 import CustomPagination from '../Pagination/Pagination';
+import { Pa } from '../../api/apiRequestTypes';
 
 type Props = {
     paList : Array<Pa>,

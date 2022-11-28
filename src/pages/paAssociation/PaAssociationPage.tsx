@@ -1,20 +1,19 @@
 import MainLayout from "../mainLayout/MainLayout";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Box, Grid, Typography } from "@mui/material";
-import PaAssociation from "../../components/aggregates/PaAssociation";
+import PaAssociation from "../../components/paAssociation/PaAssociation";
 import AggregateAccordion from '../../components/aggregates/AggregateAccordion';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
 import * as routes from '../../navigation/routes';
-import { Aggregate } from "../../types";
+import { getAggregateResponse } from "../../api/apiRequestTypes";
 
 /**
  * PaAssociationPage
  * @component
  */
 const PaAssociationPage = ({email}: any) => {
-    const { idAggregate } = useParams();
     const location : any = useLocation();
-    const aggregate = location?.state?.aggregate as Aggregate;
+    const aggregate = location?.state?.aggregate as getAggregateResponse;
     const breadcrumbsLinks = [
         {
             linkLabel: 'Gestione Aggregazioni ApiKey',
@@ -22,7 +21,7 @@ const PaAssociationPage = ({email}: any) => {
         },
         {
             linkLabel: 'Dettaglio Aggregazione',
-            linkRoute: routes.GET_UPDATE_AGGREGATE_PATH(idAggregate!)
+            linkRoute: routes.GET_UPDATE_AGGREGATE_PATH(aggregate.id!)
         }
     ]
 
@@ -45,7 +44,7 @@ const PaAssociationPage = ({email}: any) => {
                     </Grid>
                 </Grid>
 
-                <PaAssociation idAggregate={idAggregate} />
+                <PaAssociation idAggregate={aggregate?.id} />
             </Box>
             
         </MainLayout>

@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Grid, Typography, Badge } from "@mui/material";
-import PaList from "./PaList";
+import PaList from "../aggregates/PaList";
 import AssociablePaTable from "./AssociablePaTable";
 import { useNavigate } from "react-router-dom";
-import { Pa } from '../../types';
 import apiRequests from '../../api/apiRequests';
 import * as spinnerActions from "../../redux/spinnerSlice";
 import * as snackbarActions from "../../redux/snackbarSlice";
@@ -13,6 +12,7 @@ import { CardActionType, CardHeaderType } from '../customCard/types';
 import BusinessIcon from '@mui/icons-material/Business';
 import useConfirmDialog from '../confirmationDialog/useConfirmDialog';
 import * as routes from '../../navigation/routes';
+import { Pa } from '../../api/apiRequestTypes';
 
 type Props = {
     idAggregate: string | undefined
@@ -42,19 +42,16 @@ const PaAssociation = ({idAggregate} : Props) => {
             ).finally(
                 () => dispatch(spinnerActions.updateSpinnerOpened(false))
             )
-    }, [idAggregate])
+    }, [])
 
-    const handleSelection = useCallback(
-        (pa: any, selected: boolean)  => {
-            let indexPa = associablePaList.findIndex((item) => item.id === pa.id);
+    const handleSelection = (pa: any, selected: boolean)  => {
+        let indexPa = associablePaList.findIndex((item) => item.id === pa.id);
 
-            let associablePaListCopy = [...associablePaList];
-            associablePaListCopy[indexPa].selected = selected;
+        let associablePaListCopy = [...associablePaList];
+        associablePaListCopy[indexPa].selected = selected;
 
-            setAssociablePaList(associablePaListCopy);
-        
-        }, [associablePaList]
-    )
+        setAssociablePaList(associablePaListCopy);
+    }
 
     const associablePaCardHeader : CardHeaderType = {
         title: <Typography variant="h6" component="div">
