@@ -16,7 +16,7 @@ type PaBodyTableRowProps = {
     onSelect?: (pa: Pa, selected: boolean) => void
 }
 
-const PaBodyTableRow = ({pa, onSelect} : PaBodyTableRowProps) => {
+const PaBodyTableRow = ({ pa, onSelect }: PaBodyTableRowProps) => {
 
     const handleChange = (evt: React.ChangeEvent<HTMLInputElement>, pa: Pa) => {
         let checked = evt.target.checked;
@@ -26,14 +26,14 @@ const PaBodyTableRow = ({pa, onSelect} : PaBodyTableRowProps) => {
     return (
         <TableRow data-testid="paTable-row">
             {onSelect && <TableCell>
-                    <Checkbox 
-                        id={`check-${pa.id}`} 
-                        name={`input-check-${pa.id}`} 
-                        checked={pa.selected} 
-                        data-testid={`paTable-row-checkbox-${pa.id}`}
-                        onChange={ (evt) => handleChange(evt, pa) }
-                    />
-                </TableCell>
+                <Checkbox
+                    id={`check-${pa.id}`}
+                    name={`input-check-${pa.id}`}
+                    checked={pa.selected}
+                    data-testid={`paTable-row-checkbox-${pa.id}`}
+                    onChange={(evt) => handleChange(evt, pa)}
+                />
+            </TableCell>
             }
             <TableCell>{pa.name}</TableCell>
         </TableRow>
@@ -43,7 +43,7 @@ const PaBodyTableRow = ({pa, onSelect} : PaBodyTableRowProps) => {
 type PaTableHeadProps = {
     onSelect?: (pa: Pa, selected: boolean) => void
 }
-const PaTableHead = ({onSelect} : PaTableHeadProps) => {
+const PaTableHead = ({ onSelect }: PaTableHeadProps) => {
 
     return (
         <TableRow data-testid="paTable-head">
@@ -59,7 +59,7 @@ type PaTableProps = {
     onSelect?: (pa: Pa, selected: boolean) => void
 }
 
-const PaTable = ({paList, onSelect}: PaTableProps) => {
+const PaTable = ({ paList, onSelect }: PaTableProps) => {
     const head = <PaTableHead onSelect={onSelect} />;
     
     const { handlePaginationChange, limit, page, pagesToShow, slicedList, total } = usePagination(paList); 
@@ -70,7 +70,7 @@ const PaTable = ({paList, onSelect}: PaTableProps) => {
 
     return (
         <>
-            <TableContainer sx={{ marginBottom: '10px' }} data-testid="paTable">
+            <TableContainer data-testid="paTable">
                 <Table stickyHeader aria-label='Tabella di Pubbliche amministrazioni'>
                     <TableHead>
                         {head}
@@ -80,27 +80,27 @@ const PaTable = ({paList, onSelect}: PaTableProps) => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {paList.length > 0 && <CustomPagination 
-                    paginationData={{
-                        limit: limit,
-                        page: page,
-                        total: total
-                    }}
-                    onPageRequest={handlePaginationChange}
-                    pagesToShow={pagesToShow}
-                    sx={
-                        {
-                            padding: '0',
-                            '& .items-per-page-selector button': {
-                                paddingLeft: 0,
-                                height: '24px',
-                            }
+            {paList.length > 0 && <CustomPagination
+                paginationData={{
+                    limit: limit,
+                    page: page,
+                    total: total
+                }}
+                onPageRequest={handlePaginationChange}
+                pagesToShow={pagesToShow}
+                sx={
+                    {
+                        padding: '0',
+                        '& .items-per-page-selector button': {
+                            paddingLeft: 0,
+                            height: '24px',
                         }
                     }
-                />
+                }
+            />
             }
         </>
-        
+
     )
 }
 export default PaTable;
