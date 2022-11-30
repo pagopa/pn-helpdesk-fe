@@ -204,4 +204,13 @@ type aggregateId = {
     id: string
 }
 
-export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAggregateParams, AggregateSummary, getAggregatesResponse, Pa, getAssociablePaListResponse, getAssociatedPaListResponse, UsagePlan, getAggregateResponse, addPaResponse, getUsagePlansType, createAggregateType, modifyAggregateType, getAggregateDetailsType, aggregateId }
+type ErrorResponse = {
+    detail: string,
+    errors: Array<string>,
+    status: number,
+    timestamp: string,
+    title: string,
+    traceid: string
+}
+
+export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAggregateParams, AggregateSummary, getAggregatesResponse, Pa, getAssociablePaListResponse, getAssociatedPaListResponse, UsagePlan, getAggregateResponse, addPaResponse, getUsagePlansType, createAggregateType, modifyAggregateType, getAggregateDetailsType, aggregateId, ErrorResponse }

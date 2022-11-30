@@ -204,46 +204,6 @@ const pa_list_associated = {
         {
             id: "pa_5_1",
             name: "Comune di Sondrio",
-        },
-        {
-            id: "pa_1_12",
-            name: "Comune di Rovigo",
-        },
-        {
-            id: "pa_2_2",
-            name: "Comune di Belluno",
-        },
-        {
-            id: "pa_3_2",
-            name: "Comune di Mantova",
-        },
-        {
-            id: "pa_4_2",
-            name: "Comune di Rieti",
-        },
-        {
-            id: "pa_5_2",
-            name: "Comune di Monza",
-        },
-        {
-            id: "pa_1_3",
-            name: "Comune di Caserta",
-        },
-        {
-            id: "pa_2_3",
-            name: "Comune di Cassino",
-        },
-        {
-            id: "pa_3_3",
-            name: "Comune di Latina",
-        },
-        {
-            id: "pa_4_3",
-            name: "Comune di Pescara",
-        },
-        {
-            id: "pa_5_3",
-            name: "Comune di Bologna",
         }
     ]
 };
@@ -288,5 +248,10 @@ const usage_plan_list = {
     ]
 };
 
+const move_pa = {
+    processed: 1,
+    unprocessed: 0,
+    unprocessedPA: []
+}
 
-export { agg_list, pa_list, aggregate, pa_list_associated, usage_plan_list, aggregates_list }
+export { agg_list, pa_list, aggregate, pa_list_associated, usage_plan_list, aggregates_list, move_pa }

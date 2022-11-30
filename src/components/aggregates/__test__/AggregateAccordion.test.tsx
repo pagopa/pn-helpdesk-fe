@@ -9,9 +9,7 @@ describe("AggregateAccordion", () => {
     let result : RenderResult | undefined;
     let mockedAggregate = {...aggregate, associatedPa: pa_list_associated.items};
     beforeEach(async () => {
-        await act(async () => {
-            result = reducer(<AggregateAccordion aggregate={mockedAggregate} />);
-        });
+        result = reducer(<AggregateAccordion aggregate={mockedAggregate} />);
     })
 
     it("render", () => {

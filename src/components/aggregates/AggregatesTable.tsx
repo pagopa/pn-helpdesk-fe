@@ -6,7 +6,7 @@ import { red } from "@mui/material/colors";
 import * as spinnerActions from "../../redux/spinnerSlice";
 import * as snackbarActions from "../../redux/snackbarSlice";
 import { useNavigate } from "react-router-dom";
-import { getAggregateParams } from "../../api/apiRequestTypes";
+import { ErrorResponse, getAggregateParams } from "../../api/apiRequestTypes";
 import { useSelector, useDispatch } from 'react-redux';
 import { filtersSelector, paginationSelector, aggregatesSelector, setPagination, setAggregates, resetState, setFilters } from '../../redux/aggregateSlice';
 import { PaginationData } from "../Pagination/types";
@@ -90,6 +90,10 @@ const AggregatesTable = () => {
         )
         .catch(
           err => {
+            if(err.response && err.response.data) {
+              let error = err.response.data as ErrorResponse;
+              dispatch(snackbarActions.updateMessage(error.detail))
+            }
             dispatch(snackbarActions.updateSnackbacrOpened(true));
             dispatch(snackbarActions.updateStatusCode("400"));
           }

@@ -15,6 +15,7 @@ import {
 import SendIcon from '@mui/icons-material/Send';
 import apiRequests from "../../api/apiRequests";
 import * as snackbarActions from "../../redux/snackbarSlice";
+import * as spinnerActions from "../../redux/spinnerSlice";
 import { useDispatch } from 'react-redux';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
 import * as routes from '../../navigation/routes';
@@ -29,9 +30,9 @@ const PaTransferListPage = ({ email }: any) => {
     const [input2Value, setInput2Value]: any = useState(undefined);
     const [paList1, setPaList1]: any = useState(undefined);
     const [paList2, setPaList2]: any = useState(undefined);
-    const [isInput2Disabled, setIsInput2Disabled]: any = useState(true);
-    const [areInputsEqual, setAreInputsEqual]: any = useState(false);
     const [checked, setChecked] = useState<Array<Pa>>([]);
+    const areInputsEqual = !!input1Value && input1Value === input2Value;
+    const isInput2Disabled = !input1Value;
 
     useEffect(() => {
         getAggregates();
@@ -39,6 +40,7 @@ const PaTransferListPage = ({ email }: any) => {
     }, []);
 
     const getAggregates = () => {
+        dispatch(spinnerActions.updateSpinnerOpened(true));
         let request = apiRequests.getAggregates({ lastEvaluatedId: "" })
         if (request) {
             request
@@ -48,42 +50,29 @@ const PaTransferListPage = ({ email }: any) => {
                 .catch(err => {
                     console.log("Errore: ", err)
                 })
+                .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)))
         }
     }
 
     const handleChangeInput1 = (e: any, value: any) => {
-        isInput2Disabled && setIsInput2Disabled(false)
-        setChecked([]);
         setInput1Value(value)
         setPaList1(undefined)
-        if (value === input2Value && value !== null) {
-            setAreInputsEqual(true)
-        }
-        else {
-            setAreInputsEqual(false)
-        }
         value && getPas1(e, value)
     }
 
     const handleChangeInput2 = (e: any, value: any) => {
         setInput2Value(value)
         setPaList2(undefined)
-        if (input1Value === value && value !== null) {
-            setAreInputsEqual(true)
-        }
-        else {
-            setAreInputsEqual(false)
-        }
         value && getPas2(e, value)
     }
 
     const getPas1 = (e: any, value: any) => {
-        setPaList1(undefined)
         let idAggregation = aggParam?.id ?? value?.id
         let request = apiRequests.getAssociatedPaList(idAggregation)
         if (request) {
             request
                 .then(res => {
+                    setChecked([]);
                     setPaList1(res);
                 })
                 .catch(err => {
@@ -93,7 +82,6 @@ const PaTransferListPage = ({ email }: any) => {
     }
 
     const getPas2 = (e: any, value: any) => {
-        setPaList2(undefined)
         let idAggregation = value?.id
         let request = apiRequests.getAssociatedPaList(idAggregation)
         if (request) {
@@ -124,13 +112,13 @@ const PaTransferListPage = ({ email }: any) => {
                 let message = "";
 
                 if(res.processed === checked.length) {
-                    message = "Tutte le PA sono state associate con successo";
+                    message = "Tutte le PA sono state trasferite con successo";
                 } else {
                     if(res.processed === 0) {
-                        message = "Non è stato possibile associare le PA selezionate";
+                        message = "Non è stato possibile trasferire le PA selezionate";
                         statusCode = "400";
                     } else {
-                        message = "Riscontrati problemi nell'associazione delle seguenti PA : " + res.unprocessedPA.toString() + ". Le restanti PA selezionate sono state salvate con successo";
+                        message = "Riscontrati problemi nel trasferimento delle seguenti PA : " + res.unprocessedPA.toString() + ". Le restanti PA selezionate sono state salvate con successo";
                         statusCode = "202"
                     }
                 }
@@ -141,7 +129,6 @@ const PaTransferListPage = ({ email }: any) => {
                 dispatch(snackbarActions.updateSnackbacrOpened(true));
 
                 //Refresh lists
-                setChecked([]);
                 getPas1(undefined, input1Value);
                 getPas2(undefined, input2Value);
 
@@ -172,16 +159,6 @@ const PaTransferListPage = ({ email }: any) => {
                 {!areInputsEqual && paList2 && paList2?.items?.length < 1 ? <ListItem>La lista è vuota</ListItem>
                     : paList2?.items?.map((pa: any) => (
                         <ListItem key={pa.id}>
-                            <ListItemIcon>
-                                <Checkbox
-                                    disabled
-                                    checked={false}
-                                    edge="start"
-                                    tabIndex={-1}
-                                    disableRipple
-                                    inputProps={{ 'aria-labelledby': pa.id }}
-                                />
-                            </ListItemIcon>
                             <ListItemText id={pa.id} primary={pa.name} />
                         </ListItem>
                     ))
@@ -230,6 +207,8 @@ const PaTransferListPage = ({ email }: any) => {
                         defaultValue={aggParam || null}
                         getOptionLabel={(option: any) => option.name}
                         renderInput={(params) => <TextField {...params} label="Aggregazione di partenza" />}
+                        isOptionEqualToValue={(opt, value) => value.id === opt.id}
+                        data-testid="sender-agg-autocomplete"
                     />
                     <Autocomplete
                         onChange={handleChangeInput2}
@@ -238,6 +217,8 @@ const PaTransferListPage = ({ email }: any) => {
                         disabled={isInput2Disabled}
                         getOptionLabel={(option: any) => option.name}
                         renderInput={(params) => <TextField error={areInputsEqual} helperText={areInputsEqual ? "Scegli una lista di aggregazione diversa" : null} {...params} label="Aggregazione di destinazione" />}
+                        data-testid="receiver-agg-autocomplete"
+                        isOptionEqualToValue={(opt, value) => value.id === opt.id}
                     />
                 </div>
                 <div className="transfer-list" style={{ display: 'flex', gap: 100, marginTop: 50 }}>
