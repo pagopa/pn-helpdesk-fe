@@ -1,17 +1,19 @@
-import { memo } from 'react' 
+import { memo } from 'react'
 import { FormField, FieldsProps } from '../../formFields/FormFields';
 import { Controller, useForm } from "react-hook-form";
 import { Grid, Button, FormHelperText } from "@mui/material";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 
 type Props = {
     fields: Array<FieldsProps>,
     onFiltersSubmit: (data: any) => void
 };
 
-const FilterTable = memo(({fields, onFiltersSubmit} : Props) => {
+const FilterTable = memo(({ fields, onFiltersSubmit }: Props) => {
 
-    const setDefaultValues = () : {[key: string]: any} => {
-        return fields.reduce((res, f) => ({...res, [f.name] : ""}), {});
+    const setDefaultValues = (): { [key: string]: any } => {
+        return fields.reduce((res, f) => ({ ...res, [f.name]: "" }), {});
     }
 
     const { handleSubmit, control, formState: { errors, isDirty }, reset } = useForm({
@@ -32,9 +34,9 @@ const FilterTable = memo(({fields, onFiltersSubmit} : Props) => {
     const isFilterApplied = isDirty;
 
     return (
-        
+
         <form onSubmit={handleSubmit(data => onSubmit(data))}>
-            <Grid container display={"flex"}>
+            <Grid display={"flex"} justifyContent={'space-between'} gap={'10px'} marginBottom={'20px'}>
                 {
                     fields.map(
                         (field: FieldsProps) => (
@@ -54,18 +56,20 @@ const FilterTable = memo(({fields, onFiltersSubmit} : Props) => {
                                             {errors[field.name] ? errors[field.name].message : " "}
                                         </FormHelperText>
                                     </>
+                                    
                                 )}
                             />
                         )
                     )
                 }
-                <Grid container item spacing={1}>
+                <Grid item display={'flex'} gap={'10px'}>
                     <Grid item>
                         <Button
                             variant="outlined"
                             type="submit"
+                            style={{ height: '100%', display: 'flex', gap: '10px' }}
                         >
-                            Filtra
+                            Filtra <FilterAltIcon />
                         </Button>
                     </Grid>
                     <Grid item>
@@ -73,14 +77,15 @@ const FilterTable = memo(({fields, onFiltersSubmit} : Props) => {
                             onClick={clearFilters}
                             type="submit"
                             disabled={!isFilterApplied}
+                            style={{ height: '100%' }}
                         >
-                            Rimuovi Filtri
+                            <FilterAltOffIcon />
                         </Button>
                     </Grid>
                 </Grid>
             </Grid>
         </form>
-       
+
     )
 })
 
