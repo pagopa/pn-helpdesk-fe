@@ -62,7 +62,7 @@ type PaTableProps = {
 const PaTable = ({paList, onSelect}: PaTableProps) => {
     const head = <PaTableHead onSelect={onSelect} />;
     
-    const { handlePaginationChange, limit, page, pagesToShow, slicedList, total } = usePagination(paList, 5); 
+    const { handlePaginationChange, limit, page, pagesToShow, slicedList, total } = usePagination(paList); 
     
     const rows = slicedList.map((pa) => (
         <PaBodyTableRow key={`row-${pa.id}`} pa={pa} onSelect={onSelect} />
