@@ -392,7 +392,7 @@ const SearchForm = () => {
     var fileURL = URL.createObjectURL(file);
     var fileLink = document.createElement("a");
     fileLink.href = fileURL;
-    fileLink.download = "export";
+    fileLink.download = getValues("ticketNumber");
     fileLink.click();
   };
 
