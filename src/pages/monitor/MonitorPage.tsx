@@ -36,14 +36,10 @@ const MonitorPage = ({ email }: any) => {
     [dispatch]
   );
 
-  // const convertGMTtoLocalTime = function (date: Date) {
-  //   return date.toLocaleString();
-  // };
-
   const getEvents = useCallback(() => {
     apiRequests
       .getStatus()
-      .then((res) => {
+      .then(res => {
         setBackEndStatus(true);
         let rows: any[] = [];
         if (res && res.data) {
@@ -179,10 +175,9 @@ const MonitorPage = ({ email }: any) => {
                   const payload = [
                     {
                       status: "KO",
-                      timestamp: format(
-                        new Date(),
-                        "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
-                      ),
+                      timestamp: new Date(
+                        new Date().toUTCString()
+                      ).toISOString(),
                       functionality: Array(params.row.functionalityName),
                       sourceType: "OPERATOR",
                     },
@@ -199,10 +194,9 @@ const MonitorPage = ({ email }: any) => {
                   const payload = [
                     {
                       status: "OK",
-                      timestamp: format(
-                        new Date(),
-                        "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
-                      ),
+                      timestamp: new Date(
+                        new Date().toUTCString()
+                      ).toISOString(),
                       functionality: Array(params.row.functionalityName),
                       sourceType: "OPERATOR",
                     },
