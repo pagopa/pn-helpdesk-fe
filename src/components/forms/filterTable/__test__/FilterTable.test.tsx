@@ -20,7 +20,7 @@ describe("FilterTable tests", () => {
 
     const getButtons = () => {
         const filterButton = screen.getByRole("button", {name: "Filtra"});
-        const clearFiltersButton = screen.getByRole("button", {name: "Rimuovi Filtri"});
+        const clearFiltersButton = screen.getByTestId("clear-filters");
 
         return {filterButton, clearFiltersButton};
     }

@@ -152,7 +152,7 @@ class Http {
     return this._mock(id);
   }
 
-  deleteAggregate<T = string>(id: string): Promise<AxiosResponse<T>> {
+  deleteAggregate<T = aggregateId>(id: string): Promise<AxiosResponse<T>> {
     if(!process.env.REACT_APP_MOCK_API) { 
       return this.http.delete(compileRoute({
         prefix: "api-key-bo",

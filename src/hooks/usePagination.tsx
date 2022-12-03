@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { PaginationData } from "../components/Pagination/types";
 import { calculatePages } from "../helpers/pagination.utility";
 
-export const DEFAULT_PAGINATION_LIMIT = 5;
+export const DEFAULT_PAGINATION_LIMIT = 10;
 const usePagination = (list : Array<any>, displayedPage : number = 2) => {
     const [paginationData, setPaginationData] = useState({page: 0, limit: DEFAULT_PAGINATION_LIMIT});
     const totalElements = list.length;

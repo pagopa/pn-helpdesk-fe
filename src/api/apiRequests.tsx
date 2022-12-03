@@ -145,10 +145,10 @@ const getAggregateDetails = (id: string) => {
 */
 const createAggregate = async (data: createAggregateType) => {
     return await apiClient.createAggregate(data)
-        .then((result: any) => {
+        .then((result) => {
             return result.data;
         })
-        .catch((error: any) => {
+        .catch((error) => {
             throw error;
         })
 }
@@ -158,10 +158,10 @@ const createAggregate = async (data: createAggregateType) => {
 */
 const modifyAggregate = async (data: modifyAggregateType, id: string) => {
     return await apiClient.modifyAggregate(data, id)
-        .then((result: any) => {
+        .then((result) => {
             return result.data;
         })
-        .catch((error: any) => {
+        .catch((error) => {
             throw error;
         })
 }
@@ -171,10 +171,10 @@ const modifyAggregate = async (data: modifyAggregateType, id: string) => {
 */
 const deleteAggregate = async (id: string) => {
     return await apiClient.deleteAggregate(id)
-        .then((result: any) => {
+        .then((result) => {
             return result.data;
         })
-        .catch((error: any) => {
+        .catch((error) => {
             throw error;
         })
 }

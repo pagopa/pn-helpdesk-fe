@@ -78,6 +78,7 @@ const FilterTable = memo(({ fields, onFiltersSubmit }: Props) => {
                             type="submit"
                             disabled={!isFilterApplied}
                             style={{ height: '100%' }}
+                            data-testid="clear-filters"
                         >
                             <FilterAltOffIcon />
                         </Button>

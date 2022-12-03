@@ -24,7 +24,7 @@ describe('SelectField Component', () => {
 
   it('renders component', () => {
     render(<SelectField field={props.field} value={props.value} onChange={props.onChange}  />);
-    expect(screen.getByTestId("selectMenu")).toBeTruthy();
+    expect(screen.getByTestId(`select-${props.field.name}`)).toBeTruthy();
   });
 
 });

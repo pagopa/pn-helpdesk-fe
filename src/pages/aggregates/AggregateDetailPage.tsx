@@ -27,13 +27,14 @@ const AggregateDetailPage = ({ email }: any) => {
     const { idAggregate } = useParams();
     const isCreate = !idAggregate;
     const dispatch = useDispatch();
-    const [agg, setAgg]: any = useState(undefined);
+    const [aggregate, setAggregate]: any = useState(undefined);
     const [pas, setPas]: any = useState([]);
     const [usagePlans, setUsagePlans] = useState<Array<UsagePlan>>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        
+        let subscribed = true;
+
         let requestList = [apiRequests.getUsagePlans()];
 
         if(!isCreate) {
@@ -44,11 +45,13 @@ const AggregateDetailPage = ({ email }: any) => {
         dispatch(spinnerActions.updateSpinnerOpened(true));
         Promise.all(requestList)
             .then(responses => {
-                setUsagePlans(responses[0].items);
-            
-                if(!isCreate) {
-                    setAgg(responses[1]);
-                    setPas(responses[2].items);
+                if(subscribed) {
+                    setUsagePlans(responses[0].items);
+        
+                    if(!isCreate) {
+                        setAggregate(responses[1]);
+                        setPas(responses[2].items);
+                    }
                 }
             })
             .catch(errors => {
@@ -59,14 +62,15 @@ const AggregateDetailPage = ({ email }: any) => {
             })
             .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
 
+        return () => { subscribed = false };
     }, [idAggregate]);
 
     const handleClickAdd = () => {
-        navigate(routes.ADD_PA, { state: { aggregate: {...agg, associatedPa: pas} as getAggregateResponse } });
+        navigate(routes.ADD_PA, { state: { aggregate: {...aggregate, associatedPa: pas} as getAggregateResponse } });
     };
 
     const handleClickTransfer = () => {
-        navigate(routes.TRANSFER_PA, { state: { agg: { id: idAggregate, name: agg?.name } } });
+        navigate(routes.TRANSFER_PA, { state: { aggregate: { id: idAggregate, name: aggregate?.name } } });
     };
 
     const getFormTitle = () => {
@@ -89,7 +93,7 @@ const AggregateDetailPage = ({ email }: any) => {
         sx: { px: 3, pt: 4, pb: 1 }
     };
 
-    const formCardBody = <AggregateForm isCreate={isCreate} agg={agg} usagePlans={usagePlans} />;//<AggregationDetailForm isCreate={isCreate} agg={agg} />;
+    const formCardBody = <AggregateForm isCreate={isCreate} aggregate={aggregate} usagePlans={usagePlans} />;
 
     const associatedPasCardHeader : CardHeaderType = {
         title: <Typography gutterBottom variant="h5" component="div">

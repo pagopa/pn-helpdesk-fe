@@ -11,22 +11,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
 import { act } from 'react-test-renderer';
 import { renderWithProviders } from '../../../__tests__/testReducer';
-const mockStore = configureMockStore([]);
 import * as router from 'react-router'
 import * as routes from '../../../navigation/routes';
 import { aggregate, usage_plan_list, pa_list } from '../../../api/mock_agg_response';
-const store = mockStore({
-    response: {
-        opened: false,
-        responseData: {}
-    },
-    snackbar: {
-        opened: false
-    },
-    spinner: {
-        opened: false
-    }
-});
 
 const navigate = jest.fn();
 
@@ -60,27 +47,31 @@ describe("AggregateDetailPage MODIFY", () => {
     });
 
     it("Renders AggregateDetailPage MODIFY", async () => {
-        result = renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
+        await renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
+
         expect(apiRequests.getUsagePlans).toHaveBeenCalled();
         expect(apiRequests.getAggregateDetails).toHaveBeenCalled();
+        
         const save_button = await screen.findByText("Salva");
         const delete_button = await screen.findByText("Elimina");
         expect(save_button).toBeInTheDocument();
         expect(delete_button).toBeInTheDocument();
-        const pa_table = await screen.findByLabelText("Tabella di Pubbliche amministrazioni");
+        expect(screen.getByTestId("aggregate-form")).toBeInTheDocument();
+        const pa_table = screen.getByLabelText("Tabella di Pubbliche amministrazioni");
         expect(pa_table).toBeInTheDocument();
+        
     })
 
-    it("Renders AggregateDetailPage ASSOCIA", async () => {
-        result = renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
+    it("Click Associa", async () => {
+        await renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
         const associa_pa_button = await screen.findByRole("button", { name: "Associa PA" });
         expect(associa_pa_button).toBeInTheDocument();
         fireEvent.click(associa_pa_button);
         await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.ADD_PA, { state: { aggregate: { associatedPa: [] } } }));
     })
 
-    it("Renders AggregateDetailPage TRASFERISCI", async () => {
-        result = renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
+    it("Click Trasferisci", async () => {
+        await renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
         const trasferisci_pa_button = await screen.findByRole("button", { name: "Trasferisci PA" });
         expect(trasferisci_pa_button).toBeInTheDocument();
         fireEvent.click(trasferisci_pa_button);
@@ -89,9 +80,8 @@ describe("AggregateDetailPage MODIFY", () => {
 })
 
 describe("AggregateDetailPage CREATE", () => {
-    let result: RenderResult | undefined;
     it("Renders AggregateDetailPage CREATE", async () => {
-        result = renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
+        await renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
         const create_aggregate_button = await screen.findByRole("button", { name: "Crea" });
         expect(create_aggregate_button).toBeDisabled();
         const pa_table = screen.queryByLabelText("Tabella di Pubbliche amministrazioni");
@@ -104,22 +94,13 @@ describe("AggregateDetailPage CREATE", () => {
 })
 
 describe("AggregateDetailPage FAILED_PROMISE", () => {
-    let result: RenderResult | undefined;
     it("Renders AggregateDetailPage FAILED_PROMISE", async () => {
         let apiSpyUsagePlans = jest.spyOn(apiRequests, 'getUsagePlans');
         apiSpyUsagePlans.mockImplementation(() => {
             return Promise.reject()
         })
-        let apiSpyAggregate = jest.spyOn(apiRequests, 'getAggregateDetails');
-        apiSpyAggregate.mockImplementation((params: any) => {
-            return Promise.reject()
-        })
-        let apiSpyAssociatedPa = jest.spyOn(apiRequests, 'getAssociatedPaList');
-        apiSpyAssociatedPa.mockImplementation((params: any) => {
-            return Promise.reject()
-        })
         jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate)
-        result = renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
+        await renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
         await waitFor(() => expect(apiRequests.getUsagePlans).toHaveBeenCalled());
         await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.AGGREGATES));
     })

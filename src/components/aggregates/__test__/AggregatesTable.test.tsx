@@ -1,4 +1,4 @@
-import { fireEvent, RenderResult, waitFor, screen } from '@testing-library/react';
+import { fireEvent, RenderResult, waitFor, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import apiRequests from '../../../api/apiRequests';
 import { aggregates_list } from '../../../api/mock_agg_response';
 import AggregatesTable from '../AggregatesTable';
@@ -38,7 +38,7 @@ describe("AggregatesTable Component", () => {
 
         let apiSpyDeleteAggregate = jest.spyOn(apiRequests, 'deleteAggregate');
         apiSpyDeleteAggregate.mockImplementation((id) => {
-            return Promise.resolve(id);
+            return Promise.resolve({id});
         })
 
         // mock navigation
@@ -91,24 +91,6 @@ describe("AggregatesTable Component", () => {
         await waitFor(() => expect(navigate).toBeCalledWith(routes.GET_UPDATE_AGGREGATE_PATH(mockData.items[0].id)));
     })
 
-    // it('changes items per page', async () => {
-    //     result = renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>)
-    //     const itemsPerPageSelectorBtn = result?.container.querySelector(
-    //       '[data-testid="itemsPerPageSelector"] > button'
-    //     );
-    //     fireEvent.click(itemsPerPageSelectorBtn!);
-    //     const itemsPerPageDropdown = await waitFor(() => screen.queryByRole('presentation'));
-    //     expect(itemsPerPageDropdown).toBeInTheDocument();
-    //     const itemsPerPageItem = within(itemsPerPageDropdown!).queryByText('100');
-    //     fireEvent.click(itemsPerPageItem!);
-    //     await waitFor(() => expect(mockApiFn).toBeCalledWith({
-    //         name: "",
-    //         limit: 100,
-    //         lastEvaluatedId: "",
-    //         lastEvaluatedName: ""
-    //     }))
-    // });
-
     it('delete aggregate', async () => {
         let result = renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>)
 
@@ -129,5 +111,25 @@ describe("AggregatesTable Component", () => {
             //Aggregates refetched and displayed
             expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(10)
         })
+    })
+})
+
+describe("AggregatesTable Component error", () => {
+
+    beforeEach(() => {
+        // mock api
+        let apiSpyGetAggregates = jest.spyOn(apiRequests, 'getAggregates');
+        apiSpyGetAggregates.mockRejectedValue({});
+    })
+
+    afterEach(() => {
+        jest.resetAllMocks();
+        jest.clearAllMocks();
+        jest.restoreAllMocks();
+    })
+
+    it("handles error in api rest", async () => {
+        renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>);
+        await waitFor(() => expect(screen.getByText(/Non ci sono elementi da visualizzare/i)).toBeInTheDocument());
     })
 })

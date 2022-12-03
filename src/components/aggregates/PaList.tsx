@@ -13,7 +13,7 @@ type Props = {
 }
 
 const PaList = ({paList, handleSelection} : Props) => {
-    const { handlePaginationChange, limit, page, pagesToShow, slicedList, total } = usePagination(paList);
+    const { handlePaginationChange, limit, page, pagesToShow, slicedList, total } = usePagination(paList, 5);
     return (
         <>
             {slicedList.length > 0 && <List data-testid="paList">

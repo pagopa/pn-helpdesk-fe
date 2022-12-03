@@ -38,7 +38,7 @@ describe(" AssociablePaTable without selection", () => {
     it("filters pa by name", async () => {
         const nameInput = screen.getByRole("textbox", {name: "Nome PA"});
         const filterButton = screen.getByRole("button", {name: "Filtra"});
-        const clearFiltersButton = screen.getByRole("button", {name: "Rimuovi Filtri"});
+        const clearFiltersButton = screen.getByTestId("clear-filters");
 
         fireEvent.change(nameInput!, { target: { value: "abcd" } });
         fireEvent.click(filterButton);

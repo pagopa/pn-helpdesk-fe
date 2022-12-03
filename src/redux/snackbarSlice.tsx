@@ -22,8 +22,11 @@ export const snackbarSlice = createSlice({
     resetState: () => initialState,
     updateSnackbacrOpened: (state, action: PayloadAction<boolean>) => {
       state.opened = action.payload
-      //reset autoHideDuration
-      state.autoHideDuration = initialState.autoHideDuration
+      //reset initial state after each closure
+      if(!action.payload) 
+        state.message = initialState.message;
+        state.statusCode = initialState.statusCode;
+        state.autoHideDuration = initialState.autoHideDuration;
     },
     updateStatusCode: (state, action: PayloadAction<any>) => {
       state.statusCode = action.payload

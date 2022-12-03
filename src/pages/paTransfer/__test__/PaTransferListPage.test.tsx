@@ -7,6 +7,9 @@ import { aggregates_list, pa_list_associated, move_pa } from '../../../api/mock_
 import { act } from 'react-dom/test-utils';
 
 describe("PaTransferListPage test", () => {
+    //Override default timeout
+    jest.setTimeout(10000);
+    
     const mockApiGetAggregates = jest.fn();
     const mockApiGetAssociatedPaList = jest.fn();
     const mockApiMovePa = jest.fn();

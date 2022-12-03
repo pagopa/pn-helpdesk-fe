@@ -24,9 +24,9 @@ const defaultFormValues: FormType = {
     burst: 0
 }
 
-type Props = { isCreate: boolean, agg: getAggregateResponse | undefined, usagePlans: Array<UsagePlan> };
+type Props = { isCreate: boolean, aggregate: getAggregateResponse | undefined, usagePlans: Array<UsagePlan> };
 
-const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
+const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const confirmDialog = useConfirmDialog();
@@ -55,17 +55,17 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
     }, [values.usagePlanName])
 
     useEffect(() => {
-        if(agg && Object.keys(agg).length !== 0) {
+        if(aggregate && Object.keys(aggregate).length !== 0) {
             reset({
-                id: agg?.id,
-                name: agg?.name,
-                description: agg?.description,
-                usagePlanName: agg?.usagePlan.name,
-                rate: agg?.usagePlan.rate,
-                burst: agg?.usagePlan.burst
+                id: aggregate?.id,
+                name: aggregate?.name,
+                description: aggregate?.description,
+                usagePlanName: aggregate?.usagePlan.name,
+                rate: aggregate?.usagePlan.rate,
+                burst: aggregate?.usagePlan.burst
             })
         }
-    }, [agg])
+    }, [aggregate])
 
     const handleCreate = () => {
         // POST /aggregate
@@ -108,7 +108,7 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
         }
         // returns id
         dispatch(spinnerActions.updateSpinnerOpened(true));
-        let request = apiRequests.modifyAggregate(payload, agg!.id)
+        let request = apiRequests.modifyAggregate(payload, aggregate!.id)
         if (request) {
             request
                 .then(res => {
@@ -127,7 +127,7 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
 
     const handleDelete = () => {
         // DELETE /aggregate/{id}
-        const payload = agg!.id
+        const payload = aggregate!.id
         dispatch(spinnerActions.updateSpinnerOpened(false));
         let request = apiRequests.deleteAggregate(payload)
         if (request) {
@@ -202,7 +202,7 @@ const AggregateForm = ({agg, isCreate, usagePlans}: Props) => {
 
     return (
         <>
-            <form>
+            <form data-testid="aggregate-form">
                 <Grid item container>
                     <Grid item container spacing={2} alignItems="center">
                         {

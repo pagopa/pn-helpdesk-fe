@@ -1,6 +1,6 @@
 import MainLayout from "../mainLayout/MainLayout";
 import { useLocation } from "react-router-dom";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import PaAssociation from "../../components/paAssociation/PaAssociation";
 import AggregateAccordion from '../../components/aggregates/AggregateAccordion';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
@@ -31,18 +31,12 @@ const PaAssociationPage = ({email}: any) => {
                 <Breadcrumbs currentLocationLabel="Associa PA" links={breadcrumbsLinks} />
             </Box>
 
-            <Box px={2} mt={2}>
-                <Grid container>
-                    <Typography gutterBottom variant="h5" component="div">
-                        Associa PA
-                    </Typography>
-                </Grid>
+            <Box px={3} mt={2}>
+                <Typography gutterBottom variant="h5" component="div">
+                    Associa PA
+                </Typography>
 
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <AggregateAccordion aggregate={aggregate} />
-                    </Grid>
-                </Grid>
+                <AggregateAccordion aggregate={aggregate} />
 
                 <PaAssociation idAggregate={aggregate?.id} />
             </Box>

@@ -1,5 +1,5 @@
 import apiRequests from '../../../api/apiRequests';
-import { act, fireEvent, render, RenderResult, waitFor, screen, within, prettyDOM, logRoles } from '@testing-library/react';
+import { fireEvent, waitFor, screen, within } from '@testing-library/react';
 import { ConfirmationProvider } from '../../confirmationDialog/ConfirmationProvider';
 import PaAssociation from '../../paAssociation/PaAssociation';
 import { reducer } from '../../../__tests__/testReducer';
@@ -10,6 +10,9 @@ import * as routes from '../../../navigation/routes';
 const navigate = jest.fn();
 
 describe("PaAssociation tests", () => {
+    //Override default timeout
+    jest.setTimeout(10000);
+    
     const mockApiGetAssociablePaList = jest.fn();
     const mockApiAddPaFn = jest.fn();
     let idAggregate = "agg_1";
