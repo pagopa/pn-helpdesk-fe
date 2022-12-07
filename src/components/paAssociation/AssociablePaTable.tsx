@@ -30,8 +30,9 @@ const AssociablePaTable = ({paList, handleSelection}: Props) => {
     return (
         <>
             <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} />
-            <PaTable paList={paListFiltered} onSelect={handleSelection} />
+            <PaTable paList={paListFiltered} onSelect={handleSelection}></PaTable>
         </>
     );
 }
 export default AssociablePaTable;
+

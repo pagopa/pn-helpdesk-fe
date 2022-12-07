@@ -75,7 +75,7 @@ describe("AggregateDetailPage MODIFY", () => {
         const trasferisci_pa_button = await screen.findByRole("button", { name: "Trasferisci PA" });
         expect(trasferisci_pa_button).toBeInTheDocument();
         fireEvent.click(trasferisci_pa_button);
-        await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.TRANSFER_PA, { state: { agg: { id: "agg_1", name: undefined } } }));
+        await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.TRANSFER_PA, { state: { aggregate: { id: "agg_1", name: undefined } } }));
     })
 })
 

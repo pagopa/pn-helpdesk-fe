@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { Pa } from '../../api/apiRequestTypes';
 import usePagination from '../../hooks/usePagination';
+import PaginatedComponent from '../paginatedComponent/PaginatedComponent';
 import CustomPagination from '../Pagination/Pagination';
 
 type PaBodyTableRowProps = {
@@ -61,44 +62,29 @@ type PaTableProps = {
 
 const PaTable = ({ paList, onSelect }: PaTableProps) => {
     const head = <PaTableHead onSelect={onSelect} />;
-    
-    const { handlePaginationChange, limit, page, pagesToShow, slicedList, total } = usePagination(paList); 
-    
-    const rows = slicedList.map((pa) => (
+        
+    const rows = paList.map((pa) => (
         <PaBodyTableRow key={`row-${pa.id}`} pa={pa} onSelect={onSelect} />
     ))
 
     return (
-        <>
-            <TableContainer data-testid="paTable">
-                <Table stickyHeader aria-label='Tabella di Pubbliche amministrazioni'>
-                    <TableHead>
-                        {head}
-                    </TableHead>
-                    <TableBody sx={{ backgroundColor: 'background.paper' }}>
-                        {rows}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            {paList.length > 0 && <CustomPagination
-                paginationData={{
-                    limit: limit,
-                    page: page,
-                    total: total
-                }}
-                onPageRequest={handlePaginationChange}
-                pagesToShow={pagesToShow}
-                sx={
-                    {
-                        padding: '0',
-                        '& .items-per-page-selector button': {
-                            paddingLeft: 0,
-                            height: '24px',
-                        }
-                    }
-                }
-            />
-            }
+        <> 
+            <PaginatedComponent<Pa> list={paList} displayedPage={3} defaultLimit={10}>
+                {(slicedList) => (
+                    <TableContainer data-testid="paTable">
+                        <Table stickyHeader aria-label='Tabella di Pubbliche amministrazioni'>
+                            <TableHead>
+                                {head}
+                            </TableHead>
+                            <TableBody sx={{ backgroundColor: 'background.paper' }}>
+                                {slicedList.map((pa) => (
+                                    <PaBodyTableRow key={`row-${pa.id}`} pa={pa} onSelect={onSelect} />
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                )}
+            </PaginatedComponent>
         </>
 
     )

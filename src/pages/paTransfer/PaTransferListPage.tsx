@@ -24,7 +24,7 @@ import { Pa } from "../../api/apiRequestTypes";
 const PaTransferListPage = ({ email }: any) => {
     const location: any = useLocation();
     const dispatch = useDispatch();
-    const aggParam = location?.state?.agg ?? null;
+    const aggParam = location?.state?.aggregate ?? null;
     const [renderedAggList, setRenderedAggList]: any = useState(undefined)
     const [input1Value, setInput1Value]: any = useState(undefined);
     const [input2Value, setInput2Value]: any = useState(undefined);

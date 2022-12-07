@@ -3,8 +3,19 @@ import { PaginationData } from "../components/Pagination/types";
 import { calculatePages } from "../helpers/pagination.utility";
 
 export const DEFAULT_PAGINATION_LIMIT = 10;
-const usePagination = (list : Array<any>, displayedPage : number = 2) => {
-    const [paginationData, setPaginationData] = useState({page: 0, limit: DEFAULT_PAGINATION_LIMIT});
+export const DEFAULT_DISPLAYED_PAGE = 2;
+
+type Props<T> = {
+    list : Array<T>, 
+    displayedPage?: number, 
+    defaultLimit?: number
+}
+const usePagination = <T = any,> ({
+    list, 
+    displayedPage = DEFAULT_DISPLAYED_PAGE, 
+    defaultLimit = DEFAULT_PAGINATION_LIMIT
+} : Props<T>) => {
+    const [paginationData, setPaginationData] = useState({page: 0, limit: defaultLimit});
     const totalElements = list.length;
 
     // This function check wheter is needed to remove exceeding pages when from the props list are removed items. 

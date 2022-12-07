@@ -44,7 +44,7 @@ const PaAssociation = ({idAggregate} : Props) => {
             )
     }, [])
 
-    const handleSelection = (pa: any, selected: boolean)  => {
+    const handleSelection = (pa: Pa, selected: boolean)  => {
         let indexPa = associablePaList.findIndex((item) => item.id === pa.id);
 
         let associablePaListCopy = [...associablePaList];
@@ -75,7 +75,7 @@ const PaAssociation = ({idAggregate} : Props) => {
     const selectedPaCardBody = (
         <PaList 
             paList={paSelectedList}
-            handleSelection={handleSelection}
+            onSelection={handleSelection}
         />
     );
 
