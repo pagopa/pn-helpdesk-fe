@@ -67,7 +67,7 @@ const PaTransferListPage = ({ email }: any) => {
     }
 
     const getPas1 = (e: any, value: any) => {
-        let idAggregation = aggParam?.id ?? value?.id
+        let idAggregation = value?.id
         let request = apiRequests.getAssociatedPaList(idAggregation)
         if (request) {
             request
@@ -203,7 +203,6 @@ const PaTransferListPage = ({ email }: any) => {
                         onChange={handleChangeInput1}
                         options={renderedAggList?.items || [{ id: 'Caricamento', name: 'Caricamento' }]}
                         sx={{ width: 500 }}
-                        /* defaultValue={renderedAggList?.items?.find((item: any) => item.id === aggParam?.id) || null} */
                         defaultValue={aggParam || null}
                         getOptionLabel={(option: any) => option.name}
                         renderInput={(params) => <TextField {...params} label="Aggregazione di partenza" />}
@@ -224,9 +223,16 @@ const PaTransferListPage = ({ email }: any) => {
                 <div className="transfer-list" style={{ display: 'flex', gap: 100, marginTop: 50 }}>
                     {list1}
                     <div style={{ width: 150, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                        {(isInput2Disabled || areInputsEqual || !input1Value || !input2Value || checked?.length < 1) ?
-                            <Button variant="contained" disabled>Trasferisci<SendIcon fontSize="small" style={{ marginLeft: 10 }} /></Button>
-                            : <Button variant="contained" onClick={handleTransfer}>Trasferisci<SendIcon fontSize="small" style={{ marginLeft: 10 }} /></Button>}
+                        {(isInput2Disabled || areInputsEqual || !input1Value || !input2Value || checked?.length < 1) 
+                            ?
+                                <Button variant="contained" disabled>
+                                    Trasferisci<SendIcon fontSize="small" style={{ marginLeft: 10 }} />
+                                </Button>
+                            : 
+                                <Button variant="contained" onClick={handleTransfer}>
+                                    Trasferisci<SendIcon fontSize="small" style={{ marginLeft: 10 }} />
+                                </Button>
+                        }
                     </div>
                     {list2}
                 </div>

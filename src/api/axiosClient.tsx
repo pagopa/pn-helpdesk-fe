@@ -24,7 +24,8 @@ import {
   agg_list, 
   pa_list,
   usage_plan_list, 
-  aggregates_list 
+  aggregates_list, 
+  move_pa
 } from "./mock_agg_response";
 
 const headers: Readonly<Record<string, string | boolean>> = {
@@ -134,7 +135,7 @@ class Http {
       }), payload);
     }
 
-    const id = Math.floor((Math.random() * 100) + 1).toString();
+    const id = "agg_2";
     return this._mock(id);
   }
 
@@ -191,12 +192,8 @@ class Http {
         }
       }), payload);
     }
-    let response : addPaResponse = {
-      processed: 0,
-      unprocessed: 5,
-      unprocessedPA: ['Comune di Milano', 'Comune di Sondrio', 'Comune di Napoli', 'Comune di Palermo', 'Comune di Arezzo']
-    }
-    return this._mock(response);
+    
+    return this._mock(move_pa);
   }
 
   getAssociablePaList<T = getAssociablePaListResponse>(name?: string): Promise<AxiosResponse<T>> {
@@ -207,13 +204,6 @@ class Http {
       }));
     }
 
-    let pa_list : getAssociablePaListResponse = { items: [] };
-    for(let i = 0; i < 7000; i++) {
-        pa_list.items.push({
-            id:"pa_"+i,
-            name:"Pa indice " + i
-        })
-    }
     return this._mock(pa_list);
   }
 
@@ -228,12 +218,7 @@ class Http {
       }), selectedPaList);
     }
     
-    let response : addPaResponse = {
-      processed: 0,
-      unprocessed: 5,
-      unprocessedPA: ['Comune di Milano', 'Comune di Sondrio', 'Comune di Napoli', 'Comune di Palermo', 'Comune di Arezzo']
-    }
-    return this._mock(response);
+    return this._mock(move_pa);
   }
 
   getUsagePlans<T = getUsagePlansType>(): Promise<AxiosResponse<T>> {
