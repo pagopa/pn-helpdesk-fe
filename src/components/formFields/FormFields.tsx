@@ -136,7 +136,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     componentType: "textfield",
     label: "Codice Fiscale",
     hidden: false,
-    inputProps: { maxLength: 16 },
+    inputProps: { maxLength: 16, style: { textTransform: "uppercase" } },
     rules: {
       pattern: {
         value: regex.FISCAL_CODE_PATTERN,

@@ -11,7 +11,6 @@ const initialState: ResponseState = {
   responseData: {},
 };
 
-/* istanbul ignore next */
 export const responseSlice = createSlice({
   name: "snackbar",
   initialState,
