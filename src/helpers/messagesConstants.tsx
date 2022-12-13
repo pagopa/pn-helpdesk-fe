@@ -1,8 +1,7 @@
 export const errorMessages = {
   REQUIRED: "Inserimento errato",
   DATES_INTERVAL: "L'intervallo temporale non può superare i 3 mesi",
-  DATES_ORDER:
-    "La data di inizio periodo non può essere oltre la data di fine periodo",
+  DATES_ORDER: "La data di inizio non può essere oltre quella di fine",
   FISCAL_CODE_LENGTH: "Il codice fiscale deve essere di 16 caratteri",
   UNIQUES_IDENTIFIER_LENGTH:
     "Il codice univoco deve avere tra 1 e 100 caratteri",
@@ -11,8 +10,7 @@ export const errorMessages = {
   INCORRECT_EMAIL: "Email non corretta",
   PSSWORDS_EQUALITY:
     "La nuova password e la conferma password devono essere le stesse",
-  ONE_MONTH_INTERVAL:
-    "Le date selezionate devono essere all'interno dello stesso mese",
+  ONE_MONTH_INTERVAL: "Selezionare date nello stesso mese",
   BACKEND_DOWN_MESSAGE:
     "Servizio offline, contattare l'amministratore di sistema",
 };
