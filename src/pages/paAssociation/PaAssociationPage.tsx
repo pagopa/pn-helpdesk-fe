@@ -38,7 +38,9 @@ const PaAssociationPage = ({email}: any) => {
 
                 <AggregateAccordion aggregate={aggregate} />
 
-                <PaAssociation idAggregate={aggregate?.id} />
+                <Box mt={2}>
+                    <PaAssociation idAggregate={aggregate?.id} />
+                </Box>
             </Box>
             
         </MainLayout>

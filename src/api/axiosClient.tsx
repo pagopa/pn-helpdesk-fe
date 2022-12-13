@@ -20,12 +20,12 @@ import {
   aggregateId, 
 } from "./apiRequestTypes";
 import { 
-  aggregate, 
-  agg_list, 
+  aggregate,
   pa_list,
   usage_plan_list, 
   aggregates_list, 
-  move_pa
+  move_pa,
+  pa_list_associated
 } from "./mock_agg_response";
 
 const headers: Readonly<Record<string, string | boolean>> = {
@@ -122,9 +122,7 @@ class Http {
       }));
     }
     
-    let foundAgg = agg_list.items.find(agg => agg.id === id);
-    const agg = foundAgg ? foundAgg : aggregate;
-    return this._mock(agg);
+    return this._mock(aggregate);
   }
 
   createAggregate<T = aggregateId>(payload: createAggregateType): Promise<AxiosResponse<T>> {
@@ -178,7 +176,7 @@ class Http {
       }));
     }
     
-    return this._mock(pa_list);
+    return this._mock(pa_list_associated);
   }
 
   movePa<T = addPaResponse>(id: string, data: Array<Pa>): Promise<AxiosResponse<T>> {

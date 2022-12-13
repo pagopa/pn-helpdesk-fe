@@ -19,21 +19,8 @@ describe("PaTable without selection", () => {
         const paTableHead = result?.queryByTestId('paTable-head');
         expect(paTableHead).toBeInTheDocument();
         const tableRows = result?.queryAllByTestId('paTable-row');
-        expect(tableRows).toHaveLength(DEFAULT_PAGINATION_LIMIT); //default pagination limit is 5
+        expect(tableRows).toHaveLength(DEFAULT_PAGINATION_LIMIT);
     });
-    
-    it("change items per page", async () => {
-        const itemsPerPageSelectorBtn = result?.container.querySelector(
-            '[data-testid="itemsPerPageSelector"] > button'
-        );
-        fireEvent.click(itemsPerPageSelectorBtn!);
-        const itemsPerPageDropdown = await waitFor(() => screen.queryByRole('presentation'));
-        expect(itemsPerPageDropdown).toBeInTheDocument();
-        const itemsPerPageItem = within(itemsPerPageDropdown!).queryByText('100');
-        fireEvent.click(itemsPerPageItem!);
-        const tableRows = result?.queryAllByTestId('paTable-row');
-        expect(tableRows).toHaveLength(mockedData.length);
-    })
 })
 
 describe("PaTable with selection", () => {
@@ -47,7 +34,7 @@ describe("PaTable with selection", () => {
         const itemsPerPageSelector = result?.queryByTestId('itemsPerPageSelector');
         expect(itemsPerPageSelector).toBeInTheDocument();
         const tableRows = result?.queryAllByTestId('paTable-row');
-        expect(tableRows).toHaveLength(DEFAULT_PAGINATION_LIMIT); //default pagination limit is 5
+        expect(tableRows).toHaveLength(DEFAULT_PAGINATION_LIMIT);
         const firstRowCheckboxMui = result?.getByTestId(`paTable-row-checkbox-${mockedData[0].id}`);
         const firstRowCheckboxElement = firstRowCheckboxMui?.querySelector('input[type="checkbox"]');
         fireEvent.click(firstRowCheckboxElement!);
