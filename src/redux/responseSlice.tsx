@@ -12,9 +12,10 @@ const initialState: ResponseState = {
 };
 
 export const responseSlice = createSlice({
-  name: "snackbar",
+  name: "response",
   initialState,
   reducers: {
+    resetState: () => initialState,
     updateResponseOpened: (state, action: PayloadAction<boolean>) => {
       state.opened = action.payload;
     },
@@ -28,7 +29,7 @@ export const responseSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { updateResponseOpened, updateResponseData } =
+export const { updateResponseOpened, updateResponseData, resetState } =
   responseSlice.actions;
 
 export const opened = (state: RootState) => state.response.opened;

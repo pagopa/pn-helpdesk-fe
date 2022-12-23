@@ -104,6 +104,10 @@ type FieldsProps = {
    * disabling future for date range pickers
    */
   disableFuture?: boolean;
+  /**
+   * size for datapicker components input fields
+   */
+  inputSize?: string;
 };
 
 /**
@@ -245,6 +249,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     intervalLimit: [1, "months"],
     format: "dd-MM-yyyy",
     disableFuture: false,
+    size: "60%",
     maxDate: format(
       new Date(
         new Date(
@@ -292,6 +297,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     hidden: false,
     required: false,
     intervalLimit: [3, "months"],
+    size: "60.5%",
     disableFuture: true,
     rules: {
       required: errorMessages.REQUIRED,
@@ -449,6 +455,7 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
           required={field.required!}
           onChange={onChange}
           intervalLimit={field.intervalLimit}
+          error={error}
           datePickers={[
             {
               label: "Dal",

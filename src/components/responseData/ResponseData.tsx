@@ -44,7 +44,7 @@ const ResponseData = () => {
                 ResponseType[
                   Object.keys(response)[0] as keyof typeof ResponseType
                 ]
-              }{" "}
+              }
               : {Object.values(response)[0]}
             </>
           </Typography>
