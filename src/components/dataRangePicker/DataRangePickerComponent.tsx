@@ -2,7 +2,7 @@ import TextField from "@mui/material/TextField";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { CalendarPickerView } from "@mui/lab";
 import { useState } from "react";
-import { Grid } from "@mui/material";
+import { FormHelperText, Grid } from "@mui/material";
 import { FieldsProps } from "../formFields/FormFields";
 import { format } from "date-fns";
 
@@ -52,6 +52,10 @@ type Props = {
    * field properties
    */
   field: FieldsProps;
+  /**
+   * if there is an error for that field
+   */
+  error?: any;
 };
 
 /**
@@ -95,7 +99,7 @@ const DateRangePickerComponent = (props: Props) => {
   return (
     <Grid item container spacing={2}>
       {dates.map((date, index) => (
-        <Grid item key={index}>
+        <Grid width="50%" item key={index}>
           <DatePicker
             views={date.view}
             key={date.label}
@@ -112,11 +116,18 @@ const DateRangePickerComponent = (props: Props) => {
                 : undefined
             }
             renderInput={(params) => (
-              <TextField
-                {...params}
-                onBlur={props.onBlur}
-                required={props.required}
-              />
+              <>
+                <TextField
+                  {...params}
+                  onBlur={props.onBlur}
+                  required={props.required}
+                  error={props.error ? true : false}
+                  fullWidth
+                />
+                <FormHelperText error>
+                  {props.error ? props.error.message : " "}
+                </FormHelperText>
+              </>
             )}
           />
         </Grid>

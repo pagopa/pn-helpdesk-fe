@@ -280,12 +280,13 @@ const SearchForm = () => {
       payload.dateTo = payload["Time interval"][1];
       delete payload["Time interval"];
     }
-    // use case 3
+    // for use case 3 add deanonimization = true
+    //for  use case 7 add deanonimization = false
     if (
       selectedValue === "Ottieni log completi" &&
-      payload.hasOwnProperty("taxId")
+      (payload.hasOwnProperty("taxId") || payload.hasOwnProperty("personId"))
     ) {
-      payload.deanonimization = true;
+      payload.deanonimization = payload.hasOwnProperty("taxId");
     }
 
     // use case 6
@@ -361,10 +362,11 @@ const SearchForm = () => {
    * @param response
    */
   const updateSnackbar = (response: any) => {
+    console.log(response);
+    const message = response.data?.detail ?? response.data.message;
+    message && dispatch(snackbarActions.updateMessage(message));
     dispatch(snackbarActions.updateSnackbacrOpened(true));
     dispatch(snackbarActions.updateStatusCode(response.status));
-    response.data.detail &&
-      dispatch(snackbarActions.updateMessage(response.data.detail));
   };
 
   /**
@@ -485,7 +487,9 @@ const SearchForm = () => {
                                         }}
                                       />
                                       <FormHelperText error>
-                                        {errors[field.name]
+                                        {errors[field.name] &&
+                                        field.componentType !==
+                                          "dateRangePicker"
                                           ? errors[field.name].message
                                           : " "}
                                       </FormHelperText>
@@ -507,12 +511,13 @@ const SearchForm = () => {
                           sx={{
                             "&:hover": { backgroundColor: "action.hover" },
                           }}
-                          onClick={() =>
+                          onClick={() => {
                             reset({
                               ...defaultFormValues,
                               "Tipo Estrazione": getValues("Tipo Estrazione"),
-                            })
-                          }
+                            });
+                            dispatch(responseActions.resetState());
+                          }}
                         >
                           Resetta filtri
                         </Button>
