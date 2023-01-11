@@ -62,10 +62,10 @@ type PaTableProps = {
 
 const PaTable = ({ paList, onSelect }: PaTableProps) => {
     const head = <PaTableHead onSelect={onSelect} />;
-        
-    const rows = paList.map((pa) => (
-        <PaBodyTableRow key={`row-${pa.id}`} pa={pa} onSelect={onSelect} />
-    ))
+    
+    const emptyRow = <TableRow>
+        <TableCell colSpan={onSelect ? 2 : 1}>Non ci sono elementi da visualizzare</TableCell>
+    </TableRow>;
 
     return (
         <> 
@@ -77,9 +77,9 @@ const PaTable = ({ paList, onSelect }: PaTableProps) => {
                                 {head}
                             </TableHead>
                             <TableBody sx={{ backgroundColor: 'background.paper' }}>
-                                {slicedList.map((pa) => (
+                                {slicedList.length > 0 ? slicedList.map((pa) => (
                                     <PaBodyTableRow key={`row-${pa.id}`} pa={pa} onSelect={onSelect} />
-                                ))}
+                                )) : emptyRow}
                             </TableBody>
                         </Table>
                     </TableContainer>

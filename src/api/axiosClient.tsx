@@ -213,7 +213,7 @@ class Http {
         params: {
           id: id
         }
-      }), selectedPaList);
+      }), {items:selectedPaList});
     }
     
     return this._mock(move_pa);

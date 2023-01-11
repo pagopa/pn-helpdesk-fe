@@ -50,7 +50,7 @@ const AggregateDetailPage = ({ email }: any) => {
         
                     if(!isCreate) {
                         setAggregate(responses[1]);
-                        setPas(responses[2].items);
+                        setPas(responses[2].items ? responses[2].items : []);
                     }
                 }
             })
