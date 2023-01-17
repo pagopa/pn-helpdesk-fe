@@ -64,6 +64,15 @@ type getLogsProcessesType = {
     dateFrom: string;
     dateTo: string;
 }
+/**
+ * @typedef {Object} getEventsType
+ */
+ type getEventsType = {
+    status: string;
+    timestamp: string;
+    functionality: Array<string>;
+    sourceType: string;
+}
 
 /**
  * @typedef {Object} getAssociatedPaListResponse
@@ -213,4 +222,4 @@ type ErrorResponse = {
     traceid: string
 }
 
-export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getAggregateParams, AggregateSummary, getAggregatesResponse, Pa, getAssociablePaListResponse, getAssociatedPaListResponse, UsagePlan, getAggregateResponse, addPaResponse, getUsagePlansType, createAggregateType, modifyAggregateType, getAggregateDetailsType, aggregateId, ErrorResponse }
+export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getEventsType, getAggregateParams, AggregateSummary, getAggregatesResponse, Pa, getAssociablePaListResponse, getAssociatedPaListResponse, UsagePlan, getAggregateResponse, addPaResponse, getUsagePlansType, createAggregateType, modifyAggregateType, getAggregateDetailsType, aggregateId, ErrorResponse }

@@ -7,7 +7,7 @@ import AggregateForm from '../AggregateForm';
 import { ConfirmationProvider } from '../../../../components/confirmationDialog/ConfirmationProvider';
 import apiRequests from '../../../../api/apiRequests';
 import { aggregate, usage_plan_list } from '../../../../api/mock_agg_response';
-import { renderWithProviders } from '../../../../__tests__/testReducer';
+import { renderWithProviders } from "../../../../mocks/mockReducer";
 import * as routes from '../../../../navigation/routes';
 import * as router from 'react-router'
 const navigate = jest.fn();

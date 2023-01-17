@@ -1,6 +1,6 @@
 import { RenderResult, waitFor, screen } from '@testing-library/react';
 import PaAssociationPage from '../PaAssociationPage';
-import { renderWithProviders } from '../../../__tests__/testReducer';
+import { renderWithProviders } from "../../../mocks/mockReducer";
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
 import { aggregate as mockAggregate } from '../../../api/mock_agg_response';
 

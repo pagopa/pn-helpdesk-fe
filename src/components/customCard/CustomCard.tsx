@@ -3,13 +3,9 @@ import {
     Card,
     CardActions,
     CardContent,
-    CardHeader,
-    Grid,
-    GridProps,
-    SxProps,
-    Typography,
+    CardHeader
 } from '@mui/material';
-import { Fragment, ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { CardActionType, CardHeaderType } from './types';
 
 type Props = {

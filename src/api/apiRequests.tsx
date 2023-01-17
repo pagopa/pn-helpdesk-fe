@@ -1,15 +1,28 @@
-// import { apiClient } from "./apiClient";
+// import { aggregateApiClient } from "./aggregateApiClient";
 import { formatDate } from "../helpers/formatter.utility";
-import { getLogsProcessesType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, 
-    getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getAggregateParams, modifyAggregateType, createAggregateType, AggregateSummary, Pa } from "./apiRequestTypes";
-import { http as apiClient } from "./axiosClient"
+import {
+  getLogsProcessesType,
+  getNotificationsInfoLogsType,
+  getNotificationsMonthlyStatsLogsType,
+  getPersonIdType,
+  getPersonTaxIdType,
+  getPersonsLogsType,
+  getEventsType,
+  getAggregateParams, 
+  modifyAggregateType, 
+  createAggregateType, 
+  AggregateSummary, 
+  Pa
+} from "./apiRequestTypes";
+import { http as logExtractoraggregateApiClient } from "./logExtractorAxiosClient";
+import { http as aggregateApiClient } from "./aggregateAxiosClient";
 
 /**
  * Return the person's ID depending on the input received
- * @param {getPersonIdType} data 
+ * @param {getPersonIdType} data
  */
 const getPersonId = async (payload: getPersonIdType) => {
-    return await apiClient.getPersonId(payload)
+    return await logExtractoraggregateApiClient.getPersonId(payload)
         .then((result) => {
             return result
         })
@@ -20,40 +33,41 @@ const getPersonId = async (payload: getPersonIdType) => {
 
 /**
  * Return the person's fiscal code depending on the input received
- * @param {getPersonTaxIdType} data 
+ * @param {getPersonTaxIdType} data
  */
 
 const getPersonTaxId = async (payload: getPersonTaxIdType) => {
-    return await apiClient.getPersonTaxId(payload)
-        .then((result) => {
-            return result
-        })
-        .catch((error: any) => {
-            throw error;
-        })
-}
+  return await logExtractoraggregateApiClient
+    .getPersonTaxId(payload)
+    .then((result) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
  * Download the logs' archive related to a person's own activities or on a notification
- * @param {getPersonsLogsType} data 
+ * @param {getPersonsLogsType} data
  */
 const getPersonsLogs = async (data: getPersonsLogsType) => {
-    return await apiClient.getPersonsLogs(data)
-        .then((result: any) => {
-            return result;
-
-        })
-        .catch((error: any) => {
-            throw error;
-        })
-}
+  return await logExtractoraggregateApiClient
+    .getPersonsLogs(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
  * Download the logs' archive related to a person activities and its operators' ones
- * @param {getOperatorsLogsType} data 
+ * @param {getOperatorsLogsType} data
  */
 /*const getOperatorsLogs = async (data: getOperatorsLogsType) => {
-    return await apiClient.getOperatorsLogs(data)
+    return await aggregateApiClient.getOperatorsLogs(data)
         .then((result: any) => {
             return result;
         })
@@ -64,50 +78,80 @@ const getPersonsLogs = async (data: getPersonsLogsType) => {
 
 /**
  * Download the logs' archive containing the full info of a notification
- * @param {getNotificationsInfoLogsType} data 
+ * @param {getNotificationsInfoLogsType} data
  */
 const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
-    return await apiClient.getNotificationsInfoLogs(data)
-        .then((result: any) => {
-            return result;
-        })
-        .catch((error: any) => {
-            throw error;
-        })
-}
+  return await logExtractoraggregateApiClient
+    .getNotificationsInfoLogs(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
  * Download the logs' archive containing the notifications sent in a specific month
- * @param {getNotificationsMonthlyStatsLogsType} data 
+ * @param {getNotificationsMonthlyStatsLogsType} data
  */
-const getNotificationsMonthlyStatsLogs = async (data: getNotificationsMonthlyStatsLogsType) => {
-    return await apiClient.getNotificationsMonthlyStatsLogs(data)
-        .then((result: any) => {
-            return result;
-        })
-        .catch((error: any) => {
-            throw error;
-        })
-}
+const getNotificationsMonthlyStatsLogs = async (
+  data: getNotificationsMonthlyStatsLogsType
+) => {
+  return await logExtractoraggregateApiClient
+    .getNotificationsMonthlyStatsLogs(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
  * Extract all log paths by given a specific traceId
  */
 const getLogsProcesses = async (data: getLogsProcessesType) => {
-    return await apiClient.getLogsProcesses(data)
-        .then((result: any) => {
-            return result;
-        })
-        .catch((error: any) => {
-            throw error;
-        })
-}
+    return await logExtractoraggregateApiClient
+    .getLogsProcesses(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
+const getStatus = async () => {
+  return await logExtractoraggregateApiClient
+    .getStatus()
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      if (error.response.status === 500) {
+        return error.response;
+      }
+      throw error;
+    });
+};
+
+const getEvents = async (data: getEventsType) => {
+  return await logExtractoraggregateApiClient
+    .getEvents(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
 * Get a list of all the aggregates
 */
 const getAggregates = async (data: getAggregateParams) => {
-    return await apiClient.getAggregates(data)
+    return await aggregateApiClient.getAggregates(data)
         .then((result) => {
             const items = result.data.items.map(
                 (agg) => ({
@@ -131,7 +175,7 @@ const getAggregates = async (data: getAggregateParams) => {
 * Get the details of an aggregation
 */
 const getAggregateDetails = (id: string) => {
-    return apiClient.getAggregateDetails(id)
+    return aggregateApiClient.getAggregateDetails(id)
         .then((result) => {
             return result.data;
         })
@@ -144,7 +188,7 @@ const getAggregateDetails = (id: string) => {
 * Create an aggregation
 */
 const createAggregate = async (data: createAggregateType) => {
-    return await apiClient.createAggregate(data)
+    return await aggregateApiClient.createAggregate(data)
         .then((result) => {
             return result.data;
         })
@@ -157,7 +201,7 @@ const createAggregate = async (data: createAggregateType) => {
 * Modify an aggregation
 */
 const modifyAggregate = async (data: modifyAggregateType, id: string) => {
-    return await apiClient.modifyAggregate(data, id)
+    return await aggregateApiClient.modifyAggregate(data, id)
         .then((result) => {
             return result.data;
         })
@@ -170,7 +214,7 @@ const modifyAggregate = async (data: modifyAggregateType, id: string) => {
 * Delete an aggregation
 */
 const deleteAggregate = async (id: string) => {
-    return await apiClient.deleteAggregate(id)
+    return await aggregateApiClient.deleteAggregate(id)
         .then((result) => {
             return result.data;
         })
@@ -183,7 +227,7 @@ const deleteAggregate = async (id: string) => {
  * Get associated PAs given an aggregation id
  */
   const getAssociatedPaList = (id: string) => {
-    return apiClient.getAssociatedPaList(id)
+    return aggregateApiClient.getAssociatedPaList(id)
         .then((result) => {
             return result.data;
         })
@@ -196,7 +240,7 @@ const deleteAggregate = async (id: string) => {
  * Move PAs to another aggregation
  */
 const movePa = async (id: string, data: Array<Pa>) => {
-    return await apiClient.movePa(id, data)
+    return await aggregateApiClient.movePa(id, data)
      .then((result) => {
          return result.data;
      })
@@ -206,7 +250,7 @@ const movePa = async (id: string, data: Array<Pa>) => {
 }
 
 const getAssociablePaList = (name?: string) => {
-    return apiClient.getAssociablePaList(name)
+    return aggregateApiClient.getAssociablePaList(name)
         .then((result) => {
             const items = result.data.items.map(
                 (pa) => ({...pa, selected: false}) 
@@ -225,7 +269,7 @@ const addPa = async (id: string, paSelectedList: Array<Pa>) => {
     //Remove selected attribute from pa objects
     let paList = paSelectedList.map((pa) => ({id: pa.id, name: pa.name}));
 
-    return await apiClient.addPa(id, paList)
+    return await aggregateApiClient.addPa(id, paList)
         .then((result: any) => {
             return result.data;
         })
@@ -238,7 +282,7 @@ const addPa = async (id: string, paSelectedList: Array<Pa>) => {
 * Get the list of usage plans
 */
 const getUsagePlans = async () => {
-    return await apiClient.getUsagePlans()
+    return await aggregateApiClient.getUsagePlans()
         .then((result: any) => {
             return result.data;
         })
@@ -247,7 +291,25 @@ const getUsagePlans = async () => {
         })
 }
 
-export default {
-    getPersonId, getPersonTaxId, getPersonsLogs, /*getOperatorsLogs,*/
-    getNotificationsInfoLogs, getNotificationsMonthlyStatsLogs, getLogsProcesses, getAssociatedPaList, movePa, getAggregates, modifyAggregate, createAggregate, getAggregateDetails, deleteAggregate, getUsagePlans, addPa, getAssociablePaList
-}
+const apiRequests = {
+  getPersonId,
+  getPersonTaxId,
+  getPersonsLogs /*getOperatorsLogs,*/,
+  getNotificationsInfoLogs,
+  getNotificationsMonthlyStatsLogs,
+  getLogsProcesses,
+  getStatus,
+  getEvents,
+  getAssociatedPaList, 
+  movePa, 
+  getAggregates, 
+  modifyAggregate, 
+  createAggregate, 
+  getAggregateDetails, 
+  deleteAggregate, 
+  getUsagePlans,
+  addPa, 
+  getAssociablePaList
+};
+
+export default apiRequests;

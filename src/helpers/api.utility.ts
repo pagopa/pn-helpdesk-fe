@@ -9,7 +9,7 @@ interface QueryParameters {
 }
 
 interface Route {
-  prefix: string | Array<string>;
+  prefix?: string | Array<string>;
   path?: string;
   params?: Parameters;
   query?: QueryParameters;

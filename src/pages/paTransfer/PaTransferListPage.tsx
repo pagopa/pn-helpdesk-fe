@@ -105,6 +105,7 @@ const PaTransferListPage = ({ email }: any) => {
     }
 
     const handleTransfer = () => {
+        dispatch(spinnerActions.updateSpinnerOpened(true));
         apiRequests.movePa(input2Value.id, checked)
             .then(res => {
 
@@ -139,6 +140,7 @@ const PaTransferListPage = ({ email }: any) => {
                 dispatch(snackbarActions.updateMessage("Errore nel trasferimento delle PA"))
                 console.log("Errore: ", err)
             })
+            .finally(() => {dispatch(spinnerActions.updateSpinnerOpened(false))})
         
     }
 

@@ -21,7 +21,7 @@ describe('Testfield Component', () => {
     it('renders', () => {  
     render(<TextFieldComponent field={field} onBlur={jest.fn} />);  
     const component = screen.getByLabelText("Codice IPA");
-        expect(component).toBeTruthy();
+        expect(component).toBeInTheDocument();
     });
 
 })

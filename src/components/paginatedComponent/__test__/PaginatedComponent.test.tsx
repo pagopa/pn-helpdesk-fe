@@ -1,6 +1,6 @@
 import { fireEvent, RenderResult, waitFor, screen, within } from '@testing-library/react';
 import PaginatedComponent from '../PaginatedComponent';
-import { reducer } from '../../../__tests__/testReducer';
+import { reducer } from "../../../mocks/mockReducer";
 import { pa_list } from '../../../api/mock_agg_response';
 
 describe("PaginatedComponent with List", () => {

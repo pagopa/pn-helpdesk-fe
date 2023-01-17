@@ -11,17 +11,23 @@
     "@mui/icons-material": "^5.6.2",
     "@mui/lab": "^5.0.0-alpha.81",
     "@mui/material": "^5.6.4",
+    "@mui/x-data-grid": "^5.17.8",
     "@pagopa/mui-italia": "^0.6.17",
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
+    "@testing-library/user-event": "^14",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@types/redux-mock-store": "^1.0.3",
     "aws-amplify": "^4.3.24",
+    "axios": "^0.27",
     "blob-util": "^2.0.2",
     "date-fns": "^2.28.0",
+    "eslint-plugin-jest-dom": "^4.0.2",
+    "eslint-plugin-testing-library": "^5.9.1",
+    "msw": "^0.47.4",
+    "jest-sonar-reporter": "^2.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.30.0",
@@ -37,9 +43,9 @@
     "generate:api": "rimraf generated && mkdir generated && gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/pn-logextractor-be/develop/docs/openapi/swagger.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "test:coverage": "react-scripts test --watchAll=false --ci --coverage --testResultsProcessor=jest-sonar-reporter"
+    "test": "react-scripts test --watchAll=false",
+    "test:coverage": "react-scripts test --watchAll=false --ci --coverage --testResultsProcessor=jest-sonar-reporter",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -83,20 +89,9 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "<rootDir>/src/**/*.tsx"
-    ],
-    "moduleNameMapper": {
-      ".+\\.(css|styl|less|sass|scss|woff|woff2)$": "identity-obj-proxy",
-      "\\.(gif|ttf|eot|svg|img|png)$": "<rootDir>/__mocks__/fileMock.js"
-    },
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/src/api/apiRequestTypes.tsx",
-      "<rootDir>/src/Authentication/auth.tsx",
-      "<rootDir>/src/__tests__/testReducer.tsx",
-      "index.tsx",
-      "<rootDir>/src/components/formFields/FormFields.tsx",
-      "<rootDir>/src/api/*",
-      "<rootDir>/src/components/confirmationDialog/ConfirmationTypes.tsx"
+      "**/src/components/**",
+      "**/src/pages/**",
+      "!**/src/components/formFields/**"
     ]
   }
 }

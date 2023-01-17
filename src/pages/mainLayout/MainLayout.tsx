@@ -7,13 +7,12 @@ import { logout, refreshToken } from "../../Authentication/auth";
 import { useNavigate } from "react-router-dom";
 
 /**
- * Main layout of the application with header and footer 
+ * Main layout of the application with header and footer
  * @component
  */
 const MainLayout = ({ email, children }: any) => {
   const navigate = useNavigate();
 
-  /* istanbul ignore next */
   useEffect(() => {
     const idTokenInterval = setInterval(async () => {
       await refreshToken();
@@ -49,9 +48,7 @@ const MainLayout = ({ email, children }: any) => {
       <Grid item>
         <Header email={email} />
       </Grid>
-      <Grid item style={{paddingBottom:"64px"}}>
-        {children}
-      </Grid>
+      <Grid item sx={{paddingBottom: "64px"}}>{children}</Grid>
       <Grid item>
         <Footer />
       </Grid>

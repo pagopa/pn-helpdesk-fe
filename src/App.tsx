@@ -7,11 +7,10 @@ import Router from './navigation/Router';
 import { opened } from "./redux/spinnerSlice";
 
 function App() {
-
   const openedSpinner = useSelector(opened);
-  
+
   return (
-    <div data-testid="App">
+    <div>
       <BrowserRouter>
         <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

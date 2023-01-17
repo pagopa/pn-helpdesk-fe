@@ -1,6 +1,6 @@
 
-import { fireEvent, RenderResult, waitFor, screen, within, act } from '@testing-library/react';
-import { reducer } from '../../../__tests__/testReducer';
+import { fireEvent, RenderResult, waitFor, screen } from '@testing-library/react';
+import { reducer } from "../../../mocks/mockReducer";
 import ConfirmationDialog from '../ConfirmationDialog';
 import { Options } from '../ConfirmationTypes';
 

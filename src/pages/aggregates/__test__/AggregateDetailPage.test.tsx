@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import { BrowserRouter } from 'react-router-dom';
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
 import { act } from 'react-test-renderer';
-import { renderWithProviders } from '../../../__tests__/testReducer';
+import { renderWithProviders } from "../../../mocks/mockReducer";
 import * as router from 'react-router'
 import * as routes from '../../../navigation/routes';
 import { aggregate, usage_plan_list, pa_list } from '../../../api/mock_agg_response';

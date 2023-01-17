@@ -1,6 +1,6 @@
 import { fireEvent, RenderResult, waitFor, screen, within, act } from '@testing-library/react';
 import AssociablePaTable from '../AssociablePaTable';
-import { reducer } from '../../../__tests__/testReducer';
+import { reducer } from "../../../mocks/mockReducer";
 import {pa_list} from '../../../api/mock_agg_response';
 import { DEFAULT_PAGINATION_LIMIT } from '../../../hooks/usePagination';
 

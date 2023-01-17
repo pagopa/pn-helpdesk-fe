@@ -1,6 +1,6 @@
 import { RenderResult, waitFor, screen, within, fireEvent } from '@testing-library/react';
 import PaTransferListPage from '../PaTransferListPage';
-import { renderWithProviders } from '../../../__tests__/testReducer';
+import { renderWithProviders } from "../../../mocks/mockReducer";
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
 import apiRequests from '../../../api/apiRequests';
 import { aggregates_list, pa_list_associated, move_pa } from '../../../api/mock_agg_response';

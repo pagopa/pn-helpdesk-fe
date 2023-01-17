@@ -1,5 +1,5 @@
 import Table from '../table';
-import { reducer } from '../../../__tests__/testReducer';
+import { reducer } from "../../../mocks/mockReducer";
 import { fireEvent, RenderResult, waitFor, screen, within, act } from '@testing-library/react';
 import { Column, Item, Sort } from "../tableTypes";
 

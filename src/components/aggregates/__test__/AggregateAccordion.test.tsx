@@ -1,7 +1,5 @@
-import { fireEvent, RenderResult, waitFor, screen, within, act } from '@testing-library/react';
-import apiRequests from '../../../api/apiRequests';
-import PaList from '../PaList';
-import { reducer } from '../../../__tests__/testReducer';
+import { RenderResult } from '@testing-library/react';
+import { reducer } from "../../../mocks/mockReducer";
 import { aggregate, pa_list_associated } from '../../../api/mock_agg_response';
 import AggregateAccordion from '../AggregateAccordion';
 

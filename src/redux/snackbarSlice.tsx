@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from './store'
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "./store";
 
 export interface SnackbarState {
   opened: boolean,
@@ -16,29 +16,30 @@ const initialState: SnackbarState = {
 }
 /* istanbul ignore next */
 export const snackbarSlice = createSlice({
-  name: 'snackbar',
+  name: "snackbar",
   initialState,
   reducers: {
     resetState: () => initialState,
     updateSnackbacrOpened: (state, action: PayloadAction<boolean>) => {
       state.opened = action.payload
       //reset initial state after each closure
-      if(!action.payload) 
+      if(!action.payload) {
         state.message = initialState.message;
         state.statusCode = initialState.statusCode;
         state.autoHideDuration = initialState.autoHideDuration;
+      }
     },
     updateStatusCode: (state, action: PayloadAction<any>) => {
-      state.statusCode = action.payload
+      state.statusCode = action.payload;
     },
     updateMessage: (state, action: PayloadAction<any>) => {
-      state.message = action.payload
+      state.message = action.payload;
     },
     updateAutoHideDuration: (state, action: PayloadAction<number | null>) => {
       state.autoHideDuration = action.payload
     },
   },
-})
+});
 
 export const { updateSnackbacrOpened, updateStatusCode, updateMessage, resetState, updateAutoHideDuration } = snackbarSlice.actions
 

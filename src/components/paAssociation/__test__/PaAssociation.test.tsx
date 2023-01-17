@@ -2,7 +2,7 @@ import apiRequests from '../../../api/apiRequests';
 import { fireEvent, waitFor, screen, within } from '@testing-library/react';
 import { ConfirmationProvider } from '../../confirmationDialog/ConfirmationProvider';
 import PaAssociation from '../../paAssociation/PaAssociation';
-import { reducer } from '../../../__tests__/testReducer';
+import { renderWithProviders } from "../../../mocks/mockReducer";
 import { pa_list_associated } from '../../../api/mock_agg_response';
 import * as router from 'react-router'
 import * as routes from '../../../navigation/routes';
@@ -45,7 +45,7 @@ describe("PaAssociation tests", () => {
     })
 
     it("render associable-pa-card", async () => {
-        reducer(<ConfirmationProvider><PaAssociation idAggregate={idAggregate} /></ConfirmationProvider>);
+        renderWithProviders(<ConfirmationProvider><PaAssociation idAggregate={idAggregate} /></ConfirmationProvider>);
         
         const associablePaTable = screen.queryByRole("table");
         expect(associablePaTable).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe("PaAssociation tests", () => {
     })
 
     it("check pa and save", async () => {
-        reducer(<ConfirmationProvider><PaAssociation idAggregate={idAggregate} /></ConfirmationProvider>);
+        renderWithProviders(<ConfirmationProvider><PaAssociation idAggregate={idAggregate} /></ConfirmationProvider>);
 
         const associablePaTable = screen.queryByRole("table");
         expect(associablePaTable).toBeInTheDocument();

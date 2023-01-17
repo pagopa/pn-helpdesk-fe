@@ -2,7 +2,7 @@ import { fireEvent, RenderResult, waitFor, screen, waitForElementToBeRemoved } f
 import apiRequests from '../../../api/apiRequests';
 import { aggregates_list } from '../../../api/mock_agg_response';
 import AggregatesTable from '../AggregatesTable';
-import { renderWithProviders } from '../../../__tests__/testReducer';
+import { renderWithProviders } from "../../../mocks/mockReducer";
 import { ConfirmationProvider } from '../../confirmationDialog/ConfirmationProvider';
 import { formatDate } from '../../../helpers/formatter.utility';
 import * as router from 'react-router'
@@ -62,28 +62,15 @@ describe("AggregatesTable Component", () => {
         expect(pageSelector).toBeInTheDocument();
         await waitFor(() => {
             //Aggregates fetched and displayed
-            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(10)
+            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(mockData.items.length)
         })
     });
-
-    it("filter single aggregate by name", async() => {
-        let result = renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>)
-
-        const aggregateNameInput = screen.getByRole("textbox", {name: "Nome aggregazione"});
-        let firstAggregateName = mockData.items[0].name; 
-        fireEvent.change(aggregateNameInput, { target : {value : firstAggregateName} });
-        fireEvent.click(screen.getByRole("button", {name: "Filtra"}));
-        await waitFor(() => {
-            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(1);
-            expect(screen.getByText(firstAggregateName)).toBeInTheDocument();
-        })
-    })
 
     it('handle click on column', async () => {
         let result = renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>)
         await waitFor(() => {
             //Aggregates fetched and displayed
-            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(10)
+            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(mockData.items.length)
         })
         const firstTd = result?.container.querySelector('tbody tr:first-child td:first-child');
         expect(firstTd).toBeInTheDocument();
@@ -96,7 +83,7 @@ describe("AggregatesTable Component", () => {
 
         await waitFor(() => {
             //Aggregates fetched and displayed
-            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(10)
+            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(mockData.items.length)
         })
         const lastTd = result?.container.querySelector('tbody tr:first-child td:last-child');
         expect(lastTd).toBeInTheDocument();
@@ -109,7 +96,20 @@ describe("AggregatesTable Component", () => {
         fireEvent.click(confirmButton);
         await waitFor(() => {
             //Aggregates refetched and displayed
-            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(10)
+            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(mockData.items.length)
+        })
+    })
+
+    it("filter single aggregate by name", async() => {
+        let result = renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>)
+
+        const aggregateNameInput = screen.getByRole("textbox", {name: "Nome aggregazione"});
+        let firstAggregateName = mockData.items[0].name; 
+        fireEvent.change(aggregateNameInput, { target : {value : firstAggregateName} });
+        fireEvent.click(screen.getByRole("button", {name: "Filtra"}));
+        await waitFor(() => {
+            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(1);
+            expect(screen.getByText(firstAggregateName)).toBeInTheDocument();
         })
     })
 })
