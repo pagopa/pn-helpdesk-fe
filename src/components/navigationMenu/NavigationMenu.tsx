@@ -23,6 +23,10 @@ const NavigationMenu = () => {
       title: "Monitoraggio Piattaforma Notifiche",
       link: "/monitoring",
     },
+    {
+      title: "Gestione gare",
+      link: "/tender",
+    },
   ];
 
   const toggleDrawer =

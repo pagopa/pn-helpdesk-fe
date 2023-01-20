@@ -4,6 +4,7 @@ import MonitorPage from "../pages/monitor/MonitorPage";
 import LoginPage from "../pages/login/LoginPage";
 import SearchPage from "../pages/search/SearchPage";
 import PrivateRoute from "./PrivateRoute";
+import TenderPage from "../pages/tender/TenderPage";
 
 /**
  * Create the routing of the page
@@ -18,7 +19,7 @@ function Router() {
         path={"/"}
         element={<LoginPage setEmail={setEmail} />}
       />
-      <Route path="*" element={<Navigate replace to="/search" />} />
+
       <Route
         path="/search"
         element={
@@ -28,13 +29,14 @@ function Router() {
         }
       />
       <Route
-        path="/monitoring"
+        path="/tender"
         element={
           <PrivateRoute condition="token">
-            <MonitorPage email={email} />
+            <TenderPage />
           </PrivateRoute>
         }
       />
+      <Route path="*" element={<Navigate replace to="/search" />} />
     </Routes>
   );
 }

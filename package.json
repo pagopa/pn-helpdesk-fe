@@ -39,7 +39,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "generate:api": "rimraf generated && mkdir generated && gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/pn-logextractor-be/develop/docs/openapi/swagger.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client",
+    "generate:api": "/docs/openapi/swagger.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client && gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/pn-paper-channel/feature/pn-paper-channel/docs/openapi/pn-paper-channel-v1.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client",
+    "generate:api-paper-channel": "openapi-generator-cli generate -g typescript-axios -i https://raw.githubusercontent.com/pagopa/pn-paper-channel/feature/pn-paper-channel/docs/openapi/pn-paper-channel-v1.yaml -o ./src/generated --additional-properties=supportsES6=true",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
@@ -66,7 +67,8 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.17.12",
-    "@pagopa/openapi-codegen-ts": "^10.1.0",
+    "@pagopa/openapi-codegen-ts": "^12.1.2",
+    "@openapitools/openapi-generator-cli": "^2.5.2",
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
