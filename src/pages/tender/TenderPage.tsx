@@ -1,43 +1,54 @@
 import MainLayout from "../mainLayout/MainLayout";
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {Box, Button, Card, Container, Grid, Typography} from "@mui/material";
 import {Add} from "@mui/icons-material";
 import {ModelType, PaginationDataGrid} from "../../components/paginationGrid";
-import {Page} from "../../model";
-
-
-
-interface Tender {
-  id: number
-  name: string,
-  startDate: string,
-  endDate: string,
-  status: string
-}
-
-const rows:Tender[] = [
-  { id: 1, name: "Gara 2020", startDate: '2018-12-17T03:24:00', endDate: "2020-12-17T03:24:00", status: "ENDED" },
-  { id: 2, name: "Gara 2022", startDate: '2020-12-17T03:24:00', endDate: "2022-12-17T03:24:00", status: "ENDED" },
-  { id: 3, name: "Gara 2023", startDate: '2022-12-17T03:24:00', endDate: "2024-12-17T03:24:00", status: "IN_PROGRESS" },
-  { id: 4, name: "Gara 2023", startDate: '2022-12-17T03:24:00', endDate: "2024-12-17T03:24:00", status: "IN_PROGRESS" },
-  { id: 5, name: "Gara 2023", startDate: '2022-12-17T03:24:00', endDate: "2024-12-17T03:24:00", status: "IN_PROGRESS" },
-  { id: 6, name: "Gara 2023", startDate: '2022-12-17T03:24:00', endDate: "2024-12-17T03:24:00", status: "IN_PROGRESS" },
-  { id: 7, name: "Gara 2023", startDate: '2022-12-17T03:24:00', endDate: "2024-12-17T03:24:00", status: "IN_PROGRESS" },
-  { id: 8, name: "Gara 2023", startDate: '2022-12-17T03:24:00', endDate: "2024-12-17T03:24:00", status: "IN_PROGRESS" },
-  { id: 9, name: "Gara 2023", startDate: '2022-12-17T03:24:00', endDate: "2024-12-17T03:24:00", status: "IN_PROGRESS" },
-  { id: 10, name: "Gara 2023", startDate: '2022-12-17T03:24:00', endDate: "2024-12-17T03:24:00", status: "IN_PROGRESS" },
-];
-
-
-const response : Page<Tender> = {
-  page: 0,
-  size: 10,
-  total: 100,
-  content: rows
-}
+import {FilterRequest} from "../../model";
+import {useAppDispatch, useAppSelector} from "../../redux/hook";
+import {getTenders} from "../../redux/tender/actions";
+import {TenderDTO} from "../../generated";
+import {useNavigate} from "react-router-dom";
+import {CREATE_TENDER_ROUTE} from "../../navigation/router.const";
 
 
 export default function TenderPage({ email }: any){
+
+  const tenderState = useAppSelector(state => state.tender);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const [pagination, setPagination] = useState<FilterRequest>({
+    page: 1,
+    tot: 25
+  })
+
+  const fetchTender = useCallback(() => {
+    void dispatch(getTenders(pagination));
+  }, [pagination] )
+
+
+  useEffect(() => {
+    fetchTender();
+  }, [fetchTender])
+
+
+  const handleOnPageChange = (page:number) => {
+    setPagination(prev => ({
+        ...prev,
+        page: page
+    }));
+  }
+
+  const handleOnPageSizeChange = (pageSize: number) => {
+    console.log("Page size change : ", pageSize);
+    setPagination(prev => ({
+      ...prev,
+      page: 1,
+      tot: pageSize
+    }));
+  }
+
+
 
   return <MainLayout email={email}>
     <Container>
@@ -63,6 +74,7 @@ export default function TenderPage({ email }: any){
               <Button
                 variant="outlined"
                 startIcon={<Add />}
+                onClick={() => navigate(CREATE_TENDER_ROUTE)}
                 sx={{
                   "&:hover": { backgroundColor: "action.hover" },
                 }}
@@ -70,7 +82,13 @@ export default function TenderPage({ email }: any){
                 Aggiungi
               </Button>
             </Grid>
-            <PaginationDataGrid <Tender> data={response} type={ModelType.TENDER} />
+            <PaginationDataGrid <TenderDTO> data={tenderState.allData}
+                                            type={ModelType.TENDER}
+                                            loading={tenderState.loading}
+                                            rowId={row => row.code}
+                                            onPageChange={handleOnPageChange}
+                                            onPageSizeChange={handleOnPageSizeChange}
+                        />
           </Card>
         </Grid>
 
