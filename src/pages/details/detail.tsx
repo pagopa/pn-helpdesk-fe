@@ -14,7 +14,7 @@ export function FormDetailPage() {
                 <Grid item container>
                     <Box>
                         <Typography variant="h4" color="text.primary">
-                            Nuova Gara
+                            Dettaglio gara
                         </Typography>
                     </Box>
                 </Grid>
