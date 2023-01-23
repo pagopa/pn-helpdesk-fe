@@ -19,7 +19,7 @@ export function FormDetailPage() {
                     </Box>
                 </Grid>
                 <Grid item container direction="row" justifyContent="space-between">
-                    <Card
+                    <Card>
                         elevation={24}
                         sx={{
                         width: 1,
@@ -27,7 +27,13 @@ export function FormDetailPage() {
                             boxShadow: "0px 3px 3px -2px ",
                             backgroundColor: "background.paper",
                         }}
-                        >
+                            <Grid item container>
+                            <Box>
+                            <Typography variant="h4" color="text.primary">
+                            Dettaglio gara
+                            </Typography>
+                            </Box>
+                        </Grid>
                     </Card>
                 </Grid>
 
