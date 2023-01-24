@@ -4,8 +4,9 @@ import LoginPage from "../pages/login/LoginPage";
 import SearchPage from "../pages/search/SearchPage";
 import PrivateRoute from "./PrivateRoute";
 import TenderPage from "../pages/tender/TenderPage";
+import {TenderDetailPage} from "../pages/details/detail";
 import {FormTenderPage} from "../pages/createTender/FormTenderPage";
-import {CREATE_TENDER_ROUTE, GET_TENDER} from "./router.const";
+import {CREATE_TENDER_ROUTE, GET_TENDER, GET_DETAIL_TENDER} from "./router.const";
 
 /**
  * Create the routing of the page
@@ -47,6 +48,17 @@ function Router() {
         }
       />
       <Route path="*" element={<Navigate replace to="/search" />} />
+
+        <Route
+            path={GET_DETAIL_TENDER}
+            element={
+                <PrivateRoute condition="token">
+                    <TenderDetailPage />
+                </PrivateRoute>
+            }
+        />
+
+
     </Routes>
   );
 }
