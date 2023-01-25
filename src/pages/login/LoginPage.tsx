@@ -9,6 +9,8 @@ const LoginPage = ({ setEmail }: any) => {
     <ChangePasswordForm user={user} />
   ) : (
     <LoginForm setEmail={setEmail} setUser={setUser} />
+
+  
   );
 };
 

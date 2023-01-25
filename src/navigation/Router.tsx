@@ -29,6 +29,7 @@ function Router() {
             <SearchPage email={email} />
           </PrivateRoute>
         }
+          
       />
       <Route
         path={GET_TENDER}
