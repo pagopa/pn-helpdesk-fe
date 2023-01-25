@@ -5,13 +5,14 @@ import {
   Grid, Stack, Button,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import {FieldsProperties, FormField} from "../../formFields/FormFields";
+import {FormField} from "../../formFields/FormFields";
 import {FormHelperText} from "@mui/material";
 import {NoteAdd, Reply} from "@mui/icons-material";
 import {useAppDispatch} from "../../../redux/hook";
 import {Tender} from "../../../model";
 import {addedTender} from "../../../redux/formTender/reducers";
 import {format} from "date-fns";
+import {fieldsTender} from "./fields";
 
 
 
@@ -81,7 +82,7 @@ export default function TenderFormBox() {
                   key={field}
                   control={control}
                   name={field}
-                  rules={FieldsProperties[field].rules}
+                  rules={fieldsTender[field].rules}
                   render={({
                              field: { onChange, onBlur, value, name, ref },
                              fieldState: { invalid, isTouched, isDirty, error },
@@ -91,7 +92,7 @@ export default function TenderFormBox() {
                       <FormField
                         error={error}
                         key={field}
-                        field={FieldsProperties[field]}
+                        field={fieldsTender[field]}
                         onChange={onChange}
                         value={value}
                       />

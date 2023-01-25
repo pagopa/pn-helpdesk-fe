@@ -21,6 +21,18 @@ export type Tender = {
   endDate: string,
 }
 
+export type DeliveryDriver = {
+  denomination: string,
+  businessName: string,
+  registeredOffice: string,
+  pec: string,
+  fiscalCode: string,
+  taxId: string,
+  phoneNumber: string,
+  uniqueCode: string,
+  fsu: boolean
+}
+
 export type StepView = {
   name: string,
   key: string,

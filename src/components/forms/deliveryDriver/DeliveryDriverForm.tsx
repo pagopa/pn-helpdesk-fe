@@ -1,128 +1,138 @@
 import {
-  Box,
   Card,
-  CardContent,
   Typography,
-  CardActions,
-  TextField, Grid,
-} from "@material-ui/core";
+  Grid,
+  FormHelperText,
+  Button,
+} from "@mui/material";
 import React from "react";
-import {initialDeliveryDriverValues} from "./InitialDeliveryDriverValues"
+import {useAppDispatch} from "../../../redux/hook";
+import {Controller, useForm} from "react-hook-form";
+import {FormField} from "../../formFields/FormFields";
 
-export default function DeliveryDriverBox() {
+import {fieldsDriver} from "./fields";
+import {Add} from "@mui/icons-material";
+
+const defaultFormValues: { [key: string]: any } = {
+  "dateInterval": [new Date(), new Date()]
+};
+
+export default function DeliveryDriverFormBox({fsu: boolean}:any) {
+
+  const fields = ["taxIdDriver", "businessNameDriver", "denominationDriver",
+    "registeredOfficeDriver", "fiscalCodeDriver", "pecDriver", "phoneNumberDriver", "uniqueCodeDriver"];
+  const dispatch = useAppDispatch();
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    defaultValues: defaultFormValues,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
+
+  const onSubmit = async (data: { [x: string]: any }) => {
+    console.log(data);
+  }
+
   return (
-    <Box>
-      <Card>
-        <CardContent>
-          <Typography
-            style={{fontFamily: "Sans-serif"}}
-            variant="h4"
-            component="div">
-            Nuovo FSU
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="idTaxId"
-                label="Partita iva"
-                name="taxId"
-                variant="outlined"
-                fullWidth
-                margin="dense"
-                required={true}
-                value={initialDeliveryDriverValues.taxId}
-              />
+    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+      <Grid item container rowSpacing={2}>
+        <Grid item container>
+          <Card
+            elevation={24}
+            sx={{
+              width: 1,
+              padding: "1rem 2rem",
+              boxShadow: "0px 3px 3px -2px ",
+              backgroundColor: "background.paper",
+            }}
+          >
+            <Grid container rowSpacing={2}>
+              <Grid item>
+                <Typography
+                  variant="h5"
+                  component="div">
+                  Nuovo FSU
+                </Typography>
+              </Grid>
+              <Grid item container>
+                <Grid item container spacing={1} alignItems="center">
+                  {
+                    fields.map(field => (
+                      <Grid
+                        item
+                        key={fieldsDriver[field].name + "Item"}
+                        width={fieldsDriver[field].size}
+                        sx={{paddingLeft: 0}}
+                      >
+                        <Controller
+                          key={field}
+                          control={control}
+                          name={field}
+                          rules={fieldsDriver[field].rules}
+                          render={({
+                                     field: { onChange, onBlur, value, name, ref },
+                                     fieldState: { invalid, isTouched, isDirty, error },
+                                     formState,
+                                   }) => (
+                            <>
+                              <FormField
+                                error={error}
+                                key={field}
+                                field={fieldsDriver[field]}
+                                onChange={onChange}
+                                value={value}
+                              />
+                              <FormHelperText error>
+                                {errors[field] ? errors[field].message : " "}
+                              </FormHelperText>
+                            </>
+                          )}
+                        />
+                      </Grid>
+                    ))
+                  }
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="idBusinessName"
-                label="Ragione sociale"
-                name="businessName"
-                variant="outlined"
-                fullWidth
-                margin="dense"
-                required={true}
-                value={initialDeliveryDriverValues.businessName}
-              />
+          </Card>
+        </Grid>
+        <Grid item container>
+          <Card
+            elevation={24}
+            sx={{
+              width: 1,
+              padding: "1rem 2rem",
+              boxShadow: "0px 3px 3px -2px ",
+              backgroundColor: "background.paper",
+            }}
+          >
+            <Grid container
+                  rowSpacing={2}
+                  alignItems={"center"}
+                  justifyContent="space-between">
+              <Grid item>
+                <Typography
+                  variant="h5"
+                  component="div">
+                  Costi
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Button variant={"outlined"} startIcon={<Add />}>Aggiungi</Button>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="idDenomination"
-                label="Denominazione"
-                name="denomination"
-                variant="outlined"
-                fullWidth
-                margin="dense"
-                required={true}
-                value={initialDeliveryDriverValues.denomination}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="idRegisteredOffice"
-                label="Sede legale"
-                name="registeredOffice"
-                variant="outlined"
-                fullWidth
-                margin="dense"
-                required={true}
-                value={initialDeliveryDriverValues.registeredOffice}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="idFiscalCode"
-                label="Codice fiscale"
-                name="fiscalCode"
-                variant="outlined"
-                fullWidth
-                margin="dense"
-                required={true}
-                value={initialDeliveryDriverValues.fiscalCode}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="idPec"
-                label="Pec"
-                name="pec"
-                variant="outlined"
-                fullWidth
-                margin="dense"
-                required={true}
-                value={initialDeliveryDriverValues.pec}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="idPhoneNumber"
-                label="Numero telefonico"
-                name="phoneNumber"
-                variant="outlined"
-                fullWidth
-                margin="dense"
-                required={true}
-                value={initialDeliveryDriverValues.phoneNumber}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="idUniqueCode"
-                label="Codice univoco"
-                name="uniqueCode"
-                variant="outlined"
-                fullWidth
-                margin="dense"
-                required={true}
-                value={initialDeliveryDriverValues.uniqueCode}
-              />
-            </Grid>
-          </Grid>
-        </CardActions>
-      </Card>
-    </Box>
+          </Card>
+        </Grid>
 
+        <Grid item container direction="row" justifyContent="space-between">
+          <Button variant={"outlined"}>Indietro</Button>
+          <Button variant={"contained"} type={"submit"} >Avanti</Button>
+        </Grid>
+      </Grid>
+    </form>
   );
 };
