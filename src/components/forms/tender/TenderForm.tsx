@@ -1,161 +1,120 @@
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import {
-    Box,
-    Card,
-    CardContent,
-    Typography,
-    CardActions,
-    TextField, Grid,
-} from "@material-ui/core";
-import {Stack} from "@mui/material";
+  Card,
+  Typography,
+  Grid, Stack, Button,
+} from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import {FieldsProperties, FormField} from "../../formFields/FormFields";
+import {FormHelperText} from "@mui/material";
+import {NoteAdd, Reply} from "@mui/icons-material";
+import {useAppDispatch} from "../../../redux/hook";
+import {Tender} from "../../../model";
+import {addedTender} from "../../../redux/formTender/reducers";
+import {format} from "date-fns";
 
-interface Tender{
-    nameRace: string,
-    startDate: string,
-    endDate: string
-}
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            display: "flex",
-            flexWrap: "wrap",
-            "& > *": {
-                margin: theme.spacing(2),
-            },
-            flexGrow: 1
-        },
-        textField: {
-            // padding: 5,
-        }
-    })
-);
 
-export default function TenderBox() {
-    const [nameRace, setNameRace] = React.useState('id');
-    const [startDate, setStartDate] = React.useState('dd/mm/yyyy');
-    const [endDate, setEndDate] = React.useState('dd/mm/yyyy');
+const defaultFormValues: { [key: string]: any } = {
+  "dateInterval": [new Date(), new Date()]
+};
 
-    const classes = useStyles();
-    return (
-        <>
-            <Box className={classes.root}>
-                <Card>
-                    <CardContent>
-                        <Typography
-                            variant="h5"
-                            component="div">
-                            Informazione sulla Gara
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        {/*
-                        <Stack spacing={2}>
-                            <Stack direction="row">
-                                <TextField
-                                    id="idNameRace"
-                                    label="Identificativo"
-                                    margin="dense"
-                                    variant="outlined"
-                                    required={true}
-                                    value={nameRace}
-                                    onChange={(e) => setNameRace(e.target.value)}
-                                    error={!nameRace}
-                                    helperText={!nameRace ? 'Id obbligatorio' : ''}
-                                />
-                            </Stack>
-                            <Stack direction="row" spacing={3}>
-                                <TextField
-                                    id="idStartDate"
-                                    label="Data inizio"
-                                    type="date"
-                                    margin="dense"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        required: true
-                                    }}
-                                    value={startDate}
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                    error={!startDate}
-                                    helperText={!startDate ? 'Data obbligatoria' : ''}
-                                />
-                                <TextField
-                                    id="idEndDate"
-                                    label="Data fine"
-                                    type="date"
-                                    margin="dense"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        required: true
-                                    }}
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                    error={!endDate}
-                                    helperText={!endDate ? 'Data obbligatoria' : ''}
-                                />
-                            </Stack>
-                        </Stack>
-*/}
-                        <Grid container spacing={2} >
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="idNameRace"
-                                    label="Identificativo"
-                                    margin="dense"
-                                    variant="outlined"
-                                    required={true}
-                                    value={nameRace}
-                                    onChange={(e) => setNameRace(e.target.value)}
-                                    error={!nameRace}
-                                    helperText={!nameRace ? 'Id obbligatorio' : ''}
-                                />
-                            </Grid>
-                            <Grid item xs={6} md={4}>
-                                <TextField
-                                    id="idStartDate"
-                                    label="Data inizio"
-                                    type="date"
-                                    margin="dense"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        required: true
-                                    }}
-                                    value={startDate}
-                                    onChange={(e) => setStartDate(e.target.value)}
-                                    error={!startDate}
-                                    helperText={!startDate ? 'Data obbligatoria' : ''}
-                                />
-                            </Grid>
-                            <Grid item xs={6} md={4}>
-                                <TextField
-                                    id="idEndDate"
-                                    label="Data fine"
-                                    type="date"
-                                    margin="dense"
-                                    variant="outlined"
-                                    className={classes.textField}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                        required: true
-                                    }}
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
-                                    error={!endDate}
-                                    helperText={!endDate ? 'Data obbligatoria' : ''}
-                                />
-                            </Grid>
-                        </Grid>
+export default function TenderFormBox() {
+  const fields = ["nameTender", "dateInterval"];
+  const dispatch = useAppDispatch();
 
-                    </CardActions>
-                </Card>
-            </Box>
-        </>
-    );
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    defaultValues: defaultFormValues,
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
+
+  const onSubmit = async (data: { [x: string]: any }) => {
+
+
+    dispatch(addedTender({data: tenderMap(data), key: 1}))
+  }
+
+  const onSubmitWithUpload = async (data: { [x: string]: any }) => {
+    dispatch(addedTender({data: tenderMap(data), key: 2}))
+  }
+
+  const tenderMap = (data: { [x: string]: any }) => {
+    const fromDate = (data["dateInterval"][0] && data["dateInterval"][0] instanceof Date) ? format( data["dateInterval"][0], "yyyy-MM-dd'T'HH:mm:ss.sss'Z'") : data["dateInterval"][0];
+    const onDate = (data["dateInterval"][1] && data["dateInterval"][1] instanceof Date) ? format( data["dateInterval"][1], "yyyy-MM-dd'T'HH:mm:ss.sss'Z'") : data["dateInterval"][1];
+
+    const tender: Tender = {
+      description: data["nameTender"],
+      startDate: fromDate,
+      endDate: onDate,
+    }
+    return tender;
+  }
+
+  return (
+    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+      <Stack spacing={2} sx={{width: 1}} >
+        <Card
+          elevation={24}
+          sx={{
+            width: 1,
+            padding: "1rem 2rem",
+            boxShadow: "0px 3px 3px -2px ",
+            backgroundColor: "background.paper",
+          }}
+        >
+          <Stack spacing={3}>
+            <Typography
+              variant="h5"
+              component="div">
+              Informazione sulla Gara
+            </Typography>
+
+            <Grid item container direction="column" rowSpacing={2}>
+            {
+              fields.map(field => (
+                <Controller
+                  key={field}
+                  control={control}
+                  name={field}
+                  rules={FieldsProperties[field].rules}
+                  render={({
+                             field: { onChange, onBlur, value, name, ref },
+                             fieldState: { invalid, isTouched, isDirty, error },
+                             formState,
+                           }) => (
+                    <>
+                      <FormField
+                        error={error}
+                        key={field}
+                        field={FieldsProperties[field]}
+                        onChange={onChange}
+                        value={value}
+                      />
+                      <FormHelperText error>
+                        {errors[field] ? errors[field].message : " "}
+                      </FormHelperText>
+                    </>
+                  )}
+                />
+              ))
+            }
+            </Grid>
+          </Stack>
+        </Card>
+
+        <Grid item container direction="row" justifyContent="space-between">
+          <Button variant={"outlined"} startIcon={<Reply/>}>Annulla</Button>
+          <Stack direction={"row"} spacing={3}>
+            <Button variant={"outlined"} startIcon={<NoteAdd/>} onClick={handleSubmit(onSubmitWithUpload)}>Carica</Button>
+            <Button variant={"contained"} type={"submit"} >Avanti</Button>
+          </Stack>
+        </Grid>
+      </Stack>
+    </form>
+  );
 }
