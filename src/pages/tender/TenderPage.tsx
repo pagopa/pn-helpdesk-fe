@@ -87,8 +87,7 @@ export default function TenderPage({ email }: any){
                                             loading={tenderState.loading}
                                             rowId={row => row.code}
                                             onPageChange={handleOnPageChange}
-                                            onPageSizeChange={handleOnPageSizeChange}
-                        />
+                                            onPageSizeChange={handleOnPageSizeChange}/>
           </Card>
         </Grid>
 

@@ -1,11 +1,45 @@
 import {BreadcrumbCustom} from "../../components/breadcrumb/BreadcrumbCustom";
-import {Box, Card, Container, Grid, Typography} from "@mui/material";
+import {Box, Container, Grid, Stack, Step, StepLabel, Stepper, Typography} from "@mui/material";
 
 import MainLayout from "../mainLayout/MainLayout";
 import React from "react";
+import TenderFormBox from "../../components/forms/tender/TenderForm";
+import {useAppDispatch, useAppSelector} from "../../redux/hook";
+import {StepView} from "../../model";
+import DeliveryDriverFormBox from "../../components/forms/deliveryDriver/DeliveryDriverForm";
+
+
+
+const stepGara:StepView = {
+  name: "Informazioni sulla gara",
+  key: "tender",
+  render: () => <TenderFormBox />
+}
+
+const stepFSU:StepView = {
+  name: "FSU",
+  key: "fsu",
+  render: () => <DeliveryDriverFormBox fsu={true}/>
+}
+
+const stepDeliveries:StepView = {
+  name: "Recapitisti",
+  key: "deliveries",
+  render: () => <h1>DELIVERIES</h1>
+}
+
+const stepRiepilogo:StepView = {
+  name: "Riepilogo",
+  key: "review",
+  render: () => <h1>REVIEW</h1>
+}
 
 
 export function FormTenderPage({email}:any) {
+
+  const steps = [stepGara, stepFSU, stepDeliveries, stepRiepilogo]
+  const tenderFormStepper = useAppSelector(state => state.tenderForm);
+  const dispatch = useAppDispatch();
 
   return <MainLayout email={email}>
     <Container>
@@ -23,6 +57,7 @@ export function FormTenderPage({email}:any) {
             </Typography>
           </Box>
         </Grid>
+<<<<<<< HEAD
         <Grid item container direction="row" justifyContent="space-between">
           <Card
             elevation={24}
@@ -34,6 +69,23 @@ export function FormTenderPage({email}:any) {
             }}
           >
           </Card>
+=======
+        <Grid item container>
+          <Stack spacing={2} sx={{width: "100%"}}>
+            <Stepper activeStep={tenderFormStepper.activeKey} alternativeLabel sx={{width: "100%"}} >
+              {
+                steps.map((stepView) => (
+                  <Step key={stepView.key}>
+                    <StepLabel>{stepView.name}</StepLabel>
+                  </Step>
+                ))
+              }
+            </Stepper>
+            {
+              steps[tenderFormStepper.activeKey].render()
+            }
+          </Stack>
+>>>>>>> c4526b95e8328f60fa25c58b887f8241d854a360
         </Grid>
 
       </Grid>

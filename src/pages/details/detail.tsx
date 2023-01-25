@@ -94,8 +94,21 @@ export function TenderDetailPage({email}:any) {
                             padding: "2rem",
                             boxShadow: "0px 3px 3px -2px ",
                             backgroundColor: "background.paper",
+<<<<<<< HEAD
                         }}
                         >
+=======
+                        }}>
+                        <Grid item container>
+                            <Box>
+                                <Typography variant="h4" color="text.primary">
+                                    Dettaglio gara
+                                </Typography>
+                            </Box>
+                        </Grid>
+                    </Card>
+                </Grid>
+>>>>>>> c4526b95e8328f60fa25c58b887f8241d854a360
 
                     </Card>
                     </Grid>

@@ -13,6 +13,7 @@ export const BreadcrumbCustom = () => {
 
     if (index !== paths.length-1){
       return <Link
+        key={nameOfRoute[url]}
         sx={{ display: "flex", alignItems: "center" }}
         underline="hover"
         color="inherit"
@@ -22,6 +23,7 @@ export const BreadcrumbCustom = () => {
     }
 
     return <Typography
+      key={nameOfRoute[url]}
       sx={{ display: "flex", alignItems: "center" }}
       color="inherit"
       fontWeight={600}>
