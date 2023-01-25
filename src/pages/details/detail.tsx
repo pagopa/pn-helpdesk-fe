@@ -50,11 +50,6 @@ export function TenderDetailPage() {
                                 <Typography variant="h4" color="text.primary">
                                     Dettaglio gara
                                 </Typography>
-                                <table>
-                                    <rw>
-                                        test
-                                    </rw>
-                                </table>
                             </Box>
                         </Grid>
                     </Card>
