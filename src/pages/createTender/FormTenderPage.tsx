@@ -10,6 +10,11 @@ export function FormTenderPage({email}:any) {
   return <MainLayout email={email}>
     <Container>
       <BreadcrumbCustom/>
+        <Box>
+            <Typography variant="h4" color="text.primary">
+               Ipse Dixit
+            </Typography>
+        </Box>
       <Grid container direction="row" rowSpacing={3}>
         <Grid item container>
           <Box>
@@ -22,7 +27,7 @@ export function FormTenderPage({email}:any) {
           <Card
             elevation={24}
             sx={{
-              width: 1,
+              width:1,
               padding: "5%",
               boxShadow: "0px 3px 3px -2px ",
               backgroundColor: "background.paper",
@@ -32,6 +37,7 @@ export function FormTenderPage({email}:any) {
         </Grid>
 
       </Grid>
+
     </Container>
   </MainLayout>
 
