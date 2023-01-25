@@ -50,7 +50,7 @@ export function TenderDetailPage({email}:any) {
                                 </Typography></Grid>
                             </Grid>
                             <Grid item container direction="row" >
-                                <Grid item size="50%">
+                                <Grid item width="50%" >
                                     <Typography>
                                         Data inizio
                                     </Typography>
@@ -60,7 +60,7 @@ export function TenderDetailPage({email}:any) {
                                 </Typography></Grid>
                             </Grid>
                             <Grid item container direction="row" >
-                                <Grid item size="50%">
+                                <Grid item width="50%" >
                                     <Typography>
                                        Data fine
                                     </Typography>
@@ -70,7 +70,7 @@ export function TenderDetailPage({email}:any) {
                                 </Typography></Grid>
                             </Grid>
                             <Grid item container direction="row" >
-                                <Grid item size="50%">
+                                <Grid item width="50%" >
                                     <Typography>
                                         Stato
                                     </Typography>
