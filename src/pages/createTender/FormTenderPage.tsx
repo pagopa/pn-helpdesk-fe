@@ -6,6 +6,7 @@ import React from "react";
 import TenderFormBox from "../../components/forms/tender/TenderForm";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {StepView} from "../../model";
+import DeliveryDriverFormBox from "../../components/forms/deliveryDriver/DeliveryDriverForm";
 
 
 
@@ -18,7 +19,7 @@ const stepGara:StepView = {
 const stepFSU:StepView = {
   name: "FSU",
   key: "fsu",
-  render: () => <h1>FSU</h1>
+  render: () => <DeliveryDriverFormBox fsu={true}/>
 }
 
 const stepDeliveries:StepView = {
