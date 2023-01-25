@@ -17,7 +17,7 @@ const defaultFormValues: { [key: string]: any } = {
 
 export default function CostsBox({fsu: boolean}:any) {
 
-  const fields = ["selectTypeCost", "inputBaseCost", "selectCapCost", "inputAdditionalCost", "selectProductType"];
+  const fields = ["selectTypeCost", "inputBaseCost", "selectCapCost", "inputAdditionalCost", "selectZoneCost", "selectProductType"];
   const dispatch = useAppDispatch();
 
   const {
