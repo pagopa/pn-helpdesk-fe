@@ -21,32 +21,33 @@ interface PaginationProps<T> {
 export function PaginationDataGrid<T>(props:PaginationProps<T>) {
 
   const rowClickHandler = (rowData: GridRowParams) => {
+    console.log(rowData);
     props.onClickItem?.(rowData.id);
   }
 
   return <>
     <DataGrid
-    rows={(props.data?.content) ? props.data.content : []}
-    columns={getColumn(props.type)}
-    onRowClick={rowClickHandler}
-    experimentalFeatures={{ newEditingApi: true }}
-    disableVirtualization
-    page={(props.data?.content) ? props.data.page : 0}
-    rowsPerPageOptions={[10, 25, 50, 100]}
-    paginationMode={"server"}
-    getRowId={props?.rowId}
-    loading={props.loading}
-    pageSize={(props.data?.content) ? props.data.size : 10}
-    rowCount={(props.data?.content) ? props.data.total : 0}
-    onPageChange={props.onPageChange}
-    onPageSizeChange={props.onPageSizeChange}
-    sx={{
-      height:"400px",
-      [`& .${gridClasses.row}`]: {
-        bgcolor: (theme) => "background.default",
-      },
-    }}
-  />
+      rows={(props.data?.content) ? props.data.content : []}
+      columns={getColumn(props.type)}
+      onRowClick={rowClickHandler}
+      experimentalFeatures={{ newEditingApi: true }}
+      disableVirtualization
+      page={(props.data?.content) ? props.data.page : 0}
+      rowsPerPageOptions={[10, 25, 50, 100]}
+      paginationMode={"server"}
+      getRowId={props?.rowId}
+      loading={props.loading}
+      pageSize={(props.data?.content) ? props.data.size : 10}
+      rowCount={(props.data?.content) ? props.data.total : 0}
+      onPageChange={props.onPageChange}
+      onPageSizeChange={props.onPageSizeChange}
+      sx={{
+        height:"400px",
+        [`& .${gridClasses.row}`]: {
+          bgcolor: (theme) => "background.default",
+        },
+      }}
+    />
   </>
 
 }

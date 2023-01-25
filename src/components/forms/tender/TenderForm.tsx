@@ -57,7 +57,7 @@ export default function TenderFormBox() {
   }
 
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2} sx={{width: 1}} >
         <Card
           elevation={24}

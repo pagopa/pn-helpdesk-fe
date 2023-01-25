@@ -10,7 +10,7 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "select",
     label: "Seleziona il tipo di costo *",
     hidden: false,
-    size: "55%",
+    size: "50%",
     // inputProps: {width:"webkit-fill-available"},
     // rules: {
     //   pattern: {
@@ -26,7 +26,7 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "textfield",
     label: "Costo base (€)",
     hidden: false,
-    size: "45%",
+    size: "50%",
     inputProps: { minLength: 1 },
     rules: {
       pattern: {
@@ -46,7 +46,7 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "select",
     label: "Seleziona Cap",
     hidden: false,
-    size: "55%",
+    size: "50%",
     // inputProps: {width:"webkit-fill-available"},
     // rules: {
     //   pattern: {
@@ -62,7 +62,7 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "textfield",
     label: "Costo aggiuntivo per pagina (€)",
     hidden: false,
-    size: "45%",
+    size: "50%",
     inputProps: { minLength: 1 },
     rules: {
       pattern: {
@@ -82,7 +82,7 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "select",
     label: "Seleziona Zona",
     hidden: false,
-    size: "55%",
+    size: "50%",
     // inputProps: {width:"webkit-fill-available"},
     // rules: {
     //   pattern: {

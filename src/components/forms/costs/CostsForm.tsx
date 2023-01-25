@@ -3,7 +3,6 @@ import {
   Typography,
   Grid,
   FormHelperText,
-  Button,
 } from "@mui/material";
 import React from "react";
 import {useAppDispatch} from "../../../redux/hook";
@@ -11,7 +10,6 @@ import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 
 import {fieldsCosts} from "./fields";
-import {Add} from "@mui/icons-material";
 
 const defaultFormValues: { [key: string]: any } = {
   "dateInterval": [new Date(), new Date()]
@@ -99,38 +97,6 @@ export default function CostsBox({fsu: boolean}:any) {
               </Grid>
             </Grid>
           </Card>
-        </Grid>
-        <Grid item container>
-          <Card
-            elevation={24}
-            sx={{
-              width: 1,
-              padding: "1rem 2rem",
-              boxShadow: "0px 3px 3px -2px ",
-              backgroundColor: "background.paper",
-            }}
-          >
-            <Grid container
-                  rowSpacing={2}
-                  alignItems={"center"}
-                  justifyContent="space-between">
-              <Grid item>
-                <Typography
-                  variant="h5"
-                  component="div">
-                  Costi
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Button variant={"outlined"} startIcon={<Add />}>Aggiungi</Button>
-              </Grid>
-            </Grid>
-          </Card>
-        </Grid>
-
-        <Grid item container direction="row" justifyContent="space-between">
-          <Button variant={"outlined"}>Indietro</Button>
-          <Button variant={"contained"} type={"submit"} >Avanti</Button>
         </Grid>
       </Grid>
     </form>

@@ -12,6 +12,7 @@ import {FormField} from "../../formFields/FormFields";
 
 import {fieldsDriver} from "./fields";
 import {Add} from "@mui/icons-material";
+import CostsBox from "../costs/CostsForm";
 
 const defaultFormValues: { [key: string]: any } = {
   "dateInterval": [new Date(), new Date()]
@@ -100,6 +101,7 @@ export default function DeliveryDriverFormBox({fsu: boolean}:any) {
             </Grid>
           </Card>
         </Grid>
+        <CostsBox />
         <Grid item container>
           <Card
             elevation={24}
@@ -120,6 +122,7 @@ export default function DeliveryDriverFormBox({fsu: boolean}:any) {
                   component="div">
                   Costi
                 </Typography>
+
               </Grid>
               <Grid item>
                 <Button variant={"outlined"} startIcon={<Add />}>Aggiungi</Button>

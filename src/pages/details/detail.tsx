@@ -1,14 +1,6 @@
 import MainLayout from "../mainLayout/MainLayout";
-import React, {useCallback, useEffect, useState} from "react";
-import {Box, Button, Card, Container, Grid, Typography, Chip} from "@mui/material";
-import {Add} from "@mui/icons-material";
-import {ModelType, PaginationDataGrid} from "../../components/paginationGrid";
-import {FilterRequest} from "../../model";
-import {useAppDispatch, useAppSelector} from "../../redux/hook";
-import {getTenders} from "../../redux/tender/actions";
-import {TenderDTO} from "../../generated";
-import {useNavigate} from "react-router-dom";
-import {CREATE_TENDER_ROUTE} from "../../navigation/router.const";
+import React from "react";
+import {Box,Card, Container, Grid, Typography, Chip} from "@mui/material";
 
 export function TenderDetailPage({email}:any) {
 
@@ -55,9 +47,9 @@ export function TenderDetailPage({email}:any) {
                                         Data inizio
                                     </Typography>
                                 </Grid>
-                                <Grid item size="50%"><Typography>
-                                    25-01-2023
-                                </Typography></Grid>
+                                <Grid item width="50%">
+                                    <Typography>25-01-2023</Typography>
+                                </Grid>
                             </Grid>
                             <Grid item container direction="row" >
                                 <Grid item width="50%" >
@@ -65,7 +57,7 @@ export function TenderDetailPage({email}:any) {
                                        Data fine
                                     </Typography>
                                 </Grid>
-                                <Grid item size="50%"><Typography>
+                                <Grid item width="50%"><Typography>
                                     25-01-2023
                                 </Typography></Grid>
                             </Grid>
@@ -75,7 +67,7 @@ export function TenderDetailPage({email}:any) {
                                         Stato
                                     </Typography>
                                 </Grid>
-                                <Grid item size="50%">
+                                <Grid item width="50%">
                                     <Chip label="IN CORSO"/>
                                 </Grid>
                             </Grid>
@@ -94,10 +86,6 @@ export function TenderDetailPage({email}:any) {
                             padding: "2rem",
                             boxShadow: "0px 3px 3px -2px ",
                             backgroundColor: "background.paper",
-<<<<<<< HEAD
-                        }}
-                        >
-=======
                         }}>
                         <Grid item container>
                             <Box>
@@ -108,11 +96,8 @@ export function TenderDetailPage({email}:any) {
                         </Grid>
                     </Card>
                 </Grid>
->>>>>>> c4526b95e8328f60fa25c58b887f8241d854a360
-
-                    </Card>
-                    </Grid>
             </Grid>
+
         </Container>
     </MainLayout>
 

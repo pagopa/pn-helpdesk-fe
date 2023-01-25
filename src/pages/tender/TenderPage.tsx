@@ -48,6 +48,10 @@ export default function TenderPage({ email }: any){
     }));
   }
 
+  const handleOnClickItem = (item: number) => {
+    console.log(item);
+  }
+
 
 
   return <MainLayout email={email}>
@@ -86,6 +90,7 @@ export default function TenderPage({ email }: any){
                                             type={ModelType.TENDER}
                                             loading={tenderState.loading}
                                             rowId={row => row.code}
+                                            //onClickItem={handleOnClickItem}
                                             onPageChange={handleOnPageChange}
                                             onPageSizeChange={handleOnPageSizeChange}/>
           </Card>

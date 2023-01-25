@@ -23,7 +23,7 @@ const SelectField = (props: Props) => {
   const { field, value, onChange } = props;
 
   return (
-    <FormControl sx={{ minWidth: 250 }}>
+    <FormControl sx={{ minWidth: 250, width: (field.size) ? "100%" : 250 }}>
       <InputLabel id={field.label}>{field.label}</InputLabel>
       <Select
         labelId={field.label}

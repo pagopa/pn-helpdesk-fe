@@ -57,19 +57,6 @@ export function FormTenderPage({email}:any) {
             </Typography>
           </Box>
         </Grid>
-<<<<<<< HEAD
-        <Grid item container direction="row" justifyContent="space-between">
-          <Card
-            elevation={24}
-            sx={{
-              width:1,
-              padding: "5%",
-              boxShadow: "0px 3px 3px -2px ",
-              backgroundColor: "background.paper",
-            }}
-          >
-          </Card>
-=======
         <Grid item container>
           <Stack spacing={2} sx={{width: "100%"}}>
             <Stepper activeStep={tenderFormStepper.activeKey} alternativeLabel sx={{width: "100%"}} >
@@ -85,7 +72,6 @@ export function FormTenderPage({email}:any) {
               steps[tenderFormStepper.activeKey].render()
             }
           </Stack>
->>>>>>> c4526b95e8328f60fa25c58b887f8241d854a360
         </Grid>
 
       </Grid>

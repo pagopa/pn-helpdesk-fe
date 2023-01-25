@@ -16,6 +16,12 @@ const tenderSlice = createSlice({
   initialState,
   reducers : {
     resetState: () => initialState,
+    addSelected: (state, action) => {
+      state.selected = action.payload
+    },
+    removeSelected: (state, action) => {
+      state.selected = {} as TenderDTO
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getTenders.pending, (state, action) => {
