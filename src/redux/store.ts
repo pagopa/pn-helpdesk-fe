@@ -2,12 +2,18 @@ import { configureStore } from "@reduxjs/toolkit";
 import snackbarReducer from "./snackbarSlice";
 import responseReducer from "./responseSlice";
 import spinnerReducer from "./spinnerSlice";
+import tenderSlice from "./tender/reducers";
+import formTenderSlice from "./formTender/reducers";
+import uploadingDownloadingSlice from "./uploading/reducers";
 
 export const store = configureStore({
   reducer: {
     response: responseReducer,
     snackbar: snackbarReducer,
     spinner: spinnerReducer,
+    tender: tenderSlice.reducer,
+    tenderForm: formTenderSlice.reducer,
+    uploadAndDownload: uploadingDownloadingSlice.reducer,
   },
 });
 
