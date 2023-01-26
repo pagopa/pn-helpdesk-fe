@@ -1,104 +1,98 @@
 import MainLayout from "../mainLayout/MainLayout";
-import React from "react";
-import {Box,Card, Container, Grid, Typography, Chip} from "@mui/material";
+import React, {useCallback, useEffect, useState} from "react";
+import {Card, Container, Grid, Typography, Stack} from "@mui/material";
+import {useAppDispatch, useAppSelector} from "../../redux/hook";
+import {DataInfo} from "../../components/dataInfo/DataInfo";
+import {tenderRowsInfo} from "../../components/dataInfo/rows";
+import {BreadcrumbCustom} from "../../components/breadcrumb/BreadcrumbCustom";
+import {Navigate} from "react-router-dom";
+import {GET_TENDER} from "../../navigation/router.const";
+import {DeliveryDriverDto} from "../../generated";
+import {ModelType, PaginationDataGrid} from "../../components/paginationGrid";
+import {FilterRequest} from "../../model";
+import {getAllDrivers} from "../../redux/deliveriesDrivers/actions";
+
 
 export function TenderDetailPage({email}:any) {
 
-    return <MainLayout email={email}>
-        <Container>
-            <Grid container direction="row" rowSpacing={3}>
-                <Grid item container>
-                    <Box>
-                        <Typography variant="h4" color="text.primary">
-                           Nome gara
-                        </Typography>
-                    </Box>
+  const tenderState = useAppSelector(state => state.tender);
+  const deliveries = useAppSelector(state => state.deliveries);
+  const dispatch = useAppDispatch();
 
-                </Grid>
-                <Grid item container direction="row" justifyContent="space-between">
-                    <Card
-                        elevation={24}
-                        sx={{
-                        width: 1,
-                            padding: "2rem",
-                            boxShadow: "0px 3px 3px -2px ",
-                            backgroundColor: "background.paper",
-                        }}
-                        >
-                        <Grid item container>
-                            <Typography variant="h6">
-                                Informazioni
-                            </Typography>
-                        </Grid>
-                        <Grid item container width="1"  >
-                            <Grid item container direction="row" width="1"  >
-                                <Grid item width="50%" >
-                                    <Typography>
-                                        Identificativo
-                                    </Typography>
-                                </Grid>
-                                <Grid item width="50%"><Typography>
-                                    Gara 2023
-                                </Typography></Grid>
-                            </Grid>
-                            <Grid item container direction="row" >
-                                <Grid item width="50%" >
-                                    <Typography>
-                                        Data inizio
-                                    </Typography>
-                                </Grid>
-                                <Grid item width="50%">
-                                    <Typography>25-01-2023</Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid item container direction="row" >
-                                <Grid item width="50%" >
-                                    <Typography>
-                                       Data fine
-                                    </Typography>
-                                </Grid>
-                                <Grid item width="50%"><Typography>
-                                    25-01-2023
-                                </Typography></Grid>
-                            </Grid>
-                            <Grid item container direction="row" >
-                                <Grid item width="50%" >
-                                    <Typography>
-                                        Stato
-                                    </Typography>
-                                </Grid>
-                                <Grid item width="50%">
-                                    <Chip label="IN CORSO"/>
-                                </Grid>
-                            </Grid>
+  const [pagination, setPagination] = useState<FilterRequest>({
+    tenderCode: tenderState.selected?.code,
+    page: 1,
+    tot: 25
+  })
 
-                        </Grid>
-                    </Card>
+  const fetchDeliveries = useCallback(() => {
+    if(pagination.tenderCode && !deliveries.loading){
+      dispatch(getAllDrivers(pagination));
+    }
+  }, [pagination])
 
 
+  useEffect(() => {
+    fetchDeliveries()
+  }, [fetchDeliveries])
 
-                </Grid>
-                <Grid item container direction="row" justifyContent="space-between">
-                    <Card
-                        elevation={24}
-                        sx={{
-                        width: 1,
-                            padding: "2rem",
-                            boxShadow: "0px 3px 3px -2px ",
-                            backgroundColor: "background.paper",
-                        }}>
-                        <Grid item container>
-                            <Box>
-                                <Typography variant="h4" color="text.primary">
-                                    Dettaglio gara
-                                </Typography>
-                            </Box>
-                        </Grid>
-                    </Card>
-                </Grid>
+  if (!tenderState.selected || !tenderState.selected?.code){
+    return <Navigate to={GET_TENDER}/>
+  }
+
+  return <MainLayout email={email}>
+    <Container>
+      <Grid container direction="row" rowSpacing={3}>
+        <Grid item container>
+          <BreadcrumbCustom/>
+        </Grid>
+        <Grid item container>
+          <Typography variant="h4" color="text.primary">
+            {tenderState.selected?.name}
+          </Typography>
+        </Grid>
+        <Grid item container>
+          <Card
+            elevation={24}
+            sx={{
+              width: 1,
+              padding: "1rem 2rem",
+              boxShadow: "0px 3px 3px -2px ",
+              backgroundColor: "background.paper",
+            }}>
+            <Stack sx={{width: 1}} spacing={2}>
+              <Grid item container>
+                <Typography variant="h5">
+                  Informazioni
+                </Typography>
+              </Grid>
+              <DataInfo data={tenderState.selected} rows={tenderRowsInfo}/>
+            </Stack>
+          </Card>
+        </Grid>
+        <Grid item container direction="row" justifyContent="space-between">
+          <Card
+            elevation={24}
+            sx={{
+              width: 1,
+              padding: "1rem 2rem",
+              boxShadow: "0px 3px 3px -2px ",
+              backgroundColor: "background.paper",
+            }}>
+            <Grid item container>
+              <Typography variant="h5">
+                Recapitisti
+              </Typography>
             </Grid>
+            <PaginationDataGrid <DeliveryDriverDto> data={deliveries.allData}
+                                            type={ModelType.DELIVERY_DRIVER}
+                                            loading={tenderState.loading}
+                                            rowId={row => row.uniqueCode}/>
+          </Card>
+        </Grid>
+      </Grid>
 
-        </Container>
-    </MainLayout>
+    </Container>
+  </MainLayout>
 
 }

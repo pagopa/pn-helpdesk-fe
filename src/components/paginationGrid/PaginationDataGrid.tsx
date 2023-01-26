@@ -14,15 +14,14 @@ interface PaginationProps<T> {
   rowId ?: (row: GridValidRowModel) => any
   onPageChange?: (page:number) => void
   onPageSizeChange?: (pageSize:number) => void
-  onClickItem?: (id: string | number) => void
+  onClickItem?: (item: T) => void
 }
 
 
 export function PaginationDataGrid<T>(props:PaginationProps<T>) {
 
   const rowClickHandler = (rowData: GridRowParams) => {
-    console.log(rowData);
-    props.onClickItem?.(rowData.id);
+    props.onClickItem?.(rowData.row as T);
   }
 
   return <>
