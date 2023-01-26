@@ -11,7 +11,7 @@
     "@mui/lab": "^5.0.0-alpha.81",
     "@mui/material": "^5.6.4",
     "@mui/x-data-grid": "^5.17.8",
-    "@pagopa/mui-italia": "^0.6.17",
+    "@pagopa/mui-italia": "^0.8.12",
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
