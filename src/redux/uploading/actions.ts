@@ -10,7 +10,8 @@ export enum DOWNLOAD_ACTIONS {
 interface DownloadResponse {
   url ?:string,
   uid ?: string,
-  retry ?: number
+  retry ?: number,
+  loading: boolean,
 }
 
 interface DownloadRequest {
@@ -31,24 +32,27 @@ export const getFile = createAsyncThunk<
     try {
       const response = await apiPaperChannel().downloadTenderFile(request.tenderCode, request.uid);
       if (response?.data?.status){
-        if (response.data.status == "UPLOADING") {
+        if (response.data.status === "UPLOADING") {
           return {
             uid: response.data?.uuid,
             retry: response.data?.retryAfter,
             url: undefined,
+            loading: true
           }
         } else if (response.data.status === "UPLOADED"){
           return {
             uid: response.data?.uuid,
             url: response.data?.url,
-            retry: undefined
+            retry: undefined,
+            loading:false
           }
         }
       }
       return {
         retry: undefined,
         uid: undefined,
-        url: undefined
+        url: undefined,
+        loading:false
       };
     } catch (e){
       return thunkAPI.rejectWithValue(e);

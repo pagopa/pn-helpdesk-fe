@@ -4,7 +4,22 @@ import {resetState} from "../../redux/dialog/reducers";
 import {useNavigate} from "react-router-dom";
 import {clearFormState} from "../../redux/formTender/reducers";
 import {TYPE_DIALOG} from "./index";
+import CostsBox from "../forms/costs/CostsForm";
 
+function DialogCostForm(){
+  return <>
+  <DialogTitle>Costo</DialogTitle>
+  <DialogContent>
+    <CostsBox fsu={false}/>
+  </DialogContent>
+  <DialogActions>
+    <Button>Annulla</Button>
+    <Button autoFocus>
+      Salva
+    </Button>
+  </DialogActions>
+  </>
+}
 
 function AlertCancelFormTender() {
   const dispatch = useAppDispatch();
@@ -35,6 +50,8 @@ export const correctDialogContent = (type: TYPE_DIALOG) => {
   switch (type){
     case TYPE_DIALOG.ALERT_CANCEL_FORM_TENDER:
       return <AlertCancelFormTender/>
+    case TYPE_DIALOG.DIALOG_COST_FORM:
+      return <DialogCostForm/>
     default:
       return null;
   }

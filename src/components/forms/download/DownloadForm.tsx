@@ -3,7 +3,7 @@ import {
   Typography,
   Grid, Button, Box, LinearProgress,
 } from "@mui/material";
-import React from "react";
+import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hook";
 import {getFile} from "../../../redux/uploading/actions";
 
@@ -16,9 +16,23 @@ export default function DownloadBox(props: DownloadBoxProps) {
   const dispatch = useAppDispatch();
 
   const handleOnClickDownload = () => {
-    dispatch(getFile({uid: downloadState.download.uid, tenderCode: props.tenderCode}));
+    dispatch(getFile({uid: undefined, tenderCode: props.tenderCode}));
   }
 
+  useEffect(() => {
+    retrieveAsync();
+
+  }, [downloadState.download]);
+
+  const retrieveAsync = async () => {
+    const download = downloadState.download;
+    if (download.uid && download.retry && download.loading){
+      console.log("new attempt")
+      setTimeout(() => dispatch(getFile({uid: download.uid, tenderCode: props.tenderCode})), 1000)
+    } else {
+      console.log("Attempt ended");
+    }
+  }
 
   return (
     <Card

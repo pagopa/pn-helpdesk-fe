@@ -14,6 +14,8 @@ import {fieldsDriver} from "./fields";
 import {Add} from "@mui/icons-material";
 import {DeliveryDriver} from "../../../model";
 import {addedFSU, backStep} from "../../../redux/formTender/reducers";
+import {showDialog} from "../../../redux/dialog/reducers";
+import {TYPE_DIALOG} from "../../dialogs";
 
 const initialValue = (data:DeliveryDriver):{ [x: string]: any } => (
   {
@@ -136,7 +138,9 @@ export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
 
               </Grid>
               <Grid item>
-                <Button variant={"outlined"} startIcon={<Add />}>Aggiungi</Button>
+                <Button variant={"outlined"} onClick={() => {
+                  dispatch(showDialog({type: TYPE_DIALOG.DIALOG_COST_FORM}))
+                }} startIcon={<Add />}>Aggiungi</Button>
               </Grid>
             </Grid>
           </Card>

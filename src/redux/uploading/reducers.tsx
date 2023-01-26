@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {getFile, getPresignedUrl} from "./actions";
 
 interface DownloadingState {
@@ -44,7 +44,7 @@ const uploadingDownloadingSlice = createSlice({
       state.download.retry = action.payload.retry;
       state.download.url = action.payload.url;
       state.download.uid = action.payload.uid;
-      state.download.loading = !!(action.payload.retry && action.payload.uid);
+      state.download.loading = action.payload.loading;
     })
     builder.addCase(getFile.rejected, (state, action) => {
       console.error(action.payload);
