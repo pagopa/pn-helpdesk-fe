@@ -39,13 +39,14 @@ export default function UploadBox() {
             <Grid container spacing={1}>
               <Grid item container xs={12} sm={6}>
                 <FormLabel
-                  id="idLabelDownload"
+                  id="idLabelUpload"
                   sx={{fontFamily: "Monospace", fontWeight: "Normal", marginTop: "2rem"}} >
                   Carica file xlsx dei recapitisti
                 </FormLabel>
               </Grid>
               <Grid item container xs={12} sm={6}>
                 <SingleFileInput
+                  id="idSingleFileInput"
                   label="Documento (richiesto)"
                   value={file}
                   accept={["image/png"]}
