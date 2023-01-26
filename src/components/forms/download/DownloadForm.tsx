@@ -1,48 +1,56 @@
 import {
-  Box,
   Card,
-  CardContent,
   Typography,
-  CardActions,
-  TextField, Grid, FormLabel, Button, CircularProgress,
-} from "@material-ui/core";
+  Grid, FormLabel, Button, CircularProgress,
+} from "@mui/material";
 import React from "react";
+
 
 export default function DownloadBox() {
   return (
-    <Box>
-      <Card>
-        <CardContent>
-          <Typography
-            style={{fontFamily: "Sans-serif"}}
-            variant="h4"
-            component="div">
-            Download
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <FormLabel
-                id="idLabelDownload"
-                style={{fontFamily: "Monospace"}}>
-                Template/recapitisti attuali
-              </FormLabel>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Button
-                id="idButtonDownload"
-                variant="contained"
-                size="medium"
-                color="primary">
+    <Grid item container rowSpacing={2}>
+      <Grid item container>
+        <Card
+          elevation={24}
+          sx={{
+            width: 1,
+            padding: "1rem 2rem",
+            boxShadow: "0px 3px 3px -2px ",
+            backgroundColor: "background.paper",
+          }}
+        >
+          <Grid container rowSpacing={2}>
+            <Grid item>
+              <Typography
+                sx={{fontFamily: "Sans-serif"}}
+                variant="h4"
+                component="div">
                 Download
-              </Button>
-              {/*<CircularProgress />*/}
+              </Typography>
+            </Grid>
+            <Grid container spacing={1}>
+              <Grid item container xs={12} sm={6}>
+                <FormLabel
+                  id="idLabelDownload"
+                  sx={{fontFamily: "Monospace", fontWeight: "Normal", marginTop: "2rem"}} >
+                  Template/recapitisti attuali
+                </FormLabel>
+              </Grid>
+              <Grid item container xs={12} sm={6}>
+                <Button
+                  id="idButtonDownload"
+                  variant="contained"
+                  size="medium"
+                  color="primary"
+                  sx={{marginTop: "2rem"}} >
+                  Download
+                </Button>
+                {/*<CircularProgress />*/}
+              </Grid>
             </Grid>
           </Grid>
-        </CardActions>
-      </Card>
-    </Box>
-
+        </Card>
+      </Grid>
+    </Grid>
   );
 };
