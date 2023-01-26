@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import SnackbarComponent from "./components/snackbar/SnackbarComponent";
 import Router from "./navigation/Router";
 import { opened } from "./redux/spinnerSlice";
+import {CustomDialog} from "./components/dialogs";
 
 function App() {
   const openedSpinner = useSelector(opened);
@@ -19,6 +20,7 @@ function App() {
         </Backdrop>
         <Router />
         <SnackbarComponent />
+        <CustomDialog/>
       </BrowserRouter>
     </div>
   );

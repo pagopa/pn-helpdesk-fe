@@ -6,6 +6,7 @@ import tenderSlice from "./tender/reducers";
 import formTenderSlice from "./formTender/reducers";
 import uploadingDownloadingSlice from "./uploading/reducers";
 import deliveriesDriverSlice from "./deliveriesDrivers/reducers";
+import {dialogSlice} from "./dialog/reducers";
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     tender: tenderSlice.reducer,
     tenderForm: formTenderSlice.reducer,
     uploadAndDownload: uploadingDownloadingSlice.reducer,
-    deliveries: deliveriesDriverSlice.reducer
+    deliveries: deliveriesDriverSlice.reducer,
+    dialog: dialogSlice.reducer
   },
 });
 

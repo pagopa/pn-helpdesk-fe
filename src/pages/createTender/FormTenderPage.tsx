@@ -19,13 +19,13 @@ const stepGara:StepView = {
 const stepFSU:StepView = {
   name: "FSU",
   key: "fsu",
-  render: () => <DeliveryDriverFormBox fsu={true}/>
+  render: () => <DeliveryDriverFormBox key={"FSU"} fsu={true}/>
 }
 
 const stepDeliveries:StepView = {
   name: "Recapitisti",
   key: "deliveries",
-  render: () => <h1>DELIVERIES</h1>
+  render: () => <DeliveryDriverFormBox key={"DRIVERS"} fsu={false}/>
 }
 
 const stepRiepilogo:StepView = {
