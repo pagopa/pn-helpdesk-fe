@@ -5,6 +5,7 @@ import spinnerReducer from "./spinnerSlice";
 import tenderSlice from "./tender/reducers";
 import formTenderSlice from "./formTender/reducers";
 import uploadingDownloadingSlice from "./uploading/reducers";
+import deliveriesDriverSlice from "./deliveriesDrivers/reducers";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     tender: tenderSlice.reducer,
     tenderForm: formTenderSlice.reducer,
     uploadAndDownload: uploadingDownloadingSlice.reducer,
+    deliveries: deliveriesDriverSlice.reducer
   },
 });
 

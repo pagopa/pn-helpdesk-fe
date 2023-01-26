@@ -43,35 +43,35 @@ export function FormTenderPage({email}:any) {
 
   return <MainLayout email={email}>
     <Container>
-      <BreadcrumbCustom/>
-        <Box>
-            <Typography variant="h4" color="text.primary">
-               Ipse Dixit
-            </Typography>
-        </Box>
-      <Grid container direction="row" rowSpacing={3}>
+
+      <Grid container direction="row" rowSpacing={2}>
         <Grid item container>
-          <Box>
+          <Grid>
+            <BreadcrumbCustom/>
+          </Grid>
+
+          <Grid item container>
             <Typography variant="h4" color="text.primary">
               Nuova Gara
             </Typography>
-          </Box>
+          </Grid>
+        </Grid>
+
+        <Grid item container>
+          <Stepper activeStep={tenderFormStepper.activeKey} alternativeLabel sx={{width: "100%"}} >
+            {
+              steps.map((stepView) => (
+                <Step key={stepView.key}>
+                  <StepLabel>{stepView.name}</StepLabel>
+                </Step>
+              ))
+            }
+          </Stepper>
         </Grid>
         <Grid item container>
-          <Stack spacing={2} sx={{width: "100%"}}>
-            <Stepper activeStep={tenderFormStepper.activeKey} alternativeLabel sx={{width: "100%"}} >
-              {
-                steps.map((stepView) => (
-                  <Step key={stepView.key}>
-                    <StepLabel>{stepView.name}</StepLabel>
-                  </Step>
-                ))
-              }
-            </Stepper>
-            {
-              steps[tenderFormStepper.activeKey].render()
-            }
-          </Stack>
+          {
+            steps[tenderFormStepper.activeKey].render()
+          }
         </Grid>
 
       </Grid>

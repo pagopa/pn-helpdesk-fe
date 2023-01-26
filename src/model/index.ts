@@ -1,6 +1,7 @@
 import React from "react";
 
 export type FilterRequest = {
+  tenderCode ?: string,
   page: number,
   tot: number,
 

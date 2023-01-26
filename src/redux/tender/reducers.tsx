@@ -38,4 +38,6 @@ const tenderSlice = createSlice({
   }
 })
 
+export const {addSelected} = tenderSlice.actions
+
 export default tenderSlice;
