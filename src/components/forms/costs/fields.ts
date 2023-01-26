@@ -3,7 +3,6 @@ import {regex} from "../../../helpers/validations";
 import {errorMessages} from "../../../helpers/messagesConstants";
 
 
-
 export const fieldsCosts: { [key:string]: FieldsProps } = {
   "selectTypeCost": {
     name: "typeCost",
@@ -11,14 +10,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     label: "Seleziona il tipo di costo *",
     hidden: false,
     size: "50%",
-    // inputProps: {width:"webkit-fill-available"},
-    // rules: {
-    //   pattern: {
-    //     value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
-    //     message: errorMessages.INCORRECT,
-    //   },
-    //   required: errorMessages.REQUIRED,
-    // },
     required: true,
   },
   "inputBaseCost": {
@@ -47,14 +38,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     label: "Seleziona Cap",
     hidden: false,
     size: "50%",
-    // inputProps: {width:"webkit-fill-available"},
-    // rules: {
-    //   pattern: {
-    //     value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
-    //     message: errorMessages.INCORRECT,
-    //   },
-    //   required: errorMessages.REQUIRED,
-    // },
     required: true,
   },
   "inputAdditionalCost": {
@@ -83,14 +66,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     label: "Seleziona Zona",
     hidden: false,
     size: "50%",
-    // inputProps: {width:"webkit-fill-available"},
-    // rules: {
-    //   pattern: {
-    //     value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
-    //     message: errorMessages.INCORRECT,
-    //   },
-    //   required: errorMessages.REQUIRED,
-    // },
     required: true,
   },
   "selectProductType": {
@@ -99,23 +74,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     label: "Seleziona la tipologia di prodotto",
     hidden: false,
     size: "100%",
-    // inputProps: {width:"webkit-fill-available"},
-    // inputProps: { maxLength: 11 },
-    // rules: {
-    //   pattern: {
-    //     value: regex.TAX_ID_PATTERN,
-    //     message: errorMessages.INCORRECT,
-    //   },
-    //   minLength: {
-    //     value: 11,
-    //     message: errorMessages.INCORRECT,
-    //   },
-    //   maxLength: {
-    //     value: 11,
-    //     message: errorMessages.INCORRECT,
-    //   },
-    //   required: errorMessages.REQUIRED,
-    // },
     required: true,
   },
 
