@@ -56,8 +56,7 @@ export function TenderDetailPage({email}:any) {
             elevation={24}
             sx={{
               width: 1,
-              padding: "1rem 2rem",
-              boxShadow: "0px 3px 3px -2px ",
+              padding: "2rem",
               backgroundColor: "background.paper",
             }}>
             <Stack sx={{width: 1}} spacing={2}>
@@ -66,10 +65,67 @@ export function TenderDetailPage({email}:any) {
                   Informazioni
                 </Typography>
               </Grid>
-              <DataInfo data={tenderState.selected} rows={tenderRowsInfo}/>
+             </Grid>
+                        <Grid item container width="1"  >
+                            <Grid item container direction="row" width="1"  >
+                                <Grid item width="50%" >
+                                    <Typography>
+                                        Identificativo
+                                    </Typography>
+                                </Grid>
+                                <Grid item width="50%"><Typography>
+                                   
+                                </Typography></Grid>
+                            </Grid>
+                            <Grid item container direction="row" >
+                                <Grid item size="50%">
+                                    <Typography>
+                                        Data inizio
+                                    </Typography>
+                                </Grid>
+                                <Grid item size="50%"><Typography>
+
+                                </Typography></Grid>
+                            </Grid>
+                            <Grid item container direction="row" >
+                                <Grid item size="50%">
+                                    <Typography>
+                                       Data fine
+                                    </Typography>
+                                </Grid>
+                                <Grid item size="50%"><Typography>
+
+                                </Typography></Grid>
+                            </Grid>
+                            <Grid item container direction="row" >
+                                <Grid item size="50%">
+                                    <Typography>
+                                        Stato
+                                    </Typography>
+                                </Grid>
+                                <Grid item size="50%">
+
+                                </Grid>
+                            </Grid>
             </Stack>
           </Card>
         </Grid>
+          <Grid item container direction="row" justifyContent="space-between">
+              <Card
+                  elevation={24}
+                  sx={{
+                  width: 1,
+                      padding: "1rem 2rem",
+                      boxShadow: "0px 3px 3px -2px ",
+                      backgroundColor: "background.paper",
+                  }}>
+                  <Grid item container>
+                      <Typography variant="h5">
+                          Recapitisti
+                      </Typography>
+                  </Grid>
+              </Card>
+          </Grid>
         <Grid item container direction="row" justifyContent="space-between">
           <Card
             elevation={24}

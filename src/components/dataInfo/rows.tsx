@@ -22,6 +22,21 @@ export const tenderRowsInfo: RowDataInfo[] = [
     id: "status",
     label: "Stato",
     render: (data) => <Chip label={data?.status}/>
+  },
+  {
+      id: "pIva",
+      label: "Partita iva",
+      render: (data) => <Chip label={data?.pIva}/>
+  },
+  {
+      id: "zone",
+      label: "Zone/CAP Prodotto",
+      render: (data) => <Chip label={data?.zone}/>
+  },
+  {
+      id: "fsu",
+      label: "FSU",
+      render: (data) => <Chip label={data?.fsu}/>
   }
 
 ]
