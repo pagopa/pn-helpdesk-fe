@@ -6,22 +6,30 @@ import {
   Button,
 } from "@mui/material";
 import React from "react";
-import {useAppDispatch} from "../../../redux/hook";
+import {useAppDispatch, useAppSelector} from "../../../redux/hook";
 import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 
 import {fieldsDriver} from "./fields";
 import {Add} from "@mui/icons-material";
-import CostsBox from "../costs/CostsForm";
+import {DeliveryDriver} from "../../../model";
+import {addedFSU, backStep} from "../../../redux/formTender/reducers";
 
-const defaultFormValues: { [key: string]: any } = {
-  "dateInterval": [new Date(), new Date()]
-};
+const initialValue = (data:DeliveryDriver):{ [x: string]: any } => (
+  {
+    ...data
+  }
+)
 
-export default function DeliveryDriverFormBox({fsu: boolean}:any) {
+interface PropsDeliveryBox{
+  fsu: boolean
+}
 
-  const fields = ["taxIdDriver", "businessNameDriver", "denominationDriver",
-    "registeredOfficeDriver", "fiscalCodeDriver", "pecDriver", "phoneNumberDriver", "uniqueCodeDriver"];
+export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
+
+  const fields = ["taxId", "businessName", "denomination",
+    "registeredOffice", "fiscalCode", "pec", "phoneNumber", "uniqueCode"];
+  const formState = useAppSelector(state => state.tenderForm);
   const dispatch = useAppDispatch();
 
   const {
@@ -29,13 +37,17 @@ export default function DeliveryDriverFormBox({fsu: boolean}:any) {
     control,
     formState: { errors },
   } = useForm({
-    defaultValues: defaultFormValues,
+    defaultValues: initialValue((props.fsu) ? formState.formFsu: {} as DeliveryDriver),
     mode: "onSubmit",
     reValidateMode: "onSubmit",
   });
 
   const onSubmit = async (data: { [x: string]: any }) => {
-    console.log(data);
+    const driver = {
+      ...data,
+      fsu: props.fsu
+    } as DeliveryDriver
+    dispatch(addedFSU({data:driver}));
   }
 
   return (
@@ -101,7 +113,6 @@ export default function DeliveryDriverFormBox({fsu: boolean}:any) {
             </Grid>
           </Card>
         </Grid>
-        <CostsBox />
         <Grid item container>
           <Card
             elevation={24}
@@ -132,7 +143,7 @@ export default function DeliveryDriverFormBox({fsu: boolean}:any) {
         </Grid>
 
         <Grid item container direction="row" justifyContent="space-between">
-          <Button variant={"outlined"}>Indietro</Button>
+          <Button onClick={() => dispatch(backStep({}))} variant={"outlined"}>Torna a {(props.fsu) ? "Gara" : "FSU"}</Button>
           <Button variant={"contained"} type={"submit"} >Avanti</Button>
         </Grid>
       </Grid>

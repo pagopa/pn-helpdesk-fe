@@ -4,24 +4,30 @@ import {
   Typography,
   Grid, Stack, Button,
 } from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 import {FormHelperText} from "@mui/material";
 import {NoteAdd, Reply} from "@mui/icons-material";
-import {useAppDispatch} from "../../../redux/hook";
+import {useAppDispatch, useAppSelector} from "../../../redux/hook";
 import {Tender} from "../../../model";
 import {addedTender} from "../../../redux/formTender/reducers";
 import {format} from "date-fns";
 import {fieldsTender} from "./fields";
+import {showDialog} from "../../../redux/dialog/reducers";
+import {TYPE_DIALOG} from "../../dialogs";
 
 
 
-const defaultFormValues: { [key: string]: any } = {
-  "dateInterval": [new Date(), new Date()]
-};
+const initialValue = (data:Tender):{ [x: string]: any } => (
+  {
+    description: data?.description,
+    dateInterval:[(data?.startDate) ? data?.startDate : new Date(), (data?.endDate) ? data?.endDate: new Date()]
+  }
+)
 
 export default function TenderFormBox() {
-  const fields = ["nameTender", "dateInterval"];
+  const fields = ["description", "dateInterval"];
+  const formState = useAppSelector(state => state.tenderForm);
   const dispatch = useAppDispatch();
 
   const {
@@ -29,14 +35,12 @@ export default function TenderFormBox() {
     control,
     formState: { errors },
   } = useForm({
-    defaultValues: defaultFormValues,
+    defaultValues: initialValue(formState.formTender),
     mode: "onSubmit",
     reValidateMode: "onSubmit",
   });
 
   const onSubmit = async (data: { [x: string]: any }) => {
-
-
     dispatch(addedTender({data: tenderMap(data), key: 1}))
   }
 
@@ -44,12 +48,16 @@ export default function TenderFormBox() {
     dispatch(addedTender({data: tenderMap(data), key: 2}))
   }
 
+  const handleCancelForm = () => {
+    dispatch(showDialog({type:TYPE_DIALOG.ALERT_CANCEL_FORM_TENDER}));
+  }
+
   const tenderMap = (data: { [x: string]: any }) => {
     const fromDate = (data["dateInterval"][0] && data["dateInterval"][0] instanceof Date) ? format( data["dateInterval"][0], "yyyy-MM-dd'T'HH:mm:ss.sss'Z'") : data["dateInterval"][0];
     const onDate = (data["dateInterval"][1] && data["dateInterval"][1] instanceof Date) ? format( data["dateInterval"][1], "yyyy-MM-dd'T'HH:mm:ss.sss'Z'") : data["dateInterval"][1];
 
     const tender: Tender = {
-      description: data["nameTender"],
+      description: data["description"],
       startDate: fromDate,
       endDate: onDate,
     }
@@ -109,7 +117,7 @@ export default function TenderFormBox() {
         </Card>
 
         <Grid item container direction="row" justifyContent="space-between">
-          <Button variant={"outlined"} startIcon={<Reply/>}>Annulla</Button>
+          <Button onClick={handleCancelForm} variant={"outlined"} startIcon={<Reply/>}>Annulla</Button>
           <Stack direction={"row"} spacing={3}>
             <Button variant={"outlined"} startIcon={<NoteAdd/>} onClick={handleSubmit(onSubmitWithUpload)}>Carica</Button>
             <Button variant={"contained"} type={"submit"} >Avanti</Button>

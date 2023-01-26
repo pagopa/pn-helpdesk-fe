@@ -5,7 +5,7 @@ import {errorMessages} from "../../../helpers/messagesConstants";
 
 
 export const fieldsDriver: { [key:string]: FieldsProps } = {
-  "businessNameDriver": {
+  "businessName": {
     name: "businessName",
     componentType: "textfield",
     label: "Ragione Sociale",
@@ -20,7 +20,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "denominationDriver": {
+  "denomination": {
     name: "denomination",
     componentType: "textfield",
     label: "Denominazione",
@@ -35,7 +35,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "registeredOfficeDriver": {
+  "registeredOffice": {
     name: "registeredOffice",
     componentType: "textfield",
     label: "Sede legale",
@@ -50,7 +50,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "fiscalCodeDriver": {
+  "fiscalCode": {
     name: "fiscalCode",
     componentType: "textfield",
     label: "Codice Fiscale",
@@ -74,7 +74,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "taxIdDriver": {
+  "taxId": {
     name: "taxId",
     componentType: "textfield",
     label: "Partita Iva",
@@ -98,8 +98,8 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "pecDriver": {
-    name: "taxId",
+  "pec": {
+    name: "pec",
     componentType: "textfield",
     label: "Pec",
     hidden: false,
@@ -107,7 +107,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     inputProps: { maxLength: 100 },
     rules: {
       pattern: {
-        value: regex.TAX_ID_PATTERN,
+        value: regex.EMAIL,
         message: errorMessages.INCORRECT,
       },
       minLength: {
@@ -122,48 +122,48 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "phoneNumberDriver": {
+  "phoneNumber": {
     name: "phoneNumber",
     componentType: "textfield",
     label: "Numero telefonico",
     hidden: false,
     size: "50%",
-    inputProps: { maxLength: 100 },
+    inputProps: { maxLength: 10 },
     rules: {
       pattern: {
-        value: regex.TAX_ID_PATTERN,
+        value: regex.PHONE_NUMBER_PATTERN,
         message: errorMessages.INCORRECT,
       },
       minLength: {
-        value: 5,
+        value: 10,
         message: errorMessages.INCORRECT,
       },
       maxLength: {
-        value: 100,
+        value: 10,
         message: errorMessages.INCORRECT,
       },
       required: errorMessages.REQUIRED,
     },
     required: true,
   },
-  "uniqueCodeDriver": {
+  "uniqueCode": {
     name: "uniqueCode",
     componentType: "textfield",
     label: "Codice univoco",
     hidden: false,
     size: "50%",
-    inputProps: { maxLength: 100 },
+    inputProps: {minLength:6, maxLength: 7 },
     rules: {
       pattern: {
-        value: regex.TAX_ID_PATTERN,
+        value: regex.UNIQUE_CODE_PATTERN,
         message: errorMessages.INCORRECT,
       },
       minLength: {
-        value: 5,
+        value: 6,
         message: errorMessages.INCORRECT,
       },
       maxLength: {
-        value: 100,
+        value: 7,
         message: errorMessages.INCORRECT,
       },
       required: errorMessages.REQUIRED,
