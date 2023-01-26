@@ -7,6 +7,7 @@ import TenderFormBox from "../../components/forms/tender/TenderForm";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {StepView} from "../../model";
 import DeliveryDriverFormBox from "../../components/forms/deliveryDriver/DeliveryDriverForm";
+import {StepDeliveriesDrivers} from "../../components/steps/StepDeliveriesDrivers";
 
 
 
@@ -25,7 +26,7 @@ const stepFSU:StepView = {
 const stepDeliveries:StepView = {
   name: "Recapitisti",
   key: "deliveries",
-  render: () => <DeliveryDriverFormBox key={"DRIVERS"} fsu={false}/>
+  render: () => <StepDeliveriesDrivers/>
 }
 
 const stepRiepilogo:StepView = {

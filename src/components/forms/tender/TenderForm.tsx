@@ -41,11 +41,11 @@ export default function TenderFormBox() {
   });
 
   const onSubmit = async (data: { [x: string]: any }) => {
-    dispatch(addedTender({data: tenderMap(data), key: 1}))
+    dispatch(addedTender({data: tenderMap(data), key: 1, fromUpload: false}))
   }
 
   const onSubmitWithUpload = async (data: { [x: string]: any }) => {
-    dispatch(addedTender({data: tenderMap(data), key: 2}))
+    dispatch(addedTender({data: tenderMap(data), key: 2, fromUpload: true}))
   }
 
   const handleCancelForm = () => {

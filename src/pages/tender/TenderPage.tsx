@@ -41,7 +41,6 @@ export default function TenderPage({ email }: any){
   }
 
   const handleOnPageSizeChange = (pageSize: number) => {
-    console.log("Page size change : ", pageSize);
     setPagination(prev => ({
       ...prev,
       page: 1,

@@ -40,7 +40,7 @@
   },
   "scripts": {
     "generate:api": "/docs/openapi/swagger.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client && gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/pn-paper-channel/feature/pn-paper-channel/docs/openapi/pn-paper-channel-v1.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client",
-    "generate:api-paper-channel": "openapi-generator-cli generate -g typescript-axios -i https://raw.githubusercontent.com/pagopa/pn-paper-channel/feature/pn-paper-channel/docs/openapi/pn-paper-channel-v1.yaml -o ./src/generated --additional-properties=supportsES6=true",
+    "generate:api-paper-channel": "openapi-generator-cli generate -g typescript-axios -i https://raw.githubusercontent.com/pagopa/pn-paper-channel/develop/docs/openapi/pn-paper-channel-v1.yaml -o ./src/generated --additional-properties=supportsES6=true",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
