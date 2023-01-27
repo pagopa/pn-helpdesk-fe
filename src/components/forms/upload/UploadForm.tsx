@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Card, Grid, Typography} from "@mui/material";
+import {Card, Grid, Stack, Typography} from "@mui/material";
 import SingleFileInput from "@pagopa/mui-italia/dist/components/SingleFileInput/SingleFileInput";
 import {useAppDispatch, useAppSelector} from "../../../redux/hook";
-import {getPresignedUrl} from "../../../redux/uploading/actions";
+import {getPresignedUrl, uploadFile} from "../../../redux/uploading/actions";
 import {resetStateUpload} from "../../../redux/uploading/reducers";
+import {UPLOAD_STATUS_ENUM} from "../../../model";
+
 
 
 
@@ -21,14 +23,41 @@ export default function UploadBox() {
   };
 
   useEffect(() => {
-    if (file && uploadState.upload.presignedUrl){
+    if (file && uploadState.upload.presignedUrl && uploadState.upload.status === UPLOAD_STATUS_ENUM.RETRIEVED_PRESIGNED_URL){
       console.log("presigned url retrieved")
-      // carico il file su S3 con presigned url
-    } else if (file && !uploadState.upload.presignedUrl && !uploadState.upload.loading && !uploadState.upload.error){
+      dispatch(uploadFile({
+        url:uploadState.upload.presignedUrl,
+        file: file
+      }))
+    } else if (file && uploadState.upload.status === UPLOAD_STATUS_ENUM.WAITING_FILE){
       console.log("Retrieve presigned url")
       dispatch(getPresignedUrl({}));
     }
   }, [file, uploadState.upload])
+
+
+  const statusDescription = () => {
+    switch (uploadState.upload.status){
+      case UPLOAD_STATUS_ENUM.RETRIEVING_PRESIGNED_URL:
+        return <Typography variant="body1">
+          In attesa dell'url di caricamento
+        </Typography>
+      case UPLOAD_STATUS_ENUM.UPLOADING_FILE_S3:
+        return <Typography variant="body1">
+          Caricamento file in corso
+        </Typography>
+      case UPLOAD_STATUS_ENUM.ERROR_PRESIGNED_URL:
+        return <Typography variant="body1" color={"red"}>
+          Errore con il recupero dell'url di caricamento
+        </Typography>
+      case UPLOAD_STATUS_ENUM.ERROR_UPLOADING_FILE_S3:
+        return <Typography variant="body1" color={"red"}>
+          Errore con il caricamento del file
+        </Typography>
+      default:
+        return null
+    }
+  }
 
   return (
     <Card elevation={24}
@@ -46,11 +75,18 @@ export default function UploadBox() {
         </Grid>
         <Grid container spacing={1}>
           <Grid item container xs={12} sm={6}>
-            <Typography variant="subtitle1">
-              Carica file xlsx dei recapitisti
-            </Typography>
+            <Stack direction={"column"} spacing={2}>
+              <Typography variant="subtitle1">
+                Carica file xlsx dei recapitisti
+              </Typography>
+              {
+                statusDescription()
+              }
+            </Stack>
+
           </Grid>
           <Grid item container xs={12} sm={6}>
+
             <SingleFileInput
               label="Documento (richiesto)"
               loading={uploadState.upload.loading}

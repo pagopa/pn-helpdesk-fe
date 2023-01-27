@@ -1,9 +1,10 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getFile, getPresignedUrl} from "./actions";
+import {getFile, getPresignedUrl, uploadFile} from "./actions";
+import {UPLOAD_STATUS_ENUM} from "../../model";
 
 interface DownloadingState {
   uid ?: string,
-  url ?: string
+  data ?: string
   loading: boolean
   retry ?: number
 }
@@ -12,6 +13,7 @@ interface UploadingState {
   presignedUrl ?: string
   uid ?: string
   loading: boolean
+  status: UPLOAD_STATUS_ENUM
   error?: string
 }
 
@@ -21,7 +23,8 @@ const initialState = {
   } as DownloadingState,
   upload: {
     loading: false,
-    error: undefined
+    error: undefined,
+    status: UPLOAD_STATUS_ENUM.WAITING_FILE
   } as UploadingState
 }
 
@@ -42,7 +45,7 @@ const uploadingDownloadingSlice = createSlice({
     });
     builder.addCase(getFile.fulfilled, (state, action) => {
       state.download.retry = action.payload.retry;
-      state.download.url = action.payload.url;
+      state.download.data = action.payload.data;
       state.download.uid = action.payload.uid;
       state.download.loading = action.payload.loading;
     })
@@ -53,16 +56,32 @@ const uploadingDownloadingSlice = createSlice({
 
     builder.addCase(getPresignedUrl.pending, (state, action) => {
       state.upload.loading = true
-      state.upload.error = undefined;
+      state.upload.status = UPLOAD_STATUS_ENUM.RETRIEVING_PRESIGNED_URL
     });
     builder.addCase(getPresignedUrl.fulfilled, (state, action) => {
       state.upload.presignedUrl = action.payload.url;
       state.upload.uid = action.payload.uid;
-    })
+      state.upload.status = UPLOAD_STATUS_ENUM.RETRIEVED_PRESIGNED_URL
+    });
     builder.addCase(getPresignedUrl.rejected, (state, action) => {
-      console.error(action.payload);
+      state.upload.status = UPLOAD_STATUS_ENUM.ERROR_PRESIGNED_URL
       state.upload.loading = false;
       state.upload.error = "Error";
+    });
+
+    builder.addCase(uploadFile.pending, (state, action) => {
+      state.upload.status = UPLOAD_STATUS_ENUM.UPLOADING_FILE_S3
+      state.upload.loading = true
+      state.upload.error = undefined;
+    });
+    builder.addCase(uploadFile.fulfilled, (state, action) => {
+      state.upload.status = UPLOAD_STATUS_ENUM.UPLOADED_FILE_S3
+      state.upload.loading = false
+    })
+    builder.addCase(uploadFile.rejected, (state, action) => {
+      state.upload.status = UPLOAD_STATUS_ENUM.ERROR_UPLOADING_FILE_S3
+      state.upload.loading = false;
+      state.upload.error = "Error with upload s3";
     })
   }
 })

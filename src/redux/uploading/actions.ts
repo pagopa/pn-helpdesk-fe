@@ -1,14 +1,16 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {apiPaperChannel} from "../../api/paperChannelApi";
+import {apiUpload} from "../../api/apiUpload";
 
 
 export enum DOWNLOAD_ACTIONS {
   GET_FILE = 'getFile',
-  GET_PRESIGNED_URL = 'getPresignedUrl'
+  GET_PRESIGNED_URL = 'getPresignedUrl',
+  UPLOAD_FILE = 'uploadFile'
 }
 
 interface DownloadResponse {
-  url ?:string,
+  data ?:string,
   uid ?: string,
   retry ?: number,
   loading: boolean,
@@ -42,7 +44,7 @@ export const getFile = createAsyncThunk<
         } else if (response.data.status === "UPLOADED"){
           return {
             uid: response.data?.uuid,
-            url: response.data?.url,
+            data: response.data?.data,
             retry: undefined,
             loading:false
           }
@@ -72,6 +74,32 @@ export const getPresignedUrl = createAsyncThunk<
         url: response.data.presignedUrl,
         uid: response.data.uuid
       } as PresignedUrlResponse
+    } catch (e){
+      return thunkAPI.rejectWithValue(e);
+    }
+  }
+)
+
+interface UploadFileRequest{
+  url: string,
+  file: File,
+}
+
+interface UploadFileResponse {
+
+}
+
+export const uploadFile = createAsyncThunk<
+  UploadFileResponse,
+  UploadFileRequest
+>(
+  DOWNLOAD_ACTIONS.UPLOAD_FILE,
+  async (request, thunkAPI) => {
+    try {
+      const response = await apiUpload(request.url, request.file);
+      return {
+
+      }
     } catch (e){
       return thunkAPI.rejectWithValue(e);
     }

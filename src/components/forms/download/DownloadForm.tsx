@@ -63,8 +63,16 @@ export default function DownloadBox(props: DownloadBoxProps) {
                   <LinearProgress />
                 </Box>
                 :
-                (downloadState.download?.url && downloadState.download.url) ?
-                  <a href={downloadState.download.url}>Apri file</a>
+                (downloadState.download?.data && downloadState.download.data) ?
+                  <Button onClick={() => {
+
+                    const blob = new Blob([base64ToArrayBuffer(downloadState.download.data || "")], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+                    const link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    const fileName = "ExcelDownload";
+                    link.download = fileName;
+                    link.click();
+                  }}>Scarica file</Button>
                   :
                   <Button id="idButtonDownload"
                           variant="contained"
@@ -80,3 +88,14 @@ export default function DownloadBox(props: DownloadBoxProps) {
     </Card>
   );
 };
+
+function base64ToArrayBuffer(base64:string) {
+  let binaryString = window.atob(base64);
+  let binaryLen = binaryString.length;
+  let bytes = new Uint8Array(binaryLen);
+  for (var i = 0; i < binaryLen; i++) {
+    let ascii = binaryString.charCodeAt(i);
+    bytes[i] = ascii;
+  }
+  return bytes;
+}
