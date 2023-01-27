@@ -37,6 +37,9 @@ const uploadingDownloadingSlice = createSlice({
     resetState: () => initialState,
     resetStateUpload: (state) => {
       state.upload = initialState.upload
+    },
+    resetStateDownload: (state) => {
+      state.download = initialState.download
     }
   },
   extraReducers: (builder) => {
@@ -86,6 +89,6 @@ const uploadingDownloadingSlice = createSlice({
   }
 })
 
-export const {resetStateUpload} = uploadingDownloadingSlice.actions;
+export const {resetStateUpload, resetStateDownload} = uploadingDownloadingSlice.actions;
 
 export default uploadingDownloadingSlice;

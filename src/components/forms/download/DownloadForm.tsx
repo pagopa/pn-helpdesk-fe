@@ -2,10 +2,14 @@ import {
   Card,
   Typography,
   Grid, Button, Box, LinearProgress,
+  IconButton,
 } from "@mui/material";
 import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../../redux/hook";
 import {getFile} from "../../../redux/uploading/actions";
+import {downloadFile} from "../../../helpers/utils";
+import CloseIcon from '@mui/icons-material/Close';
+import {resetStateDownload} from "../../../redux/uploading/reducers";
 
 interface DownloadBoxProps {
   tenderCode ?: string
@@ -64,16 +68,25 @@ export default function DownloadBox(props: DownloadBoxProps) {
                 </Box>
                 :
                 (downloadState.download?.data && downloadState.download.data) ?
-                  <Button onClick={() => {
 
-                    const blob = new Blob([base64ToArrayBuffer(downloadState.download.data || "")], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-                    const link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    const fileName = "ExcelDownload";
-                    link.download = fileName;
-                    link.click();
-                  }}>Scarica file</Button>
+                  <Grid container width={1} direction={"row"} alignItems={"center"}>
+                    <Grid item>
+                      <Button onClick={() => {
+                        downloadFile(downloadState.download.data || "")
+                      }}>
+                        Scarica file
+                      </Button>
+                    </Grid>
+                    <Grid>
+                      <IconButton onClick={() => {
+                        dispatch(resetStateDownload())
+                      }}><CloseIcon/> </IconButton>
+                    </Grid>
+
+                  </Grid>
+
                   :
+
                   <Button id="idButtonDownload"
                           variant="contained"
                           size="medium"
@@ -88,14 +101,3 @@ export default function DownloadBox(props: DownloadBoxProps) {
     </Card>
   );
 };
-
-function base64ToArrayBuffer(base64:string) {
-  let binaryString = window.atob(base64);
-  let binaryLen = binaryString.length;
-  let bytes = new Uint8Array(binaryLen);
-  for (var i = 0; i < binaryLen; i++) {
-    let ascii = binaryString.charCodeAt(i);
-    bytes[i] = ascii;
-  }
-  return bytes;
-}
