@@ -63,7 +63,7 @@ const AggregateDetailPage = ({ email }: any) => {
             .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
 
         return () => { subscribed = false };
-    }, [idAggregate]);
+    }, [idAggregate, isCreate, navigate, dispatch]);
 
     const handleClickAdd = () => {
         navigate(routes.ADD_PA, { state: { aggregate: {...aggregate, associatedPa: pas} as getAggregateResponse } });

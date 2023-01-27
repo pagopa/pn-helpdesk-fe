@@ -52,7 +52,7 @@ const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
             setValue("rate", rate);
             setValue("burst", burst);
         }
-    }, [values.usagePlanName])
+    }, [values.usagePlanName, setValue, usagePlans])
 
     useEffect(() => {
         if(aggregate && Object.keys(aggregate).length !== 0) {
@@ -65,7 +65,7 @@ const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
                 burst: aggregate?.usagePlan.burst
             })
         }
-    }, [aggregate])
+    }, [aggregate, reset])
 
     const handleCreate = () => {
         // POST /aggregate

@@ -18,7 +18,7 @@ const usePagination = <T = any,> ({
     const [paginationData, setPaginationData] = useState({page: 0, limit: defaultLimit});
     const totalElements = list.length;
 
-    // This function check wheter is needed to remove exceeding pages when from the props list are removed items. 
+    // This function check wheter is needed to remove exceeding pages when from the props list items are removed. 
     useEffect(() => {
         let newTotal = list.length;
         if(newTotal > 0) {
@@ -29,7 +29,7 @@ const usePagination = <T = any,> ({
                     return {...state, page: maxPage - 1};
                 });
         }
-    }, [list.length])
+    }, [list.length, paginationData.page, paginationData.limit])
 
     const pagesToShow: Array<number> = calculatePages(
         paginationData.limit,

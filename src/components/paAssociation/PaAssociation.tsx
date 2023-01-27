@@ -42,7 +42,7 @@ const PaAssociation = ({idAggregate} : Props) => {
             ).finally(
                 () => dispatch(spinnerActions.updateSpinnerOpened(false))
             )
-    }, [])
+    }, [idAggregate, dispatch, navigate])
 
     const handleSelection = (pa: Pa, selected: boolean)  => {
         let indexPa = associablePaList.findIndex((item) => item.id === pa.id);

@@ -80,13 +80,15 @@ const SnackbarComponent = () => {
   /* istanbul ignore next */
   const getSeverity = () => {
     if(status){
-      if(status == 202){
+      let statusNumber = Number(status);
+      
+      if(statusNumber === 202){
         setSeverity("Accepted")
-      }else if(status >= 200 && status < 300){
+      }else if(statusNumber >= 200 && status < 300){
         setSeverity("OK")
-      }else if(status >= 400 && status < 500){
+      }else if(statusNumber >= 400 && status < 500){
         setSeverity("Bad Request")
-      }else if(status >= 504){
+      }else if(statusNumber >= 504){
         setSeverity("Gateway Timeout")
       }else{
         setSeverity("Internal Server Error");

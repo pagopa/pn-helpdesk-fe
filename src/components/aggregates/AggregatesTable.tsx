@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Column, Item } from "../table/tableTypes";
 import ItemsTable from '../table/table';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -41,7 +41,7 @@ const AggregatesTable = () => {
 
     const aggregates = useSelector(aggregatesSelector);
 
-    const fetchAggregates = () => {
+    const fetchAggregates = useCallback(() => {
       dispatch(spinnerActions.updateSpinnerOpened(true));
       //take the lastEvaluated id and name from the pagesKey array using page as index.
       const lastEvaluatedId = paginationData.page === 0 ? "" : paginationData.pagesKey[paginationData.page - 1].lastEvaluatedId;
@@ -65,12 +65,12 @@ const AggregatesTable = () => {
             dispatch(resetState());
           }
         ).finally(() => {dispatch(spinnerActions.updateSpinnerOpened(false))})
-    }
+    }, [filters.name, paginationData.page, paginationData.limit, dispatch, paginationData.pagesKey])
 
     useEffect(
       () => {
         fetchAggregates();
-      }, [filters.name, paginationData.page, paginationData.limit]
+      }, [fetchAggregates]
     )
   
     const handlePaginationChange = (paginationData: PaginationData) => {

@@ -16,7 +16,7 @@ class Http {
   private instance: AxiosInstance | null = null;
 
   private get http(): AxiosInstance {
-    return this.instance != null ? this.instance : createAxiosInstance(process.env.REACT_APP_API_AGGREGATE_ENDPOINT!);
+    return this.instance != null ? this.instance : createAxiosInstance(process.env.REACT_APP_API_ENDPOINT!);
   }
 
   getPersonTaxId<T = any, R = AxiosResponse<T>>(payload: getPersonTaxIdType): Promise<R> {

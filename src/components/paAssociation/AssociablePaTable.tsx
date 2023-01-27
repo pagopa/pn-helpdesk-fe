@@ -25,7 +25,7 @@ const AssociablePaTable = ({paList, handleSelection}: Props) => {
         }
 
         return filters.name ? paList.filter(filterPredicate) : paList;
-    }, [filters.name, paList.length]);
+    }, [filters.name, paList]);
 
     return (
         <>

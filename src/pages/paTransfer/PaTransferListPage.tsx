@@ -35,24 +35,30 @@ const PaTransferListPage = ({ email }: any) => {
     const isInput2Disabled = !input1Value;
 
     useEffect(() => {
-        getAggregates();
-        aggParam && handleChangeInput1(null, aggParam);
-    }, []);
-
-    const getAggregates = () => {
-        dispatch(spinnerActions.updateSpinnerOpened(true));
-        let request = apiRequests.getAggregates({ lastEvaluatedId: "" })
-        if (request) {
-            request
-                .then(res => {
-                    setRenderedAggList(res);
-                })
-                .catch(err => {
-                    console.log("Errore: ", err)
-                })
-                .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)))
+        const getAggregates = () => {
+            dispatch(spinnerActions.updateSpinnerOpened(true));
+            let request = apiRequests.getAggregates({ lastEvaluatedId: "" })
+            if (request) {
+                request
+                    .then(res => {
+                        setRenderedAggList(res);
+                    })
+                    .catch(err => {
+                        console.log("Errore: ", err)
+                    })
+                    .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)))
+            }
         }
-    }
+
+        getAggregates();
+
+        if(aggParam)
+        {
+            setInput1Value(aggParam);
+            getPas1(null, aggParam);
+        }
+        
+    }, [dispatch, aggParam]);
 
     const handleChangeInput1 = (e: any, value: any) => {
         setInput1Value(value)
@@ -92,15 +98,6 @@ const PaTransferListPage = ({ email }: any) => {
                 .catch(err => {
                     console.log("Errore: ", err)
                 })
-        }
-    }
-
-    const addToChecked = (pa: any) => {
-        if (!checked.includes(pa)) {
-            setChecked([...checked, pa])
-        }
-        else {
-            setChecked(checked.filter((item: any) => item !== pa))
         }
     }
 
@@ -168,9 +165,18 @@ const PaTransferListPage = ({ email }: any) => {
                 }
             </List>
         )
-    }, [paList2])
+    }, [paList2, areInputsEqual])
 
     const list1 = useMemo(() => {
+        const addToChecked = (pa: any) => {
+            if (!checked.includes(pa)) {
+                setChecked([...checked, pa])
+            }
+            else {
+                setChecked(checked.filter((item: any) => item !== pa))
+            }
+        }
+
         return (
             <List style={{ backgroundColor: 'white', width: 500, height: 500, overflow: 'auto' }}>
                 {paList1 && paList1?.items?.length < 1 ? <ListItem>La lista è vuota</ListItem>
@@ -190,7 +196,7 @@ const PaTransferListPage = ({ email }: any) => {
                     ))}
             </List>
         )
-    }, [paList1])
+    }, [paList1, checked])
 
     return (
         <MainLayout email={email}>
