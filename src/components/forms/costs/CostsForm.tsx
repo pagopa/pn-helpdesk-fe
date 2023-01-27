@@ -2,29 +2,55 @@ import {
   Grid,
   FormHelperText,
 } from "@mui/material";
-import React from "react";
-import {Controller, useForm} from "react-hook-form";
-import {FormField} from "../../formFields/FormFields";
+import React, {useEffect, useState} from "react";
+import {Controller, useForm, useWatch} from "react-hook-form";
+import {FormField, MenuItems} from "../../formFields/FormFields";
 
-import {fieldsCosts} from "./fields";
+import {fieldsCosts, selectTypeCostItems} from "./fields";
 
 const defaultFormValues: { [key: string]: any } = {
-  "dateInterval": [new Date(), new Date()]
+  "selectTypeCost": "CAP"
 };
 
 export default function CostsBox({fsu: boolean}:any) {
+  const [fields, setFields] = useState<string[]>(["selectTypeCost"]);
 
-  const fields = ["selectTypeCost", "inputBaseCost", "selectCapCost", "inputAdditionalCost", "selectZoneCost", "selectProductType"];
+  const [selectCostType, setSelectCostType] = useState<string>(
+    Object.keys(selectTypeCostItems)[0]
+  );
+
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    getValues,
+    reset,
+    formState: { errors }
   } = useForm({
     defaultValues: defaultFormValues,
     mode: "onSubmit",
     reValidateMode: "onSubmit",
   });
+
+  const watchAllFields = useWatch({ name: selectTypeCostItems[selectCostType], control });
+  const watchSelectedType = useWatch({ name: "selectTypeCost", control });
+
+
+  useEffect(()=>{
+    const values = getValues();
+    console.log(values);
+    if (values["selectTypeCost"]){
+      reset({
+        ...defaultFormValues,
+        "selectTypeCost": values["selectTypeCost"],
+      });
+      setSelectCostType(values["selectTypeCost"].toString())
+    }
+  }, [watchSelectedType]);
+
+  useEffect(() => {
+    setFields(selectTypeCostItems[selectCostType]);
+  }, [selectCostType])
 
   const onSubmit = async (data: { [x: string]: any }) => {
     console.log("onsubmit");

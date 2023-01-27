@@ -1,16 +1,20 @@
-import { FieldsProps } from "../../formFields/FormFields";
+import {FieldsProps} from "../../formFields/FormFields";
 import {regex} from "../../../helpers/validations";
 import {errorMessages} from "../../../helpers/messagesConstants";
 
+export let selectTypeCostItems: { [key: string]: Array<string> } = {
+  "CAP": ["selectTypeCost", "inputBaseCost", "selectCapCost", "inputAdditionalCost", "selectProductType"],
+  "Zone": ["selectTypeCost", "inputBaseCost", "selectZoneCost", "inputAdditionalCost", "selectProductType"],
+};
 
 export const fieldsCosts: { [key:string]: FieldsProps } = {
   "selectTypeCost": {
     name: "typeCost",
     componentType: "select",
-    label: "Seleziona il tipo di costo *",
+    label: "Tipo di costo",
     hidden: false,
     size: "50%",
-    required: true,
+    selectItems: Object.keys(selectTypeCostItems)
   },
   "inputBaseCost": {
     name: "baseCost",
@@ -67,6 +71,7 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     hidden: false,
     size: "50%",
     required: true,
+    selectItems: ["Zona 1", "Zona 2", "Zona 3"]
   },
   "selectProductType": {
     name: "productType",

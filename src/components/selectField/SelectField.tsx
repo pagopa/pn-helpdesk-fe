@@ -32,7 +32,12 @@ const SelectField = (props: Props) => {
         onChange={onChange}
         value={value}
       >
-        {field.label !== "Tipo Estrazione" && (
+        {(field.label !== "Tipo Estrazione" &&
+          field.label !== "Tipo di costo" &&
+          field.label !== "Seleziona Cap" &&
+          field.label !== "Seleziona Zona" &&
+          field.label !== "Seleziona la tipologia di prodotto"
+        ) && (
           <MenuItem key="none" value=""></MenuItem>
         )}
         {field.selectItems?.map((item) => (
