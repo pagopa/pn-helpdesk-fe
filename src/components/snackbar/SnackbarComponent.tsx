@@ -6,6 +6,7 @@ import {
   opened,
   statusCode,
   message,
+  autoHideDuration
 } from "../../redux/snackbarSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { infoMessages } from "../../helpers/messagesConstants";
@@ -26,6 +27,7 @@ function TransitionDown(props: TransitionProps) {
  */
 enum Severity {
   "OK" = "success",
+  "Accepted" = "warning",
   "Bad Request" = "error",
   "Internal Server Error" = "error",
   "Gateway Timeout" = "error",
@@ -37,6 +39,7 @@ enum Severity {
  */
 const defaultSeverityMessage: { [key: string]: string } = {
   "OK": infoMessages.OK_RESPONSE,
+  "Accepted": infoMessages.ACCEPTED_RESPONSE,
   "Bad Request": infoMessages.BAD_REQUEST_RESPONSE,
   "Internal Server Error": infoMessages.INTERNEL_SERVER_ERROR_RESPONSE,
   "Gateway Timeout": infoMessages.TIMEOUT,
@@ -56,6 +59,8 @@ const SnackbarComponent = () => {
 
   const snackbarMessage: any = useSelector(message);
 
+  const autoHide: number | null = useSelector(autoHideDuration);
+
   const dispatch = useDispatch();
 
   /**
@@ -72,15 +77,20 @@ const SnackbarComponent = () => {
     }
   };
 
+  /* istanbul ignore next */
   const getSeverity = () => {
-    if (status) {
-      if (status >= 200 && status < 300) {
-        setSeverity("OK");
-      } else if (status >= 400 && status < 500) {
-        setSeverity("Bad Request");
-      } else if (status >= 504) {
-        setSeverity("Gateway Timeout");
-      } else {
+    if(status){
+      let statusNumber = Number(status);
+      
+      if(statusNumber === 202){
+        setSeverity("Accepted")
+      }else if(statusNumber >= 200 && status < 300){
+        setSeverity("OK")
+      }else if(statusNumber >= 400 && status < 500){
+        setSeverity("Bad Request")
+      }else if(statusNumber >= 504){
+        setSeverity("Gateway Timeout")
+      }else{
         setSeverity("Internal Server Error");
       }
     }
@@ -91,7 +101,7 @@ const SnackbarComponent = () => {
   return (
     <Snackbar
       open={snackbarOpened}
-      autoHideDuration={2000}
+      autoHideDuration={autoHide}
       sx={{ "@media (min-width: 630px)": { top: "75px" } }}
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       TransitionComponent={TransitionDown}

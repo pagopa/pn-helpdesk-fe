@@ -1,3 +1,4 @@
+
 /**
  * @typedef {Object} getPersonIdType
  */
@@ -73,4 +74,152 @@ type getLogsProcessesType = {
     sourceType: string;
 }
 
-export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getEventsType }
+/**
+ * @typedef {Object} getAssociatedPaListResponse
+ */
+ type getAssociatedPaListResponse = {
+    items: Array<Pa>
+ }
+
+/**
+ * @typedef {Object} createAggregateType
+ */
+type createAggregateType = {
+    id?: string,
+    name: string,
+    description: string,
+    usagePlanId: string
+}
+
+/**
+* @typedef {Object} modifyAggregateType
+*/
+type modifyAggregateType = {
+    name: string,
+    description: string,
+    usagePlanId: string
+}
+
+/**
+ * @typedef {Object} getAggregateDetailsType
+ */
+type getAggregateDetailsType = {
+    id: string,
+    name: string,
+    usagePlanTemplate: string,
+    createdAt: string,
+    lastUpdate: string
+}
+
+/**
+ * @typedef {Object} getAggregateParams
+ */
+type getAggregateParams = {
+    name?: string,
+    limit?: number,
+    lastEvaluatedId?: string,
+    lastEvaluatedName?: string
+}
+
+/**
+ * @typedef {Object} AggregateSummary
+ */
+type AggregateSummary = {
+    id: string,
+    name: string,
+    usagePlan: string,
+    createdAt: string,
+    lastUpdate?: string
+}
+
+/**
+ * @typedef {Object} getAggregatesResponse
+ */
+type getAggregatesResponse = {
+    items: Array<AggregateSummary>
+    lastEvaluatedId: string,
+    lastEvaluatedName: string,
+    total: number
+}
+
+/**
+ * @typedef {Object} Pa
+ */
+type Pa = {
+    name: string,
+    id: string,
+    selected?: boolean
+}
+
+/**
+ * @typedef {Object} getAssociablePaListResponse
+ */
+type getAssociablePaListResponse = {
+    items: Array<Pa>
+}
+
+/**
+ * @typedef {Object} UsagePlan
+ */
+type UsagePlan = {
+    id: string,
+    name: string,
+    quota: number,
+    rate: number,
+    burst: number
+}
+
+/**
+ * @typedef {Object} getAggregateResponse
+ */
+type getAggregateResponse = {
+    id: string,
+    name: string,
+    description: string,
+    usagePlan: UsagePlan,
+    createdAt: string,
+    lastUpdate?: string,
+    associatedPa?: Array<Pa>
+}
+
+/**
+ * @typedef {Object} addPaResponse
+ */
+type addPaResponse = {
+    processed: number,
+    unprocessed: number,
+    unprocessedPA: Array<string>
+}
+
+/**
+ * @typedef {Object} getUsagePlansType
+ */
+ type getUsagePlansType = {
+    items: [
+        {
+            id: string,
+            name: string,
+            quota: number,
+            rate: number,
+            burst: number
+        }
+    ]
+}
+
+/**
+ * @typedef {Object} aggregateId
+ */
+type aggregateId = {
+    id: string
+}
+
+type ErrorResponse = {
+    detail: string,
+    errors: Array<string>,
+    status: number,
+    timestamp: string,
+    title: string,
+    traceid: string
+}
+
+export type { getPersonIdType, getPersonTaxIdType, getPersonsLogsType, getOperatorsLogsType, getNotificationsInfoLogsType, getNotificationsMonthlyStatsLogsType, getLogsProcessesType, getEventsType, getAggregateParams, AggregateSummary, getAggregatesResponse, Pa, getAssociablePaListResponse, getAssociatedPaListResponse, UsagePlan, getAggregateResponse, addPaResponse, getUsagePlansType, createAggregateType, modifyAggregateType, getAggregateDetailsType, aggregateId, ErrorResponse }
