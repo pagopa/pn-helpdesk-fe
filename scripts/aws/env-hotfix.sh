@@ -1,0 +1,1 @@
+WEB_API_DOMAIN=webapi.hotfix.pn.pagopa.it
