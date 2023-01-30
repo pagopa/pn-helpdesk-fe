@@ -5,6 +5,7 @@ import configureMockStore from "redux-mock-store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { it } from "date-fns/locale";
+import {UPLOAD_STATUS_ENUM} from "../model";
 
 function reducer(
   ui: any,
@@ -22,6 +23,16 @@ function reducer(
       },
       spinner: {
         opened: false,
+      },
+      uploadAndDownload:{
+        download : {
+          loading: false
+        },
+         upload: {
+          loading: false,
+          error: undefined,
+          status: UPLOAD_STATUS_ENUM.WAITING_FILE
+        }
       },
     });
     return (
