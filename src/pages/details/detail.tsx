@@ -96,3 +96,4 @@ export function TenderDetailPage({email}:any) {
   </MainLayout>
 
 }
+
