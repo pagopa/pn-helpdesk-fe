@@ -12,22 +12,28 @@ import {
   DialogTitle,
   Tooltip,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { infoMessages } from "../../helpers/messagesConstants";
 import { Divider, Grid, Typography } from "@material-ui/core";
-import { logout } from "../../Authentication/auth";
+import { logout, getUser } from "../../Authentication/auth";
 import { useDispatch } from "react-redux";
 import * as spinnerActions from "../../redux/spinnerSlice";
 import NavigationMenu from "../navigationMenu/NavigationMenu";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+
 /**
  * General component presenting the header of the app.
  */
-const Header = ({ email }: any) => {
+const Header = (props: any) => {
   /**
    * the state of the confirmation modal
    */
   const [open, setOpen] = useState(false);
+
+  const [email, setEmail] = useState("");
+
+  const [userTooltipOpen, setUserTooltipOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,6 +41,15 @@ const Header = ({ email }: any) => {
    * dispatch redux actions
    */
   const dispatch = useDispatch();
+
+  /**
+   * get the user email
+   */
+  useEffect(() => {
+    getUser().then((email) => {
+      setEmail(email);
+    });
+  }, []);
 
   /**
    * Function closing the confirmation modal
@@ -67,6 +82,10 @@ const Header = ({ email }: any) => {
       });
   };
 
+  const handleOpenUserTooltip = () => {
+    setUserTooltipOpen(true);
+  };
+
   return (
     <AppBar position="static" sx={{ bgcolor: "primary.main" }}>
       <Container>
@@ -81,40 +100,64 @@ const Header = ({ email }: any) => {
           }}
         >
           <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item xs={3}>
+            <Grid item xs={3} md={3}>
               <Grid container alignItems="center">
                 <NavigationMenu />
               </Grid>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3} md={6}>
               <Typography align="center">PagoPA S.p.A.</Typography>
             </Grid>
-            <Grid item xs={3}>
-              <Grid container justifyContent="flex-end" alignItems="center">
-                <Grid item>
-                  <Typography>{email}</Typography>
-                </Grid>
-                <Divider
-                  style={{ background: "white" }}
-                  orientation="vertical"
-                  variant="middle"
-                  flexItem
-                />
-                <Grid item>
-                  <Tooltip title="Log out">
-                    <IconButton
-                      size="large"
-                      edge="start"
-                      color="inherit"
-                      aria-label="menu"
-                      onClick={handleOpenModal}
-                      sx={{ paddingRight: 0 }}
-                    >
-                      <LogoutIcon sx={{ color: "white" }} />
-                    </IconButton>
-                  </Tooltip>
-                </Grid>
+            <Grid
+              container
+              item
+              xs={6}
+              md={3}
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              {/* <Grid container justifyContent="flex-end" alignItems="center"> */}
+              <Grid item>
+                {/* <Typography align="right">{email}</Typography> */}
+                <Tooltip
+                  title={email}
+                  open={userTooltipOpen}
+                  placement="bottom"
+                  onClose={() => setUserTooltipOpen(false)}
+                >
+                  <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    onClick={handleOpenUserTooltip}
+                    sx={{ paddingRight: 0 }}
+                  >
+                    <PermIdentityIcon sx={{ color: "white" }} />
+                  </IconButton>
+                </Tooltip>
               </Grid>
+              <Divider
+                style={{ background: "white" }}
+                orientation="vertical"
+                variant="middle"
+                flexItem
+              />
+              <Grid item>
+                <Tooltip title="Log out">
+                  <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    onClick={handleOpenModal}
+                    sx={{ paddingRight: 0 }}
+                  >
+                    <LogoutIcon sx={{ color: "white" }} />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              {/* </Grid> */}
             </Grid>
           </Grid>
         </Toolbar>
@@ -131,8 +174,10 @@ const Header = ({ email }: any) => {
             {infoMessages.LOGOUT_CONFIRMATION}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal}>Annulla</Button>
+        <DialogActions sx={{ justifyContent: "space-between" }}>
+          <Button onClick={handleCloseModal} sx={{ padding: "0 18px" }}>
+            Annulla
+          </Button>
           <Button onClick={handleLogOut} autoFocus>
             Esci
           </Button>

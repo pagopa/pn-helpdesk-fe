@@ -61,6 +61,7 @@ const defaultFormValues: { [key: string]: any } = {
       "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
     ),
   ],
+  jti: "",
 };
 
 /**
@@ -330,6 +331,9 @@ const SearchForm = () => {
       case "Ottieni log di processo":
         request = apiRequests.getLogsProcesses(payload as getLogsProcessesType);
         break;
+      case "Ottieni log di sessione":
+        request = apiRequests.getLogsProcesses(payload as getLogsProcessesType);
+        break;
       default:
         break;
     }
@@ -443,20 +447,22 @@ const SearchForm = () => {
             }}
           >
             <Grid container rowSpacing={2}>
-              <Grid item>
+              <Grid item width={1}>
                 <form
                   onSubmit={handleSubmit((data) => onSubmit(data))}
                   style={{ width: "100%" }}
                 >
                   <Grid item container>
-                    <Grid item container spacing={2} alignItems="center">
+                    <Grid item container spacing={2} alignItems="flex-start">
                       {fields.map((field) => {
                         return (
                           !field.hidden && (
                             <Grid
                               item
                               key={field.name + "Item"}
-                              width={field.size}
+                              xs={12}
+                              lg={field.size ? field.size : 3}
+                              sx={{ pr: 0 }}
                             >
                               <Controller
                                 control={control}
@@ -502,10 +508,19 @@ const SearchForm = () => {
                         );
                       })}
                     </Grid>
-                    <Grid item container justifyContent="space-between">
+                    <Grid
+                      item
+                      container
+                      justifyContent="space-between"
+                      rowSpacing={2}
+                      sx={{
+                        flexDirection: { xs: "column", lg: "row" },
+                      }}
+                    >
                       <Grid item>
                         <Button
                           size="large"
+                          fullWidth
                           variant="outlined"
                           startIcon={<RestartAltIcon />}
                           sx={{
@@ -525,6 +540,7 @@ const SearchForm = () => {
                       <Grid item>
                         <Button
                           size="large"
+                          fullWidth
                           type="submit"
                           variant="contained"
                           sx={{

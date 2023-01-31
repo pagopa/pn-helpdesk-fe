@@ -13,6 +13,7 @@ export const errorMessages = {
   ONE_MONTH_INTERVAL: "Selezionare date nello stesso mese",
   BACKEND_DOWN_MESSAGE:
     "Servizio offline, contattare l'amministratore di sistema",
+  INCORRECT_JTI: "Identificativo di sessione non corretto",
 };
 
 export const infoMessages = {

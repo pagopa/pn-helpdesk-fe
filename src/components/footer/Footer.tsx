@@ -19,21 +19,7 @@ const Footer = () => {
               paddingLeft: "0px",
             },
           }}
-        >
-          <Grid container spacing={2}>
-            <Grid item>
-              <Typography>Privacy policy</Typography>
-            </Grid>
-            <Grid item>
-              <Typography>Assistenza</Typography>
-            </Grid>
-          </Grid>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Typography>Copyright</Typography>
-            </Grid>
-          </Grid>
-        </Toolbar>
+        ></Toolbar>
       </Container>
     </AppBar>
   );

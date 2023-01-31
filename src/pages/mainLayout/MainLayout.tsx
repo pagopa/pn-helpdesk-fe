@@ -42,13 +42,16 @@ const MainLayout = ({ email, children }: any) => {
       direction="column"
       justifyItems="start"
       justifyContent="space-around"
-      rowSpacing={3}
+      rowSpacing={5}
       wrap="nowrap"
+      sx={{ height: "100%" }}
     >
       <Grid item>
         <Header email={email} />
       </Grid>
-      <Grid item>{children}</Grid>
+      <Grid item sx={{ pb: "40px" }}>
+        {children}
+      </Grid>
       <Grid item>
         <Footer />
       </Grid>

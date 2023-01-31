@@ -7,6 +7,7 @@ import {
   getPersonTaxIdType,
   getPersonsLogsType,
   getEventsType,
+  getSessionLogsType,
 } from "./apiRequestTypes";
 import { http as apiClient } from "./axiosClient";
 
@@ -141,6 +142,17 @@ const getEvents = async (data: getEventsType) => {
     });
 };
 
+const getSessionLogs = async (data: getSessionLogsType) => {
+  return await apiClient
+    .getSessionLogs(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
 const apiRequests = {
   getPersonId,
   getPersonTaxId,
@@ -150,6 +162,7 @@ const apiRequests = {
   getLogsProcesses,
   getStatus,
   getEvents,
+  getSessionLogs,
 };
 
 export default apiRequests;
