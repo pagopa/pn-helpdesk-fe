@@ -367,7 +367,6 @@ const SearchForm = () => {
    * @param response
    */
   const updateSnackbar = (response: any) => {
-    console.log(response);
     const message = response.data?.detail ?? response.data.message;
     message && dispatch(snackbarActions.updateMessage(message));
     dispatch(snackbarActions.updateSnackbacrOpened(true));
