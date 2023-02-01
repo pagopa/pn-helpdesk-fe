@@ -1,4 +1,3 @@
-// import { apiClient } from "./apiClient";
 import {
   getLogsProcessesType,
   getNotificationsInfoLogsType,

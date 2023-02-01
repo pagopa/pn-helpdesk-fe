@@ -22,6 +22,7 @@ import {
   getPersonsLogsType,
   getPersonIdType,
   getPersonTaxIdType,
+  getSessionLogsType,
 } from "../../../api/apiRequestTypes";
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import * as responseActions from "../../../redux/responseSlice";
@@ -332,7 +333,7 @@ const SearchForm = () => {
         request = apiRequests.getLogsProcesses(payload as getLogsProcessesType);
         break;
       case "Ottieni log di sessione":
-        request = apiRequests.getLogsProcesses(payload as getLogsProcessesType);
+        request = apiRequests.getSessionLogs(payload as getSessionLogsType);
         break;
       default:
         break;
@@ -462,6 +463,7 @@ const SearchForm = () => {
                               key={field.name + "Item"}
                               xs={12}
                               lg={field.size ? field.size : 3}
+                              xl={field.size ? field.size : 3}
                               sx={{ pr: 0 }}
                             >
                               <Controller

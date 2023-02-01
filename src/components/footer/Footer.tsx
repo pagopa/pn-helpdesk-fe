@@ -1,7 +1,6 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Container } from "@mui/material";
-import { Grid, Typography } from "@material-ui/core";
 
 /**
  * General component presenting the footer of the app.

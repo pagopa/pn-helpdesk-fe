@@ -45,4 +45,13 @@ export const handlers = [
     };
     return res(ctx.json(mockResponse));
   }),
+
+  rest.post("http://localhost/logs/v1/sessions", (req, res, ctx) => {
+    const mockResponse = {
+      detail: "Errore nell'elaborazione della richiesta",
+    };
+    return res(ctx.json(mockResponse));
+  }),
+
+
 ];

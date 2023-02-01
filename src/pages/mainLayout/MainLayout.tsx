@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
  * Main layout of the application with header and footer
  * @component
  */
-const MainLayout = ({ email, children }: any) => {
+const MainLayout = ({ children }: any) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const MainLayout = ({ email, children }: any) => {
       sx={{ height: "100%" }}
     >
       <Grid item>
-        <Header email={email} />
+        <Header />
       </Grid>
       <Grid item sx={{ pb: "40px" }}>
         {children}

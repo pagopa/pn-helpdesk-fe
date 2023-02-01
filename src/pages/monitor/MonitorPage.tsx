@@ -19,7 +19,7 @@ import * as snackbarActions from "../../redux/snackbarSlice";
  * Monitor page
  * @component
  */
-const MonitorPage = ({ email }: any) => {
+const MonitorPage = () => {
   const dispatch = useDispatch();
 
   const [rows, setRows] = useState<any[]>([]);
@@ -39,7 +39,7 @@ const MonitorPage = ({ email }: any) => {
   const getEvents = useCallback(() => {
     apiRequests
       .getStatus()
-      .then(res => {
+      .then((res) => {
         setBackEndStatus(true);
         let rows: any[] = [];
         if (res && res.data) {
@@ -211,7 +211,7 @@ const MonitorPage = ({ email }: any) => {
   ];
 
   return (
-    <MainLayout email={email}>
+    <MainLayout>
       <DataGridComponent columns={columns} rows={rows} />
     </MainLayout>
   );

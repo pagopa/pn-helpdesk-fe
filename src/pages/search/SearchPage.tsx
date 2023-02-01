@@ -6,9 +6,9 @@ import MainLayout from "../mainLayout/MainLayout";
  * Component containing all objects of the app representing the whole page
  * @component
  */
-const SearchPage = ({ email }: any) => {
+const SearchPage = () => {
   return (
-    <MainLayout email={email}>
+    <MainLayout>
       <SearchForm />
     </MainLayout>
   );

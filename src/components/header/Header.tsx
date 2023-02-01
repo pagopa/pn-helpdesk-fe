@@ -25,15 +25,13 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 /**
  * General component presenting the header of the app.
  */
-const Header = (props: any) => {
+const Header = () => {
   /**
    * the state of the confirmation modal
    */
   const [open, setOpen] = useState(false);
 
-  const [email, setEmail] = useState("");
-
-  const [userTooltipOpen, setUserTooltipOpen] = useState(false);
+  const [email, setEmail] = useState("no email");
 
   const navigate = useNavigate();
 
@@ -82,10 +80,6 @@ const Header = (props: any) => {
       });
   };
 
-  const handleOpenUserTooltip = () => {
-    setUserTooltipOpen(true);
-  };
-
   return (
     <AppBar position="static" sx={{ bgcolor: "primary.main" }}>
       <Container>
@@ -119,18 +113,12 @@ const Header = (props: any) => {
               {/* <Grid container justifyContent="flex-end" alignItems="center"> */}
               <Grid item>
                 {/* <Typography align="right">{email}</Typography> */}
-                <Tooltip
-                  title={email}
-                  open={userTooltipOpen}
-                  placement="bottom"
-                  onClose={() => setUserTooltipOpen(false)}
-                >
+                <Tooltip title={email} placement="bottom">
                   <IconButton
                     size="large"
                     edge="start"
                     color="inherit"
                     aria-label="menu"
-                    onClick={handleOpenUserTooltip}
                     sx={{ paddingRight: 0 }}
                   >
                     <PermIdentityIcon sx={{ color: "white" }} />
