@@ -36,7 +36,8 @@ const SelectField = (props: Props) => {
           field.label !== "Tipo di costo" &&
           field.label !== "Seleziona Cap" &&
           field.label !== "Seleziona Zona" &&
-          field.label !== "Seleziona la tipologia di prodotto"
+          field.label !== "Seleziona la tipologia di prodotto" &&
+            field.label !== "Tipologia di prodotto"
         ) && (
           <MenuItem key="none" value=""></MenuItem>
         )}

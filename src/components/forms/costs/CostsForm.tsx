@@ -4,7 +4,7 @@ import {
 } from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {Controller, useForm, useWatch} from "react-hook-form";
-import {FormField, MenuItems} from "../../formFields/FormFields";
+import {FormField} from "../../formFields/FormFields";
 
 import {fieldsCosts, selectTypeCostItems} from "./fields";
 

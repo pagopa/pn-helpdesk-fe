@@ -4,7 +4,7 @@ import DownloadBox from "../forms/download/DownloadForm";
 import DeliveryDriverFormBox from "../forms/deliveryDriver/DeliveryDriverForm";
 import UploadBox from "../forms/upload/UploadForm";
 import {changeKey} from "../../redux/formTender/reducers";
-import React, {useEffect} from "react";
+import React from "react";
 
 
 export function StepDeliveriesDrivers(){

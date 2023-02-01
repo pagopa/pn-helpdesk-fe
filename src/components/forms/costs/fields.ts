@@ -3,8 +3,8 @@ import {regex} from "../../../helpers/validations";
 import {errorMessages} from "../../../helpers/messagesConstants";
 
 export let selectTypeCostItems: { [key: string]: Array<string> } = {
-  "CAP": ["selectTypeCost", "inputBaseCost", "selectCapCost", "inputAdditionalCost", "selectProductType"],
-  "Zone": ["selectTypeCost", "inputBaseCost", "selectZoneCost", "inputAdditionalCost", "selectProductType"],
+  "CAP": ["selectTypeCost", "inputBaseCost", "selectCapCost", "inputAdditionalCost", "selectNationalProductType"],
+  "Zone": ["selectTypeCost", "inputBaseCost", "selectZoneCost", "inputAdditionalCost", "selectInternationalProductType"],
 };
 
 export const fieldsCosts: { [key:string]: FieldsProps } = {
@@ -73,13 +73,23 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     required: true,
     selectItems: ["Zona 1", "Zona 2", "Zona 3"]
   },
-  "selectProductType": {
+  "selectNationalProductType": {
     name: "productType",
     componentType: "select",
-    label: "Seleziona la tipologia di prodotto",
+    label: "Tipologia di prodotto",
     hidden: false,
     size: "100%",
     required: true,
+    selectItems: ["Raccomandata A-R", "890", "Raccomandata Semplice"]
+  },
+  "selectInternationalProductType": {
+    name: "productType",
+    componentType: "select",
+    label: "Tipologia di prodotto",
+    hidden: false,
+    size: "100%",
+    required: true,
+    selectItems: ["Raccomandata A-R", "Raccomandata Semplice"]
   },
 
 }
