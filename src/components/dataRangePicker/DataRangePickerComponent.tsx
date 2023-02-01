@@ -125,6 +125,7 @@ const DateRangePickerComponent = (props: Props) => {
               <>
                 <TextField
                   {...params}
+                  onKeyDown={(e) => e.preventDefault()}
                   onBlur={props.onBlur}
                   required={props.required}
                   error={props.error ? true : false}
