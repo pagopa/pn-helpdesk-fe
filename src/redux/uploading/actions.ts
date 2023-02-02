@@ -3,7 +3,7 @@ import {apiPaperChannel} from "../../api/paperChannelApi";
 import {apiUpload} from "../../api/apiUpload";
 
 
-export enum DOWNLOAD_ACTIONS {
+export enum DOWNLOAD_UPLOAD_ACTIONS {
   GET_FILE = 'getFile',
   GET_PRESIGNED_URL = 'getPresignedUrl',
   UPLOAD_FILE = 'uploadFile'
@@ -29,7 +29,7 @@ export const getFile = createAsyncThunk<
   DownloadResponse,
   DownloadRequest
 >(
-  DOWNLOAD_ACTIONS.GET_FILE,
+  DOWNLOAD_UPLOAD_ACTIONS.GET_FILE,
   async (request:DownloadRequest, thunkAPI) => {
     try {
       const response = await apiPaperChannel().downloadTenderFile(request.tenderCode, request.uid);
@@ -66,7 +66,7 @@ export const getPresignedUrl = createAsyncThunk<
   PresignedUrlResponse,
   Object
 >(
-  DOWNLOAD_ACTIONS.GET_PRESIGNED_URL,
+  DOWNLOAD_UPLOAD_ACTIONS.GET_PRESIGNED_URL,
   async (_, thunkAPI) => {
     try {
       const response = await apiPaperChannel().addTenderFromFile();
@@ -93,13 +93,11 @@ export const uploadFile = createAsyncThunk<
   UploadFileResponse,
   UploadFileRequest
 >(
-  DOWNLOAD_ACTIONS.UPLOAD_FILE,
+  DOWNLOAD_UPLOAD_ACTIONS.UPLOAD_FILE,
   async (request, thunkAPI) => {
     try {
-      const response = await apiUpload(request.url, request.file);
-      return {
-
-      }
+      await apiUpload(request.url, request.file);
+      return {}
     } catch (e){
       return thunkAPI.rejectWithValue(e);
     }

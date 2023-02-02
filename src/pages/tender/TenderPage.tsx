@@ -24,7 +24,8 @@ export default function TenderPage({ email }: any){
   })
 
   const fetchTender = useCallback(() => {
-    void dispatch(getTenders(pagination));
+    dispatch(getTenders(pagination));
+    //react-hooks/exhaustive-deps
   }, [pagination] )
 
 

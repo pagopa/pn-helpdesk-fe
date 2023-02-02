@@ -29,11 +29,13 @@ export function TenderDetailPage({email}:any) {
     if(pagination.tenderCode && !deliveries.loading){
       dispatch(getAllDrivers(pagination));
     }
+    //react-hooks/exhaustive-deps
   }, [pagination])
 
 
   useEffect(() => {
     fetchDeliveries()
+    //react-hooks/exhaustive-deps
   }, [fetchDeliveries])
 
   if (!tenderState.selected || !tenderState.selected?.code){

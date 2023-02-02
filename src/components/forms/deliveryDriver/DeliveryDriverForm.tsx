@@ -29,8 +29,7 @@ interface PropsDeliveryBox{
 
 export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
 
-  const fields = ["taxId", "businessName", "denomination",
-    "registeredOffice", "fiscalCode", "pec", "phoneNumber", "uniqueCode"];
+  const fields = ["taxId", "businessName", "denomination", "registeredOffice", "fiscalCode", "pec", "phoneNumber", "uniqueCode"];
   const formState = useAppSelector(state => state.tenderForm);
   const dispatch = useAppDispatch();
 

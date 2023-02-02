@@ -1,6 +1,6 @@
 import {
   Grid,
-  FormHelperText,
+  FormHelperText, Button, DialogContent, DialogActions,
 } from "@mui/material";
 import React, {useEffect, useState} from "react";
 import {Controller, useForm, useWatch} from "react-hook-form";
@@ -58,44 +58,52 @@ export default function CostsBox({fsu: boolean}:any) {
   }
 
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Grid item container spacing={1} sx={{paddingTop:"1rem"}}>
-        {
-          fields.map(field => (
-            <Grid
-              item
-              key={fieldsCosts[field].name + "Item"}
-              width={fieldsCosts[field].size}
-              sx={{paddingLeft: 0}}
-            >
-              <Controller
-                key={field}
-                control={control}
-                name={field}
-                rules={fieldsCosts[field].rules}
-                render={({
-                           field: { onChange, onBlur, value, name, ref },
-                           fieldState: { invalid, isTouched, isDirty, error },
-                           formState,
-                         }) => (
-                  <>
-                    <FormField
-                      error={error}
-                      key={field}
-                      field={fieldsCosts[field]}
-                      onChange={onChange}
-                      value={value}
-                    />
-                    <FormHelperText error>
-                      {errors[field] ? errors[field].message : " "}
-                    </FormHelperText>
-                  </>
-                )}
-              />
-            </Grid>
-          ))
-        }
-      </Grid>
+    <form onSubmit={handleSubmit((data) => onSubmit(data))} >
+      <DialogContent>
+        <Grid item container spacing={1} sx={{paddingTop:"1rem"}}>
+          {
+            fields.map(field => (
+              <Grid
+                item
+                key={fieldsCosts[field].name + "Item"}
+                width={fieldsCosts[field].size}
+                sx={{paddingLeft: 0}}
+              >
+                <Controller
+                  key={field}
+                  control={control}
+                  name={field}
+                  rules={fieldsCosts[field].rules}
+                  render={({
+                             field: { onChange, onBlur, value, name, ref },
+                             fieldState: { invalid, isTouched, isDirty, error },
+                             formState,
+                           }) => (
+                    <>
+                      <FormField
+                        error={error}
+                        key={field}
+                        field={fieldsCosts[field]}
+                        onChange={onChange}
+                        value={value}
+                      />
+                      <FormHelperText error>
+                        {errors[field] ? errors[field].message : " "}
+                      </FormHelperText>
+                    </>
+                  )}
+                />
+              </Grid>
+            ))
+          }
+        </Grid>
+      </DialogContent>
+      <DialogActions>
+        <Button>Annulla</Button>
+        <Button autoFocus type={"submit"}>
+          Salva
+        </Button>
+      </DialogActions>
     </form>
   );
 };

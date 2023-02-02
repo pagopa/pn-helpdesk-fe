@@ -8,16 +8,8 @@ import CostsBox from "../forms/costs/CostsForm";
 
 function DialogCostForm(){
   return <>
-  <DialogTitle>Costo</DialogTitle>
-  <DialogContent>
+    <DialogTitle>Costo</DialogTitle>
     <CostsBox fsu={false}/>
-  </DialogContent>
-  <DialogActions>
-    <Button>Annulla</Button>
-    <Button autoFocus>
-      Salva
-    </Button>
-  </DialogActions>
   </>
 }
 
