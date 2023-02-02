@@ -5,7 +5,8 @@ import configureMockStore from "redux-mock-store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { it } from "date-fns/locale";
-import {UPLOAD_STATUS_ENUM} from "../model";
+import {Page, UPLOAD_STATUS_ENUM} from "../model";
+import {DeliveryDriverDto, TenderDTO} from "../generated";
 
 function reducer(
   ui: any,
@@ -24,7 +25,7 @@ function reducer(
       spinner: {
         opened: false,
       },
-      uploadAndDownload:{
+      uploadAndDownload: {
         download : {
           loading: false
         },
@@ -34,6 +35,16 @@ function reducer(
           status: UPLOAD_STATUS_ENUM.WAITING_FILE
         }
       },
+      tenderForm: {
+        tenderCode: undefined,
+        loading: false,
+        allData: {} as Page<DeliveryDriverDto>,
+      },
+      tender: {
+        loading: false,
+        allData: {} as Page<TenderDTO>,
+        selected: {} as TenderDTO
+      }
     });
     return (
       <LocalizationProvider locale={it} dateAdapter={AdapterDateFns}>
