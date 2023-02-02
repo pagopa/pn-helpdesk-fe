@@ -48,5 +48,4 @@ export function PaginationDataGrid<T>(props:PaginationProps<T>) {
       }}
     />
   </>
-
 }
