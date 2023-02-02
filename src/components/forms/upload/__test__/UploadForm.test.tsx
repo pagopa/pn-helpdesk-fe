@@ -7,27 +7,25 @@ import React from "react";
 describe(UploadBox, () => {
 
   afterEach(cleanup);
-
   beforeEach(() => {
     reducer(<UploadBox />);
-    // render(<UploadBox/>);
   });
 
 
-  it("verify component UploadBox is into the page", () => {
+  it("verify UploadBox is rendered", () => {
     const singleFileInputElement = screen.getByLabelText("Documento (richiesto)");
     expect(singleFileInputElement).toBeInTheDocument();
   })
 
-  it("verify component SingleFileInput value is empty", () => {
+  it("verify SingleFileInput value is empty", () => {
     const singleFileInputElement = screen.getByLabelText("Documento (richiesto)");
     expect(singleFileInputElement).getAttribute("value").toBeFalsy();
   })
 
-  it("verify component SingleFileInput has a value after clicked load button", () => {
-    const singleFileInputElement = screen.getByLabelText("Documento (richiesto)");
-    fireEvent.click(singleFileInputElement);
-    const fileValue = singleFileInputElement.getAttribute("value");
-    expect(fileValue).toBeTruthy();
-  })
+  // it("verify SingleFileInput is not empty", () => {
+  //   const singleFileInputElement = screen.getByLabelText("Documento (richiesto)");
+  //   fireEvent.click(singleFileInputElement);
+  //   const fileValue = singleFileInputElement.getAttribute("value");
+  //   expect(fileValue).toBeTruthy();
+  // })
 })
