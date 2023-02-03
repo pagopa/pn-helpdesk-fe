@@ -9,6 +9,7 @@ import { reducer } from "../../../mocks/mockReducer";
 import userEvent from "@testing-library/user-event";
 
 describe("TenderDetailPage", () => {
+    beforeEach(() => { <TenderDetailPage></TenderDetailPage> });
     afterEach(cleanup);
 
     it("Dettaglio Gara", async () => {
@@ -23,9 +24,15 @@ describe("TenderDetailPage", () => {
     });
 
     it("render data grid, 5 columns and 1 row", async () => {
-        await act(async () => {
+        /*await act(async () => {
             reducer(<TenderDetailPage/>);
-        });
+        });*/
+
+        const grid =  screen.getByTestId("datagrid");
+
+        expect(grid).toBeInTheDocument();
+        //eslint-disable-next-line testing-library/no-debugging-utils
+        screen.debug(grid)
 
         const columns = await screen.findAllByRole("columns");
         expect(columns).toHaveLength(5);
