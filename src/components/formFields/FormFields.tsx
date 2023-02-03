@@ -8,6 +8,7 @@ import DateRangePickerComponent from "../dataRangePicker/DataRangePickerComponen
 import { CalendarPickerView } from "@mui/lab";
 import { errorMessages } from "../../helpers/messagesConstants";
 import { format, isSameDay, isBefore } from "date-fns";
+import {CapAutocompleteField} from "../capAutocompleteFields";
 
 /**
  * Items for the Tipo Estrazione and their coresponding fields
@@ -39,6 +40,7 @@ type FieldsProps = {
    * label to be shown with the field
    */
   label: string;
+  placeholder ?:string
   /**
    * items in case the component is select menu
    */
@@ -469,6 +471,14 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
             },
           ]}
         />
+      )}
+      {componentType === "capAutocomplete" && (
+        <CapAutocompleteField
+          field={field}
+          required={field.required!}
+          onChange={onChange}
+          error={error}
+          value={value}/>
       )}
     </Grid>
   );

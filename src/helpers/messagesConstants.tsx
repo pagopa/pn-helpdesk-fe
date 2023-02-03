@@ -13,6 +13,7 @@ export const errorMessages = {
   ONE_MONTH_INTERVAL: "Selezionare date nello stesso mese",
   BACKEND_DOWN_MESSAGE:
     "Servizio offline, contattare l'amministratore di sistema",
+  CAPS_INVALID: "I valori inseriti non sono corretti"
 };
 
 export const infoMessages = {

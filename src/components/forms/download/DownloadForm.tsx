@@ -32,7 +32,7 @@ export default function DownloadBox(props: DownloadBoxProps) {
     const download = downloadState.download;
     if (download.uid && download.retry && download.loading){
       console.log("new attempt")
-      setTimeout(() => dispatch(getFile({uid: download.uid, tenderCode: props.tenderCode})), 1000)
+      setTimeout(() => dispatch(getFile({uid: download.uid, tenderCode: props.tenderCode})), download.retry)
     } else {
       console.log("Attempt ended");
     }

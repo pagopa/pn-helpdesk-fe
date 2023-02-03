@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import {TYPE_DIALOG} from "../../components/dialogs";
 
 interface Extra {

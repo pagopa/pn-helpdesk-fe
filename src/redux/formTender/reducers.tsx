@@ -2,13 +2,24 @@ import {DeliveryDriver, Tender} from "../../model";
 import {createSlice} from "@reduxjs/toolkit";
 
 
+interface SavingState {
+  loading: boolean,
+  uid ?: false,
+  retry ?: number
+  result: "HANDLE" | "PROGRESS" | "SAVED" | "ERROR"
+}
+
 const initialState = {
   activeKey: 0 as number,
   fromUpload: false,
   formTender: {} as Tender,
-  formFsu: {} as DeliveryDriver
-}
+  formFsu: {} as DeliveryDriver,
 
+  saving: {
+    loading: false,
+    result: "HANDLE"
+  } as SavingState
+}
 
 
 const formTenderSlice = createSlice({

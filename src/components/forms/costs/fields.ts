@@ -3,8 +3,8 @@ import {regex} from "../../../helpers/validations";
 import {errorMessages} from "../../../helpers/messagesConstants";
 
 export let selectTypeCostItems: { [key: string]: Array<string> } = {
-  "CAP": ["selectTypeCost", "inputBaseCost", "selectCapCost", "inputAdditionalCost", "selectNationalProductType"],
-  "Zone": ["selectTypeCost", "inputBaseCost", "selectZoneCost", "inputAdditionalCost", "selectInternationalProductType"],
+  "CAP": ["selectTypeCost",  "selectNationalProductType", "inputBaseCost", "inputAdditionalCost", "selectCapCost"],
+  "Zone": ["selectTypeCost", "selectInternationalProductType", "inputBaseCost", "inputAdditionalCost", "selectZoneCost"],
 };
 
 export const fieldsCosts: { [key:string]: FieldsProps } = {
@@ -38,11 +38,26 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
   },
   "selectCapCost": {
     name: "capCost",
-    componentType: "select",
-    label: "Seleziona Cap",
+    componentType: "capAutocomplete",
+    label: "Cap",
+    placeholder: "Seleziona o digita Cap",
     hidden: false,
-    size: "50%",
+    size: "100%",
     required: true,
+    rules:{
+      validate:{
+        validateCaps: (caps: Array<string>) => {
+
+          const error = caps.filter(cap => {
+            const regexp = new RegExp(regex.CAP),
+            test = regexp.test(cap);
+            return !test;
+          });
+          return error.length === 0 || errorMessages.CAPS_INVALID
+
+        }
+      }
+    }
   },
   "inputAdditionalCost": {
     name: "additionalCost",
@@ -69,7 +84,7 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "select",
     label: "Seleziona Zona",
     hidden: false,
-    size: "50%",
+    size: "100%",
     required: true,
     selectItems: ["Zona 1", "Zona 2", "Zona 3"]
   },
@@ -78,7 +93,7 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "select",
     label: "Tipologia di prodotto",
     hidden: false,
-    size: "100%",
+    size: "50%",
     required: true,
     selectItems: ["Raccomandata A-R", "890", "Raccomandata Semplice"]
   },
@@ -87,7 +102,7 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "select",
     label: "Tipologia di prodotto",
     hidden: false,
-    size: "100%",
+    size: "50%",
     required: true,
     selectItems: ["Raccomandata A-R", "Raccomandata Semplice"]
   },

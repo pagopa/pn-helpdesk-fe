@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../components/header/Header";
-import {Box, Grid, Stack} from "@mui/material";
+import {Box, Stack} from "@mui/material";
 import Footer from "../../components/footer/Footer";
 import { useEffect } from "react";
 import { logout, refreshToken } from "../../Authentication/auth";
@@ -52,25 +52,6 @@ const MainLayout = ({ email, children }: any) => {
       </Stack>
       <Footer />
     </Stack>
-  );
-
-  return (
-    <Grid
-      container
-      direction="column"
-      justifyItems="start"
-      justifyContent="space-around"
-      rowSpacing={3}
-      wrap="nowrap"
-    >
-      <Grid item>
-        <Header email={email} />
-      </Grid>
-      <Grid item>{children}</Grid>
-      <Grid item>
-        <Footer />
-      </Grid>
-    </Grid>
   );
 };
 

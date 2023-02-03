@@ -1,4 +1,4 @@
-import {screen, render, fireEvent, cleanup} from "@testing-library/react";
+import {screen, fireEvent, cleanup} from "@testing-library/react";
 import UploadBox from "../UploadForm";
 import {reducer} from "../../../../mocks/mockReducer";
 import React from "react";
@@ -8,7 +8,7 @@ describe(UploadBox, () => {
 
   afterEach(cleanup);
   beforeEach(() => {
-    reducer(<UploadBox />);
+    reducer(<UploadBox loading={true} />);
   });
 
 
