@@ -53,6 +53,7 @@ const TextFieldComponent = (props: Props) => {
           ? props.onChange(e.target.value.toUpperCase())
           : props.onChange(e)
       }
+      disabled={props.field.disabled}
     />
   );
 };

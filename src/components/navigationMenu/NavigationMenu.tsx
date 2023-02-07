@@ -11,6 +11,8 @@ import {
   Toolbar,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import * as routes from '../../navigation/routes';
+
 const NavigationMenu = () => {
   const [open, setOpen] = useState(false);
 
@@ -23,8 +25,16 @@ const NavigationMenu = () => {
       title: "Monitoraggio Piattaforma Notifiche",
       link: "/monitoring",
     },
+    {
+      title: "Gestione Aggregazioni ApiKey",
+      link: routes.AGGREGATES
+    },
+    {
+      title: "Trasferimento di PA",
+      link: routes.TRANSFER_PA
+    }
   ];
-
+  
   const toggleDrawer =
     (status: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
