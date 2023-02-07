@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {FilterRequest, Page} from "../../model";
-import {DeliveryDriverDto} from "../../generated";
+import {DeliveryDriverDTO} from "../../generated";
 import {apiPaperChannel} from "../../api/paperChannelApi";
 
 export enum DELIVERY_DRIVERS_ACTIONS {
@@ -8,14 +8,14 @@ export enum DELIVERY_DRIVERS_ACTIONS {
 }
 
 export const getAllDrivers = createAsyncThunk<
-  Page<DeliveryDriverDto>,
+  Page<DeliveryDriverDTO>,
   FilterRequest
 >(
   DELIVERY_DRIVERS_ACTIONS.GET_ALL_FROM_TENDER,
   async (filter:FilterRequest, thunkAPI) => {
     try {
       const response = await apiPaperChannel().takeDeliveriesDrivers(filter.tenderCode || "", filter.page, filter.tot);
-      const page: Page<DeliveryDriverDto> ={
+      const page: Page<DeliveryDriverDTO> ={
         total: (response.data.totalElements) ? response.data.totalElements  : 0,
         size: response.data.size ?  response.data.size : 0,
         page: response.data.number ? response.data.number : 0,

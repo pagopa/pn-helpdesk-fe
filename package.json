@@ -11,7 +11,7 @@
     "@mui/lab": "^5.0.0-alpha.81",
     "@mui/material": "^5.6.4",
     "@mui/x-data-grid": "^5.17.8",
-    "@pagopa/mui-italia": "^0.8.12",
+    "@pagopa/mui-italia": "^0.8.10",
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -40,7 +40,7 @@
   },
   "scripts": {
     "generate:api": "/docs/openapi/swagger.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client && gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/pn-paper-channel/feature/pn-paper-channel/docs/openapi/pn-paper-channel-v1.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client",
-    "generate:api-paper-channel": "openapi-generator-cli generate -g typescript-axios -i https://raw.githubusercontent.com/pagopa/pn-paper-channel/develop/docs/openapi/pn-paper-channel-v1.yaml -o ./src/generated --additional-properties=supportsES6=true",
+    "generate:api-paper-channel": "openapi-generator-cli generate -g typescript-axios -i https://raw.githubusercontent.com/pagopa/pn-paper-channel/feature/pn-delivery-driver/docs/openapi/pn-paper-channel-v1.yaml -o ./src/generated --additional-properties=supportsES6=true",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",

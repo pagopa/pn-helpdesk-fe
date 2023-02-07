@@ -18,7 +18,7 @@ export type Page<T> = {
 
 export type Tender = {
   code?:string
-  description: string,
+  name: string,
   startDate: string,
   endDate: string,
 }

@@ -8,8 +8,6 @@ import {DeliveryDriver} from "../../../model";
 
 import {LoadingButton} from "@mui/lab";
 import {createDeliveryDriver} from "../../../api/paperChannelApi";
-import {useAppDispatch} from "../../../redux/hook";
-import {addedFSU} from "../../../redux/formTender/reducers";
 
 const initialValue = (data:DeliveryDriver):{ [x: string]: any } => (
   {
@@ -21,12 +19,12 @@ interface PropsDeliveryBox{
   fsu: boolean
   tenderCode: string
   initialValue: DeliveryDriver | undefined
+  onChanged ?: (value:DeliveryDriver) => void
 }
 
 export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
   const fields = ["taxId", "businessName", "denomination", "registeredOffice", "fiscalCode", "pec", "phoneNumber", "uniqueCode"];
   const [loading, setLoading] = useState(false);
-  const dispatch = useAppDispatch();
 
   const {
     handleSubmit,
@@ -49,9 +47,7 @@ export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
 
   const handleSaved = (data:DeliveryDriver) => {
     setLoading(false);
-    if (data.fsu){
-      dispatch(addedFSU(data));
-    }
+    props.onChanged?.(data);
   }
 
   const handleError = (e:any) => {

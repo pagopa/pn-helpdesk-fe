@@ -1,4 +1,4 @@
-import {Configuration, DeliveryDriverApi, DeliveryDriverDto, TenderCreateRequestDTO, TenderDTO} from "../generated";
+import {Configuration, DeliveryDriverApi, DeliveryDriverDTO, TenderCreateRequestDTO} from "../generated";
 import {DeliveryDriver, Tender} from "../model";
 
 
@@ -27,17 +27,14 @@ export const createTender = async (body:Tender,
                                            callbackError:(e:any)=>void) => {
   try {
     const request = {
-      name: body.description,
+      name: body.name,
       startDate: body.startDate,
       endDate: body.endDate,
       code: body.code,
     } as TenderCreateRequestDTO
     const response = await apiPaperChannel().createUpdateTender(request);
     callbackSuccess( {
-      code: response.data.tender?.code,
-      description: response.data.tender?.name || "",
-      startDate: response.data.tender?.startDate || "",
-      endDate: response.data.tender?.endDate || ""
+      ...response.data.tender
     } as Tender);
   } catch (e){
     return callbackError(e);
@@ -50,7 +47,7 @@ export const createDeliveryDriver = async (tenderCode:string, body:DeliveryDrive
   try {
     const request = {
       ...body,
-    } as DeliveryDriverDto
+    } as DeliveryDriverDTO
     await apiPaperChannel().createUpdateDriver(tenderCode, request);
     callbackSuccess(body);
   } catch (e){

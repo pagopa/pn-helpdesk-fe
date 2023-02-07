@@ -3,10 +3,12 @@ import {NoteAdd, Reply} from "@mui/icons-material";
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
-import {addedTender, clearFormState, goFSUStep, goUploadStep} from "../../redux/formTender/reducers";
+import { addedTender, clearFormState, goFSUStep, goUploadStep} from "../../redux/formTender/reducers";
 import {AlertDialog} from "../dialogs";
 import TenderFormBox from "../forms/tender/TenderForm";
-import {getDetailTender} from "../../redux/formTender/actions";
+import * as spinnerActions from "../../redux/spinnerSlice";
+import {apiPaperChannel} from "../../api/paperChannelApi";
+import * as snackbarActions from "../../redux/snackbarSlice";
 import {Tender} from "../../model";
 
 
@@ -17,9 +19,25 @@ export default function StepTender(){
 
   useEffect(() => {
     if (tenderCode && !formTender.value){
-      dispatch(getDetailTender(tenderCode));
+      retrieveDetail(tenderCode)
     }
   }, [])
+
+  const retrieveDetail = async (tenderCode:string) => {
+    dispatch(spinnerActions.updateSpinnerOpened(true));
+    try {
+      const response = await apiPaperChannel().getTenderDetails(tenderCode);
+      const tender = {
+        ...response.data.tender
+      } as Tender;
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      dispatch(addedTender(tender))
+    } catch (e){
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode("400"));
+    }
+  }
 
 
   const handleUpload = () => {

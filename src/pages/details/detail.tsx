@@ -7,7 +7,7 @@ import {tenderRowsInfo} from "../../components/dataInfo/rows";
 import {BreadcrumbCustom} from "../../components/breadcrumb/BreadcrumbCustom";
 import {Navigate} from "react-router-dom";
 import {GET_TENDER} from "../../navigation/router.const";
-import {DeliveryDriverDto} from "../../generated";
+import {DeliveryDriverDTO} from "../../generated";
 import {ModelType, PaginationDataGrid} from "../../components/paginationGrid";
 import {FilterRequest} from "../../model";
 import {getAllDrivers} from "../../redux/deliveriesDrivers/actions";
@@ -87,7 +87,7 @@ export function TenderDetailPage({email}:any) {
               </Typography>
             </Grid>
             <div data-testid="datagrid">
-            <PaginationDataGrid <DeliveryDriverDto> data={deliveries.allData}
+            <PaginationDataGrid <DeliveryDriverDTO> data={deliveries.allData}
                                                     type={ModelType.DELIVERY_DRIVER}
                                                     loading={tenderState.loading}
                                                     rowId={row => row.uniqueCode}/>

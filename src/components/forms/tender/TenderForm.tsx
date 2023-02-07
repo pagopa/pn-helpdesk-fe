@@ -17,7 +17,7 @@ import {createTender} from "../../../api/paperChannelApi";
 
 const initialValue = (data?:Tender):{ [x: string]: any } => (
   {
-    description: data?.description,
+    name: data?.name,
     dateInterval:[(data?.startDate) ? data?.startDate : new Date(), (data?.endDate) ? data?.endDate: new Date()]
   }
 )
@@ -28,7 +28,7 @@ interface TenderFormBoxProps {
 }
 
 export default function TenderFormBox(props:TenderFormBoxProps) {
-  const fields = ["description", "dateInterval"];
+  const fields = ["name", "dateInterval"];
   const [loading, setLoading] = useState(false);
 
   const {
@@ -60,7 +60,7 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
     const onDate = (data["dateInterval"][1] && data["dateInterval"][1] instanceof Date) ? format( data["dateInterval"][1], "yyyy-MM-dd'T'HH:mm:ss.sss'Z'") : data["dateInterval"][1];
 
     const tender: Tender = {
-      description: data["description"],
+      name: data["name"],
       startDate: fromDate,
       endDate: onDate,
       code: (props?.initialValue) ? props.initialValue.code : undefined
