@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Card,
   Typography,
@@ -7,12 +7,11 @@ import {
 import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 import {FormHelperText} from "@mui/material";
-import {useAppDispatch, useAppSelector} from "../../../redux/hook";
 import {Tender} from "../../../model";
 import {format} from "date-fns";
 import {fieldsTender} from "./fields";
-import {createTender} from "../../../redux/formTender/actions";
 import {LoadingButton} from "@mui/lab";
+import {createTender} from "../../../api/paperChannelApi";
 
 
 
@@ -23,25 +22,38 @@ const initialValue = (data?:Tender):{ [x: string]: any } => (
   }
 )
 
-export default function TenderFormBox() {
+interface TenderFormBoxProps {
+  initialValue ?: Tender;
+  onChanged ?: (value:Tender) => void
+}
+
+export default function TenderFormBox(props:TenderFormBoxProps) {
   const fields = ["description", "dateInterval"];
-  const formState = useAppSelector(state => state.tenderForm);
-  const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
 
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm({
-    defaultValues: initialValue(formState.formTender.value),
+    defaultValues: initialValue(props.initialValue),
     mode: "onSubmit",
     reValidateMode: "onSubmit",
   });
 
   const onSubmit = async (data: { [x: string]: any }) => {
-    dispatch(createTender(tenderMap(data)));
+    setLoading(true);
+    createTender(tenderMap(data), handleSuccessSaved, handelErrorSaved);
   }
 
+  const handleSuccessSaved = (value:Tender) => {
+    setLoading(false);
+    props.onChanged?.(value);
+  }
+
+  const handelErrorSaved = (e:any) => {
+    setLoading(false);
+  }
 
   const tenderMap = (data: { [x: string]: any }) => {
     const fromDate = (data["dateInterval"][0] && data["dateInterval"][0] instanceof Date) ? format( data["dateInterval"][0], "yyyy-MM-dd'T'HH:mm:ss.sss'Z'") : data["dateInterval"][0];
@@ -51,7 +63,7 @@ export default function TenderFormBox() {
       description: data["description"],
       startDate: fromDate,
       endDate: onDate,
-      code: (formState.formTender?.value?.code) ? formState.formTender?.value?.code : undefined
+      code: (props?.initialValue) ? props.initialValue.code : undefined
     }
     return tender;
   }
@@ -109,7 +121,7 @@ export default function TenderFormBox() {
 
         </Stack>
         <Grid item container direction="row" justifyContent={"right"}>
-          <LoadingButton loading={formState.formTender.loading} variant={"contained"} type={"submit"}>Salva</LoadingButton>
+          <LoadingButton loading={loading} variant={"contained"} type={"submit"}>Salva</LoadingButton>
         </Grid>
       </Card>
     </form>

@@ -1,6 +1,6 @@
 import {DeliveryDriver, Tender} from "../../model";
-import {createSlice} from "@reduxjs/toolkit";
-import {createTender} from "./actions";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {getDetailTender} from "./actions";
 
 
 interface SavingState {
@@ -60,26 +60,24 @@ const formTenderSlice = createSlice({
     backStep: (state, action) => {
       state.activeKey = (state.activeKey > 0) ? state.activeKey-1 : 0
     },
-    addedTender:(state, action) => {
-      state.formTender = action.payload.data
-      state.activeKey = action.payload.key
-      state.fromUpload = action.payload.fromUpload
+    addedTender:(state, action:PayloadAction<Tender>) => {
+      state.formTender.value = action.payload
     },
     addedFSU: (state, action) => {
       state.formFsu = action.payload
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(createTender.pending, (state, action) => {
+    builder.addCase(getDetailTender.pending, (state, action) => {
       state.formTender.loading = true
       state.formTender.error = false
     });
-    builder.addCase(createTender.fulfilled, (state, action) => {
+    builder.addCase(getDetailTender.fulfilled, (state, action) => {
       state.formTender.loading = false
       state.formTender.error = false
       state.formTender.value = action.payload
     });
-    builder.addCase(createTender.rejected, (state, action) => {
+    builder.addCase(getDetailTender.rejected, (state, action) => {
       state.formTender.loading = false
       state.formTender.error = true
     });

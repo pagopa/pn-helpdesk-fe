@@ -7,7 +7,8 @@ import {DeliveryDriver, Tender} from "../../model";
 export enum FORM_TENDER_ACTIONS {
   SAVED_WITH_EXCEL = 'saveWithExcel',
   CREATE_TENDER = 'createTender',
-  CREATE_DELIVERY_DRIVER = 'createDeliveryDriver'
+  CREATE_DELIVERY_DRIVER = 'createDeliveryDriver',
+  GET_DETAILS_TENDER = 'getDetailsTender'
 }
 
 
@@ -37,26 +38,19 @@ export const saveWithExcel = createAsyncThunk<
   }
 )
 
-
-export const createTender = createAsyncThunk<
+export const getDetailTender = createAsyncThunk<
   Tender,
-  Tender
+  string
 >(
-  FORM_TENDER_ACTIONS.CREATE_TENDER,
-  async (body:Tender, thunkAPI) => {
+  FORM_TENDER_ACTIONS.GET_DETAILS_TENDER,
+  async (tenderCode:string, thunkAPI) => {
     try {
-      const request = {
-        name: body.description,
-        startDate: body.startDate,
-        endDate: body.endDate,
-        code: body.code,
-      } as TenderCreateRequestDTO
-      const response = await apiPaperChannel().createUpdateTender(request);
+      const response = await apiPaperChannel().getTenderDetails(tenderCode);
       return {
-        code: response.data.tender?.code,
-        description: response.data.tender?.name || "",
-        startDate: response.data.tender?.startDate || "",
-        endDate: response.data.tender?.endDate || ""
+        code: response.data.tender.code,
+        description: response.data.tender?.name,
+        startDate: response.data.tender?.startDate,
+        endDate: response.data.tender?.endDate
       } as Tender
     } catch (e){
       return thunkAPI.rejectWithValue(e);

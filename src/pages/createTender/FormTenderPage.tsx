@@ -8,6 +8,7 @@ import {StepView} from "../../model";
 import {StepDeliveriesDrivers} from "../../components/steps/StepDeliveriesDrivers";
 import StepTender from "../../components/steps/StepTender";
 import StepFSU from "../../components/steps/StepFSU";
+import {useParams} from "react-router-dom";
 
 
 
@@ -37,7 +38,7 @@ const stepRiepilogo:StepView = {
 
 
 export function FormTenderPage({email}:any) {
-
+  const {tenderCode} = useParams();
   const steps = [stepGara, stepFSU, stepDeliveries, stepRiepilogo]
   const tenderFormStepper = useAppSelector(state => state.tenderForm);
 
@@ -52,7 +53,7 @@ export function FormTenderPage({email}:any) {
 
           <Grid item container>
             <Typography variant="h4" color="text.primary">
-              Nuova Gara
+              {(!tenderCode) ? "Nuova Gara" : "Modifica Gara"}
             </Typography>
           </Grid>
         </Grid>
