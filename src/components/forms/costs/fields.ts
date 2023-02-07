@@ -1,23 +1,81 @@
 import {FieldsProps} from "../../formFields/FormFields";
 import {regex} from "../../../helpers/validations";
 import {errorMessages} from "../../../helpers/messagesConstants";
+import {OptionCustom} from "../../selectField/SelectCustomField";
 
-export let selectTypeCostItems: { [key: string]: Array<string> } = {
-  "CAP": ["selectTypeCost",  "selectNationalProductType", "inputBaseCost", "inputAdditionalCost", "selectCapCost"],
-  "Zone": ["selectTypeCost", "selectInternationalProductType", "inputBaseCost", "inputAdditionalCost", "selectZoneCost"],
+export let fieldsOfType: { [key: string]: Array<string> } = {
+  "NATIONAL": ["type",  "nationalProductType", "price", "priceAdditional", "cap"],
+  "INTERNATIONAL": ["type", "internationalProductType", "price", "priceAdditional", "zone"],
 };
 
+
+
+
+export const OPTIONS_ZONE:OptionCustom[] = [
+  {
+    key: "ZONE_1",
+    label: "Zona 1"
+  },
+  {
+    key: "ZONE_2",
+    label: "Zona 2"
+  },
+  {
+    key: "ZONE_3",
+    label: "Zona 3"
+  }
+]
+
+export const INTERNATIONAL_PRODUCT_TYPE:OptionCustom[] = [
+  {
+    key: "AR",
+    label: "Raccomandata A-R"
+  },
+  {
+    key: "SEMPLICE",
+    label: "Raccomandata Semplice"
+  },
+]
+
+export const NATIONAL_PRODUCT_TYPE:OptionCustom[] = [
+  {
+    key: "AR",
+    label: "Raccomandata A-R"
+  },
+  {
+    key: "890",
+    label: "Raccomandata 890"
+  },
+  {
+    key: "SEMPLICE",
+    label: "Raccomandata Semplice"
+  }
+]
+
+export const COST_TYPE:OptionCustom[] = [
+  {
+    key: "NATIONAL",
+    label:"Nazionale"
+  },
+  {
+    key: "INTERNATIONAL",
+    label: "Internazionale"
+  }
+]
+
+
+
 export const fieldsCosts: { [key:string]: FieldsProps } = {
-  "selectTypeCost": {
+  "type": {
     name: "typeCost",
-    componentType: "select",
+    componentType: "selectCustom",
     label: "Tipo di costo",
     hidden: false,
     size: "50%",
-    selectItems: Object.keys(selectTypeCostItems)
+    optionItems: COST_TYPE
   },
-  "inputBaseCost": {
-    name: "baseCost",
+  "price": {
+    name: "price",
     componentType: "textfield",
     label: "Costo base (€)",
     hidden: false,
@@ -36,8 +94,8 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "selectCapCost": {
-    name: "capCost",
+  "cap": {
+    name: "cap",
     componentType: "capAutocomplete",
     label: "Cap",
     placeholder: "Seleziona o digita Cap",
@@ -47,7 +105,7 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     rules:{
       validate:{
         validateCaps: (caps: Array<string>) => {
-
+          if (!caps) return errorMessages.CAPS_INVALID
           const error = caps.filter(cap => {
             const regexp = new RegExp(regex.CAP),
             test = regexp.test(cap);
@@ -59,8 +117,8 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
       }
     }
   },
-  "inputAdditionalCost": {
-    name: "additionalCost",
+  "priceAdditional": {
+    name: "priceAdditional",
     componentType: "textfield",
     label: "Costo aggiuntivo per pagina (€)",
     hidden: false,
@@ -79,32 +137,54 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "selectZoneCost": {
+  "zone": {
     name: "zoneCost",
-    componentType: "select",
+    componentType: "selectCustom",
     label: "Seleziona Zona",
     hidden: false,
     size: "100%",
     required: true,
-    selectItems: ["Zona 1", "Zona 2", "Zona 3"]
+    optionItems: OPTIONS_ZONE,
+    rules:{
+      validate:{
+        validateZone: (value?:any) => {
+          return !!(value)|| errorMessages.ZONE_INVALID
+        }
+      }
+    }
   },
-  "selectNationalProductType": {
-    name: "productType",
-    componentType: "select",
+  "nationalProductType": {
+    name: "nationalProductType",
+    componentType: "selectCustom",
     label: "Tipologia di prodotto",
     hidden: false,
     size: "50%",
     required: true,
-    selectItems: ["Raccomandata A-R", "890", "Raccomandata Semplice"]
+    optionItems: NATIONAL_PRODUCT_TYPE,
+    rules:{
+      validate:{
+        validateProductType: (value?:any) => {
+          return !!(value)|| errorMessages.PRODUCT_TYPE_INVALID
+        }
+      }
+    }
   },
-  "selectInternationalProductType": {
-    name: "productType",
-    componentType: "select",
+  "internationalProductType": {
+    name: "internationalProductType",
+    componentType: "selectCustom",
     label: "Tipologia di prodotto",
     hidden: false,
     size: "50%",
     required: true,
-    selectItems: ["Raccomandata A-R", "Raccomandata Semplice"]
+    optionItems: INTERNATIONAL_PRODUCT_TYPE,
+    rules:{
+      validate:{
+        validateProductType: (value?:any) => {
+          return !!(value)|| errorMessages.PRODUCT_TYPE_INVALID
+        }
+      }
+    }
   },
 
 }
+

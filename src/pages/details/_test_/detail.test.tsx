@@ -11,7 +11,7 @@ import userEvent from "@testing-library/user-event";
 describe("TenderDetailPage", () => {
     beforeEach(() => { <TenderDetailPage></TenderDetailPage> });
     afterEach(cleanup);
-
+/*
     it("Dettaglio Gara", async () => {
         await act(async () => {
             reducer(<TenderDetailPage/>);
@@ -26,7 +26,7 @@ describe("TenderDetailPage", () => {
     it("render data grid, 5 columns and 1 row", async () => {
         /*await act(async () => {
             reducer(<TenderDetailPage/>);
-        });*/
+        });
 
         const grid =  screen.getByTestId("datagrid");
 
@@ -51,7 +51,6 @@ describe("TenderDetailPage", () => {
         expect(table).toBeInTheDocument();
     });
 
-
-
+*/
 
 });

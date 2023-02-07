@@ -5,6 +5,7 @@ import React from "react";
 import {GridColDef} from "@mui/x-data-grid";
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import {ButtonsActionTenderTable} from "../buttonsGroup/ButtonsActionTenderTable";
 
 
 const columnsTender: GridColDef[] = [
@@ -60,6 +61,19 @@ const columnsTender: GridColDef[] = [
       return <Chip label={params.row.status} />
     },
   },
+  {
+    field: "actions",
+    headerName: "Azioni",
+    type: "string",
+    width: 400,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return <ButtonsActionTenderTable value={params.row}/>
+    },
+  },
 ]
 
 const columnsDeliveryDriver: GridColDef[] = [
@@ -110,6 +124,77 @@ const columnsDeliveryDriver: GridColDef[] = [
 
 const emptyColumn: GridColDef[]= []
 
+const columnsCost: GridColDef[] = [
+  {
+    field: "type",
+    headerName: "Cap/Zona",
+    width: 200,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      if (params.row.type === "NATIONAL"){
+        return params.row.cap?.join(",");
+      }
+      if (params.row.type === "INTERNATIONAL"){
+        return params.row.zone
+      }
+      return null
+    }
+  },
+  {
+    field: "productType",
+    headerName: "Prodotto",
+    width: 400,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      if (params.row?.internationalProductType) return params.row.internationalProductType
+      if (params.row?.nationalProductType) return params.row.nationalProductType
+      return null
+    },
+  },
+  {
+    field: "price",
+    headerName: "Costo",
+    width: 400,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return params.row?.price
+    },
+  },
+  {
+    field: "priceAdditional",
+    headerName: "Costo aggiuntivo",
+    width: 400,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return params.row?.priceAdditional
+    },
+  },
+  {
+    field: "actions",
+    headerName: "Azioni",
+    width: 400,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return params.row?.priceAdditional
+    },
+  },
+]
+
 
 const getColumn = (type:ModelType) => {
     switch (type) {
@@ -117,6 +202,8 @@ const getColumn = (type:ModelType) => {
         return columnsTender;
       case ModelType.DELIVERY_DRIVER:
         return columnsDeliveryDriver;
+      case ModelType.COST:
+        return columnsCost;
       default:
         return emptyColumn
     }

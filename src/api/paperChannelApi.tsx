@@ -1,4 +1,6 @@
-import {Configuration, DeliveryDriverApi} from "../generated";
+import {Configuration, DeliveryDriverApi, DeliveryDriverDto} from "../generated";
+import {DeliveryDriver} from "../model";
+
 
 const configuration = () => {
   const conf = new Configuration();
@@ -17,4 +19,19 @@ const configuration = () => {
 
 export const apiPaperChannel = () => {
   return new DeliveryDriverApi(configuration());
+}
+
+export const createDeliveryDriver = async (tenderCode:string, body:DeliveryDriver,
+                                     callbackSuccess:(data:DeliveryDriver)=>void,
+                                     callbackError:(e:any)=>void) => {
+  try {
+    const request = {
+      ...body,
+    } as DeliveryDriverDto
+    await apiPaperChannel().createUpdateDriver(tenderCode, request);
+    callbackSuccess(body);
+  } catch (e){
+    return callbackError(e);
+  }
+
 }

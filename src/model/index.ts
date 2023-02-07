@@ -33,6 +33,18 @@ export type DeliveryDriver = {
   phoneNumber: string,
   uniqueCode: string,
   fsu: boolean
+  cost: Cost[]
+
+}
+
+export type Cost = {
+  type: "NATIONAL" | "INTERNATIONAL",
+  nationalProductType: "AR" | "890" | "SEMPLICE" | undefined,
+  internationalProductType: "AR" | "SEMPLICE" | undefined,
+  price: number,
+  priceAdditional: number,
+  cap : string[] | undefined,
+  zone : "ZONE_1" | "ZONE_2" | "ZONE_3" | undefined
 }
 
 export type StepView = {
@@ -52,3 +64,24 @@ export enum UPLOAD_STATUS_ENUM {
   UPLOADED_FILE_S3="UPLOADED_FILE_S3",
   ERROR_UPLOADING_FILE_S3="ERROR_UPLOADING_FILE_S3"
 }
+
+
+export const mockListCost: Cost[] = [
+  {
+    type: "NATIONAL",
+    cap: ["23000", "32111"],
+    nationalProductType: "AR",
+    internationalProductType: undefined,
+    price: 3.24,
+    priceAdditional: 3.24,
+    zone: undefined,
+  },
+  {
+    type: "INTERNATIONAL",
+    cap: undefined,
+    nationalProductType: undefined,
+    internationalProductType: "AR",
+    price: 3.24,
+    priceAdditional: 3.24,
+    zone: "ZONE_1",
+  }]

@@ -2,23 +2,21 @@ import React from "react";
 import {
   Card,
   Typography,
-  Grid, Stack, Button,
+  Grid, Stack,
 } from "@mui/material";
 import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 import {FormHelperText} from "@mui/material";
-import {NoteAdd, Reply} from "@mui/icons-material";
 import {useAppDispatch, useAppSelector} from "../../../redux/hook";
 import {Tender} from "../../../model";
-import {addedTender} from "../../../redux/formTender/reducers";
 import {format} from "date-fns";
 import {fieldsTender} from "./fields";
-import {showDialog} from "../../../redux/dialog/reducers";
-import {TYPE_DIALOG} from "../../dialogs";
+import {createTender} from "../../../redux/formTender/actions";
+import {LoadingButton} from "@mui/lab";
 
 
 
-const initialValue = (data:Tender):{ [x: string]: any } => (
+const initialValue = (data?:Tender):{ [x: string]: any } => (
   {
     description: data?.description,
     dateInterval:[(data?.startDate) ? data?.startDate : new Date(), (data?.endDate) ? data?.endDate: new Date()]
@@ -35,22 +33,15 @@ export default function TenderFormBox() {
     control,
     formState: { errors },
   } = useForm({
-    defaultValues: initialValue(formState.formTender),
+    defaultValues: initialValue(formState.formTender.value),
     mode: "onSubmit",
     reValidateMode: "onSubmit",
   });
 
   const onSubmit = async (data: { [x: string]: any }) => {
-    dispatch(addedTender({data: tenderMap(data), key: 1, fromUpload: false}))
+    dispatch(createTender(tenderMap(data)));
   }
 
-  const onSubmitWithUpload = async (data: { [x: string]: any }) => {
-    dispatch(addedTender({data: tenderMap(data), key: 2, fromUpload: true}))
-  }
-
-  const handleCancelForm = () => {
-    dispatch(showDialog({type:TYPE_DIALOG.ALERT_CANCEL_FORM_TENDER}));
-  }
 
   const tenderMap = (data: { [x: string]: any }) => {
     const fromDate = (data["dateInterval"][0] && data["dateInterval"][0] instanceof Date) ? format( data["dateInterval"][0], "yyyy-MM-dd'T'HH:mm:ss.sss'Z'") : data["dateInterval"][0];
@@ -60,30 +51,32 @@ export default function TenderFormBox() {
       description: data["description"],
       startDate: fromDate,
       endDate: onDate,
+      code: (formState.formTender?.value?.code) ? formState.formTender?.value?.code : undefined
     }
     return tender;
   }
 
+
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{width:"100%"}}>
-      <Stack spacing={2} sx={{width: 1}} >
-        <Card
-          elevation={24}
-          sx={{
-            width: 1,
-            padding: "1rem 2rem",
-            boxShadow: "0px 3px 3px -2px ",
-            backgroundColor: "background.paper",
-          }}
-        >
-          <Stack spacing={3}>
-            <Typography
-              variant="h5"
-              component="div">
-              Informazione sulla Gara
-            </Typography>
+      <Card
+        elevation={24}
+        sx={{
+          width: 1,
+          padding: "1rem 2rem",
+          boxShadow: "0px 3px 3px -2px ",
+          backgroundColor: "background.paper",
+        }}
+      >
+        <Stack spacing={3}>
+          <Typography
+            variant="h5"
+            component="div">
+            Informazione sulla Gara
+          </Typography>
 
-            <Grid item container direction="column" rowSpacing={2}>
+          <Grid item container direction="column" rowSpacing={2}>
             {
               fields.map(field => (
                 <Controller
@@ -112,18 +105,14 @@ export default function TenderFormBox() {
                 />
               ))
             }
-            </Grid>
-          </Stack>
-        </Card>
+          </Grid>
 
-        <Grid item container direction="row" justifyContent="space-between">
-          <Button onClick={handleCancelForm} variant={"outlined"} startIcon={<Reply/>}>Annulla</Button>
-          <Stack direction={"row"} spacing={3}>
-            <Button variant={"outlined"} startIcon={<NoteAdd/>} onClick={handleSubmit(onSubmitWithUpload)}>Carica</Button>
-            <Button variant={"contained"} type={"submit"} >Avanti</Button>
-          </Stack>
+        </Stack>
+        <Grid item container direction="row" justifyContent={"right"}>
+          <LoadingButton loading={formState.formTender.loading} variant={"contained"} type={"submit"}>Salva</LoadingButton>
         </Grid>
-      </Stack>
+      </Card>
     </form>
   );
 }
+

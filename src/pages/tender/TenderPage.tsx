@@ -8,8 +8,7 @@ import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {getTenders} from "../../redux/tender/actions";
 import {TenderDTO} from "../../generated";
 import {useNavigate} from "react-router-dom";
-import {CREATE_TENDER_ROUTE, GET_DETAIL_TENDER} from "../../navigation/router.const";
-import {addSelected} from "../../redux/tender/reducers";
+import {CREATE_TENDER_ROUTE} from "../../navigation/router.const";
 
 
 export default function TenderPage({ email }: any){
@@ -47,11 +46,6 @@ export default function TenderPage({ email }: any){
       page: 1,
       tot: pageSize
     }));
-  }
-
-  const handleOnClickItem = (item: TenderDTO) => {
-    dispatch(addSelected(item));
-    navigate(GET_DETAIL_TENDER);
   }
 
 
@@ -92,7 +86,6 @@ export default function TenderPage({ email }: any){
                                             type={ModelType.TENDER}
                                             loading={tenderState.loading}
                                             rowId={row => row.code}
-                                            onClickItem={handleOnClickItem}
                                             onPageChange={handleOnPageChange}
                                             onPageSizeChange={handleOnPageSizeChange}/>
           </Card>

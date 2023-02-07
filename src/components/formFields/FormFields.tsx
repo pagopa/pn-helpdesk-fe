@@ -9,6 +9,7 @@ import { CalendarPickerView } from "@mui/lab";
 import { errorMessages } from "../../helpers/messagesConstants";
 import { format, isSameDay, isBefore } from "date-fns";
 import {CapAutocompleteField} from "../capAutocompleteFields";
+import SelectCustomField, {OptionCustom} from "../selectField/SelectCustomField";
 
 /**
  * Items for the Tipo Estrazione and their coresponding fields
@@ -45,6 +46,7 @@ type FieldsProps = {
    * items in case the component is select menu
    */
   selectItems?: Array<string>;
+  optionItems?: Array<OptionCustom>;
   /**
    * if the field is shown or hidden
    */
@@ -428,6 +430,9 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
       )}
       {componentType === "select" && (
         <SelectField value={value} field={field} onChange={onChange} />
+      )}
+      {componentType === "selectCustom" && (
+        <SelectCustomField keySelected={value} field={field} onChange={onChange} />
       )}
       {componentType === "radioButtons" && (
         <RadioButtonsGroup

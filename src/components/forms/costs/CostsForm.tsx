@@ -5,75 +5,75 @@ import {
 import React, {useEffect, useState} from "react";
 import {Controller, useForm, useWatch} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
+import {fieldsCosts, fieldsOfType} from "./fields";
+import {useAppDispatch} from "../../../redux/hook";
+import {Cost} from "../../../model";
 
-import {fieldsCosts, selectTypeCostItems} from "./fields";
 
-const defaultFormValues: { [key: string]: any } = {
-  "selectTypeCost": "CAP"
-};
+interface CostFormProps {
+  fsu: boolean,
+  data ?: Cost,
+  position ?: number,
+  onSave : (data:Cost, position?:number) => void,
+  onCancel: () => void
+}
 
-export default function CostsBox({fsu: boolean}:any) {
-  const [fields, setFields] = useState<string[]>(["selectTypeCost"]);
-
-  const [selectCostType, setSelectCostType] = useState<string>(
-    Object.keys(selectTypeCostItems)[0]
-  );
-
+export default function CostsForm(props:CostFormProps) {
+  const [fields, setFields] = useState<string[]>((props?.data?.type) ? fieldsOfType[props?.data?.type] : ["type"]);
+  const [typeOfCost, setTypeOfCost] = useState<String | undefined>( undefined);
 
   const {
     handleSubmit,
     control,
     getValues,
     reset,
-    formState: { errors }
   } = useForm({
-    defaultValues: defaultFormValues,
+    defaultValues: props.data,
     mode: "onSubmit",
     reValidateMode: "onSubmit",
   });
 
-  const watchAllFields = useWatch({ name: selectTypeCostItems[selectCostType], control });
-  const watchSelectedType = useWatch({ name: "selectTypeCost", control });
-
-
-  useEffect(()=>{
-    const values = getValues();
-    console.log(values);
-    if (values["selectTypeCost"]){
-      reset({
-        ...defaultFormValues,
-        "selectTypeCost": values["selectTypeCost"],
-      });
-      setSelectCostType(values["selectTypeCost"].toString())
-    }
-  }, [watchSelectedType]);
+  //const watchAllFields = useWatch({ name: selectTypeCostItems[selectCostType], control });
+  const watchTypeCost = useWatch({name: "type" as keyof Cost, control});
 
   useEffect(() => {
-    setFields(selectTypeCostItems[selectCostType]);
-  }, [selectCostType])
+    const values = getValues();
+    if (values.type && typeOfCost !== values.type){
+      reset({
+        type: values.type,
+        price: values.price,
+        priceAdditional: values.priceAdditional
+      });
+      setTypeOfCost(values.type);
+      setFields(fieldsOfType[values.type]);
+    }
 
-  const onSubmit = async (data: { [x: string]: any }) => {
-    console.log("onsubmit");
-    console.log(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchTypeCost]);
+
+
+
+  const onSubmit = async (data:Cost) => {
+    props.onSave?.(data, props.position)
   }
 
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data))} >
+    <form id={"costForm"} onSubmit={handleSubmit((data) => onSubmit(data))} >
       <DialogContent>
         <Grid item container spacing={1} sx={{paddingTop:"1rem"}}>
           {
-            fields.map(field => (
+            fields.map(item => (
               <Grid
                 item
-                key={fieldsCosts[field].name + "Item"}
-                width={fieldsCosts[field].size}
+                key={fieldsCosts[item].name + "Item"}
+                width={fieldsCosts[item].size}
                 sx={{paddingLeft: 0}}
               >
                 <Controller
-                  key={field}
+                  key={item}
                   control={control}
-                  name={field}
-                  rules={fieldsCosts[field].rules}
+                  name={item as keyof Cost}
+                  rules={fieldsCosts[item].rules}
                   render={({
                              field: { onChange, onBlur, value, name, ref },
                              fieldState: { invalid, isTouched, isDirty, error },
@@ -82,13 +82,13 @@ export default function CostsBox({fsu: boolean}:any) {
                     <>
                       <FormField
                         error={error}
-                        key={field}
-                        field={fieldsCosts[field]}
+                        key={item}
+                        field={fieldsCosts[item]}
                         onChange={onChange}
                         value={value}
                       />
                       <FormHelperText error>
-                        {errors[field] ? errors[field].message : " "}
+                        {error?.message}
                       </FormHelperText>
                     </>
                   )}
@@ -99,8 +99,8 @@ export default function CostsBox({fsu: boolean}:any) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button>Annulla</Button>
-        <Button autoFocus type={"submit"}>
+        <Button onClick={props.onCancel}>Annulla</Button>
+        <Button autoFocus onClick={handleSubmit(onSubmit)}>
           Salva
         </Button>
       </DialogActions>
