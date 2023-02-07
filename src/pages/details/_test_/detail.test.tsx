@@ -9,7 +9,7 @@ import { reducer } from "../../../mocks/mockReducer";
 import userEvent from "@testing-library/user-event";
 
 describe("TenderDetailPage", () => {
-    beforeEach(() => { <TenderDetailPage></TenderDetailPage> });
+    beforeEach(() => { reducer( <TenderDetailPage></TenderDetailPage>) });
     afterEach(cleanup);
 
     it("Dettaglio Gara", async () => {

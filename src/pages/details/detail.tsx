@@ -86,7 +86,7 @@ export function TenderDetailPage({email}:any) {
                 Recapitisti
               </Typography>
             </Grid>
-            <div data-testid="datagrid">
+            <div data-testid ="datagrid">
             <PaginationDataGrid <DeliveryDriverDto> data={deliveries.allData}
                                                     type={ModelType.DELIVERY_DRIVER}
                                                     loading={tenderState.loading}
