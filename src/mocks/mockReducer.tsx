@@ -6,7 +6,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { it } from "date-fns/locale";
 import {Page, UPLOAD_STATUS_ENUM} from "../model";
-import {DeliveryDriverDto, TenderDTO} from "../generated";
+import {DeliveryDriverDTO, TenderDTO} from "../generated";
 
 function reducer(
   ui: any,
@@ -38,7 +38,7 @@ function reducer(
       tenderForm: {
         tenderCode: undefined,
         loading: false,
-        allData: {} as Page<DeliveryDriverDto>,
+        allData: {} as Page<DeliveryDriverDTO>,
       },
       tender: {
         loading: false,

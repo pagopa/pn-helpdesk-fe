@@ -1,55 +1,58 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Card,
   Typography,
-  Grid, Stack, Button,
+  Grid, Stack,
 } from "@mui/material";
 import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 import {FormHelperText} from "@mui/material";
-import {NoteAdd, Reply} from "@mui/icons-material";
-import {useAppDispatch, useAppSelector} from "../../../redux/hook";
 import {Tender} from "../../../model";
-import {addedTender} from "../../../redux/formTender/reducers";
 import {format} from "date-fns";
 import {fieldsTender} from "./fields";
-import {showDialog} from "../../../redux/dialog/reducers";
-import {TYPE_DIALOG} from "../../dialogs";
+import {LoadingButton} from "@mui/lab";
+import {createTender} from "../../../api/paperChannelApi";
 
 
 
-const initialValue = (data:Tender):{ [x: string]: any } => (
+const initialValue = (data?:Tender):{ [x: string]: any } => (
   {
-    description: data?.description,
+    name: data?.name,
     dateInterval:[(data?.startDate) ? data?.startDate : new Date(), (data?.endDate) ? data?.endDate: new Date()]
   }
 )
 
-export default function TenderFormBox() {
-  const fields = ["description", "dateInterval"];
-  const formState = useAppSelector(state => state.tenderForm);
-  const dispatch = useAppDispatch();
+interface TenderFormBoxProps {
+  initialValue ?: Tender;
+  onChanged ?: (value:Tender) => void
+}
+
+export default function TenderFormBox(props:TenderFormBoxProps) {
+  const fields = ["name", "dateInterval"];
+  const [loading, setLoading] = useState(false);
 
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm({
-    defaultValues: initialValue(formState.formTender),
+    defaultValues: initialValue(props.initialValue),
     mode: "onSubmit",
     reValidateMode: "onSubmit",
   });
 
   const onSubmit = async (data: { [x: string]: any }) => {
-    dispatch(addedTender({data: tenderMap(data), key: 1, fromUpload: false}))
+    setLoading(true);
+    createTender(tenderMap(data), handleSuccessSaved, handelErrorSaved);
   }
 
-  const onSubmitWithUpload = async (data: { [x: string]: any }) => {
-    dispatch(addedTender({data: tenderMap(data), key: 2, fromUpload: true}))
+  const handleSuccessSaved = (value:Tender) => {
+    setLoading(false);
+    props.onChanged?.(value);
   }
 
-  const handleCancelForm = () => {
-    dispatch(showDialog({type:TYPE_DIALOG.ALERT_CANCEL_FORM_TENDER}));
+  const handelErrorSaved = (e:any) => {
+    setLoading(false);
   }
 
   const tenderMap = (data: { [x: string]: any }) => {
@@ -57,33 +60,35 @@ export default function TenderFormBox() {
     const onDate = (data["dateInterval"][1] && data["dateInterval"][1] instanceof Date) ? format( data["dateInterval"][1], "yyyy-MM-dd'T'HH:mm:ss.sss'Z'") : data["dateInterval"][1];
 
     const tender: Tender = {
-      description: data["description"],
+      name: data["name"],
       startDate: fromDate,
       endDate: onDate,
+      code: (props?.initialValue) ? props.initialValue.code : undefined
     }
     return tender;
   }
 
+
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{width:"100%"}}>
-      <Stack spacing={2} sx={{width: 1}} >
-        <Card
-          elevation={24}
-          sx={{
-            width: 1,
-            padding: "1rem 2rem",
-            boxShadow: "0px 3px 3px -2px ",
-            backgroundColor: "background.paper",
-          }}
-        >
-          <Stack spacing={3}>
-            <Typography
-              variant="h5"
-              component="div">
-              Informazione sulla Gara
-            </Typography>
+      <Card
+        elevation={24}
+        sx={{
+          width: 1,
+          padding: "1rem 2rem",
+          boxShadow: "0px 3px 3px -2px ",
+          backgroundColor: "background.paper",
+        }}
+      >
+        <Stack spacing={3}>
+          <Typography
+            variant="h5"
+            component="div">
+            Informazione sulla Gara
+          </Typography>
 
-            <Grid item container direction="column" rowSpacing={2}>
+          <Grid item container direction="column" rowSpacing={2}>
             {
               fields.map(field => (
                 <Controller
@@ -112,18 +117,14 @@ export default function TenderFormBox() {
                 />
               ))
             }
-            </Grid>
-          </Stack>
-        </Card>
+          </Grid>
 
-        <Grid item container direction="row" justifyContent="space-between">
-          <Button onClick={handleCancelForm} variant={"outlined"} startIcon={<Reply/>}>Annulla</Button>
-          <Stack direction={"row"} spacing={3}>
-            <Button variant={"outlined"} startIcon={<NoteAdd/>} onClick={handleSubmit(onSubmitWithUpload)}>Carica</Button>
-            <Button variant={"contained"} type={"submit"} >Avanti</Button>
-          </Stack>
+        </Stack>
+        <Grid item container direction="row" justifyContent={"right"}>
+          <LoadingButton loading={loading} variant={"contained"} type={"submit"}>Salva</LoadingButton>
         </Grid>
-      </Stack>
+      </Card>
     </form>
   );
 }
+

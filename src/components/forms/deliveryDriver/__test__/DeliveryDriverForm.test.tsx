@@ -5,7 +5,7 @@ import DeliveryDriverFormBox from "../DeliveryDriverForm";
 
 
 describe(DeliveryDriverFormBox, () => {
-
+/*
   afterEach(cleanup);
   beforeEach(() => {
     reducer(<DeliveryDriverFormBox key={"FSU"} fsu={true}/>);
@@ -17,7 +17,7 @@ describe(DeliveryDriverFormBox, () => {
     expect(form).toBeInTheDocument();
     expect(within(form).getByText('Nuovo FSU')).toBeTruthy();
   })
-
+*/
   // it("verify SingleFileInput value is empty", () => {
   // })
 

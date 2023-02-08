@@ -3,24 +3,25 @@ import {Container, Grid, Step, StepLabel, Stepper, Typography} from "@mui/materi
 
 import MainLayout from "../mainLayout/MainLayout";
 import React from "react";
-import TenderFormBox from "../../components/forms/tender/TenderForm";
-import {useAppDispatch, useAppSelector} from "../../redux/hook";
+import {useAppSelector} from "../../redux/hook";
 import {StepView} from "../../model";
-import DeliveryDriverFormBox from "../../components/forms/deliveryDriver/DeliveryDriverForm";
 import {StepDeliveriesDrivers} from "../../components/steps/StepDeliveriesDrivers";
+import StepTender from "../../components/steps/StepTender";
+import StepFSU from "../../components/steps/StepFSU";
+import {useParams} from "react-router-dom";
 
 
 
 const stepGara:StepView = {
   name: "Informazioni sulla gara",
   key: "tender",
-  render: () => <TenderFormBox />
+  render: () => <StepTender/>
 }
 
 const stepFSU:StepView = {
   name: "FSU",
   key: "fsu",
-  render: () => <DeliveryDriverFormBox key={"FSU"} fsu={true}/>
+  render: () => <StepFSU />
 }
 
 const stepDeliveries:StepView = {
@@ -37,10 +38,9 @@ const stepRiepilogo:StepView = {
 
 
 export function FormTenderPage({email}:any) {
-
+  const {tenderCode} = useParams();
   const steps = [stepGara, stepFSU, stepDeliveries, stepRiepilogo]
   const tenderFormStepper = useAppSelector(state => state.tenderForm);
-  const dispatch = useAppDispatch();
 
   return <MainLayout email={email}>
     <Container>
@@ -53,7 +53,7 @@ export function FormTenderPage({email}:any) {
 
           <Grid item container>
             <Typography variant="h4" color="text.primary">
-              Nuova Gara
+              {(!tenderCode) ? "Nuova Gara" : "Modifica Gara"}
             </Typography>
           </Grid>
         </Grid>

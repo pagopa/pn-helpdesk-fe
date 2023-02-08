@@ -4,10 +4,11 @@ import {getTenders} from "./actions";
 import {TenderDTO} from "../../generated";
 
 
+
 const initialState = {
   loading: false,
   allData: {} as Page<TenderDTO>,
-  selected: {} as TenderDTO
+  selected: {} as TenderDTO,
 
 }
 

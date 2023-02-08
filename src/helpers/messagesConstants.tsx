@@ -13,7 +13,9 @@ export const errorMessages = {
   ONE_MONTH_INTERVAL: "Selezionare date nello stesso mese",
   BACKEND_DOWN_MESSAGE:
     "Servizio offline, contattare l'amministratore di sistema",
-  CAPS_INVALID: "I valori inseriti non sono corretti"
+  CAPS_INVALID: "I valori inseriti non sono corretti",
+  PRODUCT_TYPE_INVALID: "Selezionare un tipo di prodotto valido",
+  ZONE_INVALID: "Selezionare una zona valida",
 };
 
 export const infoMessages = {
@@ -28,6 +30,9 @@ export const infoMessages = {
     "La password deve contenere almeno 1 lettera minuscola, almeno 1 lettera maiuscola, almeno 1 numero, nessuno spazio, almeno uno tra i caratteri ^$*.[]{}()?-\"!@#%&/,><':;|_~`+=+ e lunghezza almeno 16 caratteri",
   TIMEOUT:
     "L'intervallo temporale selezionato è troppo grande, selezionarne uno più piccolo",
+  TITLE_ALERT_DELETE_TENDER: "Vuoi eliminare la Gara ?",
+  MESSAGE_ALERT_DELETE_TENDER: "Stai per eliminare la gara e tutti i suoi dettagli. L'operazione sarà irreversibile. Vuoi continuare ?",
+
 };
 
 export const functionalitiesNames: { [key: string]: string } = {

@@ -6,8 +6,8 @@ import {isBefore, isSameDay} from "date-fns";
 export const fieldsTender: { [key:string]: FieldsProps } = {
 
 
-  "description": {
-    name: "description",
+  "name": {
+    name: "name",
     componentType: "textfield",
     label: "Identificativo",
     hidden: false,

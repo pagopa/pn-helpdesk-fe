@@ -1,13 +1,13 @@
 import {Page} from "../../model";
 import {createSlice} from "@reduxjs/toolkit";
-import {DeliveryDriverDto} from "../../generated";
+import {DeliveryDriverDTO} from "../../generated";
 import {getAllDrivers} from "./actions";
 
 
 const initialState = {
   tenderCode: undefined,
   loading: false,
-  allData: {} as Page<DeliveryDriverDto>,
+  allData: {} as Page<DeliveryDriverDTO>,
 }
 
 

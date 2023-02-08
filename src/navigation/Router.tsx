@@ -39,6 +39,19 @@ function Router() {
           </PrivateRoute>
         }
       />
+      <Route path={CREATE_TENDER_ROUTE}>
+        <Route path=":tenderCode" element={
+          <PrivateRoute condition="token">
+            <FormTenderPage />
+          </PrivateRoute>}
+        />
+
+        <Route path="" element={
+          <PrivateRoute condition="token">
+            <FormTenderPage />
+          </PrivateRoute>}
+        />
+      </Route>
 
       <Route
         path={CREATE_TENDER_ROUTE}

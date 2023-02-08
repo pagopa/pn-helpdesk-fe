@@ -47,7 +47,6 @@ export function CapAutocompleteField(props:Props){
     limitTags={3}
     onChange={handleOnChange}
     getOptionLabel={(option) => option.value}
-    defaultValue={[cap[2]]}
     filterOptions={(options, params) => {
       const filtered = filter(options, params);
 

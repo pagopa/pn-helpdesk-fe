@@ -1,5 +1,6 @@
 import {RowDataInfo} from "./DataInfo";
 import {Chip, Typography} from "@mui/material";
+import {Cost} from "../../model";
 
 
 export const tenderRowsInfo: RowDataInfo[] = [
@@ -23,5 +24,4 @@ export const tenderRowsInfo: RowDataInfo[] = [
     label: "Stato",
     render: (data) => <Chip label={data?.status}/>
   },
-
 ]

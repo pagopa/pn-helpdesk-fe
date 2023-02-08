@@ -18,7 +18,7 @@ export function StepDeliveriesDrivers(){
     {
       (formState.fromUpload) ?
         <Stack direction={"column"} width={1} spacing={2}>
-          <DownloadBox tenderCode={formState.formTender?.code}/>
+          <DownloadBox tenderCode={formState.formTender?.value?.code}/>
           <UploadBox loading={formState.saving.loading}/>
           <Grid item container direction="row" justifyContent="space-between">
             <Button disabled={formState.saving.loading} onClick={() => dispatch(changeKey({key:0}))} variant={"outlined"}>Torna a Informazioni gara</Button>
@@ -28,7 +28,7 @@ export function StepDeliveriesDrivers(){
           </Grid>
         </Stack>
         :
-        <DeliveryDriverFormBox fsu={false}/>
+        null
     }
 
   </>
