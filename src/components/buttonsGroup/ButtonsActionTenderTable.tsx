@@ -7,7 +7,6 @@ import {useAppDispatch} from "../../redux/hook";
 import {useNavigate} from "react-router-dom";
 import {addSelected} from "../../redux/tender/reducers";
 import {CREATE_TENDER_ROUTE, GET_DETAIL_TENDER} from "../../navigation/router.const";
-import {TenderDTO} from "../../generated";
 
 
 export function ButtonsActionTenderTable(props:{value:any}){

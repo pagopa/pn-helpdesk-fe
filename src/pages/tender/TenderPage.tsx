@@ -20,7 +20,7 @@ export default function TenderPage({ email }: any){
   const [pagination, setPagination] = useState<FilterRequest>({
     page: 1,
     tot: 25
-  })
+})
 
   const fetchTender = useCallback(() => {
     dispatch(getTenders(pagination));

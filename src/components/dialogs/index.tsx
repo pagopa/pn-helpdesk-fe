@@ -7,10 +7,9 @@ import {Cost} from "../../model";
 interface CostDialogProps {
   fsu: boolean
   cost ?: Cost
-  position ?: number
   open: boolean,
   onClickNegative : () => void
-  onClickPositive : (data: Cost, position?:number) => void
+  onClickPositive : (data: Cost) => void
 }
 
 
@@ -18,7 +17,7 @@ export function CostDialog(props: CostDialogProps){
   return <>
     <Dialog open={props.open} onClose={props.onClickNegative}>
       <DialogTitle>Costo</DialogTitle>
-      <CostsForm fsu={props.fsu} onSave={props.onClickPositive} onCancel={props.onClickNegative}/>
+      <CostsForm fsu={props.fsu} cost={props.cost} onSave={props.onClickPositive} onCancel={props.onClickNegative}/>
     </Dialog>
   </>
 }
