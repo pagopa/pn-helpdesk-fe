@@ -17,13 +17,17 @@ describe("TenderDetailPage", () => {
 
 
     it("Dettaglio Gara", async () => {
-        await act(async () => {
-            reducer(<TenderDetailPage/>);
-        });
 
-        const DeatilVisualization = await screen.findByText(
-             "Dettaglio gara"
+
+
+        const DeatilVisualization = await screen.findAllByDisplayValue(
+             "Informazioni"
         );
+
+
+        expect(DeatilVisualization).toBeInTheDocument();
+        //eslint-disable-next-line testing-library/no-debugging-utils
+        screen.debug(DeatilVisualization)
         expect(DeatilVisualization).toBeInTheDocument();
         const infoVisualization = await screen.findByText("Informazioni");
         expect(infoVisualization).toBeInTheDocument();
@@ -54,6 +58,9 @@ describe("TenderDetailPage", () => {
         const table = await screen.findByText(
             "Recapitisti"
         );
+        expect(table).toBeInTheDocument();
+        //eslint-disable-next-line testing-library/no-debugging-utils
+        screen.debug(table)
         expect(table).toBeInTheDocument();
     });
 
@@ -88,6 +95,7 @@ describe("TenderDetailPage", () => {
         const pendingStatus = screen.queryByRole("button", {
             name: "In corso",
         });
+
         expect(id).not.toBeInTheDocument();
         expect(startDate).not.toBeInTheDocument();
         expect(endDate).not.toBeInTheDocument();
