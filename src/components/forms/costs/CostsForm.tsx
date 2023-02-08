@@ -6,20 +6,18 @@ import React, {useEffect, useState} from "react";
 import {Controller, useForm, useWatch} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 import {fieldsCosts, fieldsOfType} from "./fields";
-import {useAppDispatch} from "../../../redux/hook";
 import {Cost} from "../../../model";
 
 
 interface CostFormProps {
   fsu: boolean,
-  data ?: Cost,
-  position ?: number,
-  onSave : (data:Cost, position?:number) => void,
+  cost ?: Cost,
+  onSave : (data:Cost) => void,
   onCancel: () => void
 }
 
 export default function CostsForm(props:CostFormProps) {
-  const [fields, setFields] = useState<string[]>((props?.data?.type) ? fieldsOfType[props?.data?.type] : ["type"]);
+  const [fields, setFields] = useState<string[]>((props?.cost?.type) ? fieldsOfType[props?.cost?.type] : ["type"]);
   const [typeOfCost, setTypeOfCost] = useState<String | undefined>( undefined);
 
   const {
@@ -28,7 +26,7 @@ export default function CostsForm(props:CostFormProps) {
     getValues,
     reset,
   } = useForm({
-    defaultValues: props.data,
+    defaultValues: props.cost,
     mode: "onSubmit",
     reValidateMode: "onSubmit",
   });
@@ -54,7 +52,7 @@ export default function CostsForm(props:CostFormProps) {
 
 
   const onSubmit = async (data:Cost) => {
-    props.onSave?.(data, props.position)
+    props.onSave?.(data)
   }
 
   return (

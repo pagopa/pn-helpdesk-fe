@@ -10,10 +10,12 @@ import * as spinnerActions from "../../redux/spinnerSlice";
 import {apiPaperChannel} from "../../api/paperChannelApi";
 import * as snackbarActions from "../../redux/snackbarSlice";
 import {Tender} from "../../model";
+import {GET_TENDER} from "../../navigation/router.const";
 
 
 export default function StepTender(){
   const formTender = useAppSelector(state => state.tenderForm.formTender);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const {tenderCode} = useParams();
 
@@ -35,7 +37,9 @@ export default function StepTender(){
     } catch (e){
       dispatch(spinnerActions.updateSpinnerOpened(false));
       dispatch(snackbarActions.updateSnackbacrOpened(true));
-      dispatch(snackbarActions.updateStatusCode("400"));
+      dispatch(snackbarActions.updateStatusCode(404));
+      dispatch(snackbarActions.updateMessage("Gara non trovata !"));
+      navigate(GET_TENDER);
     }
   }
 

@@ -3,6 +3,7 @@ import React from "react";
 import {ModelType} from "./index";
 import {getColumn} from "./ColumnsDefinition";
 import {Page} from "../../model";
+import useTenderPageViewModel from "../../pages/useTenderPageViewModel";
 
 
 
@@ -19,6 +20,8 @@ interface PaginationProps<T> {
 
 
 export function PaginationDataGrid<T>(props:PaginationProps<T>) {
+  const {state, setState} = useTenderPageViewModel();
+  console.log(state);
 
   const rowClickHandler = (rowData: GridRowParams) => {
     props.onClickItem?.(rowData.row as T);
