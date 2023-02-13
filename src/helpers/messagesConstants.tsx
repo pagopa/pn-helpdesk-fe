@@ -14,6 +14,7 @@ export const errorMessages = {
   BACKEND_DOWN_MESSAGE:
     "Servizio offline, contattare l'amministratore di sistema",
   INCORRECT_JTI: "Identificativo di sessione non corretto",
+  MIN_LENGTH: (length: number = 5) => `Inserire almeno ${length} caratteri`,
 };
 
 export const infoMessages = {
@@ -28,6 +29,7 @@ export const infoMessages = {
     "La password deve contenere almeno 1 lettera minuscola, almeno 1 lettera maiuscola, almeno 1 numero, nessuno spazio, almeno uno tra i caratteri ^$*.[]{}()?-\"!@#%&/,><':;|_~`+=+ e lunghezza almeno 16 caratteri",
   TIMEOUT:
     "L'intervallo temporale selezionato è troppo grande, selezionarne uno più piccolo",
+  ACCEPTED_RESPONSE: "La richiesta è stata eseguita parzialmente",
 };
 
 export const functionalitiesNames: { [key: string]: string } = {

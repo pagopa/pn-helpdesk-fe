@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\pages\search\__test__\SearchPage.test.tsx">
+    <testCase name="SearchPage renders component" duration="343"/>
+    <testCase name="SearchPage renders header and footer" duration="218"/>
+    <testCase name="SearchPage renders form" duration="61"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\forms\changePassword\__test__\ChangePasswordForm.test.tsx">
+    <testCase name="ChangePasswordForm renders component" duration="503"/>
+    <testCase name="ChangePasswordForm renders title" duration="116"/>
+    <testCase name="ChangePasswordForm renders button" duration="386"/>
+    <testCase name="ChangePasswordForm renders new password field" duration="95"/>
+    <testCase name="ChangePasswordForm renders confirm new password field" duration="96"/>
+    <testCase name="ChangePasswordForm click button and show errors" duration="226"/>
+    <testCase name="ChangePasswordForm fill inputs and click button" duration="172"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\header\__test__\Header.test.tsx">
+    <testCase name="Header Component renders header" duration="468"/>
+    <testCase name="Header Component renders header items" duration="193"/>
+    <testCase name="Header Component simulate log out button click" duration="559"/>
+    <testCase name="Header Component simulate log out" duration="451"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\pages\aggregates\__test__\AggregatesPage.test.tsx">
+    <testCase name="AggregatesPage test render" duration="808"/>
+    <testCase name="AggregatesPage test click nuova aggregazione" duration="685"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\dataRangePicker\__test__\DateRangePickerComponent.test.tsx">
+    <testCase name="DateRangePickerComponent renders component" duration="338"/>
+    <testCase name="DateRangePickerComponent test on change" duration="1918"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\pages\paAssociation\__test__\PaAssociationPage.test.tsx">
+    <testCase name="PaAssociationPage test render" duration="856"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\forms\search\__test__\SearchForm.test.tsx">
+    <testCase name="SearchForm renders component" duration="879"/>
+    <testCase name="SearchForm renders input fields" duration="1259"/>
+    <testCase name="SearchForm renders resetta filtri button and not be disabled" duration="441"/>
+    <testCase name="SearchForm renders ricerca button and be disabled" duration="435"/>
+    <testCase name="SearchForm fill fields and click ricerca" duration="1217"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\pages\aggregates\__test__\AggregateDetailPage.test.tsx">
+    <testCase name="AggregateDetailPage MODIFY Renders AggregateDetailPage MODIFY" duration="838"/>
+    <testCase name="AggregateDetailPage MODIFY Renders AggregateDetailPage ASSOCIA" duration="850"/>
+    <testCase name="AggregateDetailPage MODIFY Renders AggregateDetailPage TRASFERISCI" duration="750"/>
+    <testCase name="AggregateDetailPage CREATE Renders AggregateDetailPage CREATE" duration="860"/>
+    <testCase name="AggregateDetailPage FAILED_PROMISE Renders AggregateDetailPage FAILED_PROMISE" duration="240"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\forms\aggregate\__test__\AggregateForm.test.tsx">
+    <testCase name="AggregateForm CREATE Renders AggregateForm - CREATE" duration="675"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\paAssociation\__test__\PaAssociation.test.tsx">
+    <testCase name="PaAssociation tests render associable-pa-card" duration="564"/>
+    <testCase name="PaAssociation tests check pa and save" duration="2318"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\pages\monitor\__test__\MonitorPage.test.tsx">
+    <testCase name="MonitorPage render component" duration="228"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\breadcrumbs\__test__\Breadcrumbs.test.tsx">
+    <testCase name="Breadcrumbs Tests base route navigation" duration="129"/>
+    <testCase name="Breadcrumbs Tests second route navigation" duration="21"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\aggregates\__test__\AggregatesTable.test.tsx">
+    <testCase name="AggregatesTable Component renders aggregates table" duration="667"/>
+    <testCase name="AggregatesTable Component filter single aggregate by name" duration="664"/>
+    <testCase name="AggregatesTable Component handle click on column" duration="200"/>
+    <testCase name="AggregatesTable Component delete aggregate" duration="558"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\paAssociation\__test__\AssociablePaTable.test.tsx">
+    <testCase name=" AssociablePaTable without selection renders" duration="496"/>
+    <testCase name=" AssociablePaTable without selection change items per page" duration="501"/>
+    <testCase name=" AssociablePaTable without selection filters pa by name" duration="561"/>
+    <testCase name=" AssociablePaTable without selection handle selection" duration="109"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\pages\login\__test__\LoginPage.test.tsx">
+    <testCase name="LoginPage includes change password form" duration="308"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\forms\filterTable\__test__\FilterTable.test.tsx">
+    <testCase name="FilterTable tests renders" duration="339"/>
+    <testCase name="FilterTable tests apply filters" duration="312"/>
+    <testCase name="FilterTable tests clear filters" duration="444"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\aggregates\__test__\PaTable.test.tsx">
+    <testCase name="PaTable without selection renders" duration="216"/>
+    <testCase name="PaTable without selection change items per page" duration="309"/>
+    <testCase name="PaTable with selection handle selection click" duration="101"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\aggregates\__test__\PaList.test.tsx">
+    <testCase name="  PaList without selection renders" duration="207"/>
+    <testCase name="  PaList without selection change items per page" duration="298"/>
+    <testCase name="PaList with selection handle selection click" duration="94"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\footer\__test__\Footer.test.tsx">
+    <testCase name="Footer Component renders footer" duration="214"/>
+    <testCase name="Footer Component renders footer items" duration="49"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\forms\login\__test__\LoginForm.test.tsx">
+    <testCase name="LoginForm renders component" duration="315"/>
+    <testCase name="LoginForm renders input fields" duration="404"/>
+    <testCase name="LoginForm renders login button" duration="222"/>
+    <testCase name="LoginForm submit form and show errors" duration="249"/>
+    <testCase name="LoginForm fill fields" duration="186"/>
+    <testCase name="LoginForm renders tooltip" duration="368"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\__tests__\App.test.tsx">
+    <testCase name="renders" duration="318"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\confirmationDialog\__test__\ConfirmationDialog.test.tsx">
+    <testCase name="ConfirmationDialog tests render" duration="252"/>
+    <testCase name="ConfirmationDialog tests confirm button clicked" duration="177"/>
+    <testCase name="ConfirmationDialog tests cancel button clicked" duration="86"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\navigationMenu\__test__\MenuComponent.test.tsx">
+    <testCase name="Navigation menu component test renders icon of the menu" duration="126"/>
+    <testCase name="Navigation menu component test click button and show menu component" duration="300"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\table\__test__\table.test.tsx">
+    <testCase name="Table tests renders table" duration="145"/>
+    <testCase name="Table tests click on a column" duration="54"/>
+    <testCase name="Table tests sorts a column" duration="90"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\selectField\__test__\SelectField.test.tsx">
+    <testCase name="SelectField Component renders component" duration="150"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\hooks\__test__\usePagination.test.tsx">
+    <testCase name="usePagination Tests base route navigation" duration="4"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\aggregates\__test__\AggregateAccordion.test.tsx">
+    <testCase name="AggregateAccordion render" duration="325"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\navigation\__test__\PrivateRoute.test.tsx">
+    <testCase name="returns" duration="31"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\confirmationDialog\__test__\useConfirmDialog.test.tsx">
+    <testCase name="useConfirmDialog test open confirm dialog" duration="259"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\customCard\__test__\CustomCard.test.tsx">
+    <testCase name="CustomCard test render a custom card" duration="171"/>
+    <testCase name="CustomCard test click action" duration="51"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\Authentication\__test__\storage.test.tsx">
+    <testCase name="Storage setStorage" duration="4"/>
+    <testCase name="Storage deleteStorage" duration="1"/>
+    <testCase name="Storage resetStorage" duration="1"/>
+    <testCase name="Storage getStorage" duration="1"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\snackbar\__test__\SnackbarComponent.test.tsx">
+    <testCase name="SnackbarComponent  Component renders component" duration="202"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\textField\__test__\TextField.test.tsx">
+    <testCase name="Testfield Component renders" duration="100"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\__tests__\testReducer.tsx">
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\radioButtonsGroup\__test__\RadioButtonsGroup.test.tsx">
+    <testCase name="RadioButtonsGroup Component renders component" duration="138"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\responseData\__test__\ResponseData.test.tsx">
+    <testCase name="ResponseData renders component" duration="55"/>
+  </file>
+  <file path="C:\Users\aless\Desktop\pn-helpdesk-fe\src\components\datePicker\__test__\DatePickerComponent.test.tsx">
+  </file>
+</testExecutions>

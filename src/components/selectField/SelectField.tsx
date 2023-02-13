@@ -26,6 +26,7 @@ const SelectField = (props: Props) => {
     <FormControl sx={{ width: "100%" }}>
       <InputLabel id={field.label}>{field.label}</InputLabel>
       <Select
+        data-testid={`select-${field.name}`}
         labelId={field.label}
         id={field.label}
         label={field.label}

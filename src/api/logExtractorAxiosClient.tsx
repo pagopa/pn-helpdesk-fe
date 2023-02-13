@@ -9,45 +9,15 @@ import {
   getEventsType,
   getSessionLogsType,
 } from "./apiRequestTypes";
-
-const headers: Readonly<Record<string, string | boolean>> = {
-  Accept: "*/*",
-  "Content-Type": "application/json",
-  "X-Requested-With": "XMLHttpRequest",
-};
+import { createAxiosInstance } from "./axiosInstanceCreator";
 
 class Http {
   private instance: AxiosInstance | null = null;
 
   private get http(): AxiosInstance {
-    return this.instance != null ? this.instance : this.initHttp();
-  }
-
-  initHttp() {
-    const http = axios.create({
-      baseURL: process.env.REACT_APP_API_ENDPOINT,
-      headers,
-    });
-
-    http.interceptors.response.use(
-      (response: any) => response,
-      (error: any) => {
-        throw error;
-      }
-    );
-
-    http.interceptors.request.use((request: any) => {
-      const token = sessionStorage.getItem("token");
-      const accessToken = sessionStorage.getItem("accessToken");
-      request.headers = {
-        ...request.headers,
-        Authorization: `Bearer ${token}`,
-        Auth: accessToken,
-      };
-      return request;
-    });
-    this.instance = http;
-    return http;
+    return this.instance != null
+      ? this.instance
+      : createAxiosInstance(process.env.REACT_APP_API_ENDPOINT!);
   }
 
   getPersonTaxId<T = any, R = AxiosResponse<T>>(

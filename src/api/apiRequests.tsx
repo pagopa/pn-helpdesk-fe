@@ -1,3 +1,5 @@
+// import { aggregateApiClient } from "./aggregateApiClient";
+import { formatDate } from "../helpers/formatter.utility";
 import {
   getLogsProcessesType,
   getNotificationsInfoLogsType,
@@ -7,15 +9,21 @@ import {
   getPersonsLogsType,
   getEventsType,
   getSessionLogsType,
+  getAggregateParams,
+  modifyAggregateType,
+  createAggregateType,
+  AggregateSummary,
+  Pa,
 } from "./apiRequestTypes";
-import { http as apiClient } from "./axiosClient";
+import { http as logExtractoraggregateApiClient } from "./logExtractorAxiosClient";
+import { http as aggregateApiClient } from "./aggregateAxiosClient";
 
 /**
  * Return the person's ID depending on the input received
  * @param {getPersonIdType} data
  */
 const getPersonId = async (payload: getPersonIdType) => {
-  return await apiClient
+  return await logExtractoraggregateApiClient
     .getPersonId(payload)
     .then((result) => {
       return result;
@@ -31,7 +39,7 @@ const getPersonId = async (payload: getPersonIdType) => {
  */
 
 const getPersonTaxId = async (payload: getPersonTaxIdType) => {
-  return await apiClient
+  return await logExtractoraggregateApiClient
     .getPersonTaxId(payload)
     .then((result) => {
       return result;
@@ -46,7 +54,7 @@ const getPersonTaxId = async (payload: getPersonTaxIdType) => {
  * @param {getPersonsLogsType} data
  */
 const getPersonsLogs = async (data: getPersonsLogsType) => {
-  return await apiClient
+  return await logExtractoraggregateApiClient
     .getPersonsLogs(data)
     .then((result: any) => {
       return result;
@@ -61,7 +69,7 @@ const getPersonsLogs = async (data: getPersonsLogsType) => {
  * @param {getOperatorsLogsType} data
  */
 /*const getOperatorsLogs = async (data: getOperatorsLogsType) => {
-    return await apiClient.getOperatorsLogs(data)
+    return await aggregateApiClient.getOperatorsLogs(data)
         .then((result: any) => {
             return result;
         })
@@ -75,7 +83,7 @@ const getPersonsLogs = async (data: getPersonsLogsType) => {
  * @param {getNotificationsInfoLogsType} data
  */
 const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
-  return await apiClient
+  return await logExtractoraggregateApiClient
     .getNotificationsInfoLogs(data)
     .then((result: any) => {
       return result;
@@ -92,7 +100,7 @@ const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
 const getNotificationsMonthlyStatsLogs = async (
   data: getNotificationsMonthlyStatsLogsType
 ) => {
-  return await apiClient
+  return await logExtractoraggregateApiClient
     .getNotificationsMonthlyStatsLogs(data)
     .then((result: any) => {
       return result;
@@ -106,7 +114,7 @@ const getNotificationsMonthlyStatsLogs = async (
  * Extract all log paths by given a specific traceId
  */
 const getLogsProcesses = async (data: getLogsProcessesType) => {
-  return await apiClient
+  return await logExtractoraggregateApiClient
     .getLogsProcesses(data)
     .then((result: any) => {
       return result;
@@ -117,7 +125,7 @@ const getLogsProcesses = async (data: getLogsProcessesType) => {
 };
 
 const getStatus = async () => {
-  return await apiClient
+  return await logExtractoraggregateApiClient
     .getStatus()
     .then((result: any) => {
       return result;
@@ -131,7 +139,7 @@ const getStatus = async () => {
 };
 
 const getEvents = async (data: getEventsType) => {
-  return await apiClient
+  return await logExtractoraggregateApiClient
     .getEvents(data)
     .then((result: any) => {
       return result;
@@ -142,10 +150,162 @@ const getEvents = async (data: getEventsType) => {
 };
 
 const getSessionLogs = async (data: getSessionLogsType) => {
-  return await apiClient
+  return await logExtractoraggregateApiClient
     .getSessionLogs(data)
     .then((result: any) => {
       return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+/**
+ * Get a list of all the aggregates
+ */
+const getAggregates = async (data: getAggregateParams) => {
+  return await aggregateApiClient
+    .getAggregates(data)
+    .then((result) => {
+      const items = result.data.items.map(
+        (agg) =>
+          ({
+            ...agg,
+            createdAt: formatDate(agg.createdAt, true),
+            lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
+          } as AggregateSummary)
+      );
+
+      return {
+        ...result.data,
+        items,
+      };
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
+/**
+ * Get the details of an aggregation
+ */
+const getAggregateDetails = (id: string) => {
+  return aggregateApiClient
+    .getAggregateDetails(id)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
+/**
+ * Create an aggregation
+ */
+const createAggregate = async (data: createAggregateType) => {
+  return await aggregateApiClient
+    .createAggregate(data)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+/**
+ * Modify an aggregation
+ */
+const modifyAggregate = async (data: modifyAggregateType, id: string) => {
+  return await aggregateApiClient
+    .modifyAggregate(data, id)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+/**
+ * Delete an aggregation
+ */
+const deleteAggregate = async (id: string) => {
+  return await aggregateApiClient
+    .deleteAggregate(id)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+/**
+ * Get associated PAs given an aggregation id
+ */
+const getAssociatedPaList = (id: string) => {
+  return aggregateApiClient
+    .getAssociatedPaList(id)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
+/**
+ * Move PAs to another aggregation
+ */
+const movePa = async (id: string, data: Array<Pa>) => {
+  return await aggregateApiClient
+    .movePa(id, data)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
+const getAssociablePaList = (name?: string) => {
+  return aggregateApiClient
+    .getAssociablePaList(name)
+    .then((result) => {
+      const items = result.data.items.map((pa) => ({ ...pa, selected: false }));
+      return {
+        ...result.data,
+        items,
+      };
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
+const addPa = async (id: string, paSelectedList: Array<Pa>) => {
+  //Remove selected attribute from pa objects
+  let paList = paSelectedList.map((pa) => ({ id: pa.id, name: pa.name }));
+
+  return await aggregateApiClient
+    .addPa(id, paList)
+    .then((result: any) => {
+      return result.data;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
+/**
+ * Get the list of usage plans
+ */
+const getUsagePlans = async () => {
+  return await aggregateApiClient
+    .getUsagePlans()
+    .then((result: any) => {
+      return result.data;
     })
     .catch((error: any) => {
       throw error;
@@ -162,6 +322,16 @@ const apiRequests = {
   getStatus,
   getEvents,
   getSessionLogs,
+  getAssociatedPaList,
+  movePa,
+  getAggregates,
+  modifyAggregate,
+  createAggregate,
+  getAggregateDetails,
+  deleteAggregate,
+  getUsagePlans,
+  addPa,
+  getAssociablePaList,
 };
 
 export default apiRequests;
