@@ -239,6 +239,7 @@ export type {
   getNotificationsMonthlyStatsLogsType,
   getLogsProcessesType,
   getEventsType,
+  getSessionLogsType,
   getAggregateParams,
   AggregateSummary,
   getAggregatesResponse,

@@ -1,6 +1,5 @@
 import { BrowserRouter as Router } from "react-router-dom";
-import { act, render } from "@testing-library/react";
-import { render, RenderOptions } from "@testing-library/react";
+import { act, render, RenderOptions } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";

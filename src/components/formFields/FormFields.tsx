@@ -458,7 +458,6 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     name: "name",
     componentType: "textfield",
     label: "Nome Aggregazione",
-    size: "33%",
     hidden: false,
     rules: {
       required: errorMessages.REQUIRED,
@@ -468,14 +467,12 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     name: "description",
     componentType: "textfield",
     label: "Descrizione Aggregazione",
-    size: "67%",
     hidden: false,
   },
   "Usage Plan": {
     name: "usagePlanName",
     componentType: "select",
     label: "Usage Plan",
-    size: "33%",
     hidden: false,
     rules: {
       required: errorMessages.REQUIRED,
@@ -486,7 +483,6 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     name: "rate",
     componentType: "textfield",
     label: "Rate",
-    size: "33%",
     hidden: false,
     InputProps: {
       endAdornment: (
@@ -501,7 +497,6 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     name: "burst",
     componentType: "textfield",
     label: "Burst",
-    size: "33%",
     hidden: false,
     InputProps: {
       endAdornment: (
