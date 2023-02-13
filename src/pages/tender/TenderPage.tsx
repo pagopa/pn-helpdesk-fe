@@ -20,16 +20,16 @@ export default function TenderPage({ email }: any){
   const [pagination, setPagination] = useState<FilterRequest>({
     page: 1,
     tot: 25
-})
+  })
 
   const fetchTender = useCallback(() => {
     dispatch(getTenders(pagination));
-    //react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [pagination] )
-
 
   useEffect(() => {
     fetchTender();
+    // eslint-disable-next-line
   }, [fetchTender])
 
 

@@ -20,7 +20,7 @@ export default function StepTender(){
   const {tenderCode} = useParams();
 
   useEffect(() => {
-    if (tenderCode && !formTender.value){
+    if (tenderCode && !formTender?.code){
       retrieveDetail(tenderCode)
     }
   }, [])
@@ -58,19 +58,19 @@ export default function StepTender(){
 
   return <Stack spacing={2} sx={{width: 1}} >
 
-    <TenderFormBox key={"TENDER-"+formTender.value?.code} initialValue={formTender.value} onChanged={handleChangeTenderData} />
+    <TenderFormBox key={"TENDER-"+formTender?.code} initialValue={formTender} onChanged={handleChangeTenderData} />
 
     <Grid item container direction="row" justifyContent="space-between">
       <ButtonCancel />
 
       <Stack direction={"row"} spacing={3}>
         <Button variant={"outlined"}
-                disabled={!(formTender?.value)}
+                disabled={!(formTender?.code)}
                 startIcon={<NoteAdd/>}
                 onClick={handleUpload}>Carica</Button>
 
         <Button variant={"contained"}
-                disabled={!(formTender?.value)}
+                disabled={!(formTender?.code)}
                 onClick={handleGoFSU} >Avanti</Button>
       </Stack>
     </Grid>

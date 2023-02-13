@@ -9,22 +9,12 @@ interface SavingState {
   result: "HANDLE" | "PROGRESS" | "SAVED" | "ERROR"
 }
 
-interface FormState<T> {
-  loading: boolean,
-  error: boolean,
-  value : T | undefined
-}
-
 const initialState = {
   activeKey: 0 as number,
 
   fromUpload: false,
 
-  formTender: {
-    loading: false,
-    error: false,
-    value: undefined
-  } as FormState<Tender>,
+  formTender: {} as Tender,
 
 
   formFsu: {} as DeliveryDriver,
@@ -42,14 +32,20 @@ const formTenderSlice = createSlice({
   reducers : {
     clearFormState: () => initialState,
     goUploadStep: (state) => {
-      if (state.formTender.value !== undefined){
+      if (state.formTender?.code ){
         state.activeKey = 2;
         state.fromUpload = true
       }
     },
     goFSUStep: (state) => {
-      if (state.formTender.value !== undefined){
+      if (state.formTender?.code){
         state.activeKey = 1;
+        state.fromUpload = false
+      }
+    },
+    goTenderDriversStep: (state) => {
+      if (state.formTender?.code && state.formFsu?.uniqueCode){
+        state.activeKey = 2;
         state.fromUpload = false
       }
     },
@@ -60,16 +56,14 @@ const formTenderSlice = createSlice({
       state.activeKey = (state.activeKey > 0) ? state.activeKey-1 : 0
     },
     addedTender:(state, action:PayloadAction<Tender>) => {
-      state.formTender.value = action.payload
+      state.formTender = action.payload
     },
     addedFSU: (state, action:PayloadAction<DeliveryDriver>) => {
       state.formFsu = action.payload
     }
-  },
-  extraReducers: (builder) => {
   }
 })
 
-export const {clearFormState, goUploadStep, goFSUStep,changeKey, backStep, addedTender, addedFSU} = formTenderSlice.actions;
+export const {clearFormState, goUploadStep, goFSUStep, goTenderDriversStep, changeKey, backStep, addedTender, addedFSU} = formTenderSlice.actions;
 
 export default formTenderSlice;

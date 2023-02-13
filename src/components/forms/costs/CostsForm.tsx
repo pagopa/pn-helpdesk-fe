@@ -7,18 +7,28 @@ import {Controller, useForm, useWatch} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 import {fieldsCosts, fieldsOfType} from "./fields";
 import {Cost} from "../../../model";
+import {CostDTO} from "../../../generated";
+import {createCost} from "../../../api/paperChannelApi";
+import * as snackbarActions from "../../../redux/snackbarSlice";
+import {useAppDispatch} from "../../../redux/hook";
+import {LoadingButton} from "@mui/lab";
+import {AxiosError} from "axios";
 
 
 interface CostFormProps {
   fsu: boolean,
+  tenderCode:string,
+  driverCode: string
   cost ?: Cost,
-  onSave : (data:Cost) => void,
+  onSave : () => void,
   onCancel: () => void
 }
 
 export default function CostsForm(props:CostFormProps) {
   const [fields, setFields] = useState<string[]>((props?.cost?.type) ? fieldsOfType[props?.cost?.type] : ["type"]);
   const [typeOfCost, setTypeOfCost] = useState<String | undefined>( undefined);
+  const [submitting, setSubmitting] = useState(false);
+  const dispatch = useAppDispatch();
 
   const {
     handleSubmit,
@@ -52,7 +62,32 @@ export default function CostsForm(props:CostFormProps) {
 
 
   const onSubmit = async (data:Cost) => {
-    props.onSave?.(data)
+    const value = {
+      uid: props.cost?.uid,
+      price: data.price,
+      priceAdditional: data.priceAdditional,
+      zone: data.zone,
+      cap: data.cap,
+      productType: (data.type === "NATIONAL") ? data!.nationalProductType : data!.internationalProductType
+    } as CostDTO
+    setSubmitting(true);
+    createCost(props.tenderCode, props.driverCode, value, (response) => {
+      setSubmitting(false);
+      props.onSave?.();
+    }, (e) => {
+      let message = "Errore durante il salvataggio del costo"
+      let status = 400
+      if (e instanceof AxiosError && e.response?.status){
+        status = e.response.status
+        if (e.response?.data && e.response?.data?.detail){
+          message = e.response.data.detail
+        }
+      }
+      setSubmitting(false);
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(status));
+      dispatch(snackbarActions.updateMessage(message));
+    })
   }
 
   return (
@@ -98,9 +133,9 @@ export default function CostsForm(props:CostFormProps) {
       </DialogContent>
       <DialogActions>
         <Button onClick={props.onCancel}>Annulla</Button>
-        <Button autoFocus onClick={handleSubmit(onSubmit)}>
+        <LoadingButton loading={submitting} autoFocus onClick={handleSubmit(onSubmit)}>
           Salva
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </form>
   );

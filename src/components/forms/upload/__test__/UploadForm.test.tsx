@@ -8,7 +8,7 @@ describe(UploadBox, () => {
 
   afterEach(cleanup);
   beforeEach(() => {
-    reducer(<UploadBox loading={true} />);
+    reducer(<UploadBox />);
   });
 
 

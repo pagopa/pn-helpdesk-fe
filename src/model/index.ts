@@ -2,9 +2,14 @@ import React from "react";
 
 export type FilterRequest = {
   tenderCode ?: string,
+  driverCode ?: string,
   page: number,
   tot: number,
+  force?: boolean
+}
 
+export type Filter = {
+  costCode: string
 }
 
 export type Page<T> = {
@@ -33,11 +38,11 @@ export type DeliveryDriver = {
   phoneNumber: string,
   uniqueCode: string,
   fsu: boolean
-  cost: Cost[]
 
 }
 
 export type Cost = {
+  uid ?:string
   type: "NATIONAL" | "INTERNATIONAL",
   nationalProductType: "AR" | "890" | "SEMPLICE" | undefined,
   internationalProductType: "AR" | "SEMPLICE" | undefined,

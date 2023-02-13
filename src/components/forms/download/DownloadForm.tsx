@@ -10,6 +10,7 @@ import {getFile} from "../../../redux/uploading/actions";
 import {downloadFile} from "../../../helpers/utils";
 import CloseIcon from '@mui/icons-material/Close';
 import {resetStateDownload} from "../../../redux/uploading/reducers";
+import * as snackbarActions from "../../../redux/snackbarSlice";
 
 interface DownloadBoxProps {
   tenderCode ?: string
@@ -25,7 +26,6 @@ export default function DownloadBox(props: DownloadBoxProps) {
 
   useEffect(() => {
     retrieveAsync();
-
   }, [downloadState.download]);
 
   const retrieveAsync = async () => {
@@ -33,8 +33,12 @@ export default function DownloadBox(props: DownloadBoxProps) {
     if (download.uid && download.retry && download.loading){
       console.log("new attempt")
       setTimeout(() => dispatch(getFile({uid: download.uid, tenderCode: props.tenderCode})), download.retry)
-    } else {
+    } else if (!download.retry && !download.error) {
       console.log("Attempt ended");
+    } else {
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(400));
+      dispatch(snackbarActions.updateMessage("Error durante il download del file"));
     }
   }
 

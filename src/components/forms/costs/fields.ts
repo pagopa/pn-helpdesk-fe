@@ -72,7 +72,14 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     label: "Tipo di costo",
     hidden: false,
     size: "50%",
-    optionItems: COST_TYPE
+    optionItems: COST_TYPE,
+    rules:{
+      validate:{
+        validateType: (value?:any) => {
+          return !!(value)|| errorMessages.TYPE_COST_INVALID
+        }
+      }
+    }
   },
   "price": {
     name: "price",

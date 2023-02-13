@@ -2,21 +2,17 @@ import {Autocomplete, createFilterOptions, TextField} from "@mui/material";
 import React from "react";
 import {FieldsProps} from "../formFields/FormFields";
 
-interface Cap {
-  value: string
-}
-
-const cap : Cap[] = [
-  { value:"21048"},
-  { value:"21034"},
-  { value:"12231"},
-  { value:"22233"},
-  { value:"22222"},
-  { value:"33333"},
-  { value:"11111"},
+const cap : string[] = [
+  "21048",
+  "21034",
+  "12231",
+  "22233",
+  "22222",
+  "33333",
+  "11111",
 ]
 
-const filter = createFilterOptions<Cap>();
+const filter = createFilterOptions<string>();
 
 
 type Props = {
@@ -33,9 +29,8 @@ type Props = {
 export function CapAutocompleteField(props:Props){
 
 
-  const handleOnChange = (event: React.SyntheticEvent, value: Cap[]) => {
-    console.log(value);
-    props.onChange?.(value.map(cap => cap.value));
+  const handleOnChange = (event: React.SyntheticEvent, value: string[]) => {
+    props.onChange?.(value);
   }
 
 
@@ -43,20 +38,19 @@ export function CapAutocompleteField(props:Props){
     multiple
     id="tags-outlined"
     options={cap}
+    value={props.value}
     fullWidth={true}
     limitTags={3}
     onChange={handleOnChange}
-    getOptionLabel={(option) => option.value}
+    getOptionLabel={(option) => option}
     filterOptions={(options, params) => {
       const filtered = filter(options, params);
 
       const { inputValue } = params;
       // Suggest the creation of a new value
-      const isExisting = options.some((option) => inputValue === option.value);
+      const isExisting = options.some((option) => inputValue === option);
       if (inputValue !== '' && !isExisting) {
-        filtered.push({
-          value: `${inputValue}`,
-        });
+        filtered.push(inputValue);
       }
 
       return filtered;

@@ -7,6 +7,7 @@ interface DownloadingState {
   data ?: string
   loading: boolean
   retry ?: number
+  error: boolean
 }
 
 interface UploadingState {
@@ -19,7 +20,8 @@ interface UploadingState {
 
 const initialState = {
   download : {
-    loading: false
+    loading: false,
+    error:false
   } as DownloadingState,
   upload: {
     loading: false,
@@ -45,16 +47,18 @@ const uploadingDownloadingSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getFile.pending, (state, action) => {
       state.download.loading = true
+      state.download.error= false
     });
     builder.addCase(getFile.fulfilled, (state, action) => {
       state.download.retry = action.payload.retry;
       state.download.data = action.payload.data;
       state.download.uid = action.payload.uid;
       state.download.loading = action.payload.loading;
+      state.download.error = false
     })
     builder.addCase(getFile.rejected, (state, action) => {
-      console.error(action.payload);
       state.download.loading = false;
+      state.download.error = true;
     });
 
     builder.addCase(getPresignedUrl.pending, (state, action) => {

@@ -7,12 +7,14 @@ export enum TENDER_ACTIONS {
   GET_TENDERS = 'getTenders',
 }
 
+
 export const getTenders = createAsyncThunk<
   Page<TenderDTO>,
   FilterRequest
 >(
   TENDER_ACTIONS.GET_TENDERS,
   async (filter:FilterRequest, thunkAPI) => {
+
     try {
       const response = await apiPaperChannel().takeTender(filter.page, filter.tot);
       const page: Page<TenderDTO> ={

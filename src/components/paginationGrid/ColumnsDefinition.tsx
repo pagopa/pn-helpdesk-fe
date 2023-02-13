@@ -6,6 +6,8 @@ import {GridColDef} from "@mui/x-data-grid";
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import {ButtonsActionTenderTable} from "../buttonsGroup/ButtonsActionTenderTable";
+import {ButtonsActionCostTable} from "../buttonsGroup/ButtonsActionCostTable";
+import {CostDTO} from "../../generated";
 
 
 const columnsTender: GridColDef[] = [
@@ -134,13 +136,11 @@ const columnsCost: GridColDef[] = [
     sortable: false,
     disableColumnMenu: true,
     renderCell: (params: any) => {
-      if (params.row.type === "NATIONAL"){
+      if ( params.row?.cap){
         return params.row.cap?.join(",");
-      }
-      if (params.row.type === "INTERNATIONAL"){
+      }else{
         return params.row.zone
       }
-      return null
     }
   },
   {
@@ -190,7 +190,7 @@ const columnsCost: GridColDef[] = [
     sortable: false,
     disableColumnMenu: true,
     renderCell: (params: any) => {
-      return params.row?.priceAdditional
+      return <ButtonsActionCostTable value={params.row as CostDTO} />
     },
   },
 ]

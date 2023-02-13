@@ -13,6 +13,7 @@ export const errorMessages = {
   ONE_MONTH_INTERVAL: "Selezionare date nello stesso mese",
   BACKEND_DOWN_MESSAGE:
     "Servizio offline, contattare l'amministratore di sistema",
+  TYPE_COST_INVALID: "Prego, selezionare il tipo del costo",
   CAPS_INVALID: "I valori inseriti non sono corretti",
   PRODUCT_TYPE_INVALID: "Selezionare un tipo di prodotto valido",
   ZONE_INVALID: "Selezionare una zona valida",

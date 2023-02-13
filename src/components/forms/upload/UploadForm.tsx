@@ -6,14 +6,12 @@ import {getPresignedUrl, uploadFile} from "../../../redux/uploading/actions";
 import {resetStateUpload} from "../../../redux/uploading/reducers";
 import {UPLOAD_STATUS_ENUM} from "../../../model";
 
-interface UploadBoxProps {
-  loading: boolean
-}
 
 
 
 
-export default function UploadBox(props:UploadBoxProps) {
+
+export default function UploadBox() {
   const [file, setFile] = useState<File|undefined>(undefined);
   const uploadState = useAppSelector(state => state.uploadAndDownload);
   const dispatch = useAppDispatch();
@@ -24,6 +22,7 @@ export default function UploadBox(props:UploadBoxProps) {
   };
 
   const handleRemove = () => {
+    setFile(undefined);
     dispatch(resetStateUpload())
   };
 
@@ -38,6 +37,7 @@ export default function UploadBox(props:UploadBoxProps) {
       console.log("Retrieve presigned url")
       dispatch(getPresignedUrl({}));
     }
+    // eslint-disable-next-line
   }, [file, uploadState.upload])
 
 
@@ -94,7 +94,7 @@ export default function UploadBox(props:UploadBoxProps) {
 
             <SingleFileInput
               label="Documento (richiesto)"
-              loading={uploadState.upload.loading || props.loading}
+              loading={uploadState.upload.loading}
               error={!!(uploadState.upload.error)}
               value={(file) ? file : null}
               accept={["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"]}
