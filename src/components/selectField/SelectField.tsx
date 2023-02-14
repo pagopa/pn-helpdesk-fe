@@ -23,7 +23,7 @@ const SelectField = (props: Props) => {
   const { field, value, onChange } = props;
 
   return (
-    <FormControl sx={{ minWidth: 250 }}>
+    <FormControl sx={{ width: "100%" }}>
       <InputLabel id={field.label}>{field.label}</InputLabel>
       <Select
         data-testid={`select-${field.name}`}
@@ -32,6 +32,7 @@ const SelectField = (props: Props) => {
         label={field.label}
         onChange={onChange}
         value={value}
+        sx={{ width: "100%" }}
       >
         {field.label !== "Tipo Estrazione" && (
           <MenuItem key="none" value=""></MenuItem>

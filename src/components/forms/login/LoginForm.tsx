@@ -30,7 +30,7 @@ const defaultFormValues: { [key: string]: string } = {
  * Generating the login form using the form fields
  * @component
  */
-const LoginForm = ({ setUser, setEmail }: any) => {
+const LoginForm = ({ setUser }: any) => {
   /**
    * form fields
    */
@@ -71,7 +71,6 @@ const LoginForm = ({ setUser, setEmail }: any) => {
   /* istanbul ignore next */
   const onSubmit = async (data: { [x: string]: string }) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
-    setEmail(data.email);
     await login({ email: data.email, password: data.password })
       .then((user: { [key: string]: any }) => {
         if (user.challengeName === "NEW_PASSWORD_REQUIRED") {

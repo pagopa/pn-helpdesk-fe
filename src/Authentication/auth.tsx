@@ -99,4 +99,16 @@ const changePassword = (user: any, newPassword: string): Promise<any> => {
     });
 };
 
-export { login, logout, refreshToken, changePassword };
+const getUser = async (): Promise<any> => {
+  return await Auth.currentAuthenticatedUser()
+    .then(async (user) => {
+      return await Auth.userAttributes(user).then((userAttr) => {
+        return userAttr.find((attr) => attr.Name === "email")?.Value;
+      });
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
+export { login, logout, refreshToken, changePassword, getUser };
