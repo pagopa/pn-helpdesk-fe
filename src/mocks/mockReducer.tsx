@@ -1,5 +1,5 @@
 import { BrowserRouter as Router } from "react-router-dom";
-import { render } from "@testing-library/react";
+import { render, RenderOptions } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -7,6 +7,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { it } from "date-fns/locale";
 import {Page, UPLOAD_STATUS_ENUM} from "../model";
 import {DeliveryDriverDTO, TenderDTO} from "../generated";
+import { RootState, store as realStore } from '../../src/redux/store';
+import { EnhancedStore, PreloadedState } from "@reduxjs/toolkit";
+import { PropsWithChildren } from "react";
 
 function reducer(
   ui: any,
@@ -21,6 +24,9 @@ function reducer(
       },
       snackbar: {
         opened: false,
+        statusCode: undefined,
+        message: "",
+        autoHideDuration: 2000
       },
       spinner: {
         opened: false,
@@ -44,6 +50,18 @@ function reducer(
         loading: false,
         allData: {} as Page<TenderDTO>,
         selected: {} as TenderDTO
+      },
+      aggregate: {
+        aggregates : [],
+        filters : {
+            name : ""
+        },
+        pagination : {
+            limit : 10,
+            page: 0,
+            total: 0,
+            pagesKey: []
+        }
       }
     });
     return (
@@ -55,6 +73,26 @@ function reducer(
     );
   }
   return render(ui, { wrapper: Wrapper, ...renderOptions });
+}
+
+interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
+  preloadedState?: PreloadedState<RootState>
+  store?: EnhancedStore
+}
+
+export function renderWithProviders(
+  ui: React.ReactElement,
+  {
+    preloadedState,
+    // Automatically create a store instance if no store was passed in
+    store = realStore,
+    ...renderOptions
+  }: ExtendedRenderOptions = {}
+) {
+  function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+    return <Provider store={store}><Router>{children}</Router></Provider>
+  }
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
 }
 
 export { reducer };

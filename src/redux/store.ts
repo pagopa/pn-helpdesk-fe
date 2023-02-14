@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import snackbarReducer from "./snackbarSlice";
 import responseReducer from "./responseSlice";
 import spinnerReducer from "./spinnerSlice";
+import aggregateReducer from './aggregateSlice';
 import tenderSlice from "./tender/reducers";
 import formTenderSlice from "./formTender/reducers";
 import uploadingDownloadingSlice from "./uploading/reducers";
@@ -18,8 +19,10 @@ export const store = configureStore({
     uploadAndDownload: uploadingDownloadingSlice.reducer,
     deliveries: deliveriesDriverSlice.reducer,
     fsuAndDrivers: driverAndCostSlice.reducer
+    aggregate: aggregateReducer
   },
 });
+
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

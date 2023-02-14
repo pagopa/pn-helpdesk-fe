@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../components/header/Header";
-import {Box, Stack} from "@mui/material";
+import { Grid } from "@mui/material";
 import Footer from "../../components/footer/Footer";
 import { useEffect } from "react";
 import { logout, refreshToken } from "../../Authentication/auth";
@@ -36,22 +36,23 @@ const MainLayout = ({ email, children }: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   return (
-    <Stack
+    <Grid
+      container
       direction="column"
-      spacing={2}
-      sx={{ minHeight: 'calc(100vh - 5px)' }} // 100vh per sticky footer
+      justifyItems="start"
+      justifyContent="space-around"
+      rowSpacing={3}
+      wrap="nowrap"
     >
-      <Header email={email} />
-      <Stack direction={{ xs: 'column', lg: 'row' }} sx={{ flexGrow: 1 }}>
-
-        <Box sx={{ flexGrow: 1, position: 'relative' }} component="main">
-            {children}
-        </Box>
-      </Stack>
-      <Footer />
-    </Stack>
+      <Grid item>
+        <Header email={email} />
+      </Grid>
+      <Grid item sx={{paddingBottom: "64px"}}>{children}</Grid>
+      <Grid item>
+        <Footer />
+      </Grid>
+    </Grid>
   );
 };
 
