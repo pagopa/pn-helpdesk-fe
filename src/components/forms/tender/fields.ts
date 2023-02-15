@@ -13,10 +13,7 @@ export const fieldsTender: { [key:string]: FieldsProps } = {
     hidden: false,
     size: "50%",
     rules: {
-      pattern: {
-        value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
-        message: errorMessages.INCORRECT,
-      },
+
       required: errorMessages.REQUIRED,
     },
     required: true,
@@ -33,16 +30,6 @@ export const fieldsTender: { [key:string]: FieldsProps } = {
     rules: {
       required: errorMessages.REQUIRED,
       validate: {
-        validateInterval: (dates: Array<any>) => {
-          let startDate = new Date(dates[0]);
-          let endDate = new Date(dates[1]);
-          return (
-            endDate.getMonth() - startDate.getMonth() < 3 ||
-            (endDate.getMonth() - startDate.getMonth() === 3 &&
-              startDate.getDate() >= endDate.getDate()) ||
-            errorMessages.DATES_INTERVAL
-          );
-        },
         checkDates: (dates: Array<any>) => {
           let startDate = new Date(dates[0]);
           let endDate = new Date(dates[1]);

@@ -1,6 +1,6 @@
 import DownloadBox from "../forms/download/DownloadForm";
 import UploadBox from "../forms/upload/UploadForm";
-import {Button, Grid, Stack} from "@mui/material";
+import {Button, Grid} from "@mui/material";
 import {changeKey} from "../../redux/formTender/reducers";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
@@ -22,17 +22,22 @@ export function StepDriverUpload(props:{tenderCode:string}){
     console.log("Notify : ", props.tenderCode, stateUpload.uid);
   }
 
-  return <Stack direction={"column"} width={1} spacing={2}>
-    <DownloadBox tenderCode={props.tenderCode}/>
-    <UploadBox />
+  return <Grid item container rowSpacing={2}>
+    <Grid item container>
+      <DownloadBox tenderCode={props.tenderCode}/>
+    </Grid>
+
+    <Grid item container>
+      <UploadBox />
+    </Grid>
+
     <Grid item container direction="row" justifyContent="space-between">
       <Button onClick={() => dispatch(changeKey({key:0}))} variant={"outlined"}>Torna a Informazioni gara</Button>
       <Button variant={"contained"}
-              onClick={notifyUploaded}
-              type={"submit"} disabled={stateUpload.status !== UPLOAD_STATUS_ENUM.UPLOADED_FILE_S3} >
+              onClick={notifyUploaded} disabled={stateUpload.status !== UPLOAD_STATUS_ENUM.UPLOADED_FILE_S3} >
         Salva
       </Button>
     </Grid>
-  </Stack>
+  </Grid>
 
 }

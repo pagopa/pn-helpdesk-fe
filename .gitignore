@@ -40,3 +40,4 @@ amplifytools.xcconfig
 .env.production
 /openapitools.json
 /src/generated/
+/test-report.xml

@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import { theme } from "@pagopa/mui-italia";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
@@ -13,6 +13,8 @@ import { it } from "date-fns/locale";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+
 root.render(
     <Provider store={store}>
       <ThemeProvider theme={theme}>

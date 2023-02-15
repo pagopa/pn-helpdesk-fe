@@ -83,11 +83,10 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
   },
   "price": {
     name: "price",
-    componentType: "textfield",
+    componentType: "numberField",
     label: "Costo base (€)",
     hidden: false,
     size: "50%",
-    inputProps: { minLength: 1 },
     rules: {
       pattern: {
         value: regex.AMOUNT,
@@ -126,11 +125,10 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
   },
   "priceAdditional": {
     name: "priceAdditional",
-    componentType: "textfield",
+    componentType: "numberField",
     label: "Costo aggiuntivo per pagina (€)",
     hidden: false,
     size: "50%",
-    inputProps: { minLength: 1 },
     rules: {
       pattern: {
         value: regex.AMOUNT,

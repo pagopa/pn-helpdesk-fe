@@ -9,7 +9,7 @@ import { Grid, Typography } from "@material-ui/core";
  */
 const Footer = () => {
   return (
-    <AppBar position={"sticky"} sx={{ bgcolor: "primary.dark", bottom: 0, top: "auto" }}>
+    <AppBar sx={{ bgcolor: "primary.dark", bottom: 0, top: "auto" }}>
       <Container>
         <Toolbar
           sx={{

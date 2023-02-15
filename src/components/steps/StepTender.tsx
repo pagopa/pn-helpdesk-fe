@@ -10,7 +10,7 @@ import * as spinnerActions from "../../redux/spinnerSlice";
 import {apiPaperChannel} from "../../api/paperChannelApi";
 import * as snackbarActions from "../../redux/snackbarSlice";
 import {Tender} from "../../model";
-import {GET_TENDER} from "../../navigation/router.const";
+import {TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
 
 
 export default function StepTender(){
@@ -39,7 +39,7 @@ export default function StepTender(){
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(404));
       dispatch(snackbarActions.updateMessage("Gara non trovata !"));
-      navigate(GET_TENDER);
+      navigate(TENDERS_TABLE_ROUTE);
     }
   }
 

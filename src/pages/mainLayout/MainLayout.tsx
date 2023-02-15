@@ -1,10 +1,11 @@
 import React from "react";
 import Header from "../../components/header/Header";
-import { Grid } from "@mui/material";
+
 import Footer from "../../components/footer/Footer";
 import { useEffect } from "react";
 import { logout, refreshToken } from "../../Authentication/auth";
 import { useNavigate } from "react-router-dom";
+import {Grid} from "@mui/material";
 
 /**
  * Main layout of the application with header and footer

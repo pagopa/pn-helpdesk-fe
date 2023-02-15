@@ -19,7 +19,7 @@ const initialState = {
 
   formFsu: {} as DeliveryDriver,
 
-  saving: {
+  saveWithFile: {
     loading: false,
     result: "HANDLE"
   } as SavingState
@@ -49,6 +49,9 @@ const formTenderSlice = createSlice({
         state.fromUpload = false
       }
     },
+    goFinalStep: (state) => {
+      state.activeKey = 3;
+    },
     changeKey: (state, action) => {
       state.activeKey = action.payload.key;
     },
@@ -64,6 +67,6 @@ const formTenderSlice = createSlice({
   }
 })
 
-export const {clearFormState, goUploadStep, goFSUStep, goTenderDriversStep, changeKey, backStep, addedTender, addedFSU} = formTenderSlice.actions;
+export const {clearFormState, goUploadStep, goFSUStep, goTenderDriversStep, changeKey, backStep, addedTender, addedFSU, goFinalStep} = formTenderSlice.actions;
 
 export default formTenderSlice;

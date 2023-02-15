@@ -18,7 +18,7 @@ export const store = configureStore({
     tenderForm: formTenderSlice.reducer,
     uploadAndDownload: uploadingDownloadingSlice.reducer,
     deliveries: deliveriesDriverSlice.reducer,
-    fsuAndDrivers: driverAndCostSlice.reducer
+    fsuAndDrivers: driverAndCostSlice.reducer,
     aggregate: aggregateReducer
   },
 });

@@ -12,6 +12,7 @@ import {CapAutocompleteField} from "../capAutocompleteFields";
 import SelectCustomField, {OptionCustom} from "../selectField/SelectCustomField";
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import NumberFieldComponent from "../textField/NumberFieldComponent";
 /**
  * Items for the Tipo Estrazione and their coresponding fields
  */
@@ -561,12 +562,20 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
         />
       )}
       {componentType === "capAutocomplete" && (
-        <CapAutocompleteField
-          field={field}
-          required={field.required!}
-          onChange={onChange}
+      <CapAutocompleteField
+        field={field}
+        required={field.required!}
+        onChange={onChange}
+        error={error}
+        value={value}/>
+    )}
+      {componentType === "numberField" && (
+        <NumberFieldComponent
           error={error}
-          value={value}/>
+          value={value}
+          onChange={onChange}
+          field={field}
+          onBlur={onBlur}/>
       )}
     </Grid>
   );

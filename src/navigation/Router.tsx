@@ -6,12 +6,8 @@ import PrivateRoute from "./PrivateRoute";
 import TenderPage from "../pages/tender/TenderPage";
 import {TenderDetailPage} from "../pages/details/detail";
 import {FormTenderPage} from "../pages/createTender/FormTenderPage";
-import {CREATE_TENDER_ROUTE, GET_TENDER, GET_DETAIL_TENDER} from "./router.const";
-
+import {CREATE_TENDER_ROUTE, TENDERS_TABLE_ROUTE, TENDER_DETAIL_ROUTE} from "./router.const";
 import MonitorPage from "../pages/monitor/MonitorPage";
-import LoginPage from '../pages/login/LoginPage';
-import SearchPage from '../pages/search/SearchPage';
-import PrivateRoute from "./PrivateRoute"
 import AggregatesPage from '../pages/aggregates/AggregatesPage';
 import AggregateDetailPage from '../pages/aggregates/AggregateDetailPage';
 import AssociationPage from '../pages/paAssociation/PaAssociationPage';
@@ -41,7 +37,7 @@ function Router() {
 
       />
       <Route
-        path={GET_TENDER}
+        path={TENDERS_TABLE_ROUTE}
         element={
           <PrivateRoute condition="token">
             <TenderPage email={email}/>
@@ -86,7 +82,7 @@ function Router() {
       <Route path="*" element={<Navigate replace to="/search" />} />
 
         <Route
-            path={GET_DETAIL_TENDER}
+            path={TENDER_DETAIL_ROUTE}
             element={
                 <PrivateRoute condition="token">
                     <TenderDetailPage />

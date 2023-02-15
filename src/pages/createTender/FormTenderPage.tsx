@@ -1,6 +1,4 @@
-import {BreadcrumbCustom} from "../../components/breadcrumb/BreadcrumbCustom";
 import {Container, Grid, Step, StepLabel, Stepper, Typography} from "@mui/material";
-
 import MainLayout from "../mainLayout/MainLayout";
 import React from "react";
 import {useAppSelector} from "../../redux/hook";
@@ -9,6 +7,8 @@ import {StepDeliveriesDrivers} from "../../components/steps/StepDeliveriesDriver
 import StepTender from "../../components/steps/StepTender";
 import StepFSU from "../../components/steps/StepFSU";
 import {useParams} from "react-router-dom";
+import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
+import {TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
 
 
 
@@ -36,6 +36,12 @@ const stepRiepilogo:StepView = {
   render: () => <h1>REVIEW</h1>
 }
 
+const breadcrumbsLinks = [
+  {
+    linkLabel: 'Tutte le Gare',
+    linkRoute: TENDERS_TABLE_ROUTE
+  }
+]
 
 export function FormTenderPage({email}:any) {
   const {tenderCode} = useParams();
@@ -45,12 +51,12 @@ export function FormTenderPage({email}:any) {
   return <MainLayout email={email}>
     <Container>
 
-      <Grid container direction="row" rowSpacing={2}>
-        <Grid item container>
+      <Grid container direction="row" rowSpacing={3}>
+        <Grid item container rowSpacing={1}>
           <Grid>
-            <BreadcrumbCustom/>
+            <Breadcrumbs currentLocationLabel={(tenderCode) ? "Modifica gara" : "Nuova Gara"}
+                         links={breadcrumbsLinks} />
           </Grid>
-
           <Grid item container>
             <Typography variant="h4" color="text.primary">
               {(!tenderCode) ? "Nuova Gara" : "Modifica Gara"}

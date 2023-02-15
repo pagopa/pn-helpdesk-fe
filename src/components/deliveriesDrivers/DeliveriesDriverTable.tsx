@@ -1,0 +1,45 @@
+import {useAppDispatch, useAppSelector} from "../../redux/hook";
+import {ModelType, PaginationDataGrid} from "../paginationGrid";
+import {DeliveryDriver, Page} from "../../model";
+import {Grid} from "@mui/material";
+import React, {useCallback, useEffect} from "react";
+import {changeFilterDrivers} from "../../redux/deliveriesDrivers/reducers";
+import {getAllDrivers} from "../../redux/deliveriesDrivers/actions";
+
+interface DeliveriesDriverTableProps{
+  tenderCode: string
+}
+export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
+  const driversStore = useAppSelector(state => state.deliveries);
+  const dispatch = useAppDispatch();
+
+  const fetchDrivers = useCallback(() => {
+    const filter = {
+      ...driversStore.pagination,
+      tenderCode: props.tenderCode,
+      fsu: false,
+    }
+    dispatch(getAllDrivers(filter))
+  }, [driversStore.pagination])
+
+  useEffect(() => {
+    fetchDrivers();
+  }, [fetchDrivers])
+
+  const handleOnPageChange = (page:number) => {
+    dispatch(changeFilterDrivers({...driversStore.pagination, page:page}))
+  }
+
+  const handleOnPageSizeChange = (size:number) => {
+    dispatch(changeFilterDrivers({...driversStore.pagination, page:1, tot:size}))
+  }
+
+  return <Grid item container>
+    <PaginationDataGrid <DeliveryDriver> data={(driversStore?.allData) ? driversStore?.allData : {} as Page<DeliveryDriver> }
+                                         type={ModelType.DELIVERY_DRIVER}
+                                         loading={false}
+                                         rowId={row => row!.uniqueCode}
+                                         onPageChange={handleOnPageChange}
+                                         onPageSizeChange={handleOnPageSizeChange}/>
+  </Grid>
+}

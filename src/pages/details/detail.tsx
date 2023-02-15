@@ -1,12 +1,12 @@
 import MainLayout from "../mainLayout/MainLayout";
 import React, {useCallback, useEffect, useState} from "react";
-import {Card, Container, Grid, Typography, Stack} from "@mui/material";
+import {Card, Container, Grid, Typography, Stack, Button} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {DataInfo} from "../../components/dataInfo/DataInfo";
 import {tenderRowsInfo} from "../../components/dataInfo/rows";
 import {BreadcrumbCustom} from "../../components/breadcrumb/BreadcrumbCustom";
-import {Navigate} from "react-router-dom";
-import {GET_TENDER} from "../../navigation/router.const";
+import {Navigate, useNavigate} from "react-router-dom";
+import {TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
 import {DeliveryDriverDTO} from "../../generated";
 import {ModelType, PaginationDataGrid} from "../../components/paginationGrid";
 import {FilterRequest} from "../../model";
@@ -18,6 +18,7 @@ export function TenderDetailPage({email}:any) {
   const tenderState = useAppSelector(state => state.tender);
   const deliveries = useAppSelector(state => state.deliveries);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [pagination, setPagination] = useState<FilterRequest>({
     tenderCode: tenderState.selected?.code,
@@ -39,7 +40,7 @@ export function TenderDetailPage({email}:any) {
   }, [fetchDeliveries])
 
   if (!tenderState.selected || !tenderState.selected?.code){
-    return <Navigate to={GET_TENDER}/>
+    return <Navigate to={TENDERS_TABLE_ROUTE}/>
   }
 
   return <MainLayout email={email}>
@@ -93,6 +94,13 @@ export function TenderDetailPage({email}:any) {
                                                     rowId={row => row.uniqueCode}/>
             </div>
           </Card>
+        </Grid>
+        <Grid item container direction="row" justifyContent="space-between">
+          <Button variant={"outlined"} onClick={()=> navigate(TENDERS_TABLE_ROUTE)}>Torna alle Gare</Button>
+          <Button variant={"contained"}
+                  type={"submit"} >
+            Modifica
+          </Button>
         </Grid>
       </Grid>
 

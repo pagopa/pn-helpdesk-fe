@@ -6,6 +6,8 @@ export type FilterRequest = {
   page: number,
   tot: number,
   force?: boolean
+
+  fsu?: boolean
 }
 
 export type Filter = {

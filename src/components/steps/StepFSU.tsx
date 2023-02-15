@@ -3,7 +3,7 @@ import {Button, Grid, Stack} from "@mui/material";
 import {backStep, goTenderDriversStep} from "../../redux/formTender/reducers";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
-import DriverCostsView from "../driversCost";
+import {DriverAndCostForm} from "../deliveriesDrivers/DriverAndCostForm";
 
 
 export default function StepFSU(){
@@ -11,11 +11,10 @@ export default function StepFSU(){
   const dispatch = useAppDispatch();
 
 
-
   return <Stack spacing={2} sx={{width: 1}} >
     {
       (formState.formTender?.code) ?
-          <DriverCostsView fsu={true} tenderCode={formState.formTender.code} /> : null
+          <DriverAndCostForm key={"TENDER-FORM"} fsu={true} tenderCode={formState.formTender.code} /> : null
     }
 
     <Grid item container direction="row" justifyContent="space-between">

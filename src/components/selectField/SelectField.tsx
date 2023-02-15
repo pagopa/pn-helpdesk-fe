@@ -33,15 +33,9 @@ const SelectField = (props: Props) => {
         onChange={onChange}
         value={value}
       >
-        {(field.label !== "Tipo Estrazione" &&
-          field.label !== "Tipo di costo" &&
-          field.label !== "Seleziona Cap" &&
-          field.label !== "Seleziona Zona" &&
-          field.label !== "Seleziona la tipologia di prodotto" &&
-            field.label !== "Tipologia di prodotto"
-        ) && (
-          <MenuItem key="none" value=""></MenuItem>
-        )}
+        {
+          (field.label !== "Tipo Estrazione") && (<MenuItem key="none" value=""></MenuItem>)
+        }
         {field.selectItems?.map((item) => (
           <MenuItem key={item} value={item}>
             {item}
