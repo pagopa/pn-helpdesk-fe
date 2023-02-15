@@ -4,7 +4,7 @@ import {Page} from "../../model";
 import {Grid} from "@mui/material";
 import React, {useCallback, useEffect} from "react";
 import {changeFilterDrivers} from "../../redux/deliveriesDrivers/reducers";
-import {getCosts} from "../../redux/fsuAndDrivers/actions";
+import {getCosts} from "../../redux/costs/actions";
 import {CostDTO} from "../../generated";
 
 interface CostsTable{
@@ -12,7 +12,7 @@ interface CostsTable{
   driverCode: string,
 }
 export function CostsTable(props:CostsTable){
-  const costsStore = useAppSelector(state => state.fsuAndDrivers);
+  const costsStore = useAppSelector(state => state.costs);
   const dispatch = useAppDispatch();
 
   const fetchCosts = useCallback(() => {

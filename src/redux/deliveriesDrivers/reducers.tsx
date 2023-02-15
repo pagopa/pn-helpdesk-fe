@@ -17,6 +17,7 @@ const initialState:DeliveriesDriverState = {
   pagination: {
     page:1,
     tot:10,
+    fsu: undefined
   } as FilterRequest
 }
 

@@ -1,12 +1,11 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {CostDTO} from "../../generated";
-import {Cost, DeliveryDriver, FilterRequest, Page} from "../../model";
+import {Cost, FilterRequest, Page} from "../../model";
 import {getCosts} from "./actions";
 
 
 interface State {
   costs: Page<CostDTO> | undefined,
-  driver: DeliveryDriver | undefined,
   selectedCost: Cost | undefined,
   pagination: FilterRequest,
   error: boolean
@@ -17,7 +16,6 @@ interface State {
 
 const initialState:State = {
   costs: undefined,
-  driver: undefined,
   selectedCost: undefined,
   pagination: {
     tenderCode: undefined,
@@ -28,11 +26,11 @@ const initialState:State = {
 }
 
 
-const driverAndCostSlice = createSlice({
-  name: 'driverAndCostSlice',
+const costSlice = createSlice({
+  name: 'costSlice',
   initialState,
   reducers : {
-    resetStateDriverAndCost: () => initialState,
+    resetStateCost: () => initialState,
     resetPaginationCost: (state) => {
       state.pagination = initialState.pagination
     },
@@ -48,9 +46,6 @@ const driverAndCostSlice = createSlice({
     },
     setSelectedCost: (state, action:PayloadAction<Cost>) => {
       state.selectedCost = action.payload
-    },
-    setCurrentDriver: (state, action:PayloadAction<DeliveryDriver>) => {
-      state.driver = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -60,6 +55,6 @@ const driverAndCostSlice = createSlice({
   }
 })
 
-export const {changePaginationCost, resetPaginationCost, resetStateDriverAndCost, resetSelectedCost, setSelectedCost, setCurrentDriver} = driverAndCostSlice.actions
+export const {resetStateCost, resetSelectedCost, setSelectedCost} = costSlice.actions
 
-export default driverAndCostSlice;
+export default costSlice;
