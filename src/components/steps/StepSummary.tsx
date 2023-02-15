@@ -70,7 +70,7 @@ export function StepSummary(){
           </Typography>
         </Grid>
         <div data-testid="datagrid">
-          <DeliveriesDriverTable tenderCode={stepStore.formTender.code}/>
+          <DeliveriesDriverTable tenderCode={stepStore.formTender.code} withActions={false}/>
         </div>
       </Card>
     </Grid>

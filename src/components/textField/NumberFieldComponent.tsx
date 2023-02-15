@@ -28,7 +28,8 @@ const NumberFieldComponent = (props: Props) => {
       onBlur={props.value && props.value.length ? props.onBlur : () => {}}
       //onChange={(e) => props.onChange(e)}
       InputProps={{
-        inputComponent: NumericFormatCustom as any
+        inputComponent: NumericFormatCustom as any,
+        inputProps: { ...props}
       }}
       disabled={props.field.disabled}
     />
@@ -36,26 +37,18 @@ const NumberFieldComponent = (props: Props) => {
 };
 export default NumberFieldComponent;
 
-interface CustomProps {
-  onChange: (event: { target: { name: string; value: number|undefined } }) => void;
-  name: string;
-}
 
-const NumericFormatCustom = React.forwardRef<NumericFormatProps, CustomProps>(
+const NumericFormatCustom = React.forwardRef<NumericFormatProps, any>(
+
   function NumericFormatCustom(props, ref) {
     const { onChange, ...other } = props;
-
+    console.log(props);
     return (
       <NumericFormat
         {...other}
         getInputRef={ref}
         onValueChange={(values) => {
-          onChange({
-            target: {
-              name: props.name,
-              value: values.floatValue,
-            },
-          });
+          onChange(values.floatValue);
         }}
         allowNegative={false}
         decimalScale={2}

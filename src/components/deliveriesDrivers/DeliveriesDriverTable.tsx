@@ -9,6 +9,7 @@ import {getAllDrivers} from "../../redux/deliveriesDrivers/actions";
 interface DeliveriesDriverTableProps{
   tenderCode: string,
   onlyFsu?: boolean
+  withActions: boolean
 }
 export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
   const driversStore = useAppSelector(state => state.deliveries);
@@ -37,7 +38,7 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
 
   return <Grid item container>
     <PaginationDataGrid <DeliveryDriver> data={(driversStore?.allData) ? driversStore?.allData : {} as Page<DeliveryDriver> }
-                                         type={ModelType.DELIVERY_DRIVER}
+                                         type={(!props.withActions) ? ModelType.DELIVERY_DRIVER : ModelType.DELIVERY_DRIVER_WITH_ACTIONS}
                                          loading={false}
                                          rowId={row => row!.uniqueCode}
                                          onPageChange={handleOnPageChange}

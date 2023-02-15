@@ -71,7 +71,7 @@ export function TenderDetailPage({email}:any) {
               </Typography>
             </Grid>
             <div data-testid="datagrid">
-            <DeliveriesDriverTable tenderCode={tenderState.selected.code}/>
+            <DeliveriesDriverTable tenderCode={tenderState.selected.code} withActions={false}/>
             </div>
           </Card>
         </Grid>

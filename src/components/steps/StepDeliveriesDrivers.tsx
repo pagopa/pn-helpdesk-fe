@@ -78,7 +78,7 @@ export function StepDeliveriesDrivers(){
       </Grid>
       {
         (formState?.formTender?.code) ?
-          <DeliveriesDriverTable tenderCode={formState.formTender.code} onlyFsu={false}/> : null
+          <DeliveriesDriverTable tenderCode={formState.formTender.code} onlyFsu={false} withActions={true}/> : null
       }
     </Card>
 
