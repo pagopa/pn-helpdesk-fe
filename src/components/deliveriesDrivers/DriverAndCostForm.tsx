@@ -3,10 +3,9 @@ import DeliveryDriverFormBox from "../forms/deliveryDriver/DeliveryDriverForm";
 import React, {useCallback, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {
-  resetSelectedCost,
-  resetStateDriverAndCost,
+  resetSelectedCost, resetStateCost,
   setSelectedCost
-} from "../../redux/fsuAndDrivers/reducers";
+} from "../../redux/costs/reducers";
 import {getDriverDetails, getFsuDetail} from "../../redux/deliveriesDrivers/actions";
 import {resetDetailDriver, setDetailDriver} from "../../redux/deliveriesDrivers/reducers";
 import {addedFSU} from "../../redux/formTender/reducers";
@@ -24,7 +23,7 @@ interface DriverAndCostFormProps{
 
 export function DriverAndCostForm(props: DriverAndCostFormProps){
   const driverStore = useAppSelector(state => state.deliveries);
-  const costSelected = useAppSelector(state => state.fsuAndDrivers.selectedCost);
+  const costSelected = useAppSelector(state => state.costs.selectedCost);
   const dispatch = useAppDispatch();
 
   const fetchCorrectDriver = useCallback(() => {
@@ -42,7 +41,7 @@ export function DriverAndCostForm(props: DriverAndCostFormProps){
     fetchCorrectDriver()
     return () => {
       console.log("Hide component ", props.fsu)
-      dispatch(resetStateDriverAndCost())
+      dispatch(resetStateCost())
       dispatch(resetDetailDriver())
     }
   }, []);

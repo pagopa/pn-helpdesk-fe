@@ -9,6 +9,7 @@ import StepFSU from "../../components/steps/StepFSU";
 import {useParams} from "react-router-dom";
 import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
 import {TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
+import {StepSummary} from "../../components/steps/StepSummary";
 
 
 
@@ -33,7 +34,7 @@ const stepDeliveries:StepView = {
 const stepRiepilogo:StepView = {
   name: "Riepilogo",
   key: "review",
-  render: () => <h1>REVIEW</h1>
+  render: () => <StepSummary />
 }
 
 const breadcrumbsLinks = [

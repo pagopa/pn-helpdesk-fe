@@ -13,7 +13,7 @@ export const getAllDrivers = createAsyncThunk<
   "getDeliveryFromTender",
   async (filter:FilterRequest, thunkAPI) => {
     try {
-      const response = await apiPaperChannel().takeDeliveriesDrivers(filter!.tenderCode as string, filter.page, filter.tot, filter.fsu);
+      const response = await apiPaperChannel().takeDeliveriesDrivers(filter!.tenderCode as string, filter.page, filter.tot, filter?.fsu);
       const page: Page<DeliveryDriverDTO> ={
         total: (response.data.totalElements) ? response.data.totalElements  : 0,
         size: response.data.size ?  response.data.size : 0,

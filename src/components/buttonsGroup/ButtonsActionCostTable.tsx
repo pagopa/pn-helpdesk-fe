@@ -5,7 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React from "react";
 import {CostDTO} from "../../generated";
-import {setSelectedCost} from "../../redux/fsuAndDrivers/reducers";
+import {setSelectedCost} from "../../redux/costs/reducers";
 import {Cost} from "../../model";
 
 export function ButtonsActionCostTable(props:{value:CostDTO}){

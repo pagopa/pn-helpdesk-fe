@@ -20,60 +20,6 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "denomination": {
-    name: "denomination",
-    componentType: "textfield",
-    label: "Denominazione",
-    hidden: false,
-    size: "50%",
-    rules: {
-      pattern: {
-        value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
-        message: errorMessages.INCORRECT,
-      },
-      required: errorMessages.REQUIRED,
-    },
-    required: true,
-  },
-  "registeredOffice": {
-    name: "registeredOffice",
-    componentType: "textfield",
-    label: "Sede legale",
-    hidden: false,
-    size: "50%",
-    rules: {
-      pattern: {
-        value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
-        message: errorMessages.INCORRECT,
-      },
-      required: errorMessages.REQUIRED,
-    },
-    required: true,
-  },
-  "fiscalCode": {
-    name: "fiscalCode",
-    componentType: "textfield",
-    label: "Codice Fiscale",
-    hidden: false,
-    size: "50%",
-    inputProps: { maxLength: 16, style: { textTransform: "uppercase" } },
-    rules: {
-      pattern: {
-        value: regex.FISCAL_CODE_PATTERN,
-        message: errorMessages.INCORRECT,
-      },
-      minLength: {
-        value: 16,
-        message: errorMessages.INCORRECT,
-      },
-      maxLength: {
-        value: 16,
-        message: errorMessages.INCORRECT,
-      },
-      required: errorMessages.REQUIRED,
-    },
-    required: true,
-  },
   "taxId": {
     name: "taxId",
     componentType: "textfield",
@@ -98,6 +44,61 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
+  "denomination": {
+    name: "denomination",
+    componentType: "textfield",
+    label: "Denominazione",
+    hidden: false,
+    size: "50%",
+    rules: {
+      pattern: {
+        value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
+        message: errorMessages.INCORRECT,
+      },
+      required: errorMessages.REQUIRED,
+    },
+    required: false,
+  },
+  "registeredOffice": {
+    name: "registeredOffice",
+    componentType: "textfield",
+    label: "Sede legale",
+    hidden: false,
+    size: "50%",
+    rules: {
+      pattern: {
+        value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
+        message: errorMessages.INCORRECT,
+      },
+      required: errorMessages.REQUIRED,
+    },
+    required: false,
+  },
+  "fiscalCode": {
+    name: "fiscalCode",
+    componentType: "textfield",
+    label: "Codice Fiscale",
+    hidden: false,
+    size: "50%",
+    inputProps: { maxLength: 16, style: { textTransform: "uppercase" } },
+    rules: {
+      pattern: {
+        value: regex.FISCAL_CODE_PATTERN,
+        message: errorMessages.INCORRECT,
+      },
+      minLength: {
+        value: 16,
+        message: errorMessages.INCORRECT,
+      },
+      maxLength: {
+        value: 16,
+        message: errorMessages.INCORRECT,
+      },
+      required: errorMessages.REQUIRED,
+    },
+    required: false,
+  },
+
   "pec": {
     name: "pec",
     componentType: "textfield",
@@ -120,7 +121,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
       },
       required: errorMessages.REQUIRED,
     },
-    required: true,
+    required: false,
   },
   "phoneNumber": {
     name: "phoneNumber",
@@ -144,7 +145,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
       },
       required: errorMessages.REQUIRED,
     },
-    required: true,
+    required: false,
   },
   "uniqueCode": {
     name: "uniqueCode",
@@ -168,6 +169,6 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
       },
       required: errorMessages.REQUIRED,
     },
-    required: true,
+    required: false,
   },
 }

@@ -78,7 +78,7 @@ export function StepDeliveriesDrivers(){
       </Grid>
       {
         (formState?.formTender?.code) ?
-          <DeliveriesDriverTable tenderCode={formState.formTender.code}/> : null
+          <DeliveriesDriverTable tenderCode={formState.formTender.code} onlyFsu={false}/> : null
       }
     </Card>
 
@@ -87,7 +87,7 @@ export function StepDeliveriesDrivers(){
       <Button variant={"contained"}
               onClick={() => dispatch(goFinalStep())}
               type={"submit"} >
-        Termina
+        Avanti
       </Button>
     </Grid>
 

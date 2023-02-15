@@ -7,7 +7,7 @@ import tenderSlice from "./tender/reducers";
 import formTenderSlice from "./formTender/reducers";
 import uploadingDownloadingSlice from "./uploading/reducers";
 import deliveriesDriverSlice from "./deliveriesDrivers/reducers";
-import driverAndCostSlice from "./fsuAndDrivers/reducers";
+import costSlice from "./costs/reducers";
 
 export const store = configureStore({
   reducer: {
@@ -18,7 +18,7 @@ export const store = configureStore({
     tenderForm: formTenderSlice.reducer,
     uploadAndDownload: uploadingDownloadingSlice.reducer,
     deliveries: deliveriesDriverSlice.reducer,
-    fsuAndDrivers: driverAndCostSlice.reducer,
+    costs: costSlice.reducer,
     aggregate: aggregateReducer
   },
 });
