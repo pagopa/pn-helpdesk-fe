@@ -5,7 +5,7 @@ import configureMockStore from "redux-mock-store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { it } from "date-fns/locale";
-import {Page, UPLOAD_STATUS_ENUM} from "../model";
+import {DeliveryDriver, FilterRequest, Page, UPLOAD_STATUS_ENUM} from "../model";
 import {DeliveryDriverDTO, TenderDTO} from "../generated";
 import { RootState, store as realStore } from '../../src/redux/store';
 import { EnhancedStore, PreloadedState } from "@reduxjs/toolkit";
@@ -61,6 +61,14 @@ function reducer(
             page: 0,
             total: 0,
             pagesKey: []
+        },
+          deliveries :{loading: false,
+          detail: undefined,
+          allData: {} as Page<DeliveryDriver>,
+          pagination: {
+          page:1,
+              tot:10,
+          } as FilterRequest
         }
       }
     });

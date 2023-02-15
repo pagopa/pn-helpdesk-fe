@@ -10,18 +10,55 @@ import userEvent from "@testing-library/user-event";
 import MonitorPage from "../../monitor/MonitorPage";
 import {server} from "../../../mocks/server";
 import {rest} from "msw";
+import * as reactRedux from '../../../redux/hook'
+import configureStore from "redux-mock-store";
+import {DeliveryDriver, FilterRequest, Page} from "../../../model";
+import {TenderDTO} from "../../../generated";
+
+
 
 describe("TenderDetailPage", () => {
-    beforeEach(() => { reducer( <TenderDetailPage></TenderDetailPage>) });
-    afterEach(cleanup);
+    //beforeEach(() => { reducer( <TenderDetailPage></TenderDetailPage>) });
+    //afterEach(cleanup);
+    beforeEach(() => {
+        useSelectorMock.mockClear()
+        useDispatchMock.mockClear()
+    });
+    afterEach(() => {
+        cleanup()
+    });
+
+    const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector')
+    const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch')
 
 
-    it("Dettaglio Gara", async () => {
 
+it("Dettaglio Gara", async () => {
+        const state = {
+            tender: {
+                loading: false,
+                allData: {} as Page<TenderDTO>,
+                selected: {} as TenderDTO
+            },
+            deliveries :{loading: false,
+                    detail: undefined,
+                    allData: {} as Page<DeliveryDriver>,
+                    pagination: {
+                        page:1,
+                        tot:10,
+                    } as FilterRequest
+                }
+        }
+        useSelectorMock.mockReturnValue(state);
+        const mockStore = configureStore();
+        let updatedStore = mockStore(state);
+        const mockDispatch = jest.fn();
+        useDispatchMock.mockReturnValue(mockDispatch);
+        updatedStore.dispatch = mockDispatch;
 
-
+        reducer(<TenderDetailPage/>);
         const DeatilVisualization = await screen.findAllByDisplayValue(
-             "Informazioni"
+            "Informazioni"
         );
 
 
@@ -105,4 +142,4 @@ describe("TenderDetailPage", () => {
     });
 
 
-});
+})
