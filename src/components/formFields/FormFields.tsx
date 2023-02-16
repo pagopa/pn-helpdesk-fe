@@ -462,12 +462,14 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     rules: {
       required: errorMessages.REQUIRED,
     },
+    size: 3,
   },
   "Descrizione Aggregazione": {
     name: "description",
     componentType: "textfield",
     label: "Descrizione Aggregazione",
     hidden: false,
+    size: 9,
   },
   "Usage Plan": {
     name: "usagePlanName",
@@ -478,6 +480,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
       required: errorMessages.REQUIRED,
     },
     selectItems: [],
+    size: 4,
   },
   Rate: {
     name: "rate",
@@ -492,6 +495,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
       ),
     },
     disabled: true,
+    size: 4,
   },
   Burst: {
     name: "burst",
@@ -506,6 +510,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
       ),
     },
     disabled: true,
+    size: 4,
   },
 };
 
