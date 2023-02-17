@@ -209,7 +209,7 @@ const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
                             fields.map(field => {
                                 return (
                                     !field.hidden &&
-                                    <Grid item key={field.name + "Item"} width={field.size}>
+                                    <Grid item key={field.name + "Item"} xs={12} lg={field.size ? field.size : 3} xl={field.size ? field.size : 3}>
                                         <Controller
                                             control={control}
                                             name={field.name}
