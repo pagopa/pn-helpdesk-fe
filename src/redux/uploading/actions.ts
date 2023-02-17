@@ -10,6 +10,7 @@ export enum DOWNLOAD_UPLOAD_ACTIONS {
 }
 
 interface DownloadResponse {
+  code?: number
   data ?:string,
   uid ?: string,
   retry ?: number,
@@ -36,6 +37,7 @@ export const getFile = createAsyncThunk<
       if (response?.data?.status){
         if (response.data.status === "UPLOADING") {
           return {
+            code: Math.random(),
             uid: response.data?.uuid,
             retry: response.data?.retryAfter,
             url: undefined,
@@ -43,6 +45,7 @@ export const getFile = createAsyncThunk<
           }
         } else if (response.data.status === "UPLOADED"){
           return {
+            code: Math.random(),
             uid: response.data?.uuid,
             data: response.data?.data,
             retry: undefined,

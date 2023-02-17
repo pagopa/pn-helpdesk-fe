@@ -19,7 +19,7 @@ export function TenderDetailPage({email}:any) {
 
   useEffect(() => () => {
     dispatch(resetStateDrivers())
-  }, [])
+  }, [dispatch])
 
 
   if (!tenderState.selected || !tenderState.selected?.code){
@@ -71,7 +71,7 @@ export function TenderDetailPage({email}:any) {
               </Typography>
             </Grid>
             <div data-testid="datagrid">
-            <DeliveriesDriverTable tenderCode={tenderState.selected.code} withActions={false}/>
+              <DeliveriesDriverTable tenderCode={tenderState.selected.code} withActions={false}/>
             </div>
           </Card>
         </Grid>

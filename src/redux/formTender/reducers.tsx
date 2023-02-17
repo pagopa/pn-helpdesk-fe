@@ -44,9 +44,13 @@ const formTenderSlice = createSlice({
       }
     },
     goTenderDriversStep: (state) => {
-      if (state.formTender?.code && state.formFsu?.uniqueCode){
+      if (state.formTender?.code && state.formFsu?.taxId){
         state.activeKey = 2;
         state.fromUpload = false
+      }
+      if (state.formTender?.code && state.fromUpload){
+        state.activeKey = 2;
+        state.fromUpload = true;
       }
     },
     goFinalStep: (state) => {

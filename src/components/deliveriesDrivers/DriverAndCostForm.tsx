@@ -35,19 +35,18 @@ export function DriverAndCostForm(props: DriverAndCostFormProps){
         driverCode: props.driverCode as string
       }));
     }
-  }, [props])
+  }, [props, dispatch])
 
   useEffect(() => {
     fetchCorrectDriver()
     return () => {
-      console.log("Hide component ", props.fsu)
       dispatch(resetStateCost())
       dispatch(resetDetailDriver())
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (driverStore.detail?.uniqueCode && props.fsu){
+    if (driverStore.detail?.taxId && props.fsu){
       dispatch(addedFSU(driverStore.detail))
     }
 
@@ -64,13 +63,13 @@ export function DriverAndCostForm(props: DriverAndCostFormProps){
   return <Grid item container rowSpacing={2}>
     <Grid item>
       <DeliveryDriverFormBox fsu={props.fsu}
-                             key={"DRIVER_"+driverStore?.detail?.uniqueCode}
+                             key={"DRIVER_"+driverStore?.detail?.taxId}
                              onChanged={handleOnSavedDriver}
                              tenderCode={props.tenderCode}
                              initialValue={driverStore.detail} />
     </Grid>
     {
-      (driverStore.detail?.uniqueCode) ?
+      (driverStore.detail?.taxId) ?
         <>
         <Grid item container>
           <Card
@@ -97,13 +96,13 @@ export function DriverAndCostForm(props: DriverAndCostFormProps){
                 </Button>
               </Grid>
             </Grid>
-            <CostsTable tenderCode={props.tenderCode} driverCode={driverStore.detail?.uniqueCode}/>
+            <CostsTable tenderCode={props.tenderCode} driverCode={driverStore.detail?.taxId}/>
           </Card>
         </Grid>
 
         <CostDialog cost={costSelected}
                     tenderCode={props.tenderCode}
-                    driverCode={driverStore.detail?.uniqueCode}
+                    driverCode={driverStore.detail?.taxId}
                     fsu={props.fsu}
                     open={!!(costSelected)}
                     onClickNegative={() => dispatch(resetSelectedCost())}

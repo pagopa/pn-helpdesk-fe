@@ -19,7 +19,7 @@ export default function StepFSU(){
 
     <Grid item container direction="row" justifyContent="space-between">
       <Button onClick={() => dispatch(backStep())} variant={"outlined"}>Torna a FSU</Button>
-      <Button variant={"contained"} onClick={() => dispatch(goTenderDriversStep())} disabled={!(formState.formFsu?.uniqueCode)} >Avanti</Button>
+      <Button variant={"contained"} onClick={() => dispatch(goTenderDriversStep())} disabled={!(formState.formFsu?.taxId)} >Avanti</Button>
     </Grid>
   </Stack>
 

@@ -7,7 +7,8 @@ interface DownloadingState {
   data ?: string
   loading: boolean
   retry ?: number
-  error: boolean
+  error: boolean,
+  code?:number
 }
 
 interface UploadingState {
@@ -55,6 +56,7 @@ const uploadingDownloadingSlice = createSlice({
       state.download.uid = action.payload.uid;
       state.download.loading = action.payload.loading;
       state.download.error = false
+      state.download.code = action.payload.code;
     })
     builder.addCase(getFile.rejected, (state, action) => {
       state.download.loading = false;

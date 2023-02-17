@@ -79,7 +79,7 @@ export default function CostsForm(props:CostFormProps) {
       let status = 400
       if (e instanceof AxiosError && e.response?.status){
         status = e.response.status
-        if (e.response?.data && e.response?.data?.detail){
+        if (e.response?.data?.detail){
           message = e.response.data.detail
         }
       }

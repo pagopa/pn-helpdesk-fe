@@ -1,4 +1,10 @@
-import {Configuration, CostDTO, DeliveryDriverApi, DeliveryDriverDTO, TenderCreateRequestDTO} from "../generated";
+import {
+  Configuration,
+  CostDTO,
+  DeliveryDriverApi,
+  DeliveryDriverDTO, NotifyResponseDto, NotifyUploadRequestDto,
+  TenderCreateRequestDTO,
+} from "../generated";
 import {DeliveryDriver, Tender} from "../model";
 
 
@@ -62,6 +68,22 @@ export const createCost = async (tenderCode:string, driverCode:string, body:Cost
   try {
     await apiPaperChannel().createUpdateCost(tenderCode, driverCode, body);
     callbackSuccess(body);
+  } catch (e){
+    return callbackError(e);
+  }
+
+}
+
+
+export const sendNotify = async (tender:string, uid:string,
+                                 callbackSuccess:(data:NotifyResponseDto)=>void,
+                                 callbackError:(e:any)=>void) => {
+  try {
+    const  request : NotifyUploadRequestDto = {
+      uuid: uid
+    }
+    const response = await apiPaperChannel().notifyUpload(tender, request);
+    callbackSuccess(response.data)
   } catch (e){
     return callbackError(e);
   }

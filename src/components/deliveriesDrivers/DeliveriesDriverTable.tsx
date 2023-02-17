@@ -40,7 +40,7 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
     <PaginationDataGrid <DeliveryDriver> data={(driversStore?.allData) ? driversStore?.allData : {} as Page<DeliveryDriver> }
                                          type={(!props.withActions) ? ModelType.DELIVERY_DRIVER : ModelType.DELIVERY_DRIVER_WITH_ACTIONS}
                                          loading={false}
-                                         rowId={row => row!.uniqueCode}
+                                         rowId={row => row!.taxId}
                                          onPageChange={handleOnPageChange}
                                          onPageSizeChange={handleOnPageSizeChange}/>
   </Grid>

@@ -8,6 +8,9 @@ import {DeliveryDriver} from "../../../model";
 
 import {LoadingButton} from "@mui/lab";
 import {createDeliveryDriver} from "../../../api/paperChannelApi";
+import * as snackbarActions from "../../../redux/snackbarSlice";
+import {AxiosError} from "axios";
+import {useAppDispatch} from "../../../redux/hook";
 
 const initialValue = (data:DeliveryDriver):{ [x: string]: any } => (
   {
@@ -24,6 +27,7 @@ interface PropsDeliveryBox{
 
 export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
   const fields = ["taxId", "businessName", "denomination", "registeredOffice", "fiscalCode", "pec", "phoneNumber", "uniqueCode"];
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -51,6 +55,15 @@ export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
   }
 
   const handleError = (e:any) => {
+    let message = "Errore durante il salvataggio del recapitista";
+    if (e instanceof AxiosError){
+      if (e.response?.data?.detail) {
+        message = e.response?.data?.detail
+      }
+    }
+    dispatch(snackbarActions.updateSnackbacrOpened(true));
+    dispatch(snackbarActions.updateStatusCode(400));
+    dispatch(snackbarActions.updateMessage(message));
     setLoading(false);
   }
 

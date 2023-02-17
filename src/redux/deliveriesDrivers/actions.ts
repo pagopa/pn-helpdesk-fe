@@ -1,6 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {DeliveryDriver, FilterRequest, Page} from "../../model";
-import {DeliveryDriverDTO} from "../../generated";
 import {apiPaperChannel} from "../../api/paperChannelApi";
 import * as spinnerActions from "../spinnerSlice";
 import * as snackbarActions from "../snackbarSlice";
@@ -14,7 +13,7 @@ export const getAllDrivers = createAsyncThunk<
   async (filter:FilterRequest, thunkAPI) => {
     try {
       const response = await apiPaperChannel().takeDeliveriesDrivers(filter!.tenderCode as string, filter.page, filter.tot, filter?.fsu);
-      const page: Page<DeliveryDriverDTO> ={
+      const page: Page<DeliveryDriver> ={
         total: (response.data.totalElements) ? response.data.totalElements  : 0,
         size: response.data.size ?  response.data.size : 0,
         page: response.data.number ? response.data.number : 0,

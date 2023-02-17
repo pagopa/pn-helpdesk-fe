@@ -1,7 +1,7 @@
 import {Page} from "../../model";
 import {createSlice} from "@reduxjs/toolkit";
 import {getTenders} from "./actions";
-import {TenderDTO} from "../../generated";
+import { TenderDTO } from "../../generated";
 
 
 

@@ -35,15 +35,15 @@ export function StepDeliveriesDrivers(){
   }
 
 
-  if (formState.fromUpload) {
-    return <StepDriverUpload tenderCode={formState.formTender!.code as string}/>
+  if (formState.fromUpload && formState.formTender?.code) {
+    return <StepDriverUpload tenderCode={formState.formTender.code}/>
   }
 
   if (driversStore.detail && !driversStore.detail.fsu){
     return <Stack direction={"column"} spacing={2} width={"100%"}>
       <DriverAndCostForm fsu={false}
                        tenderCode={formState.formTender!.code as string}
-                       driverCode={driversStore.detail?.uniqueCode}/>
+                       driverCode={driversStore.detail?.taxId}/>
 
       <Grid item container direction="row" justifyContent="space-between">
         <Button onClick={handleBackOnDrivers} variant={"outlined"}>Torna ai recapitisti</Button>

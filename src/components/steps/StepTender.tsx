@@ -96,8 +96,8 @@ const ButtonCancel = () => {
 
   return <>
     <Button onClick={() => setOpen(true)} variant={"outlined"} startIcon={<Reply/>}>Annulla</Button>
-    <AlertDialog title={"Annullare i progressi ?"}
-                 message={"Confermando perderai tutti i dati inseriti o i dati modificati. Vuoi continuare"}
+    <AlertDialog title={"Vuoi tornare alle gare ?"}
+                 message={"Confermando tornerai alla pagina di tutte le gare. Vuoi continuare"}
                  open={open}
                  onClickNegative={handleNegative}
                  onClickPositive={handlePositive}/>
