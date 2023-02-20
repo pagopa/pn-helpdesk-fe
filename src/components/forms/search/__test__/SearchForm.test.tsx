@@ -8,11 +8,17 @@ import { screen, act, cleanup } from "@testing-library/react";
 import { reducer } from "../../../../mocks/mockReducer";
 import SearchForm from "../SearchForm";
 import userEvent from "@testing-library/user-event";
+import * as auth from "../../../../Authentication/auth";
 
 describe("SearchForm", () => {
   afterEach(cleanup);
 
   beforeEach(() => {
+    jest.spyOn(auth, "getUser").mockImplementation(() => {
+      return new Promise((resolve, reject) => {
+        return resolve("test");
+      });
+    });
     reducer(<SearchForm />);
   });
 
@@ -194,6 +200,54 @@ describe("SearchForm", () => {
     await act(async () => {
       await user.clear(nomePa);
       await user.type(nomePa, "icn");
+    });
+    const button = await screen.findByRole("button", {
+      name: "Ricerca",
+    });
+    await act(() => user.click(button));
+  });
+
+  it("change Tipo estrazione to Ottieni log di sessione", async () => {
+    const selectMenu = screen.getByRole("button", {
+      name: "Ottieni EncCF",
+    });
+    expect(selectMenu).toBeInTheDocument();
+
+    const user = userEvent.setup();
+    await act(() => user.click(selectMenu));
+    const OttieniLogDiSessione = await screen.findByRole("option", {
+      name: "Ottieni log di sessione",
+    });
+    expect(OttieniLogDiSessione).toBeInTheDocument();
+
+    await act(() => user.click(OttieniLogDiSessione));
+    expect(selectMenu.textContent).toEqual("Ottieni log di sessione");
+
+    const ticketNumber = await screen.findByRole("textbox", {
+      name: "Numero Ticket",
+    });
+    expect(ticketNumber).toBeInTheDocument();
+
+    const jti = await screen.findByRole("textbox", {
+      name: "Identificativo di sessione (jti)",
+    });
+    expect(jti).toBeInTheDocument();
+
+    const checkbox = await screen.findByRole("checkbox");
+    expect(checkbox).toBeInTheDocument();
+
+    const datePickers = await screen.findAllByRole("textbox", {
+      name: /Choose date/i,
+    });
+    expect(datePickers).toHaveLength(2);
+
+    await act(async () => {
+      await user.clear(ticketNumber);
+      await user.type(ticketNumber, "abc");
+    });
+    await act(async () => {
+      await user.clear(jti);
+      await user.type(jti, "kj5l-77-abc");
     });
     const button = await screen.findByRole("button", {
       name: "Ricerca",

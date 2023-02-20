@@ -14,4 +14,5 @@ export const regex = {
   IUN: /^([A-Za-z]{4})-([A-Za-z]{4})-([A-Za-z]{4})-(\d{6})-([A-Za-z]{1})-(\d{1})$/,
   AMOUNT: /^\d+(\,\d{1,2})?$/,
   CAP: /^[0-9]{5}$/,
+  JTI: /^[A-Za-z0-9-]*$/,
 };

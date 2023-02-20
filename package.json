@@ -96,5 +96,12 @@
       "**/src/pages/**",
       "!**/src/components/formFields/**"
     ]
+  },
+  "resolutions": {
+    "**/react-scripts/react-dev-utils/recursive-readdir/minimatch": "^3.0.5",
+    "**/react-scripts/@svgr/webpack/@svgr/plugin-svgo/svgo/css-select/nth-check": "^2.0.1",
+    "**/terser": "^5.14.2",
+    "**/file-loader/loader-utils": "^2.0.4",
+    "**/react-scripts/react-dev-utils/loader-utils": "^3.2.1"
   }
 }

@@ -1,6 +1,12 @@
 import TextFieldComponent from "../textField/TextFieldComponent";
 import RadioButtonsGroup from "../radioButtonsGroup/RadioButtonsGroup";
-import { Checkbox, FormControlLabel, Grid, InputAdornment, Tooltip} from "@mui/material";
+import {
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  InputAdornment,
+  Tooltip,
+} from "@mui/material";
 import SelectField from "../selectField/SelectField";
 import { regex } from "../../helpers/validations";
 import DatePickerComponent from "../datePicker/DatePickerComponent";
@@ -13,6 +19,8 @@ import SelectCustomField, {OptionCustom} from "../selectField/SelectCustomField"
 
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import NumberFieldComponent from "../textField/NumberFieldComponent";
+import { format, isSameDay, isBefore, subMonths, isAfter } from "date-fns";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 /**
  * Items for the Tipo Estrazione and their coresponding fields
  */
@@ -29,12 +37,18 @@ let MenuItems: { [key: string]: Array<string> } = {
   // "Ottieni log completi + organizzazione": ["ticketNumber", "taxId", "Time interval"],
   "Ottieni log completi": ["ticketNumber", "taxId", "iun", "personId"],
   "Ottieni log di processo": ["traceId", "Time interval"],
+  "Ottieni log di sessione": [
+    "ticketNumber",
+    "jti",
+    "Time interval",
+    "deanonimization",
+  ],
 };
 
 const HelpIconWithTooltip = ({ title }: any) => (
-    <Tooltip title={title}>
-        <HelpOutlineIcon />
-    </Tooltip>
+  <Tooltip title={title}>
+    <HelpOutlineIcon />
+  </Tooltip>
 );
 
 /**
@@ -91,7 +105,7 @@ type FieldsProps = {
   /**
    * size of the field in percents
    */
-  size?: string;
+  size?: number;
   /**
    * some additional input props for text fields
    */
@@ -121,8 +135,8 @@ type FieldsProps = {
    */
   inputSize?: string;
   /**
-     * disabling field
-     */
+   * disabling field
+   */
   disabled?: boolean;
 };
 
@@ -136,6 +150,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     label: "Tipo Estrazione",
     hidden: false,
     selectItems: Object.keys(MenuItems),
+    size: 3,
   },
   "Ticket Number": {
     name: "ticketNumber",
@@ -179,7 +194,8 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     componentType: "textfield",
     label: "IUN",
     inputProps: { maxLength: 25 },
-    size: "30%",
+    size: 4,
+    // size: "30%",
     hidden: false,
     rules: {
       required: errorMessages.REQUIRED,
@@ -193,9 +209,10 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
   "Unique Identifier": {
     name: "personId",
     componentType: "textfield",
-    label: "Codice Univoco",
+    label: "Codice Univoco (uid)",
     hidden: false,
-    size: "45%",
+    size: 5.3,
+    // size: "45%",
     rules: {
       pattern: {
         value: regex.UNIQUE_IDENTIFIER_PATTERN,
@@ -228,7 +245,8 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     componentType: "textfield",
     label: "Trace ID",
     hidden: false,
-    size: "45%",
+    size: 5.3,
+    // size: "45%",
     rules: {
       required: errorMessages.REQUIRED,
     },
@@ -265,7 +283,8 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     intervalLimit: [1, "months"],
     format: "dd-MM-yyyy",
     disableFuture: false,
-    size: "60%",
+    size: 7,
+    // size: "60%",
     maxDate: format(
       new Date(
         new Date(
@@ -306,6 +325,21 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
       },
     },
   },
+  jti: {
+    name: "jti",
+    componentType: "textfield",
+    label: "Identificativo di sessione (jti)",
+    hidden: false,
+    size: 5,
+    // size: "35%",
+    rules: {
+      required: errorMessages.INCORRECT_JTI,
+      pattern: {
+        value: regex.JTI,
+        message: errorMessages.INCORRECT_JTI,
+      },
+    },
+  },
   "Time interval": {
     name: "Time interval",
     componentType: "dateRangePicker",
@@ -313,7 +347,8 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     hidden: false,
     required: false,
     intervalLimit: [3, "months"],
-    size: "60.5%",
+    size: 7.5,
+    // size: "60.5%",
     disableFuture: true,
     rules: {
       required: errorMessages.REQUIRED,
@@ -321,10 +356,10 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
         validateInterval: (dates: Array<any>) => {
           let startDate = new Date(dates[0]);
           let endDate = new Date(dates[1]);
+          let minStartDate = subMonths(endDate, 3);
           return (
-            endDate.getMonth() - startDate.getMonth() < 3 ||
-            (endDate.getMonth() - startDate.getMonth() === 3 &&
-              startDate.getDate() >= endDate.getDate()) ||
+            isAfter(startDate, minStartDate) ||
+            isSameDay(startDate, minStartDate) ||
             errorMessages.DATES_INTERVAL
           );
         },
@@ -407,13 +442,13 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
         value: regex.PASSWORD,
         message: errorMessages.INCORRECT_PASSWORD,
       },
-    }
+    },
   },
   "Nome aggregazione": {
     name: "name",
     componentType: "textfield",
     label: "Nome aggregazione",
-    hidden: false
+    hidden: false,
   },
   "Nome PA": {
     name: "name",
@@ -421,67 +456,67 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     label: "Nome PA",
     hidden: false,
     rules: {
-        minLength: {
-            value: 3,
-            message: errorMessages.MIN_LENGTH(3)
-        }
-    }
+      minLength: {
+        value: 3,
+        message: errorMessages.MIN_LENGTH(3),
+      },
+    },
   },
   "Nome Aggregazione": {
     name: "name",
     componentType: "textfield",
     label: "Nome Aggregazione",
-    size: "33%",
     hidden: false,
     rules: {
-        required: errorMessages.REQUIRED
-    }
+      required: errorMessages.REQUIRED,
+    },
   },
   "Descrizione Aggregazione": {
     name: "description",
     componentType: "textfield",
     label: "Descrizione Aggregazione",
-    size: "67%",
-    hidden: false
+    hidden: false,
   },
   "Usage Plan": {
     name: "usagePlanName",
     componentType: "select",
     label: "Usage Plan",
-    size: "33%",
     hidden: false,
     rules: {
-        required: errorMessages.REQUIRED
+      required: errorMessages.REQUIRED,
     },
-    selectItems: []
+    selectItems: [],
   },
-  "Rate": {
+  Rate: {
     name: "rate",
     componentType: "textfield",
     label: "Rate",
     size: "33%",
     hidden: false,
     InputProps: {
-        endAdornment: <InputAdornment position="end">
-            <HelpIconWithTooltip title="Numero di richieste permesse al secondo" />
+      endAdornment: (
+        <InputAdornment position="end">
+          <HelpIconWithTooltip title="Numero di richieste permesse al secondo" />
         </InputAdornment>
+      ),
     },
-    disabled: true
+    disabled: true,
   },
-  "Burst": {
+  Burst: {
     name: "burst",
     componentType: "textfield",
     label: "Burst",
-    size: "33%",
     hidden: false,
     InputProps: {
-        endAdornment: <InputAdornment position="end">
-            <HelpIconWithTooltip title="Numero di richieste permesse in concorrenza" />
+      endAdornment: (
+        <InputAdornment position="end">
+          <HelpIconWithTooltip title="Numero di richieste permesse in concorrenza" />
         </InputAdornment>
+      ),
     },
-    disabled: true
-  }
-}
+    disabled: true,
+  },
+};
 
 /**
  * @typedef {Object} Props

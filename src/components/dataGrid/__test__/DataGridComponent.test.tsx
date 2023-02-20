@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { act, screen } from "@testing-library/react";
+import { act, cleanup, screen } from "@testing-library/react";
 import "regenerator-runtime/runtime";
 import { reducer } from "../../../mocks/mockReducer";
 import { rest } from "msw";
@@ -13,6 +13,8 @@ import { GridActionsCellItem } from "@mui/x-data-grid";
 import { format } from "date-fns";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import * as auth from "../../../Authentication/auth";
+import React from "react";
 
 const rows = [
   {
@@ -98,6 +100,12 @@ const columns = [
 ];
 
 describe("DataGridComponent", () => {
+  afterEach(cleanup);
+
+  beforeEach(() => {
+    jest.spyOn(React, "useEffect").mockImplementation(() => jest.fn());
+  });
+
   it("render DataGridComponent with 4 columns and 4 rows", async () => {
     await act(async () => {
       reducer(<DataGridComponent columns={columns} rows={rows} />);
@@ -110,7 +118,7 @@ describe("DataGridComponent", () => {
 
   it("render 3 functionalities", async () => {
     await act(async () => {
-      reducer(<MonitorPage email="" />);
+      reducer(<MonitorPage />);
     });
 
     const notificationVisualization = await screen.findByText(
@@ -131,7 +139,7 @@ describe("DataGridComponent", () => {
     );
 
     await act(async () => {
-      reducer(<MonitorPage email="" />);
+      reducer(<MonitorPage />);
     });
 
     expect(

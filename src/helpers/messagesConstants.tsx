@@ -17,7 +17,8 @@ export const errorMessages = {
   CAPS_INVALID: "I valori inseriti non sono corretti",
   PRODUCT_TYPE_INVALID: "Selezionare un tipo di prodotto valido",
   ZONE_INVALID: "Selezionare una zona valida",
-  MIN_LENGTH: (length: number = 5) => `Inserire almeno ${length} caratteri`
+  MIN_LENGTH: (length: number = 5) => `Inserire almeno ${length} caratteri`,
+  INCORRECT_JTI: "Identificativo di sessione non corretto",
 };
 
 export const infoMessages = {
