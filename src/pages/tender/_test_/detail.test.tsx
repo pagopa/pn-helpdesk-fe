@@ -4,7 +4,7 @@
 
 import { act, cleanup, screen } from "@testing-library/react";
 import "regenerator-runtime/runtime";
-import {TenderDetailPage} from "../detail";
+import {TenderDetailPage} from "../TenderDetailPage";
 import { reducer } from "../../../mocks/mockReducer";
 import userEvent from "@testing-library/user-event";
 import MonitorPage from "../../monitor/MonitorPage";

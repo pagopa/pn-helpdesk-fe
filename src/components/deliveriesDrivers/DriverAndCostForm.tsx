@@ -96,7 +96,7 @@ export function DriverAndCostForm(props: DriverAndCostFormProps){
                 </Button>
               </Grid>
             </Grid>
-            <CostsTable tenderCode={props.tenderCode} driverCode={driverStore.detail?.taxId}/>
+            <CostsTable tenderCode={props.tenderCode} driverCode={driverStore.detail?.taxId} withActions={true}/>
           </Card>
         </Grid>
 

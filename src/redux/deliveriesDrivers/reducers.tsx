@@ -3,11 +3,17 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 import {getDriverDetails, getAllDrivers, getFsuDetail} from "./actions";
 
+interface DialogCostState {
+  driverCode: string,
+  tenderCode: string,
+}
+
 interface DeliveriesDriverState {
   loading: boolean,
   detail: DeliveryDriver | undefined,
   allData: Page<DeliveryDriver>,
-  pagination: FilterRequest
+  pagination: FilterRequest,
+  dialogCost: DialogCostState | undefined
 }
 
 const initialState:DeliveriesDriverState = {
@@ -18,7 +24,8 @@ const initialState:DeliveriesDriverState = {
     page:1,
     tot:10,
     fsu: undefined
-  } as FilterRequest
+  } as FilterRequest,
+  dialogCost: undefined
 }
 
 
@@ -36,6 +43,9 @@ const deliveriesDriverSlice = createSlice({
     },
     changeFilterDrivers: (state, action:PayloadAction<FilterRequest>) => {
       state.pagination = action.payload
+    },
+    setDialogCosts: (state, action: PayloadAction<DialogCostState | undefined>) => {
+      state.dialogCost = action.payload
     }
   },
   extraReducers: (builder) => {
@@ -47,7 +57,6 @@ const deliveriesDriverSlice = createSlice({
       state.loading = false
     })
     builder.addCase(getAllDrivers.rejected, (state, action) => {
-      console.error(action.payload);
       state.loading = false
     })
     builder.addCase(getFsuDetail.fulfilled, (state, action) => {
@@ -60,6 +69,6 @@ const deliveriesDriverSlice = createSlice({
 })
 
 
-export const {resetStateDrivers, resetDetailDriver, setDetailDriver, changeFilterDrivers} = deliveriesDriverSlice.actions
+export const {resetStateDrivers, resetDetailDriver, setDetailDriver, changeFilterDrivers, setDialogCosts} = deliveriesDriverSlice.actions
 
 export default deliveriesDriverSlice;

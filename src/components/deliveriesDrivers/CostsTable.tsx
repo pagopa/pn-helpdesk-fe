@@ -10,6 +10,7 @@ import {CostDTO} from "../../generated";
 interface CostsTable{
   tenderCode: string,
   driverCode: string,
+  withActions: boolean
 }
 export function CostsTable(props:CostsTable){
   const costsStore = useAppSelector(state => state.costs);
@@ -38,7 +39,7 @@ export function CostsTable(props:CostsTable){
 
   return <Grid item>
     <PaginationDataGrid <CostDTO> data={(costsStore?.costs) ? costsStore?.costs : {} as Page<CostDTO> }
-                                         type={ModelType.COST}
+                                         type={(!props.withActions) ? ModelType.COST : ModelType.COST_WITH_ACTIONS}
                                          loading={false}
                                          rowId={row => row!.uid}
                                          onPageChange={handleOnPageChange}

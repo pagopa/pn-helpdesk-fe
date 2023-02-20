@@ -3,8 +3,10 @@ import {ModelType, PaginationDataGrid} from "../paginationGrid";
 import {DeliveryDriver, Page} from "../../model";
 import {Grid} from "@mui/material";
 import React, {useCallback, useEffect} from "react";
-import {changeFilterDrivers} from "../../redux/deliveriesDrivers/reducers";
+import {changeFilterDrivers, setDialogCosts} from "../../redux/deliveriesDrivers/reducers";
 import {getAllDrivers} from "../../redux/deliveriesDrivers/actions";
+import {DriverCostsDialog} from "../dialogs";
+import {resetStateCost} from "../../redux/costs/reducers";
 
 interface DeliveriesDriverTableProps{
   tenderCode: string,
@@ -36,6 +38,7 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
     dispatch(changeFilterDrivers({...driversStore.pagination, page:1, tot:size}))
   }
 
+
   return <Grid item container>
     <PaginationDataGrid <DeliveryDriver> data={(driversStore?.allData) ? driversStore?.allData : {} as Page<DeliveryDriver> }
                                          type={(!props.withActions) ? ModelType.DELIVERY_DRIVER : ModelType.DELIVERY_DRIVER_WITH_ACTIONS}
@@ -43,5 +46,17 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
                                          rowId={row => row!.taxId}
                                          onPageChange={handleOnPageChange}
                                          onPageSizeChange={handleOnPageSizeChange}/>
+
+    {
+      (driversStore.dialogCost?.driverCode) ?
+        <DriverCostsDialog tenderCode={driversStore.dialogCost.tenderCode}
+                           driverCode={driversStore.dialogCost.driverCode}
+                           open={!!driversStore.dialogCost?.driverCode}
+                           onClickNegative={() => {
+                             dispatch(setDialogCosts(undefined))
+                             dispatch(resetStateCost())
+                           }} onClickPositive={() => {}} />: null
+    }
+
   </Grid>
 }

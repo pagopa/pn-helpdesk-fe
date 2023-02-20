@@ -31,6 +31,7 @@ export type Tender = {
 }
 
 export type DeliveryDriver = {
+  tenderCode: string
   denomination: string,
   businessName: string,
   registeredOffice: string,

@@ -6,7 +6,7 @@ import {DataInfo} from "../../components/dataInfo/DataInfo";
 import {tenderRowsInfo} from "../../components/dataInfo/rows";
 import {BreadcrumbCustom} from "../../components/breadcrumb/BreadcrumbCustom";
 import {Navigate, useNavigate} from "react-router-dom";
-import {TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
+import {CREATE_TENDER_ROUTE, TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
 import {DeliveriesDriverTable} from "../../components/deliveriesDrivers/DeliveriesDriverTable";
 import {resetStateDrivers} from "../../redux/deliveriesDrivers/reducers";
 
@@ -77,10 +77,15 @@ export function TenderDetailPage({email}:any) {
         </Grid>
         <Grid item container direction="row" justifyContent="space-between">
           <Button variant={"outlined"} onClick={()=> navigate(TENDERS_TABLE_ROUTE)}>Torna alle Gare</Button>
-          <Button variant={"contained"}
-                  type={"submit"} >
-            Modifica
-          </Button>
+          {
+            (tenderState.selected?.status && tenderState.selected.status === "CREATED") ?
+              <Button variant={"contained"}
+                      type={"submit"}
+                      onClick={() => navigate(CREATE_TENDER_ROUTE+"/"+tenderState.selected.code)}>
+                Modifica
+              </Button> : null
+          }
+
         </Grid>
       </Grid>
 

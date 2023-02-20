@@ -8,7 +8,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import {ButtonsActionTenderTable} from "../buttonsGroup/ButtonsActionTenderTable";
 import {ButtonsActionCostTable} from "../buttonsGroup/ButtonsActionCostTable";
 import {CostDTO} from "../../generated";
-import {ButtonsActionDriverTable} from "../buttonsGroup/ButtonsActionDriverTable";
+import {ButtonsActionDriverTable, ButtonShowCosts} from "../buttonsGroup/ButtonsActionDriverTable";
 
 
 const columnsTender: GridColDef[] = [
@@ -124,6 +124,19 @@ const columnsDeliveryDriver: (withActions:boolean) => GridColDef[] = (withAction
       },
     },
     {
+      field: "cap/zone",
+      headerName: "CAP/ZONE",
+      type: "string",
+      width: 400,
+      flex: 1,
+      minWidth: 100,
+      sortable: false,
+      disableColumnMenu: true,
+      renderCell: (params: any) => {
+        return <ButtonShowCosts value={params.row}/>
+      },
+    },
+    {
       field: "action",
       headerName: "Azioni",
       type: "string",
@@ -234,6 +247,8 @@ const getColumn = (type:ModelType) => {
       case ModelType.DELIVERY_DRIVER_WITH_ACTIONS:
         return columnsDeliveryDriver(true);
       case ModelType.COST:
+        return columnsCost(false);
+      case ModelType.COST_WITH_ACTIONS:
         return columnsCost(true);
       default:
         return emptyColumn

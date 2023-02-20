@@ -4,7 +4,7 @@ import LoginPage from "../pages/login/LoginPage";
 import SearchPage from "../pages/search/SearchPage";
 import PrivateRoute from "./PrivateRoute";
 import TenderPage from "../pages/tender/TenderPage";
-import {TenderDetailPage} from "../pages/details/detail";
+import {TenderDetailPage} from "../pages/tender/TenderDetailPage";
 import {FormTenderPage} from "../pages/createTender/FormTenderPage";
 import {CREATE_TENDER_ROUTE, TENDERS_TABLE_ROUTE, TENDER_DETAIL_ROUTE} from "./router.const";
 import MonitorPage from "../pages/monitor/MonitorPage";

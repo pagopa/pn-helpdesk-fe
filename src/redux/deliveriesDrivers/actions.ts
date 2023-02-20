@@ -17,10 +17,17 @@ export const getAllDrivers = createAsyncThunk<
         total: (response.data.totalElements) ? response.data.totalElements  : 0,
         size: response.data.size ?  response.data.size : 0,
         page: response.data.number ? response.data.number : 0,
-        content: response.data.content ? response.data.content.map(item => item as DeliveryDriver) : []
+        content: response.data.content ? response.data.content.map(item => ({
+          ...item,
+          tenderCode: filter.tenderCode
+        } as DeliveryDriver)) : []
       }
       return page;
     } catch (e){
+      thunkAPI.dispatch(spinnerActions.updateSpinnerOpened(false));
+      thunkAPI.dispatch(snackbarActions.updateSnackbacrOpened(true));
+      thunkAPI.dispatch(snackbarActions.updateStatusCode(400));
+      thunkAPI.dispatch(snackbarActions.updateMessage("Errore durante il recupero dei recapitisti"));
       return thunkAPI.rejectWithValue(e);
     }
   }
@@ -44,7 +51,7 @@ export const getDriverDetails = createAsyncThunk<
       thunkAPI.dispatch(spinnerActions.updateSpinnerOpened(false));
       thunkAPI.dispatch(snackbarActions.updateSnackbacrOpened(true));
       thunkAPI.dispatch(snackbarActions.updateStatusCode(400));
-      thunkAPI.dispatch(snackbarActions.updateMessage("Errore con dei costi"));
+      thunkAPI.dispatch(snackbarActions.updateMessage("Errore durante il recupero dei costi"));
       return thunkAPI.rejectWithValue(e)
     }
   }

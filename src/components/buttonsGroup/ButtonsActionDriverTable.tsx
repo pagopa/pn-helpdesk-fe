@@ -11,7 +11,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import React from "react";
 import {useAppDispatch} from "../../redux/hook";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {setDetailDriver} from "../../redux/deliveriesDrivers/reducers";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import {setDetailDriver, setDialogCosts} from "../../redux/deliveriesDrivers/reducers";
 import {DeliveryDriver} from "../../model";
 
 
@@ -70,4 +71,17 @@ export function ButtonsActionDriverTable(props:{value:any}){
     </Menu>
   </>
 
+}
+
+export function ButtonShowCosts(props:{value:any}) {
+  const dispatch = useAppDispatch();
+
+  const handleClickShowCosts = () => {
+    const driver = props.value as DeliveryDriver
+    dispatch(setDialogCosts({tenderCode: driver.tenderCode, driverCode: driver.taxId }))
+  }
+
+  return <IconButton onClick={handleClickShowCosts}>
+    <VisibilityIcon/>
+  </IconButton>
 }
