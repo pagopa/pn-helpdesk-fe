@@ -70,7 +70,22 @@ export enum UPLOAD_STATUS_ENUM {
   ERROR_PRESIGNED_URL="ERROR_PRESIGNED_URL",
   UPLOADING_FILE_S3="UPLOADING_FILE_S3",
   UPLOADED_FILE_S3="UPLOADED_FILE_S3",
-  ERROR_UPLOADING_FILE_S3="ERROR_UPLOADING_FILE_S3"
+  ERROR_UPLOADING_FILE_S3="ERROR_UPLOADING_FILE_S3",
+  NOTIFY_IN_PROGRESS = "NOTIFY_IN_PROGRESS",
+  ERROR_VALIDATION_EXCEL = "ERROR_VALIDATION_EXCEL",
+  DATA_SAVED="DATA_SAVED"
+}
+
+export interface ErrorsNotify {
+  detail: string,
+  errors: {col:string, row:string, message:string}[]
+}
+
+export interface NotifyState {
+  uid: string | undefined,
+  retry: number | undefined,
+  error : ErrorsNotify | undefined,
+  loading: boolean
 }
 
 

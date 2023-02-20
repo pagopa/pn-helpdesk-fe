@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {getFile, getPresignedUrl, uploadFile} from "./actions";
-import {UPLOAD_STATUS_ENUM} from "../../model";
+import {getFile, getPresignedUrl, notifyFileUpload, uploadFile} from "./actions";
+import {ErrorsNotify, UPLOAD_STATUS_ENUM} from "../../model";
 
 interface DownloadingState {
   uid ?: string,
@@ -16,7 +16,9 @@ interface UploadingState {
   uid ?: string
   loading: boolean
   status: UPLOAD_STATUS_ENUM
-  error?: string
+  retry: number | undefined
+  error: string | ErrorsNotify | undefined,
+  attemptNotify: number
 }
 
 const initialState = {
@@ -27,7 +29,8 @@ const initialState = {
   upload: {
     loading: false,
     error: undefined,
-    status: UPLOAD_STATUS_ENUM.WAITING_FILE
+    status: UPLOAD_STATUS_ENUM.WAITING_FILE,
+    attemptNotify: 0
   } as UploadingState
 }
 
@@ -91,6 +94,25 @@ const uploadingDownloadingSlice = createSlice({
       state.upload.status = UPLOAD_STATUS_ENUM.ERROR_UPLOADING_FILE_S3
       state.upload.loading = false;
       state.upload.error = "Error with upload s3";
+    })
+
+    builder.addCase(notifyFileUpload.pending, (state, action) => {
+      state.upload.status = UPLOAD_STATUS_ENUM.NOTIFY_IN_PROGRESS
+      state.upload.loading = true
+      state.upload.error = undefined;
+    });
+    builder.addCase(notifyFileUpload.fulfilled, (state, action) => {
+      state.upload.status = (action.payload.status === "IN_PROGRESS") ? UPLOAD_STATUS_ENUM.NOTIFY_IN_PROGRESS :
+                            (action.payload.status === "COMPLETE") ? UPLOAD_STATUS_ENUM.DATA_SAVED : UPLOAD_STATUS_ENUM.ERROR_VALIDATION_EXCEL
+      state.upload.loading = (action.payload.status === "IN_PROGRESS")
+      state.upload.retry = action.payload.retry
+      state.upload.uid = action.payload.uid
+      state.upload.attemptNotify = state.upload.attemptNotify+1
+    })
+    builder.addCase(notifyFileUpload.rejected, (state, action) => {
+      state.upload.status = UPLOAD_STATUS_ENUM.ERROR_VALIDATION_EXCEL
+      state.upload.loading = false;
+      state.upload.error = action.payload as ErrorsNotify;
     })
   }
 })

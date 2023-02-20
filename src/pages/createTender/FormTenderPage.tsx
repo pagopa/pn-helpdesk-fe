@@ -1,7 +1,7 @@
 import {Container, Grid, Step, StepLabel, Stepper, Typography} from "@mui/material";
 import MainLayout from "../mainLayout/MainLayout";
-import React from "react";
-import {useAppSelector} from "../../redux/hook";
+import React, {useEffect} from "react";
+import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {StepView} from "../../model";
 import {StepDeliveriesDrivers} from "../../components/steps/StepDeliveriesDrivers";
 import StepTender from "../../components/steps/StepTender";
@@ -10,6 +10,8 @@ import {useParams} from "react-router-dom";
 import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
 import {TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
 import {StepSummary} from "../../components/steps/StepSummary";
+import {resetStateUpload} from "../../redux/uploading/reducers";
+import {clearFormState} from "../../redux/formTender/reducers";
 
 
 
@@ -48,6 +50,14 @@ export function FormTenderPage({email}:any) {
   const {tenderCode} = useParams();
   const steps = [stepGara, stepFSU, stepDeliveries, stepRiepilogo]
   const tenderFormStepper = useAppSelector(state => state.tenderForm);
+  const dispatch = useAppDispatch();
+
+  useEffect(() =>
+    () => {
+      dispatch(resetStateUpload());
+      dispatch(clearFormState());
+    }
+  , [])
 
   return <MainLayout email={email}>
     <Container>
