@@ -71,7 +71,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "selectCustom",
     label: "Tipo di costo",
     hidden: false,
-    size: "50%",
     optionItems: COST_TYPE,
     rules:{
       validate:{
@@ -86,7 +85,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "numberField",
     label: "Costo base (€)",
     hidden: false,
-    size: "50%",
     rules: {
       pattern: {
         value: regex.AMOUNT,
@@ -106,7 +104,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     label: "Cap",
     placeholder: "Seleziona o digita Cap",
     hidden: false,
-    size: "100%",
     required: true,
     rules:{
       validate:{
@@ -128,7 +125,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "numberField",
     label: "Costo aggiuntivo per pagina (€)",
     hidden: false,
-    size: "50%",
     rules: {
       pattern: {
         value: regex.AMOUNT,
@@ -147,7 +143,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "selectCustom",
     label: "Seleziona Zona",
     hidden: false,
-    size: "100%",
     required: true,
     optionItems: OPTIONS_ZONE,
     rules:{
@@ -163,7 +158,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "selectCustom",
     label: "Tipologia di prodotto",
     hidden: false,
-    size: "50%",
     required: true,
     optionItems: NATIONAL_PRODUCT_TYPE,
     rules:{
@@ -179,7 +173,6 @@ export const fieldsCosts: { [key:string]: FieldsProps } = {
     componentType: "selectCustom",
     label: "Tipologia di prodotto",
     hidden: false,
-    size: "50%",
     required: true,
     optionItems: INTERNATIONAL_PRODUCT_TYPE,
     rules:{

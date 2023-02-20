@@ -7,12 +7,12 @@ import {changeFilterDrivers} from "../../redux/deliveriesDrivers/reducers";
 import {getCosts} from "../../redux/costs/actions";
 import {CostDTO} from "../../generated";
 
-interface CostsTable{
+interface CostsTableProps{
   tenderCode: string,
   driverCode: string,
   withActions: boolean
 }
-export function CostsTable(props:CostsTable){
+export function CostsTable(props:CostsTableProps){
   const costsStore = useAppSelector(state => state.costs);
   const dispatch = useAppDispatch();
 
@@ -23,6 +23,7 @@ export function CostsTable(props:CostsTable){
       driverCode: props.driverCode,
     }
     dispatch(getCosts(filter))
+    // eslint-disable-next-line
   }, [costsStore.pagination])
 
   useEffect(() => {

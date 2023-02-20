@@ -13,13 +13,10 @@ import DatePickerComponent from "../datePicker/DatePickerComponent";
 import DateRangePickerComponent from "../dataRangePicker/DataRangePickerComponent";
 import { CalendarPickerView } from "@mui/lab";
 import { errorMessages } from "../../helpers/messagesConstants";
-import { format, isSameDay, isBefore } from "date-fns";
+import {format, isSameDay, isBefore, subMonths, isAfter} from "date-fns";
 import {CapAutocompleteField} from "../capAutocompleteFields";
 import SelectCustomField, {OptionCustom} from "../selectField/SelectCustomField";
-
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import NumberFieldComponent from "../textField/NumberFieldComponent";
-import { format, isSameDay, isBefore, subMonths, isAfter } from "date-fns";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 /**
  * Items for the Tipo Estrazione and their coresponding fields
@@ -491,7 +488,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     name: "rate",
     componentType: "textfield",
     label: "Rate",
-    size: "33%",
+    size: 3,
     hidden: false,
     InputProps: {
       endAdornment: (

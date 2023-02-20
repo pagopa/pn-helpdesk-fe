@@ -1,5 +1,4 @@
 import {FieldsProps} from "../../formFields/FormFields";
-import {regex} from "../../../helpers/validations";
 import {errorMessages} from "../../../helpers/messagesConstants";
 import {isBefore, isSameDay} from "date-fns";
 
@@ -11,7 +10,7 @@ export const fieldsTender: { [key:string]: FieldsProps } = {
     componentType: "textfield",
     label: "Identificativo",
     hidden: false,
-    size: "50%",
+    size: 5,
     rules: {
 
       required: errorMessages.REQUIRED,
@@ -25,7 +24,7 @@ export const fieldsTender: { [key:string]: FieldsProps } = {
     hidden: false,
     required: true,
     intervalLimit: ["months"],
-    size: "60.5%",
+    size: 5,
     disableFuture: false,
     rules: {
       required: errorMessages.REQUIRED,

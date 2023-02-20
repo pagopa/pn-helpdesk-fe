@@ -57,6 +57,7 @@ export function FormTenderPage({email}:any) {
       dispatch(resetStateUpload());
       dispatch(clearFormState());
     }
+    // eslint-disable-next-line
   , [])
 
   return <MainLayout email={email}>
