@@ -16,6 +16,12 @@ import {useNavigate} from "react-router-dom";
 import {addSelected} from "../../redux/tender/reducers";
 import {CREATE_TENDER_ROUTE, TENDER_DETAIL_ROUTE} from "../../navigation/router.const";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {DeliveryDriver} from "../../model";
+import {apiPaperChannel} from "../../api/paperChannelApi";
+import {resetStateDrivers} from "../../redux/deliveriesDrivers/reducers";
+import * as spinnerActions from "../../redux/spinnerSlice";
+import * as snackbarActions from "../../redux/snackbarSlice";
+import {AxiosError} from "axios";
 
 
 export function ButtonsActionTenderTable(props:{value:any}){
@@ -23,6 +29,8 @@ export function ButtonsActionTenderTable(props:{value:any}){
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -37,6 +45,24 @@ export function ButtonsActionTenderTable(props:{value:any}){
 
   const handleClickEdit = () => {
     navigate(CREATE_TENDER_ROUTE+"/"+props.value.code)
+  }
+
+  const handleDeleteTender = async () => {
+    try {
+      dispatch(spinnerActions.updateSpinnerOpened(true));
+      await apiPaperChannel().deleteTender(props.value.code)
+     //dispatch(reset());
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+    } catch (e){
+      let message = "Errore durante l'eliminazione della gara";
+      if (e instanceof AxiosError && e?.response?.data?.detail){
+        message = e.response.data.detail;
+      }
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(400));
+      dispatch(snackbarActions.updateMessage(message));
+    }
   }
 
   return <>
@@ -63,30 +89,48 @@ export function ButtonsActionTenderTable(props:{value:any}){
             horizontal: 'left',
           }}>
       <MenuList>
+
         <MenuItem onClick={handleClickShowDetail}>
           <ListItemIcon>
             <InfoIcon fontSize="small"/>
           </ListItemIcon>
           <ListItemText>Dettagli</ListItemText>
         </MenuItem >
-        <MenuItem onClick={handleClickEdit}>
-          <ListItemIcon>
-            <EditIcon fontSize="small"/>
-          </ListItemIcon>
-          <ListItemText>Modifica</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <SystemUpdateAltIcon fontSize="small"/>
-          </ListItemIcon>
-          <ListItemText>Convalida</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <DeleteIcon fontSize="small"/>
-          </ListItemIcon>
-          <ListItemText>Elimina</ListItemText>
-        </MenuItem>
+        {
+          (props.value?.status && props.value.status === "CREATED") ?
+            <MenuItem onClick={handleClickEdit}>
+              <ListItemIcon>
+                <EditIcon fontSize="small"/>
+              </ListItemIcon>
+              <ListItemText>Modifica</ListItemText>
+            </MenuItem>
+            : null
+        }
+
+        {
+          (props.value?.status && props.value.status !== "ENDED") ?
+            <MenuItem>
+              <ListItemIcon>
+                <SystemUpdateAltIcon fontSize="small"/>
+              </ListItemIcon>
+              <ListItemText>{(props.value.status === "IN_PROGRESS") ? "Torna in Bozza" : "Convalida"}</ListItemText>
+            </MenuItem>
+            : null
+        }
+
+
+        {
+          (props.value?.status && props.value.status === "CREATED") ?
+            <MenuItem onClick={handleDeleteTender}>
+              <ListItemIcon>
+                <DeleteIcon fontSize="small"/>
+              </ListItemIcon>
+              <ListItemText>Elimina</ListItemText>
+            </MenuItem>
+            : null
+        }
+
+
       </MenuList>
     </Menu>
   </>

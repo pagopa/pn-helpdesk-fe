@@ -1,16 +1,7 @@
 import {Autocomplete, createFilterOptions, TextField} from "@mui/material";
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {FieldsProps} from "../formFields/FormFields";
-
-const cap : string[] = [
-  "21048",
-  "21034",
-  "12231",
-  "22233",
-  "22222",
-  "33333",
-  "11111",
-]
+import {retrieveCaps} from "../../api/paperChannelApi";
 
 const filter = createFilterOptions<string>();
 
@@ -27,7 +18,20 @@ type Props = {
 }
 
 export function CapAutocompleteField(props:Props){
+  const [inputText, setInputText] = useState("");
+  const [cap, setCap] = useState<string[]>([]);
 
+  const fetch = useCallback(()=>{
+    retrieveCaps(inputText, (caps) =>{
+      setCap(caps.map(item => item.cap))
+    } , (e) => {
+      console.error("Error with caps request ", e);
+    })
+  }, [inputText])
+
+  useEffect(() => {
+    fetch();
+  }, [fetch])
 
   const handleOnChange = (event: React.SyntheticEvent, value: string[]) => {
     props.onChange?.(value);
@@ -36,11 +40,14 @@ export function CapAutocompleteField(props:Props){
 
   return <Autocomplete
     multiple
-    id="tags-outlined"
+    id="caps-autocomplete"
     options={cap}
     value={props.value}
     fullWidth={true}
     limitTags={3}
+    onInputChange={(event, newInputValue) => {
+      setInputText(newInputValue);
+    }}
     onChange={handleOnChange}
     getOptionLabel={(option) => option}
     filterOptions={(options, params) => {

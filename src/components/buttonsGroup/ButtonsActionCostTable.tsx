@@ -5,8 +5,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React from "react";
 import {CostDTO} from "../../generated";
-import {setSelectedCost} from "../../redux/costs/reducers";
+import {resetSelectedCost, setSelectedCost} from "../../redux/costs/reducers";
 import {Cost} from "../../model";
+import {apiPaperChannel} from "../../api/paperChannelApi";
+import {AxiosError} from "axios";
+import * as spinnerActions from "../../redux/spinnerSlice";
+import * as snackbarActions from "../../redux/snackbarSlice";
 
 export function ButtonsActionCostTable(props:{value:CostDTO}){
   const dispatch = useAppDispatch();
@@ -27,6 +31,26 @@ export function ButtonsActionCostTable(props:{value:CostDTO}){
     dispatch(setSelectedCost(value))
   }
 
+
+  const handleDeleteCost = async () => {
+    try {
+      dispatch(spinnerActions.updateSpinnerOpened(true));
+      await apiPaperChannel().deleteCost(props.value!.tenderCode as string , props.value!.driverCode as string, props.value!.uid as string)
+      dispatch(resetSelectedCost());
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+    } catch (e){
+      let message = "Errore durante l'eliminazione del costo";
+      if (e instanceof AxiosError && e?.response?.data?.detail){
+        message = e.response.data.detail;
+      }
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(400));
+      dispatch(snackbarActions.updateMessage(message));
+    }
+  }
+
+
   return <>
     <Stack direction={"row"} spacing={1}>
 
@@ -36,7 +60,10 @@ export function ButtonsActionCostTable(props:{value:CostDTO}){
         </IconButton>
       </Tooltip>
       <Tooltip title="Elimina costo">
-        <IconButton size={"small"} sx={{color: "red"}} component="label">
+        <IconButton size={"small"}
+                    onClick={handleDeleteCost}
+                    sx={{color: "red"}}
+                    component="label">
           <DeleteIcon/>
         </IconButton>
       </Tooltip>

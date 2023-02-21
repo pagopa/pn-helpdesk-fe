@@ -1,8 +1,9 @@
 import {
+  CapDto,
   Configuration,
   CostDTO,
   DeliveryDriverApi,
-  DeliveryDriverDTO, NotifyResponseDto, NotifyUploadRequestDto,
+  DeliveryDriverDTO, SelectListApi,
   TenderCreateRequestDTO,
 } from "../generated";
 import {DeliveryDriver, Tender} from "../model";
@@ -18,13 +19,17 @@ const configuration = () => {
       //Auth: accessToken
     }
   }
-  conf.basePath = process.env.REACT_APP_API_ENDPOINT;
+  conf.basePath = process.env.REACT_APP_API_PAPER_CHANNEL_ENDPOINT;
   return conf;
 }
 
 
 export const apiPaperChannel = () => {
   return new DeliveryDriverApi(configuration());
+}
+
+const apiCaps = () => {
+  return new SelectListApi(configuration());
 }
 
 
@@ -75,15 +80,13 @@ export const createCost = async (tenderCode:string, driverCode:string, body:Cost
 }
 
 
-export const sendNotify = async (tender:string, uid:string,
-                                 callbackSuccess:(data:NotifyResponseDto)=>void,
+export const retrieveCaps = async (inputText:string,
+                                 callbackSuccess:(data:CapDto[])=>void,
                                  callbackError:(e:any)=>void) => {
   try {
-    const  request : NotifyUploadRequestDto = {
-      uuid: uid
-    }
-    const response = await apiPaperChannel().notifyUpload(tender, request);
-    callbackSuccess(response.data)
+    const response = await apiCaps().getAllCap(inputText);
+
+    callbackSuccess(response.data.content);
   } catch (e){
     return callbackError(e);
   }

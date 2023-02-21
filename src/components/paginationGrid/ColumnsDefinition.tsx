@@ -61,7 +61,11 @@ const columnsTender: GridColDef[] = [
     sortable: false,
     disableColumnMenu: true,
     renderCell: (params: any) => {
-      return <Chip label={params.row.status} />
+      let status = "-";
+      if (params.row.status === "CREATED") status = "BOZZA"
+      if (params.row.status === "IN_PROGRESS") status = "IN CORSO"
+      if (params.row.status === "ENDED") status = "TERMINATA"
+      return <Chip label={status} />
     },
   },
   {

@@ -10,6 +10,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     componentType: "textfield",
     label: "Ragione Sociale",
     hidden: false,
+    size: 0.5,
     rules: {
       pattern: {
         value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
@@ -25,6 +26,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     label: "Partita Iva",
     hidden: false,
     inputProps: { maxLength: 11 },
+    size: 0.5,
     rules: {
       pattern: {
         value: regex.TAX_ID_PATTERN,
@@ -47,6 +49,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     componentType: "textfield",
     label: "Denominazione",
     hidden: false,
+    size: 0.5,
     rules: {
       pattern: {
         value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
@@ -60,6 +63,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     componentType: "textfield",
     label: "Sede legale",
     hidden: false,
+    size: 0.5,
     rules: {
       pattern: {
         value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
@@ -73,6 +77,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     componentType: "textfield",
     label: "Codice Fiscale",
     hidden: false,
+    size: 0.5,
     inputProps: { maxLength: 16, style: { textTransform: "uppercase" } },
     rules: {
       pattern: {
@@ -96,6 +101,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     componentType: "textfield",
     label: "Pec",
     hidden: false,
+    size: 0.5,
     inputProps: { maxLength: 100 },
     rules: {
       pattern: {
@@ -118,6 +124,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     componentType: "textfield",
     label: "Numero telefonico",
     hidden: false,
+    size: 0.5,
     inputProps: { maxLength: 10 },
     rules: {
       pattern: {
@@ -140,6 +147,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     componentType: "textfield",
     label: "Codice univoco",
     hidden: false,
+    size: 0.5,
     inputProps: {minLength:6, maxLength: 7 },
     rules: {
       pattern: {

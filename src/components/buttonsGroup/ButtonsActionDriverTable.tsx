@@ -12,8 +12,12 @@ import React from "react";
 import {useAppDispatch} from "../../redux/hook";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import {setDetailDriver, setDialogCosts} from "../../redux/deliveriesDrivers/reducers";
+import {resetStateDrivers, setDetailDriver, setDialogCosts} from "../../redux/deliveriesDrivers/reducers";
 import {DeliveryDriver} from "../../model";
+import {apiPaperChannel} from "../../api/paperChannelApi";
+import {AxiosError} from "axios";
+import * as spinnerActions from "../../redux/spinnerSlice";
+import * as snackbarActions from "../../redux/snackbarSlice";
 
 
 export function ButtonsActionDriverTable(props:{value:any}){
@@ -29,6 +33,25 @@ export function ButtonsActionDriverTable(props:{value:any}){
 
   const handleClickEdit = () => {
     dispatch(setDetailDriver(props.value as DeliveryDriver))
+  }
+
+  const handleDeleteDriver = async () => {
+    try {
+      const driver = props.value as DeliveryDriver
+      dispatch(spinnerActions.updateSpinnerOpened(true));
+      await apiPaperChannel().deleteDriver(driver.tenderCode, driver.taxId)
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      dispatch(resetStateDrivers());
+    } catch (e){
+      let message = "Errore durante l'eliminazione del recapitista";
+      if (e instanceof AxiosError && e?.response?.data?.detail){
+        message = e.response.data.detail;
+      }
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(400));
+      dispatch(snackbarActions.updateMessage(message));
+    }
   }
 
   return <>
@@ -61,7 +84,7 @@ export function ButtonsActionDriverTable(props:{value:any}){
           </ListItemIcon>
           <ListItemText>Modifica</ListItemText>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={handleDeleteDriver}>
           <ListItemIcon>
             <DeleteIcon fontSize="small"/>
           </ListItemIcon>

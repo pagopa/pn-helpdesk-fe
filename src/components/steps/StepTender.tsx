@@ -29,11 +29,19 @@ export default function StepTender(){
     dispatch(spinnerActions.updateSpinnerOpened(true));
     try {
       const response = await apiPaperChannel().getTenderDetails(tenderCode);
-      const tender = {
-        ...response.data.tender
-      } as Tender;
+      const tender = response.data.tender;
+      if (tender.status !== "CREATED"){
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateStatusCode(404));
+        dispatch(snackbarActions.updateMessage("La gara non può essere modifica!"));
+        navigate(TENDERS_TABLE_ROUTE);
+        return;
+      }
       dispatch(spinnerActions.updateSpinnerOpened(false));
-      dispatch(addedTender(tender))
+      dispatch(addedTender({
+        ...tender
+      } as Tender))
     } catch (e){
       dispatch(spinnerActions.updateSpinnerOpened(false));
       dispatch(snackbarActions.updateSnackbacrOpened(true));
