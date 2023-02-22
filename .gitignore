@@ -45,4 +45,5 @@ amplifytools.xcconfig
 /src/api/paperChannel/.npmignore
 /src/api/paperChannel/.openapi-generator-ignore
 /src/api/paperChannel/git_push.sh
+/.fleet
 /.fleet/
