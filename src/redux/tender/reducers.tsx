@@ -1,15 +1,20 @@
-import {Page} from "../../model";
-import {createSlice} from "@reduxjs/toolkit";
+import {FilterRequest, Page, Tender} from "../../model";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {getTenders} from "./actions";
-import { TenderDTO } from "../../generated";
+import {TenderDTO} from "../../api/paperChannel";
+
 
 
 
 const initialState = {
   loading: false,
-  allData: {} as Page<TenderDTO>,
+  allData: {} as Page<Tender>,
   selected: {} as TenderDTO,
-
+  pagination: {
+    page:1,
+    tot:10,
+    force: false
+  } as FilterRequest,
 }
 
 const tenderSlice = createSlice({
@@ -17,12 +22,20 @@ const tenderSlice = createSlice({
   initialState,
   reducers : {
     resetState: () => initialState,
+    resetAllTenderState: (state) => {
+      state.pagination = initialState.pagination;
+      state.pagination.force = !initialState.pagination.force
+      state.allData = initialState.allData
+    },
     addSelected: (state, action) => {
       state.selected = action.payload
     },
     removeSelected: (state, action) => {
       state.selected = {} as TenderDTO
-    }
+    },
+    changeFilterTenders: (state, action:PayloadAction<FilterRequest>) => {
+      state.pagination = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getTenders.pending, (state, action) => {
@@ -33,12 +46,11 @@ const tenderSlice = createSlice({
       state.loading = false
     })
     builder.addCase(getTenders.rejected, (state, action) => {
-      console.error(action.payload);
       state.loading = false
     })
   }
 })
 
-export const {addSelected} = tenderSlice.actions
+export const {resetAllTenderState, addSelected, changeFilterTenders} = tenderSlice.actions
 
 export default tenderSlice;

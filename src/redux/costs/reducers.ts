@@ -1,7 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {CostDTO} from "../../generated";
+
 import {Cost, FilterRequest, Page} from "../../model";
 import {getCosts} from "./actions";
+import {CostDTO} from "../../api/paperChannel";
 
 
 interface State {

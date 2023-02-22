@@ -13,12 +13,10 @@ import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import React from "react";
 import {useAppDispatch} from "../../redux/hook";
 import {useNavigate} from "react-router-dom";
-import {addSelected} from "../../redux/tender/reducers";
+import {addSelected, resetAllTenderState} from "../../redux/tender/reducers";
 import {CREATE_TENDER_ROUTE, TENDER_DETAIL_ROUTE} from "../../navigation/router.const";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {DeliveryDriver} from "../../model";
 import {apiPaperChannel} from "../../api/paperChannelApi";
-import {resetStateDrivers} from "../../redux/deliveriesDrivers/reducers";
 import * as spinnerActions from "../../redux/spinnerSlice";
 import * as snackbarActions from "../../redux/snackbarSlice";
 import {AxiosError} from "axios";
@@ -50,8 +48,8 @@ export function ButtonsActionTenderTable(props:{value:any}){
   const handleDeleteTender = async () => {
     try {
       dispatch(spinnerActions.updateSpinnerOpened(true));
-      await apiPaperChannel().deleteTender(props.value.code)
-     //dispatch(reset());
+      await apiPaperChannel().deleteTender(props.value.code);
+      dispatch(resetAllTenderState());
       dispatch(spinnerActions.updateSpinnerOpened(false));
     } catch (e){
       let message = "Errore durante l'eliminazione della gara";

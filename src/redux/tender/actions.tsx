@@ -1,7 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {FilterRequest, Page} from "../../model";
+import {FilterRequest, Page, Tender} from "../../model";
 import {apiPaperChannel} from "../../api/paperChannelApi";
-import {TenderDTO} from "../../generated";
 
 export enum TENDER_ACTIONS {
   GET_TENDERS = 'getTenders',
@@ -9,7 +8,7 @@ export enum TENDER_ACTIONS {
 
 
 export const getTenders = createAsyncThunk<
-  Page<TenderDTO>,
+  Page<Tender>,
   FilterRequest
 >(
   TENDER_ACTIONS.GET_TENDERS,
@@ -17,11 +16,11 @@ export const getTenders = createAsyncThunk<
 
     try {
       const response = await apiPaperChannel().takeTender(filter.page, filter.tot);
-      const page: Page<TenderDTO> ={
+      const page: Page<Tender> ={
         total: (response.data.totalElements) ? response.data.totalElements  : 0,
         size: response.data.size ?  response.data.size : 0,
         page: response.data.number ? response.data.number : 0,
-        content: response.data.content ? response.data.content : []
+        content: response.data.content ? response.data.content.map(item => item as Tender) : []
       }
       return page;
     } catch (e){

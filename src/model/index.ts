@@ -28,6 +28,7 @@ export type Tender = {
   name: string,
   startDate: string,
   endDate: string,
+  status: "CREATED" | "VALIDATED" | "IN_PROGRESS" | "ENDED"
 }
 
 export type DeliveryDriver = {

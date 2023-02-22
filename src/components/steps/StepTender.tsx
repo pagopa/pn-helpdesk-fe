@@ -23,6 +23,7 @@ export default function StepTender(){
     if (tenderCode && !formTender?.code){
       retrieveDetail(tenderCode)
     }
+    //eslint-disable-next-line
   }, [])
 
   const retrieveDetail = async (tenderCode:string) => {

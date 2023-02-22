@@ -5,7 +5,7 @@ import {Grid} from "@mui/material";
 import React, {useCallback, useEffect} from "react";
 import {changeFilterDrivers} from "../../redux/deliveriesDrivers/reducers";
 import {getCosts} from "../../redux/costs/actions";
-import {CostDTO} from "../../generated";
+import {CostDTO} from "../../api/paperChannel";
 
 interface CostsTableProps{
   tenderCode: string,
@@ -23,7 +23,7 @@ export function CostsTable(props:CostsTableProps){
       driverCode: props.driverCode,
     }
     dispatch(getCosts(filter))
-    // eslint-disable-next-line
+    //eslint-disable-next-line
   }, [costsStore.pagination])
 
   useEffect(() => {

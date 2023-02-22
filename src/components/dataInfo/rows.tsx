@@ -1,6 +1,8 @@
 import {RowDataInfo} from "./DataInfo";
-import {Chip, Typography} from "@mui/material";
+import {Typography} from "@mui/material";
 import {format} from "date-fns";
+import {TenderStatusChip} from "../deliveriesDrivers/TenderStatusChip";
+import {Tender} from "../../model";
 
 
 export const tenderRowsInfo: RowDataInfo[] = [
@@ -22,6 +24,6 @@ export const tenderRowsInfo: RowDataInfo[] = [
   {
     id: "status",
     label: "Stato",
-    render: (data) => <Chip label={data?.status}/>
+    render: (data) => <TenderStatusChip data={data as Tender}/>
   },
 ]

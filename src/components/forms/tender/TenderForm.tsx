@@ -64,7 +64,8 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
       name: data["name"],
       startDate: fromDate,
       endDate: onDate,
-      code: (props?.initialValue) ? props.initialValue.code : undefined
+      code: (props?.initialValue) ? props.initialValue.code : undefined,
+      status: "CREATED"
     }
     return tender;
   }

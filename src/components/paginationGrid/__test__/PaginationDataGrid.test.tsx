@@ -3,7 +3,7 @@ import {reducer} from "../../../mocks/mockReducer";
 import React from "react";
 import {PaginationDataGrid} from "../PaginationDataGrid";
 import {ModelType} from "../index";
-import {TenderDTO, TenderDTOStatusEnum} from "../../../generated";
+import {TenderDTO, TenderDTOStatusEnum} from "../../../api/paperChannel";
 import {Page} from "../../../model";
 
 describe(PaginationDataGrid, () => {

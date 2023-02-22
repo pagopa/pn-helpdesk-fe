@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {apiPaperChannel} from "../../api/paperChannelApi";
 import {apiUpload} from "../../api/apiUpload";
-import {NotifyUploadRequestDto} from "../../generated";
+import {NotifyUploadRequestDto} from "../../api/paperChannel/";
 import {AxiosError} from "axios";
 import * as snackbarActions from "../snackbarSlice";
 import {ErrorsNotify} from "../../model";

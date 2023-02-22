@@ -24,6 +24,7 @@ export function StepSummary(){
       dispatch(resetStateDrivers());
 
     }
+    //eslint-disable-next-line
   }, [])
 
   const handleOnExit = () => {

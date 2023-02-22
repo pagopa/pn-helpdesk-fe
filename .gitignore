@@ -39,5 +39,10 @@ amplifytools.xcconfig
 
 .env.production
 /openapitools.json
-/src/generated/
 /test-report.xml
+/src/api/paperChannel/.openapi-generator/
+/src/api/paperChannel/.gitignore
+/src/api/paperChannel/.npmignore
+/src/api/paperChannel/.openapi-generator-ignore
+/src/api/paperChannel/git_push.sh
+/.fleet/

@@ -24,7 +24,7 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
       fsu: props.onlyFsu,
     }
     dispatch(getAllDrivers(filter))
-    // eslint-disable-next-line
+    //eslint-disable-next-line
   }, [driversStore.pagination])
 
   useEffect(() => {

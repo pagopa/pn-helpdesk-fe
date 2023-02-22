@@ -5,7 +5,7 @@ import {
   DeliveryDriverApi,
   DeliveryDriverDTO, SelectListApi,
   TenderCreateRequestDTO,
-} from "../generated";
+} from "../api/paperChannel";
 import {DeliveryDriver, Tender} from "../model";
 
 
@@ -78,7 +78,6 @@ export const createCost = async (tenderCode:string, driverCode:string, body:Cost
   }
 
 }
-
 
 export const retrieveCaps = async (inputText:string,
                                  callbackSuccess:(data:CapDto[])=>void,

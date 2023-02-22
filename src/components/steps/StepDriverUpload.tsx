@@ -35,7 +35,7 @@ export function StepDriverUpload(props:{tenderCode:string}){
       dispatch(snackbarActions.updateStatusCode(200));
       dispatch(snackbarActions.updateMessage("Caricamento dati terminato correttamente"));
     }
-    // eslint-disable-next-line
+    //eslint-disable-next-line
   }, [stateUpload, dispatch]);
 
   const retrieveAsync = async () => {

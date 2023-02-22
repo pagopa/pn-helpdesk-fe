@@ -6,14 +6,12 @@ import { act, cleanup, screen } from "@testing-library/react";
 import "regenerator-runtime/runtime";
 import {TenderDetailPage} from "../TenderDetailPage";
 import { reducer } from "../../../mocks/mockReducer";
-import userEvent from "@testing-library/user-event";
-import MonitorPage from "../../monitor/MonitorPage";
 import {server} from "../../../mocks/server";
 import {rest} from "msw";
 import * as reactRedux from '../../../redux/hook'
 import configureStore from "redux-mock-store";
 import {DeliveryDriver, FilterRequest, Page} from "../../../model";
-import {TenderDTO} from "../../../generated";
+import {TenderDTO} from "../../../api/paperChannel";
 
 
 

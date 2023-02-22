@@ -1,14 +1,15 @@
 import {ModelType} from "./index";
 import {format} from "date-fns";
-import {Chip} from "@mui/material";
 import React from "react";
 import {GridColDef} from "@mui/x-data-grid";
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import {ButtonsActionTenderTable} from "../buttonsGroup/ButtonsActionTenderTable";
 import {ButtonsActionCostTable} from "../buttonsGroup/ButtonsActionCostTable";
-import {CostDTO} from "../../generated";
+import {CostDTO} from "../../api/paperChannel";
 import {ButtonsActionDriverTable, ButtonShowCosts} from "../buttonsGroup/ButtonsActionDriverTable";
+import {TenderStatusChip} from "../deliveriesDrivers/TenderStatusChip";
+import {Tender} from "../../model";
 
 
 const columnsTender: GridColDef[] = [
@@ -61,11 +62,7 @@ const columnsTender: GridColDef[] = [
     sortable: false,
     disableColumnMenu: true,
     renderCell: (params: any) => {
-      let status = "-";
-      if (params.row.status === "CREATED") status = "BOZZA"
-      if (params.row.status === "IN_PROGRESS") status = "IN CORSO"
-      if (params.row.status === "ENDED") status = "TERMINATA"
-      return <Chip label={status} />
+      return <TenderStatusChip data={params.row as Tender}/>
     },
   },
   {

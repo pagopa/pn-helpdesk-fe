@@ -1,14 +1,14 @@
 import MainLayout from "../mainLayout/MainLayout";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect} from "react";
 import {Box, Button, Card, Container, Grid, Typography} from "@mui/material";
 import {Add} from "@mui/icons-material";
 import {ModelType, PaginationDataGrid} from "../../components/paginationGrid";
-import {FilterRequest} from "../../model";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {getTenders} from "../../redux/tender/actions";
-import {TenderDTO} from "../../generated";
 import {useNavigate} from "react-router-dom";
 import {CREATE_TENDER_ROUTE} from "../../navigation/router.const";
+import {changeFilterTenders} from "../../redux/tender/reducers";
+import {FilterRequest, Tender} from "../../model";
 
 
 export default function TenderPage({ email }: any){
@@ -17,35 +17,36 @@ export default function TenderPage({ email }: any){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [pagination, setPagination] = useState<FilterRequest>({
-    page: 1,
-    tot: 25
-  })
-
-  const fetchTender = useCallback(() => {
-    dispatch(getTenders(pagination));
-    // eslint-disable-next-line
-  }, [pagination] )
+  const fetchTenders = useCallback(() => {
+    const filter = {
+      ...tenderState.pagination,
+      force: true
+    } as FilterRequest
+    dispatch(getTenders(filter))
+    //eslint-disable-next-line
+  }, [tenderState.pagination])
 
   useEffect(() => {
-    fetchTender();
+    fetchTenders();
     // eslint-disable-next-line
-  }, [fetchTender])
+  }, [fetchTenders])
 
 
   const handleOnPageChange = (page:number) => {
-    setPagination(prev => ({
-        ...prev,
-        page: page
-    }));
+    const filter = {
+      ...tenderState.pagination,
+      page: page
+    }
+    dispatch(changeFilterTenders(filter))
   }
 
   const handleOnPageSizeChange = (pageSize: number) => {
-    setPagination(prev => ({
-      ...prev,
+    const filter = {
+      ...tenderState.pagination,
       page: 1,
       tot: pageSize
-    }));
+    }
+    dispatch(changeFilterTenders(filter))
   }
 
 
@@ -82,7 +83,7 @@ export default function TenderPage({ email }: any){
                 Aggiungi
               </Button>
             </Grid>
-            <PaginationDataGrid <TenderDTO> data={tenderState.allData}
+            <PaginationDataGrid <Tender> data={tenderState.allData}
                                             type={ModelType.TENDER}
                                             loading={tenderState.loading}
                                             rowId={row => row.code}

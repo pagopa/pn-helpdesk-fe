@@ -3,7 +3,7 @@ import {cleanup, screen} from "@testing-library/react";
 import {tenderRowsInfo} from "../rows";
 import React from "react";
 import {Page} from "../../../model";
-import {TenderDTO, TenderDTOStatusEnum} from "../../../generated";
+import {TenderDTO, TenderDTOStatusEnum} from "../../../api/paperChannel";
 import {reducer} from "../../../mocks/mockReducer";
 
 

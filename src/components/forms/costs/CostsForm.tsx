@@ -7,7 +7,7 @@ import {Controller, useForm, useWatch} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 import {fieldsCosts, fieldsOfType} from "./fields";
 import {Cost} from "../../../model";
-import {CostDTO} from "../../../generated";
+import {CostDTO} from "../../../api/paperChannel";
 import {createCost} from "../../../api/paperChannelApi";
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import {useAppDispatch} from "../../../redux/hook";

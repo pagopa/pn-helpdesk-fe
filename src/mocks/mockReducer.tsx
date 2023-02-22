@@ -6,7 +6,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { it } from "date-fns/locale";
 import {DeliveryDriver, FilterRequest, Page, UPLOAD_STATUS_ENUM} from "../model";
-import {DeliveryDriverDTO, TenderDTO} from "../generated";
+import {DeliveryDriverDTO, TenderDTO} from "../api/paperChannel";
 import { RootState, store as realStore } from "../../src/redux/store";
 import { EnhancedStore, PreloadedState } from "@reduxjs/toolkit";
 import { PropsWithChildren } from "react";

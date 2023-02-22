@@ -2,7 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {FilterRequest, Page} from "../../model";
 import {apiPaperChannel} from "../../api/paperChannelApi";
 import * as snackbarActions from "../snackbarSlice";
-import {CostDTO, PageableCostResponseDto} from "../../generated";
+import {CostDTO, PageableCostResponseDto} from "../../api/paperChannel";
 
 
 

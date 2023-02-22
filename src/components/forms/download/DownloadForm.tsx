@@ -26,6 +26,7 @@ export default function DownloadBox(props: DownloadBoxProps) {
 
   useEffect(() => {
     retrieveAsync();
+    //eslint-disable-next-line
   }, [downloadState.download]);
 
   const retrieveAsync = async () => {
