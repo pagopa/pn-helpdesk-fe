@@ -32,7 +32,7 @@ export const INTERNATIONAL_PRODUCT_TYPE:OptionCustom[] = [
     label: "Raccomandata A-R"
   },
   {
-    key: "SEMPLICE",
+    key: "RS",
     label: "Raccomandata Semplice"
   },
 ]
@@ -47,7 +47,7 @@ export const NATIONAL_PRODUCT_TYPE:OptionCustom[] = [
     label: "Raccomandata 890"
   },
   {
-    key: "SEMPLICE",
+    key: "RS",
     label: "Raccomandata Semplice"
   }
 ]

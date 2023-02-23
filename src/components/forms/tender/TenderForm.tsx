@@ -2,11 +2,12 @@ import React, {useState} from "react";
 import {
   Card,
   Typography,
-  Grid, Stack,
+  Grid,
+  Stack,
+  FormHelperText
 } from "@mui/material";
 import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
-import {FormHelperText} from "@mui/material";
 import {Tender} from "../../../model";
 import {format} from "date-fns";
 import {fieldsTender} from "./fields";
@@ -44,7 +45,8 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
 
   const onSubmit = async (data: { [x: string]: any }) => {
     setLoading(true);
-    createTender(tenderMap(data), handleSuccessSaved, handelErrorSaved);
+    console.log("ciao")
+    await createTender(tenderMap(data), handleSuccessSaved, handelErrorSaved);
   }
 
   const handleSuccessSaved = (value:Tender) => {

@@ -930,6 +930,44 @@ export const TenderDetailResponseDTOCodeEnum = {
 export type TenderDetailResponseDTOCodeEnum = typeof TenderDetailResponseDTOCodeEnum[keyof typeof TenderDetailResponseDTOCodeEnum];
 
 
+const prepareRequest = async (path:string, method:string, configuration?: Configuration, options: AxiosRequestConfig = {}, body?:any, queryParam: any = {})
+  : Promise<RequestArgs> => {
+    const localVarUrlObj = new URL(path, DUMMY_BASE_URL);
+    let baseOptions;
+    if (configuration) {
+        baseOptions = configuration.baseOptions;
+    }
+
+    const localVarRequestOptions = { method: method, ...baseOptions, ...options};
+    const localVarHeaderParameter = {} as any;
+    const localVarQueryParameter =  queryParam;
+    await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
+
+
+    setSearchParams(localVarUrlObj, localVarQueryParameter);
+    let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+    if (body) localVarHeaderParameter['Content-Type'] = 'application/json';
+    localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+    if (body){
+        try {
+            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
+        } catch (e){
+            console.error(e);
+        }
+    }
+
+    console.log({
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+    })
+
+    return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+    };
+}
+
 /**
  * DeliveryDriverApi - axios parameter creator
  * @export
@@ -944,30 +982,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
          */
         addTenderFromFile: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/paper-channel-bo/v1/delivery-tender/file-upload`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'GET', configuration, options);
         },
         /**
          * API che consente di aggiungere o modificare i dettagli di un costo legato al deliveryDriver
@@ -987,32 +1002,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
                 .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(costDTO, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'POST', configuration, options, costDTO);
         },
         /**
          * API che consente di aggiungere o modificare i dettagli di un recapitista
@@ -1028,32 +1018,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             const localVarPath = `/paper-channel-bo/v1/delivery-driver/{tenderCode}`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(deliveryDriverDTO, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'POST', configuration, options, deliveryDriverDTO);
         },
         /**
          * API che consente di aggiungere o modificare i dettagli di una gara
@@ -1065,32 +1030,8 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
         createUpdateTender: async (tenderCreateRequestDTO?: TenderCreateRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/paper-channel-bo/v1/tender`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(tenderCreateRequestDTO, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            console.log(configuration?.basePath);
+            return prepareRequest(localVarPath, 'POST', configuration, options, tenderCreateRequestDTO);
         },
         /**
          * API che consente di eliminare i dettagli di un costo legato al deliveryDriver.
@@ -1113,29 +1054,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
                 .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)))
                 .replace(`{${"uuid"}}`, encodeURIComponent(String(uuid)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'DELETE', configuration, options);
         },
         /**
          * API che consente di eliminare i dettagli di un recapitista.
@@ -1154,29 +1073,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
                 .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+           return prepareRequest(localVarPath, 'DELETE', configuration, options);
         },
         /**
          * API che consente di eliminare i dettagli di una gara.
@@ -1191,29 +1088,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             const localVarPath = `/paper-channel-bo/v1/tender/{tenderCode}`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'DELETE', configuration, options);
         },
         /**
          * API che consente il download dell\'elenco delle gare d\'appalto.
@@ -1226,37 +1101,14 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
         downloadTenderFile: async (tenderCode?: string, uuid?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/paper-channel-bo/v1/delivery-tender/file-download`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
             if (tenderCode !== undefined) {
                 localVarQueryParameter['tenderCode'] = tenderCode;
             }
-
             if (uuid !== undefined) {
                 localVarQueryParameter['uuid'] = uuid;
             }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'GET', configuration, options, undefined, localVarQueryParameter);
         },
         /**
          * API che consente di recuperare e paginare tutti i costi di un recapitista che partecipa ad una specifica gara
@@ -1276,19 +1128,8 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             const localVarPath = `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}/get-cost`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
                 .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
@@ -1297,17 +1138,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             if (size !== undefined) {
                 localVarQueryParameter['size'] = size;
             }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'GET', configuration, options, undefined, localVarQueryParameter);
         },
         /**
          * API che consente il recupero dei dettagli di un FSU
@@ -1321,30 +1152,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             assertParamExists('getDetailFSU', 'tenderCode', tenderCode)
             const localVarPath = `/paper-channel-bo/v1/deliveries-drivers/{tenderCode}/fsu`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'GET', configuration, options);
         },
         /**
          * API che consente il recupero dei dettagli di uno specifico recapitista
@@ -1363,29 +1171,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
                 .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'GET', configuration, options);
         },
         /**
          * API che consente il recupero dei dettagli di una gara
@@ -1399,30 +1185,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             assertParamExists('getTenderDetails', 'tenderCode', tenderCode)
             const localVarPath = `/paper-channel-bo/v1/tenders/{tenderCode}`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'GET', configuration, options);
         },
         /**
          * API che consente di notificare l\'avvenuto caricamento del file e avvio del flusso di salvataggio
@@ -1437,33 +1200,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             assertParamExists('notifyUpload', 'tenderCode', tenderCode)
             const localVarPath = `/paper-channel-bo/v1/delivery-tender/{tenderCode}/notify-upload`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(notifyUploadRequestDto, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'POST', configuration, options, notifyUploadRequestDto);
         },
         /**
          * API che consente il recupero di tutti i recapitisti di una gara
@@ -1480,19 +1217,8 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             assertParamExists('takeDeliveriesDrivers', 'tenderCode', tenderCode)
             const localVarPath = `/paper-channel-bo/v1/deliveries-drivers/{tenderCode}`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
@@ -1505,17 +1231,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             if (fsu !== undefined) {
                 localVarQueryParameter['fsu'] = fsu;
             }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'GET', configuration, options, undefined, localVarQueryParameter);
         },
         /**
          * API che consente il recupero di tutte le gare
@@ -1527,19 +1243,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
          */
         takeTender: async (page?: number, size?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/paper-channel-bo/v1/tenders`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
@@ -1548,17 +1252,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             if (size !== undefined) {
                 localVarQueryParameter['size'] = size;
             }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'GET', configuration, options, undefined, localVarQueryParameter);
         },
         /**
          * API che consente di aggiornare lo stato della gara
@@ -1573,33 +1267,8 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             assertParamExists('updateStatusTender', 'tenderCode', tenderCode)
             const localVarPath = `/paper-channel-bo/v1/tender/{tenderCode}`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
 
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(status, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
+            return prepareRequest(localVarPath, 'PUT', configuration, options, status);
         },
     }
 };
