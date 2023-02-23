@@ -1,8 +1,6 @@
 import {
-  IconButton,
   ListItemIcon,
   ListItemText,
-  Menu,
   MenuItem,
   MenuList,
 } from "@mui/material";
@@ -13,28 +11,16 @@ import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
 import React from "react";
 import {useAppDispatch} from "../../redux/hook";
 import {useNavigate} from "react-router-dom";
-import {addSelected, resetAllTenderState} from "../../redux/tender/reducers";
+import {addSelected} from "../../redux/tender/reducers";
 import {CREATE_TENDER_ROUTE, TENDER_DETAIL_ROUTE} from "../../navigation/router.const";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {apiPaperChannel} from "../../api/paperChannelApi";
-import * as spinnerActions from "../../redux/spinnerSlice";
-import * as snackbarActions from "../../redux/snackbarSlice";
-import {AxiosError} from "axios";
+import {useDeletePaperChannel} from "../../hooks/useDeletePaperChannel";
+import {DropdownMenu} from "./DropdownMenu";
 
 
 export function ButtonsActionTenderTable(props:{value:any}){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const {deleteTender} = useDeletePaperChannel();
 
   const handleClickShowDetail = () => {
     dispatch(addSelected(props.value));
@@ -45,47 +31,12 @@ export function ButtonsActionTenderTable(props:{value:any}){
     navigate(CREATE_TENDER_ROUTE+"/"+props.value.code)
   }
 
-  const handleDeleteTender = async () => {
-    try {
-      dispatch(spinnerActions.updateSpinnerOpened(true));
-      await apiPaperChannel().deleteTender(props.value.code);
-      dispatch(resetAllTenderState());
-      dispatch(spinnerActions.updateSpinnerOpened(false));
-    } catch (e){
-      let message = "Errore durante l'eliminazione della gara";
-      if (e instanceof AxiosError && e?.response?.data?.detail){
-        message = e.response.data.detail;
-      }
-      dispatch(spinnerActions.updateSpinnerOpened(false));
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
-      dispatch(snackbarActions.updateStatusCode(400));
-      dispatch(snackbarActions.updateMessage(message));
-    }
+  const handleDeleteTender = () => {
+    deleteTender(props.value.code)
   }
 
   return <>
-    <IconButton
-      id="button-action-tenders"
-      aria-controls={open ? 'action-tenders-positioned-menu' : undefined}
-      aria-haspopup="true"
-      aria-expanded={open ? 'true' : undefined}
-      onClick={handleClick}
-    >
-      <MoreVertIcon/>
-    </IconButton>
-    <Menu id="action-tenders-positioned-menu"
-          aria-labelledby="button-action-tenders"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}>
+    <DropdownMenu id={"menu-button-tender"}>
       <MenuList>
 
         <MenuItem onClick={handleClickShowDetail}>
@@ -130,7 +81,7 @@ export function ButtonsActionTenderTable(props:{value:any}){
 
 
       </MenuList>
-    </Menu>
+    </DropdownMenu>
   </>
 
 }

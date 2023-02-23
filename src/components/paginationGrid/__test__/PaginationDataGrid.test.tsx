@@ -38,31 +38,15 @@ describe(PaginationDataGrid, () => {
   it("verify columns size", async() => {
     const grid = await screen.findByRole('grid');
     const columnHeader = within(grid).getAllByRole('columnheader');
-    expect(columnHeader).toHaveLength(4);
+    expect(columnHeader).toHaveLength(5);
   })
 
-  it("verify column Identificativo", async() => {
+  it("verify columns", async() => {
     const grid = await screen.findByRole('grid');
     expect(within(grid).getByText('Identificativo')).toBeTruthy();
-  })
-
-  it("verify column Data inizio", async() => {
-    const grid = await screen.findByRole('grid');
     expect(within(grid).getByText('Data inizio')).toBeTruthy();
-  })
-
-  it("verify column Data fine", async() => {
-    const grid = await screen.findByRole('grid');
     expect(within(grid).getByText('Data fine')).toBeTruthy();
-  })
-
-  it("verify column Stato", async() => {
-    const grid = await screen.findByRole('grid');
     expect(within(grid).getByText('Stato')).toBeTruthy();
-  })
-
-  it("verify PaginationDataGrid is empty", async() => {
-    const grid = await screen.findByRole('grid');
     expect(within(grid).getByText('No rows')).toBeTruthy();
   })
 

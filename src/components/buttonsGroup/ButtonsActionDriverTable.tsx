@@ -2,7 +2,6 @@ import {
   IconButton,
   ListItemIcon,
   ListItemText,
-  Menu,
   MenuItem,
   MenuList,
 } from "@mui/material";
@@ -10,73 +9,27 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React from "react";
 import {useAppDispatch} from "../../redux/hook";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import {resetStateDrivers, setDetailDriver, setDialogCosts} from "../../redux/deliveriesDrivers/reducers";
+import {setDetailDriver, setDialogCosts} from "../../redux/deliveriesDrivers/reducers";
 import {DeliveryDriver} from "../../model";
-import {apiPaperChannel} from "../../api/paperChannelApi";
-import {AxiosError} from "axios";
-import * as spinnerActions from "../../redux/spinnerSlice";
-import * as snackbarActions from "../../redux/snackbarSlice";
+import {useDeletePaperChannel} from "../../hooks/useDeletePaperChannel";
+import {DropdownMenu} from "./DropdownMenu";
 
 
 export function ButtonsActionDriverTable(props:{value:any}){
   const dispatch = useAppDispatch();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const {deleteDriver} = useDeletePaperChannel();
 
   const handleClickEdit = () => {
     dispatch(setDetailDriver(props.value as DeliveryDriver))
   }
 
-  const handleDeleteDriver = async () => {
-    try {
-      const driver = props.value as DeliveryDriver
-      dispatch(spinnerActions.updateSpinnerOpened(true));
-      await apiPaperChannel().deleteDriver(driver.tenderCode, driver.taxId)
-      dispatch(spinnerActions.updateSpinnerOpened(false));
-      dispatch(resetStateDrivers());
-    } catch (e){
-      let message = "Errore durante l'eliminazione del recapitista";
-      if (e instanceof AxiosError && e?.response?.data?.detail){
-        message = e.response.data.detail;
-      }
-      dispatch(spinnerActions.updateSpinnerOpened(false));
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
-      dispatch(snackbarActions.updateStatusCode(400));
-      dispatch(snackbarActions.updateMessage(message));
-    }
+  const handleDeleteDriver = () => {
+    deleteDriver(props.value.tenderCode, props.value.taxId);
   }
 
   return <>
-    <IconButton
-      id="button-action-tenders"
-      aria-controls={open ? 'action-tenders-positioned-menu' : undefined}
-      aria-haspopup="true"
-      aria-expanded={open ? 'true' : undefined}
-      onClick={handleClick}
-    >
-      <MoreVertIcon/>
-    </IconButton>
-    <Menu id="action-tenders-positioned-menu"
-          aria-labelledby="button-action-tenders"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}>
+    <DropdownMenu id={"menu-button-driver"}>
       <MenuList>
         <MenuItem onClick={handleClickEdit}>
           <ListItemIcon>
@@ -91,7 +44,7 @@ export function ButtonsActionDriverTable(props:{value:any}){
           <ListItemText>Elimina</ListItemText>
         </MenuItem>
       </MenuList>
-    </Menu>
+    </DropdownMenu>
   </>
 
 }

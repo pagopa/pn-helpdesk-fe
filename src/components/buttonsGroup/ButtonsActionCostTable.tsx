@@ -1,19 +1,19 @@
 import {useAppDispatch} from "../../redux/hook";
 
-import {IconButton, Stack, Tooltip} from "@mui/material";
+import {ListItemIcon, ListItemText, MenuItem, MenuList} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React from "react";
 import {CostDTO} from "../../api/paperChannel";
-import {resetSelectedCost, setSelectedCost} from "../../redux/costs/reducers";
+import {setSelectedCost} from "../../redux/costs/reducers";
 import {Cost} from "../../model";
-import {apiPaperChannel} from "../../api/paperChannelApi";
-import {AxiosError} from "axios";
-import * as spinnerActions from "../../redux/spinnerSlice";
-import * as snackbarActions from "../../redux/snackbarSlice";
+import {useDeletePaperChannel} from "../../hooks/useDeletePaperChannel";
+import {DropdownMenu} from "./DropdownMenu";
 
 export function ButtonsActionCostTable(props:{value:CostDTO}){
   const dispatch = useAppDispatch();
+  const {deleteCost} = useDeletePaperChannel();
+
 
 
   const handleClickEdit = () => {
@@ -32,42 +32,28 @@ export function ButtonsActionCostTable(props:{value:CostDTO}){
   }
 
 
-  const handleDeleteCost = async () => {
-    try {
-      dispatch(spinnerActions.updateSpinnerOpened(true));
-      await apiPaperChannel().deleteCost(props.value!.tenderCode as string , props.value!.driverCode as string, props.value!.uid as string)
-      dispatch(resetSelectedCost());
-      dispatch(spinnerActions.updateSpinnerOpened(false));
-    } catch (e){
-      let message = "Errore durante l'eliminazione del costo";
-      if (e instanceof AxiosError && e?.response?.data?.detail){
-        message = e.response.data.detail;
-      }
-      dispatch(spinnerActions.updateSpinnerOpened(false));
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
-      dispatch(snackbarActions.updateStatusCode(400));
-      dispatch(snackbarActions.updateMessage(message));
-    }
+  const handleDeleteCost = () => {
+    deleteCost(props.value.tenderCode as string , props.value.driverCode as string, props.value.uid as string)
   }
 
 
   return <>
-    <Stack direction={"row"} spacing={1}>
-
-      <Tooltip title="Modifica costo">
-        <IconButton size={"small"} color="primary" component="label" onClick={handleClickEdit}>
-          <EditIcon/>
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Elimina costo">
-        <IconButton size={"small"}
-                    onClick={handleDeleteCost}
-                    sx={{color: "red"}}
-                    component="label">
-          <DeleteIcon/>
-        </IconButton>
-      </Tooltip>
-    </Stack>
+    <DropdownMenu id={"menu-button-cost"}>
+      <MenuList>
+        <MenuItem onClick={handleClickEdit}>
+          <ListItemIcon>
+            <EditIcon fontSize="small"/>
+          </ListItemIcon>
+          <ListItemText>Modifica</ListItemText>
+        </MenuItem>
+        <MenuItem onClick={handleDeleteCost}>
+          <ListItemIcon>
+            <DeleteIcon fontSize="small"/>
+          </ListItemIcon>
+          <ListItemText>Elimina</ListItemText>
+        </MenuItem>
+      </MenuList>
+    </DropdownMenu>
   </>
 
 }

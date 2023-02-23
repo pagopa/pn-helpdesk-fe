@@ -5,14 +5,14 @@ import {
   DeliveryDriverApi,
   DeliveryDriverDTO, SelectListApi,
   TenderCreateRequestDTO,
-} from "../api/paperChannel";
+} from "./paperChannel";
 import {DeliveryDriver, Tender} from "../model";
 
 
 const configuration = () => {
   const conf = new Configuration();
-  const token = sessionStorage.getItem("token")
-  const accessToken = sessionStorage.getItem("accessToken")
+  //const token = sessionStorage.getItem("token")
+  //const accessToken = sessionStorage.getItem("accessToken")
   conf.baseOptions = {
     headers: {
       //Authorization: `Bearer ${token}`,
@@ -89,5 +89,4 @@ export const retrieveCaps = async (inputText:string,
   } catch (e){
     return callbackError(e);
   }
-
 }
