@@ -950,17 +950,8 @@ const prepareRequest = async (path:string, method:string, configuration?: Config
     localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
     if (body){
-        try {
-            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
-        } catch (e){
-            console.error(e);
-        }
+        localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration);
     }
-
-    console.log({
-        url: toPathString(localVarUrlObj),
-        options: localVarRequestOptions,
-    })
 
     return {
         url: toPathString(localVarUrlObj),
@@ -1001,7 +992,6 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             const localVarPath = `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}/cost`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
                 .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
             return prepareRequest(localVarPath, 'POST', configuration, options, costDTO);
         },
         /**
@@ -1017,7 +1007,6 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             assertParamExists('createUpdateDriver', 'tenderCode', tenderCode)
             const localVarPath = `/paper-channel-bo/v1/delivery-driver/{tenderCode}`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
             return prepareRequest(localVarPath, 'POST', configuration, options, deliveryDriverDTO);
         },
         /**
@@ -1029,8 +1018,6 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
          */
         createUpdateTender: async (tenderCreateRequestDTO?: TenderCreateRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/paper-channel-bo/v1/tender`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            console.log(configuration?.basePath);
             return prepareRequest(localVarPath, 'POST', configuration, options, tenderCreateRequestDTO);
         },
         /**
@@ -1053,7 +1040,6 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
                 .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)))
                 .replace(`{${"uuid"}}`, encodeURIComponent(String(uuid)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
             return prepareRequest(localVarPath, 'DELETE', configuration, options);
         },
         /**
@@ -1072,7 +1058,6 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
             const localVarPath = `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
                 .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
            return prepareRequest(localVarPath, 'DELETE', configuration, options);
         },
         /**
@@ -1100,7 +1085,6 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
          */
         downloadTenderFile: async (tenderCode?: string, uuid?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/paper-channel-bo/v1/delivery-tender/file-download`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarQueryParameter = {} as any;
             if (tenderCode !== undefined) {
                 localVarQueryParameter['tenderCode'] = tenderCode;
@@ -1121,9 +1105,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
          * @throws {RequiredError}
          */
         getAllCostOfDriverAndTender: async (tenderCode: string, deliveryDriverId: string, page?: number, size?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
             assertParamExists('getAllCostOfDriverAndTender', 'tenderCode', tenderCode)
-            // verify required parameter 'deliveryDriverId' is not null or undefined
             assertParamExists('getAllCostOfDriverAndTender', 'deliveryDriverId', deliveryDriverId)
             const localVarPath = `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}/get-cost`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
@@ -1148,7 +1130,6 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
          * @throws {RequiredError}
          */
         getDetailFSU: async (tenderCode: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
             assertParamExists('getDetailFSU', 'tenderCode', tenderCode)
             const localVarPath = `/paper-channel-bo/v1/deliveries-drivers/{tenderCode}/fsu`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
@@ -1163,9 +1144,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
          * @throws {RequiredError}
          */
         getDriverDetails: async (tenderCode: string, deliveryDriverId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
             assertParamExists('getDriverDetails', 'tenderCode', tenderCode)
-            // verify required parameter 'deliveryDriverId' is not null or undefined
             assertParamExists('getDriverDetails', 'deliveryDriverId', deliveryDriverId)
             const localVarPath = `/paper-channel-bo/v1/deliveries-drivers/{tenderCode}/detail/{deliveryDriverId}`
                 .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))

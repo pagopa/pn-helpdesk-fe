@@ -4,14 +4,21 @@ import {Card, Container, Grid, Typography, Stack, Button} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {DataInfo} from "../../components/dataInfo/DataInfo";
 import {tenderRowsInfo} from "../../components/dataInfo/rows";
-import {BreadcrumbCustom} from "../../components/breadcrumb/BreadcrumbCustom";
 import {Navigate, useNavigate} from "react-router-dom";
 import {CREATE_TENDER_ROUTE, TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
 import {DeliveriesDriverTable} from "../../components/deliveriesDrivers/DeliveriesDriverTable";
 import {resetStateDrivers} from "../../redux/deliveriesDrivers/reducers";
+import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
 
 
-export function TenderDetailPage({email}:any) {
+const breadcrumbsLinks = [
+  {
+    linkLabel: 'Tutte le Gare',
+    linkRoute: TENDERS_TABLE_ROUTE
+  }
+]
+
+export function TenderDetailPage() {
 
   const tenderState = useAppSelector(state => state.tender);
   const dispatch = useAppDispatch();
@@ -19,18 +26,20 @@ export function TenderDetailPage({email}:any) {
 
   useEffect(() => () => {
     dispatch(resetStateDrivers())
-  }, [dispatch])
+  }, [tenderState, dispatch])
 
 
   if (!tenderState.selected || !tenderState.selected?.code){
     return <Navigate to={TENDERS_TABLE_ROUTE}/>
   }
 
-  return <MainLayout email={email}>
+  return <MainLayout>
     <Container>
       <Grid container direction="row" rowSpacing={3}>
         <Grid item container>
-          <BreadcrumbCustom/>
+          <Breadcrumbs currentLocationLabel={"Dettaglio Gara"}
+                       links={breadcrumbsLinks} />
+
         </Grid>
         <Grid item container>
           <Typography variant="h4" color="text.primary">

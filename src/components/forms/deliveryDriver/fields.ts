@@ -125,18 +125,18 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     label: "Numero telefonico",
     hidden: false,
     size: 0.5,
-    inputProps: { maxLength: 10 },
+    inputProps: { maxLength: 30 },
     rules: {
       pattern: {
         value: regex.PHONE_NUMBER_PATTERN,
         message: errorMessages.INCORRECT,
       },
       minLength: {
-        value: 10,
+        value: 5,
         message: errorMessages.INCORRECT,
       },
       maxLength: {
-        value: 10,
+        value: 30,
         message: errorMessages.INCORRECT,
       },
     },
