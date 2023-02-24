@@ -7,12 +7,12 @@ import React from "react";
 import {CostDTO} from "../../api/paperChannel";
 import {setSelectedCost} from "../../redux/costs/reducers";
 import {Cost} from "../../model";
-import {useDeletePaperChannel} from "../../hooks/useDeletePaperChannel";
+import {usePaperChannel} from "../../hooks/usePaperChannel";
 import {DropdownMenu} from "./DropdownMenu";
 
 export function ButtonsActionCostTable(props:{value:CostDTO}){
   const dispatch = useAppDispatch();
-  const {deleteCost} = useDeletePaperChannel();
+  const {deleteCost} = usePaperChannel();
 
 
 

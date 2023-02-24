@@ -1,14 +1,15 @@
 import {useAppDispatch} from "../redux/hook";
 import * as spinnerActions from "../redux/spinnerSlice";
 import {apiPaperChannel} from "../api/paperChannelApi";
-import {resetAllTenderState} from "../redux/tender/reducers";
+import {resetAllTenderState, setLoadingTenders} from "../redux/tender/reducers";
 import {AxiosError} from "axios";
 import * as snackbarActions from "../redux/snackbarSlice";
 import {resetStateDrivers} from "../redux/deliveriesDrivers/reducers";
 import {resetSelectedCost} from "../redux/costs/reducers";
+import {StatusStatusCodeEnum} from "../api/paperChannel";
 
 
-export const useDeletePaperChannel = () => {
+export const usePaperChannel = () => {
     const dispatch = useAppDispatch();
 
     const deleteTender = async (tenderCode:string) => {
@@ -44,8 +45,22 @@ export const useDeletePaperChannel = () => {
         }
     }
 
-    const _showErrorMessage = (e: any | AxiosError) => {
-        let message = "Errore durante l'eliminazione";
+    const changeStatusTender = async (tenderCode:string, actualStatus: "CREATED" | "VALIDATED") => {
+        try {
+            dispatch(setLoadingTenders(true));
+            const status:StatusStatusCodeEnum = (actualStatus === "CREATED") ? "VALIDATED" : "CREATED";
+            await apiPaperChannel().updateStatusTender(tenderCode, {statusCode: status});
+            dispatch(setLoadingTenders(false));
+            dispatch(resetAllTenderState());
+        } catch (e) {
+            console.log(e);
+            dispatch(setLoadingTenders(false));
+            _showErrorMessage(e, "Errore durante il cambio di stato della gara!");
+        }
+    }
+
+    const _showErrorMessage = (e: any | AxiosError, customMessage:string = "Errore durante l'eliminazione") => {
+        let message = customMessage;
         if (e instanceof AxiosError && e?.response?.data?.detail){
             message = e.response.data.detail;
         }
@@ -59,6 +74,7 @@ export const useDeletePaperChannel = () => {
     return {
         deleteTender,
         deleteDriver,
-        deleteCost
+        deleteCost,
+        changeStatusTender
     }
 }

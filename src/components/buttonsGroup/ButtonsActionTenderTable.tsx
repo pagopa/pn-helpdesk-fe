@@ -13,14 +13,14 @@ import {useAppDispatch} from "../../redux/hook";
 import {useNavigate} from "react-router-dom";
 import {addSelected} from "../../redux/tender/reducers";
 import {CREATE_TENDER_ROUTE, TENDER_DETAIL_ROUTE} from "../../navigation/router.const";
-import {useDeletePaperChannel} from "../../hooks/useDeletePaperChannel";
+import {usePaperChannel} from "../../hooks/usePaperChannel";
 import {DropdownMenu} from "./DropdownMenu";
 
 
 export function ButtonsActionTenderTable(props:{value:any}){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const {deleteTender} = useDeletePaperChannel();
+  const {deleteTender, changeStatusTender} = usePaperChannel();
 
   const handleClickShowDetail = () => {
     dispatch(addSelected(props.value));
@@ -33,6 +33,12 @@ export function ButtonsActionTenderTable(props:{value:any}){
 
   const handleDeleteTender = () => {
     deleteTender(props.value.code)
+  }
+
+  const handleOnChangeStatus = () => {
+    if (props.value?.status && props.value.status !== "ENDED" && props.value.status !== "IN_PROGRESS") {
+      changeStatusTender(props.value.code, props.value.status);
+    }
   }
 
   return <>
@@ -57,12 +63,12 @@ export function ButtonsActionTenderTable(props:{value:any}){
         }
 
         {
-          (props.value?.status && props.value.status !== "ENDED") ?
-            <MenuItem>
+          (props.value?.status && props.value.status !== "ENDED" && props.value.status !== "IN_PROGRESS") ?
+            <MenuItem onClick={handleOnChangeStatus}>
               <ListItemIcon>
                 <SystemUpdateAltIcon fontSize="small"/>
               </ListItemIcon>
-              <ListItemText>{(props.value.status === "IN_PROGRESS") ? "Torna in Bozza" : "Convalida"}</ListItemText>
+              <ListItemText>{(props.value.status === "VALIDATED") ? "Torna in Bozza" : "Convalida"}</ListItemText>
             </MenuItem>
             : null
         }

@@ -12,13 +12,13 @@ import {useAppDispatch} from "../../redux/hook";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import {setDetailDriver, setDialogCosts} from "../../redux/deliveriesDrivers/reducers";
 import {DeliveryDriver} from "../../model";
-import {useDeletePaperChannel} from "../../hooks/useDeletePaperChannel";
+import {usePaperChannel} from "../../hooks/usePaperChannel";
 import {DropdownMenu} from "./DropdownMenu";
 
 
 export function ButtonsActionDriverTable(props:{value:any}){
   const dispatch = useAppDispatch();
-  const {deleteDriver} = useDeletePaperChannel();
+  const {deleteDriver} = usePaperChannel();
 
   const handleClickEdit = () => {
     dispatch(setDetailDriver(props.value as DeliveryDriver))

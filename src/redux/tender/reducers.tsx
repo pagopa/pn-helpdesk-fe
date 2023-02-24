@@ -24,8 +24,11 @@ const tenderSlice = createSlice({
     resetState: () => initialState,
     resetAllTenderState: (state) => {
       state.pagination = initialState.pagination;
-      state.pagination.force = !initialState.pagination.force
+      state.pagination.force = !!(initialState.pagination.force) ? !initialState.pagination.force : true
       state.allData = initialState.allData
+    },
+    setLoadingTenders: (state, action:PayloadAction<boolean>) => {
+      state.loading = action.payload
     },
     addSelected: (state, action) => {
       state.selected = action.payload
@@ -51,6 +54,6 @@ const tenderSlice = createSlice({
   }
 })
 
-export const {resetAllTenderState, addSelected, changeFilterTenders} = tenderSlice.actions
+export const {resetAllTenderState, addSelected, changeFilterTenders,setLoadingTenders} = tenderSlice.actions
 
 export default tenderSlice;
