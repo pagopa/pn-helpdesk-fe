@@ -45,7 +45,6 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
 
   const onSubmit = async (data: { [x: string]: any }) => {
     setLoading(true);
-    console.log("ciao")
     await createTender(tenderMap(data), handleSuccessSaved, handelErrorSaved);
   }
 
