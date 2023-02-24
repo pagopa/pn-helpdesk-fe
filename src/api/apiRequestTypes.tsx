@@ -66,12 +66,14 @@ type getLogsProcessesType = {
 /**
  * @typedef {Object} getEventsType
  */
-type getEventsType = {
-  status: string;
-  timestamp: string;
-  functionality: Array<string>;
-  sourceType: string;
-};
+type getEventsType = [
+  {
+    status: string;
+    timestamp: string;
+    functionality: Array<string>;
+    sourceType: string;
+  }
+];
 /**
  * @typedef {Object} getEventsType
  */

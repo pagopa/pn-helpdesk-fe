@@ -203,7 +203,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     componentType: "textfield",
     label: "Codice Univoco (uid)",
     hidden: false,
-    size: 5.3,
+    size: 6,
     // size: "45%",
     rules: {
       pattern: {
@@ -237,7 +237,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     componentType: "textfield",
     label: "Trace ID",
     hidden: false,
-    size: 5.3,
+    size: 6,
     // size: "45%",
     rules: {
       required: errorMessages.REQUIRED,
@@ -339,7 +339,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     hidden: false,
     required: false,
     intervalLimit: [3, "months"],
-    size: 7.5,
+    size: 7,
     // size: "60.5%",
     disableFuture: true,
     rules: {
