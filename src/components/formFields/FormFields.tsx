@@ -13,7 +13,10 @@ import DatePickerComponent from "../datePicker/DatePickerComponent";
 import DateRangePickerComponent from "../dataRangePicker/DataRangePickerComponent";
 import { CalendarPickerView } from "@mui/lab";
 import { errorMessages } from "../../helpers/messagesConstants";
-import { format, isSameDay, isBefore, subMonths, isAfter } from "date-fns";
+import {format, isSameDay, isBefore, subMonths, isAfter} from "date-fns";
+import {CapAutocompleteField} from "../capAutocompleteFields";
+import SelectCustomField, {OptionCustom} from "../selectField/SelectCustomField";
+import NumberFieldComponent from "../textField/NumberFieldComponent";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 /**
  * Items for the Tipo Estrazione and their coresponding fields
@@ -57,10 +60,13 @@ type FieldsProps = {
    * label to be shown with the field
    */
   label: string;
+  placeholder ?:string
   /**
    * items in case the component is select menu
    */
   selectItems?: Array<string>;
+  optionItems?: Array<OptionCustom>;
+  fsu?:boolean;
   /**
    * if the field is shown or hidden
    */
@@ -490,6 +496,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     name: "rate",
     componentType: "textfield",
     label: "Rate",
+    size: 3,
     hidden: false,
     InputProps: {
       endAdornment: (
@@ -550,6 +557,9 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
       {componentType === "select" && (
         <SelectField value={value} field={field} onChange={onChange} />
       )}
+      {componentType === "selectCustom" && (
+        <SelectCustomField keySelected={value} field={field} onChange={onChange} />
+      )}
       {componentType === "radioButtons" && (
         <RadioButtonsGroup
           value={value}
@@ -592,6 +602,22 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
             },
           ]}
         />
+      )}
+      {componentType === "capAutocomplete" && (
+      <CapAutocompleteField
+        field={field}
+        required={field.required!}
+        onChange={onChange}
+        error={error}
+        value={value}/>
+    )}
+      {componentType === "numberField" && (
+        <NumberFieldComponent
+          error={error}
+          value={value}
+          onChange={onChange}
+          field={field}
+          onBlur={onBlur}/>
       )}
     </Grid>
   );

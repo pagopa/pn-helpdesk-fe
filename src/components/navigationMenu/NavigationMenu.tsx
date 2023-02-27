@@ -26,6 +26,10 @@ const NavigationMenu = () => {
       link: "/monitoring",
     },
     {
+      title: "Gestione gare",
+      link: "/tender",
+    },
+    {
       title: "Gestione Aggregazioni ApiKey",
       link: routes.AGGREGATES
     },
@@ -34,7 +38,7 @@ const NavigationMenu = () => {
       link: routes.TRANSFER_PA
     }
   ];
-  
+
   const toggleDrawer =
     (status: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (

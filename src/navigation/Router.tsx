@@ -1,4 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import TenderPage from "../pages/tender/TenderPage";
+import {TenderDetailPage} from "../pages/tender/TenderDetailPage";
+import {FormTenderPage} from "../pages/createTender/FormTenderPage";
+import {CREATE_TENDER_ROUTE, TENDERS_TABLE_ROUTE, TENDER_DETAIL_ROUTE} from "./router.const";
 import MonitorPage from "../pages/monitor/MonitorPage";
 import LoginPage from "../pages/login/LoginPage";
 import SearchPage from "../pages/search/SearchPage";
@@ -17,10 +21,47 @@ function Router() {
       <Route key={"default"} path={"/"} element={<LoginPage />} />
       <Route path="*" element={<Navigate replace to="/search" />} />
       <Route
+        key={"default"}
+        path={"/"}
+        element={<LoginPage />}
+      />
+
+      <Route
         path="/search"
         element={
           <PrivateRoute condition="token">
             <SearchPage />
+          </PrivateRoute>
+        }
+
+      />
+      <Route
+        path={TENDERS_TABLE_ROUTE}
+        element={
+          <PrivateRoute condition="token">
+            <TenderPage />
+          </PrivateRoute>
+        }
+      />
+      <Route path={CREATE_TENDER_ROUTE}>
+        <Route path=":tenderCode" element={
+          <PrivateRoute condition="token">
+            <FormTenderPage />
+          </PrivateRoute>}
+        />
+
+        <Route path="" element={
+          <PrivateRoute condition="token">
+            <FormTenderPage />
+          </PrivateRoute>}
+        />
+      </Route>
+
+      <Route
+        path={CREATE_TENDER_ROUTE}
+        element={
+          <PrivateRoute condition="token">
+            <FormTenderPage />
           </PrivateRoute>
         }
       />
@@ -72,6 +113,18 @@ function Router() {
           </PrivateRoute>
         }
       />
+      <Route path="*" element={<Navigate replace to="/search" />} />
+
+        <Route
+            path={TENDER_DETAIL_ROUTE}
+            element={
+                <PrivateRoute condition="token">
+                    <TenderDetailPage />
+                </PrivateRoute>
+            }
+        />
+
+
     </Routes>
   );
 }
