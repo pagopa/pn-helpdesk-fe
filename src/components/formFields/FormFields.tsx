@@ -330,6 +330,10 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
         value: regex.JTI,
         message: errorMessages.INCORRECT_JTI,
       },
+      maxLength: {
+        value: 60,
+        message: errorMessages.MAX_LENGTH(60),
+      },
     },
   },
   "Time interval": {

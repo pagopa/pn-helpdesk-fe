@@ -15,6 +15,8 @@ export const errorMessages = {
     "Servizio offline, contattare l'amministratore di sistema",
   INCORRECT_JTI: "Identificativo di sessione non corretto",
   MIN_LENGTH: (length: number = 5) => `Inserire almeno ${length} caratteri`,
+  MAX_LENGTH: (length: number = 20) =>
+    `Lunghezza massima consentita ${length} caratteri`,
 };
 
 export const infoMessages = {
