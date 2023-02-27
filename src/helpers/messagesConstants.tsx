@@ -18,6 +18,8 @@ export const errorMessages = {
   PRODUCT_TYPE_INVALID: "Selezionare un tipo di prodotto valido",
   ZONE_INVALID: "Selezionare una zona valida",
   MIN_LENGTH: (length: number = 5) => `Inserire almeno ${length} caratteri`,
+  MAX_LENGTH: (length: number = 20) =>
+    `Lunghezza massima consentita ${length} caratteri`,
   INCORRECT_JTI: "Identificativo di sessione non corretto",
 };
 
