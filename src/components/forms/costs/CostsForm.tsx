@@ -116,7 +116,7 @@ export default function CostsForm(props:CostFormProps) {
                       <FormField
                         error={error}
                         key={item}
-                        field={fieldsCosts[item]}
+                        field={(item === "cap") ? {...fieldsCosts[item], fsu: props.fsu} :fieldsCosts[item]}
                         onChange={onChange}
                         value={value}
                       />

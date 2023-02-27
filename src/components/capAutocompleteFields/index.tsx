@@ -22,8 +22,12 @@ export function CapAutocompleteField(props:Props){
   const [cap, setCap] = useState<string[]>([]);
 
   const fetch = useCallback(()=>{
-    retrieveCaps(inputText, (caps) =>{
-      setCap(caps.map(item => item.cap))
+    retrieveCaps(inputText, (caps) => {
+      if (props.field.fsu) {
+        setCap(["99999", ...caps.map(item => item.cap)])
+      } else {
+        setCap(caps.map(item => item.cap))
+      }
     } , (e) => {
       console.error("Error with caps request ", e);
     })
@@ -55,6 +59,8 @@ export function CapAutocompleteField(props:Props){
 
       const { inputValue } = params;
       // Suggest the creation of a new value
+      if (inputValue === "99999" && !props.field.fsu) return filtered;
+
       const isExisting = options.some((option) => inputValue === option);
       if (inputValue !== '' && !isExisting) {
         filtered.push(inputValue);

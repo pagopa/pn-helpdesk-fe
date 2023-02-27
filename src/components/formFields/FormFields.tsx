@@ -66,6 +66,7 @@ type FieldsProps = {
    */
   selectItems?: Array<string>;
   optionItems?: Array<OptionCustom>;
+  fsu?:boolean;
   /**
    * if the field is shown or hidden
    */
