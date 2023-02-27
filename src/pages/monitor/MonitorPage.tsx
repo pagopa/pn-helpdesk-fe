@@ -11,7 +11,7 @@ import {
   errorMessages,
   functionalitiesNames,
 } from "../../helpers/messagesConstants";
-import { format, isBefore } from "date-fns";
+import { format } from "date-fns";
 import { getEventsType } from "../../api/apiRequestTypes";
 import * as snackbarActions from "../../redux/snackbarSlice";
 import { DateTimePicker } from "@mui/lab";
