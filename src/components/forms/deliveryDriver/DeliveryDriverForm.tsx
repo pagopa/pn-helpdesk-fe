@@ -52,6 +52,10 @@ export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
   const handleSaved = (data:DeliveryDriver) => {
     setLoading(false);
     props.onChanged?.(data);
+    dispatch(snackbarActions.updateSnackbacrOpened(true));
+    dispatch(snackbarActions.updateStatusCode(200));
+    const updateString = (props.initialValue) ? "aggiornato" : "salvato"
+    dispatch(snackbarActions.updateMessage("Recapitista " + updateString + " correttamente"));
   }
 
   const handleError = (e:any) => {

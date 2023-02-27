@@ -13,6 +13,8 @@ import {format} from "date-fns";
 import {fieldsTender} from "./fields";
 import {LoadingButton} from "@mui/lab";
 import {createTender} from "../../../api/paperChannelApi";
+import * as snackbarActions from "../../../redux/snackbarSlice";
+import {useAppDispatch} from "../../../redux/hook";
 
 
 
@@ -32,6 +34,7 @@ interface TenderFormBoxProps {
 export default function TenderFormBox(props:TenderFormBoxProps) {
   const fields = ["name", "dateInterval"];
   const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   const {
     handleSubmit,
@@ -51,6 +54,10 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
   const handleSuccessSaved = (value:Tender) => {
     setLoading(false);
     props.onChanged?.(value);
+    dispatch(snackbarActions.updateSnackbacrOpened(true));
+    dispatch(snackbarActions.updateStatusCode(200));
+    const updateString = (props.initialValue) ? "aggiornata" : "salvata"
+    dispatch(snackbarActions.updateMessage("Gara " + updateString + " correttamente"));
   }
 
   const handelErrorSaved = (e:any) => {
