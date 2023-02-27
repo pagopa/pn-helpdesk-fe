@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider} from "@mui/material";
 import { theme } from "@pagopa/mui-italia";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
@@ -13,8 +13,9 @@ import { it } from "date-fns/locale";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+
 root.render(
-  <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         {/* for date formatting in italian style */}
@@ -26,7 +27,6 @@ root.render(
         </LocalizationProvider>
       </ThemeProvider>
     </Provider>
-  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -81,7 +81,7 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ bgcolor: "primary.main" }}>
+    <AppBar position="sticky" sx={{ bgcolor: "primary.main" }}>
       <Container>
         <Toolbar
           sx={{

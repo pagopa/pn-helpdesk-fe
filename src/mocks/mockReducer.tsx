@@ -5,6 +5,8 @@ import configureMockStore from "redux-mock-store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { it } from "date-fns/locale";
+import {DeliveryDriver, FilterRequest, Page, UPLOAD_STATUS_ENUM} from "../model";
+import {DeliveryDriverDTO, TenderDTO} from "../api/paperChannel";
 import { RootState, store as realStore } from "../../src/redux/store";
 import { EnhancedStore, PreloadedState } from "@reduxjs/toolkit";
 import { PropsWithChildren } from "react";
@@ -29,6 +31,26 @@ function reducer(
       spinner: {
         opened: false,
       },
+      uploadAndDownload: {
+        download : {
+          loading: false
+        },
+         upload: {
+          loading: false,
+          error: undefined,
+          status: UPLOAD_STATUS_ENUM.WAITING_FILE
+        }
+      },
+      tenderForm: {
+        tenderCode: undefined,
+        loading: false,
+        allData: {} as Page<DeliveryDriverDTO>,
+      },
+      tender: {
+        loading: false,
+        allData: {} as Page<TenderDTO>,
+        selected: {} as TenderDTO
+      },
       aggregate: {
         aggregates: [],
         filters: {
@@ -41,6 +63,21 @@ function reducer(
           pagesKey: [],
         },
       },
+        pagination : {
+            limit : 10,
+            page: 0,
+            total: 0,
+            pagesKey: []
+        },
+          deliveries :{loading: false,
+          detail: undefined,
+          allData: {} as Page<DeliveryDriver>,
+          pagination: {
+          page:1,
+              tot:10,
+          } as FilterRequest
+        }
+
     });
     return (
       <LocalizationProvider locale={it} dateAdapter={AdapterDateFns}>
