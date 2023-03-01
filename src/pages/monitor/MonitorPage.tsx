@@ -136,7 +136,7 @@ const MonitorPage = () => {
 
   const events = () => {
     if (!modalEventDate) {
-      setError("You need to insert a vulue");
+      setError("Inserire un valore");
     } else {
       const params = [
         {
