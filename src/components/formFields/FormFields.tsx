@@ -14,6 +14,11 @@ import DateRangePickerComponent from "../dataRangePicker/DataRangePickerComponen
 import { CalendarPickerView } from "@mui/lab";
 import { errorMessages } from "../../helpers/messagesConstants";
 import { format, isSameDay, isBefore, subMonths, isAfter } from "date-fns";
+import { CapAutocompleteField } from "../capAutocompleteFields";
+import SelectCustomField, {
+  OptionCustom,
+} from "../selectField/SelectCustomField";
+import NumberFieldComponent from "../textField/NumberFieldComponent";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 /**
  * Items for the Tipo Estrazione and their coresponding fields
@@ -57,10 +62,13 @@ type FieldsProps = {
    * label to be shown with the field
    */
   label: string;
+  placeholder?: string;
   /**
    * items in case the component is select menu
    */
   selectItems?: Array<string>;
+  optionItems?: Array<OptionCustom>;
+  fsu?: boolean;
   /**
    * if the field is shown or hidden
    */
@@ -330,6 +338,10 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
         value: regex.JTI,
         message: errorMessages.INCORRECT_JTI,
       },
+      maxLength: {
+        value: 60,
+        message: errorMessages.MAX_LENGTH(60),
+      },
     },
   },
   "Time interval": {
@@ -462,12 +474,14 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     rules: {
       required: errorMessages.REQUIRED,
     },
+    size: 3,
   },
   "Descrizione Aggregazione": {
     name: "description",
     componentType: "textfield",
     label: "Descrizione Aggregazione",
     hidden: false,
+    size: 9,
   },
   "Usage Plan": {
     name: "usagePlanName",
@@ -478,11 +492,13 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
       required: errorMessages.REQUIRED,
     },
     selectItems: [],
+    size: 4,
   },
   Rate: {
     name: "rate",
     componentType: "textfield",
     label: "Rate",
+    //size: 3,
     hidden: false,
     InputProps: {
       endAdornment: (
@@ -492,6 +508,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
       ),
     },
     disabled: true,
+    size: 4,
   },
   Burst: {
     name: "burst",
@@ -506,6 +523,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
       ),
     },
     disabled: true,
+    size: 4,
   },
 };
 
@@ -540,6 +558,13 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
       )}
       {componentType === "select" && (
         <SelectField value={value} field={field} onChange={onChange} />
+      )}
+      {componentType === "selectCustom" && (
+        <SelectCustomField
+          keySelected={value}
+          field={field}
+          onChange={onChange}
+        />
       )}
       {componentType === "radioButtons" && (
         <RadioButtonsGroup
@@ -582,6 +607,24 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
               value: value[1],
             },
           ]}
+        />
+      )}
+      {componentType === "capAutocomplete" && (
+        <CapAutocompleteField
+          field={field}
+          required={field.required!}
+          onChange={onChange}
+          error={error}
+          value={value}
+        />
+      )}
+      {componentType === "numberField" && (
+        <NumberFieldComponent
+          error={error}
+          value={value}
+          onChange={onChange}
+          field={field}
+          onBlur={onBlur}
         />
       )}
     </Grid>
