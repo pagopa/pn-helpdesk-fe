@@ -1,4 +1,3 @@
-// import { aggregateApiClient } from "./aggregateApiClient";
 import { formatDate } from "../helpers/formatter.utility";
 import {
   getLogsProcessesType,
@@ -63,20 +62,6 @@ const getPersonsLogs = async (data: getPersonsLogsType) => {
       throw error;
     });
 };
-
-/**
- * Download the logs' archive related to a person activities and its operators' ones
- * @param {getOperatorsLogsType} data
- */
-/*const getOperatorsLogs = async (data: getOperatorsLogsType) => {
-    return await aggregateApiClient.getOperatorsLogs(data)
-        .then((result: any) => {
-            return result;
-        })
-        .catch((error: any) => {
-            throw error;
-        })  
-}*/
 
 /**
  * Download the logs' archive containing the full info of a notification

@@ -54,7 +54,6 @@ const MonitorPage = () => {
 
   const handleChange = (value: any) => {
     if (value) {
-      value = format(value, "yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
       setError("");
     }
     setModalEventDate(value);
@@ -141,9 +140,10 @@ const MonitorPage = () => {
       const params = [
         {
           ...modalPayload,
-          timestamp: new Date(
-            new Date(modalEventDate).toUTCString()
-          ).toISOString(),
+          timestamp: format(
+            new Date(modalEventDate),
+            "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+          ),
         },
       ];
       apiRequests

@@ -164,7 +164,7 @@ const SearchForm = () => {
     disableRicerca();
     if (
       Object.keys(dirtyFields).sort().join("") ===
-      prevDirtyFields.sort().join("")
+      [...prevDirtyFields].sort().join("")
     ) {
       return;
     }
@@ -199,7 +199,7 @@ const SearchForm = () => {
         }
       }
       if (
-        neededFields.sort().join("|") !==
+        [...neededFields].sort().join("|") !==
         fields
           .map((field) => field.name)
           .sort()
@@ -226,8 +226,8 @@ const SearchForm = () => {
       ) {
         if (
           selectedValue === "Ottieni log completi" &&
-          neededFields.sort().join("") ===
-            MenuItems["Ottieni log completi"].sort().join("") &&
+          [...neededFields].sort().join("") ===
+            [...MenuItems["Ottieni log completi"]].sort().join("") &&
           field.name !== "ticketNumber"
         ) {
           return { ...field, required: false };
@@ -343,13 +343,17 @@ const SearchForm = () => {
         .then((res) => {
           updateSnackbar(res);
           if ((res.data.password && res.data.zip) || res.data.data) {
-            updateResponse(
-              res.data.password
-                ? { password: res.data.password }
-                : selectedValue === "Ottieni CF"
-                ? { taxId: res.data.data }
-                : { internalId: res.data.data }
-            );
+            let response = null;
+            if (res.data.password) {
+              response = { password: res.data.password };
+            } else {
+              response =
+                selectedValue === "Ottieni CF"
+                  ? { taxId: res.data.data }
+                  : { internalId: res.data.data };
+            }
+            updateResponse(response);
+
             res.data.zip && downloadZip(res.data.zip);
           }
           dispatch(spinnerActions.updateSpinnerOpened(false));
@@ -394,9 +398,9 @@ const SearchForm = () => {
    * @param zip file in base64
    */
   const downloadZip = (zip: string) => {
-    var file = base64StringToBlob(zip, "application/zip");
-    var fileURL = URL.createObjectURL(file);
-    var fileLink = document.createElement("a");
+    let file = base64StringToBlob(zip, "application/zip");
+    let fileURL = URL.createObjectURL(file);
+    let fileLink = document.createElement("a");
     fileLink.href = fileURL;
     fileLink.download = getValues("ticketNumber");
     fileLink.click();
@@ -471,12 +475,7 @@ const SearchForm = () => {
                                 rules={field.rules}
                                 render={({
                                   field: { onChange, onBlur, value, name, ref },
-                                  fieldState: {
-                                    invalid,
-                                    isTouched,
-                                    isDirty,
-                                    error,
-                                  },
+                                  fieldState: { isTouched, isDirty, error },
                                   formState,
                                 }) => {
                                   return (
