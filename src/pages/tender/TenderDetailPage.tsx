@@ -20,7 +20,7 @@ const breadcrumbsLinks = [
 
 export function TenderDetailPage() {
 
-  const tenderState = useAppSelector(state => state.tender);
+  const tenderState = useAppSelector(state => state.tender.selected);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -29,12 +29,12 @@ export function TenderDetailPage() {
   }, [tenderState, dispatch])
 
 
-  if (!tenderState.selected || !tenderState.selected?.code){
+  if (!tenderState || !tenderState?.code){
     return <Navigate to={TENDERS_TABLE_ROUTE}/>
   }
 
   return <MainLayout>
-    <Container>
+   <Container>
       <Grid container direction="row" rowSpacing={3}>
         <Grid item container>
           <Breadcrumbs currentLocationLabel={"Dettaglio Gara"}
@@ -43,7 +43,7 @@ export function TenderDetailPage() {
         </Grid>
         <Grid item container>
           <Typography variant="h4" color="text.primary">
-            {tenderState.selected?.name}
+            {tenderState?.name}
           </Typography>
         </Grid>
         <Grid item container>
@@ -61,7 +61,7 @@ export function TenderDetailPage() {
                   Informazioni
                 </Typography>
               </Grid>
-              <DataInfo data={tenderState.selected} rows={tenderRowsInfo}/>
+              <DataInfo data={tenderState} rows={tenderRowsInfo}/>
             </Stack>
           </Card>
         </Grid>
@@ -80,17 +80,17 @@ export function TenderDetailPage() {
               </Typography>
             </Grid>
             <div data-testid="datagrid">
-              <DeliveriesDriverTable tenderCode={tenderState.selected.code} withActions={false}/>
+              <DeliveriesDriverTable tenderCode={tenderState.code} withActions={false}/>
             </div>
           </Card>
         </Grid>
         <Grid item container direction="row" justifyContent="space-between">
           <Button variant={"outlined"} onClick={()=> navigate(TENDERS_TABLE_ROUTE)}>Torna alle Gare</Button>
           {
-            (tenderState.selected?.status && tenderState.selected.status === "CREATED") ?
+            (tenderState?.status && tenderState.status === "CREATED") ?
               <Button variant={"contained"}
                       type={"submit"}
-                      onClick={() => navigate(CREATE_TENDER_ROUTE+"/"+tenderState.selected.code)}>
+                      onClick={() => navigate(CREATE_TENDER_ROUTE+"/"+tenderState.code)}>
                 Modifica
               </Button> : null
           }

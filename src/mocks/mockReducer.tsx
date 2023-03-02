@@ -49,7 +49,12 @@ function reducer(
       tender: {
         loading: false,
         allData: {} as Page<TenderDTO>,
-        selected: {} as TenderDTO
+        selected: {} as TenderDTO,
+        pagination: {
+          page:1,
+          tot:10,
+          force: false
+        }
       },
       aggregate: {
         aggregates: [],

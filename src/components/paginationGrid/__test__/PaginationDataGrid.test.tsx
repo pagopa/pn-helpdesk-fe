@@ -72,8 +72,5 @@ describe(PaginationDataGrid, () => {
     expect(await screen.findByRole('cell', { name: 'BRT' })).toBeTruthy();
     expect(await screen.findByRole('cell', { name: 'GLS' })).toBeTruthy()
     expect(await screen.findByRole('cell', { name: 'UPS' })).toBeTruthy();
-    expect(await screen.findByRole('cell', { name: 'UPS' })).toBeTruthy();
-    expect(await screen.findByRole('cell', { name: 'UPS' })).toBeTruthy();
-    expect(await screen.findByRole('cell', { name: 'UPS' })).toBeTruthy();
   })
 })
