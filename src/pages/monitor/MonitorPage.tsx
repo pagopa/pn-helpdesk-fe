@@ -39,7 +39,7 @@ const MonitorPage = () => {
 
   const [modalStatus, setModalStatus] = useState<boolean>(false);
 
-  const [modalEventDate, setModalEventDate] = useState("");
+  const [modalEventDate, setModalEventDate] = useState(new Date());
 
   const [modalPayload, setModalPaylod] = useState({});
 
@@ -47,7 +47,7 @@ const MonitorPage = () => {
 
   useEffect(() => {
     if (!modalStatus) {
-      setModalEventDate("");
+      setModalEventDate(new Date());
       setError("");
     }
   }, [modalStatus]);
