@@ -40,7 +40,7 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
   }
 
 
-  return <Grid item container>
+  return <Grid item container data-testid={'deliveryDriverTable'}>
     <PaginationDataGrid <DeliveryDriver> data={(driversStore?.allData) ? driversStore?.allData : {} as Page<DeliveryDriver> }
                                          type={(!props.withActions) ? ModelType.DELIVERY_DRIVER : ModelType.DELIVERY_DRIVER_WITH_ACTIONS}
                                          loading={false}

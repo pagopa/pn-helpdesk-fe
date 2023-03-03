@@ -34,7 +34,7 @@ export function TenderDetailPage() {
   }
 
   return <MainLayout>
-   <Container>
+    <Container>
       <Grid container direction="row" rowSpacing={3}>
         <Grid item container>
           <Breadcrumbs currentLocationLabel={"Dettaglio Gara"}
@@ -42,7 +42,7 @@ export function TenderDetailPage() {
 
         </Grid>
         <Grid item container>
-          <Typography variant="h4" color="text.primary">
+          <Typography variant="h4" color="text.primary" data-testid={'typograghyTenderDetail'}>
             {tenderState?.name}
           </Typography>
         </Grid>

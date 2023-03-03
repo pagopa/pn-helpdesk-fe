@@ -135,10 +135,15 @@ describe(TenderPage, () => {
     cleanup()
   });
 
-  it("Aggiungi tender", async () => {
-    const setOnPageChangeMock = jest.fn();
-    const setOnPageSizeChangeMock = jest.fn();
+  it("Tenders loaded", async () => {
+    reducer(<TenderPage />);
+    const paginationDataGrid = await screen.findByRole('grid');
+    expect(paginationDataGrid).toBeInTheDocument();
+    // eslint-disable-next-line testing-library/no-debugging-utils
+    screen.debug(document.body)
+  });
 
+  it("Add tender", async () => {
     reducer(<TenderPage />);
 
     const buttonAggiungi = screen.getByRole(/Button/i, {
