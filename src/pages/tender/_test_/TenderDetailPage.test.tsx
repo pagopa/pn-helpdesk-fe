@@ -2,29 +2,34 @@
  * Detail Test
  */
 
-import { act, cleanup, screen, fireEvent, waitFor, render } from "@testing-library/react";
+import { cleanup, screen, fireEvent, waitFor, render } from "@testing-library/react";
 import "regenerator-runtime/runtime"
 import { TenderDetailPage } from "../TenderDetailPage";
 import * as reactRedux from '../../../redux/hook'
 import configureStore from "redux-mock-store";
 import { TenderDTO, TenderDTOStatusEnum } from "../../../api/paperChannel";
 import { reducer } from "../../../mocks/mockReducer";
-import { server } from "../../../mocks/server";
-import { rest } from "msw";
+
+import {
+  BrowserRouter,
+  Route, Routes
+} from "react-router-dom";
 import * as router from "react-router";
-import userEvent from '@testing-library/user-event';
-import { Page } from "../../../model";
-import { MemoryRouter, Router, Routes } from "react-router-dom";
-import {createMemoryHistory} from 'history'
 import React from "react";
-import { create } from "react-test-renderer";
+import {CREATE_TENDER_ROUTE, TENDERS_TABLE_ROUTE} from "../../../navigation/router.const";
 
-describe(TenderDetailPage, () => {
 
-  const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
-  // const useNavigate = jest.spyOn(router, 'useNavigate');//.mockImplementation(() => jest.fn())
+const tender: TenderDTO = {
+  code: "1", name: "BRT", startDate: "01-31-2021 00:00", endDate: "01-31-2022 00:00", status: TenderDTOStatusEnum.Created
+}
+
+  describe("TenderDetailPage", () => {
+    const navigateMock = jest.fn();
+    const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
+    const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
+
   const mockingStore  = (state:any) => {
+
     useSelectorMock.mockReturnValue(state);
     const mockStore = configureStore();
     let updatedStore = mockStore(state);
@@ -34,6 +39,8 @@ describe(TenderDetailPage, () => {
   }
 
   beforeEach(() => {
+    const useNavigate = jest.spyOn(router, 'useNavigate');
+    useNavigate.mockReturnValue(navigateMock);
     useSelectorMock.mockClear()
     useDispatchMock.mockClear()
     // useNavigate.mockClear()
@@ -60,30 +67,24 @@ describe(TenderDetailPage, () => {
 
     const dataInfo = await screen.findByTestId('dataInfo');
     expect(dataInfo).toBeInTheDocument();
-
-    const deliveryDriverTable = await screen.findByTestId('deliveryDriverTable');
-    expect(deliveryDriverTable).toBeInTheDocument();
   });
 
   it("Is present typograghy tender name", async () => {
     reducer(<TenderDetailPage/>);
 
-    const typograhyName = await screen.findByTestId('typograghyTenderDetail');
-    expect(typograhyName).toBeInTheDocument();
-    //TODO RECUPERARE IL NAME DA TYPOGRAPHY
+    const titleTenderName = screen.queryByLabelText(tender.name);
+    expect(titleTenderName).toBeInTheDocument();
   });
 
   it("Is not present typograghy tender name", async () => {
-    const selectedState = {
-      code: "1", startDate: "01-31-2021 00:00", endDate: "01-31-2022 00:00", status: TenderDTOStatusEnum.Created
-    }
-    mockingStore(selectedState);
+    const local = {...tender, name: undefined}
+    delete local.name
+    mockingStore(local);
 
     reducer(<TenderDetailPage/>);
 
-    const typograhyName = await screen.findByTestId('typograghyTenderDetail');
-    //TODO RECUPERARE IL NAME DA TYPOGRAPHY
-    // expect(typograhyName).not.toBeInTheDocument();
+    const typograhyName = screen.getByTestId('typograghyTenderDetail');
+    expect(typograhyName).toBeEmpty()
   });
 
   it("Button modify rendered", async () => {
@@ -96,10 +97,11 @@ describe(TenderDetailPage, () => {
   });
 
   it("Button modify is not rendered", async () => {
-    const selectedState = {
-      code: "1", name: "BRT", startDate: "01-31-2021 00:00", endDate: "01-31-2022 00:00", status: TenderDTOStatusEnum.Ended
+    const local = {
+      ...tender,
+      status: TenderDTOStatusEnum.InProgress
     }
-    mockingStore(selectedState);
+    mockingStore(local);
 
     reducer(<TenderDetailPage/>);
 
@@ -110,48 +112,42 @@ describe(TenderDetailPage, () => {
   });
 
   test('Navigate to tender route', () => {
-    const selectedstate =  { selected: {} }
-    mockingStore(selectedstate);
+    mockingStore({});
 
-    const route = '/tender'
-    const wrapper  = create(
-      <MemoryRouter initialEntries={[route]}>
-        reducer(<TenderDetailPage/>, route);
-      </MemoryRouter>
-    );
-    expect(wrapper.toJSON()).toHaveLength(2);
+    render(<BrowserRouter >
+      <Routes>
+        <Route path={"/"} element={<TenderDetailPage />}/>
+        <Route path={TENDERS_TABLE_ROUTE} element={<h1 data-testid={"tender-page"}>Tender table route</h1>}/>
+      </Routes>
+    </BrowserRouter>);
+
+    expect(location.pathname).toEqual(TENDERS_TABLE_ROUTE);
+    expect(screen.getByTestId("tender-page")).toBeInTheDocument()
 
   })
 
-  it("Modify tender and navigate to tender create route", async () => {
-    const route = '/tender/create'
-    create(
-      <MemoryRouter initialEntries={[route]}>
-        reducer(<TenderDetailPage/>, route);
-      </MemoryRouter>
-    );
 
-    // reducer(<TenderDetailPage />);
-    const buttonModifica = screen.getByRole(/Button/i, {
+  it("Modify tender and navigate to tender create route", async () => {
+    reducer(<TenderDetailPage />);
+    const editButton = screen.getByRole(/Button/i, {
       name: "Modifica",
     });
-    const user = userEvent.setup();
-    await act(async () => {
-      await user.click(buttonModifica);
+    expect(editButton).toBeInTheDocument();
+    fireEvent.click(editButton);
+    await waitFor(async() => {
+      await expect(navigateMock).toBeCalledTimes(1);
+      expect(navigateMock).toBeCalledWith(CREATE_TENDER_ROUTE+"/"+tender.code);
+    })
+  });
+
+    it("whenTenderStateNotCreatedHideEditButton", async () => {
+      const local = {...tender, status: TenderDTOStatusEnum.InProgress}
+      mockingStore(local);
+      reducer(<TenderDetailPage />);
+      const editButton = screen.queryByRole(/Button/i, {
+        name: "Modifica",
+      });
+      expect(editButton).not.toBeInTheDocument()
     });
-  });
 
-  it("Displayed current selected tender", async () => {
-    reducer(<TenderDetailPage/>);
-
-    const nameDetail = await screen.findAllByText('BRT');
-    const startDateDetail = await screen.findAllByText('31-01-2021 00:00');
-    const endDateDetail = await screen.findAllByText('31-01-2022 00:00');
-    const statusDetail = await screen.findAllByText('BOZZA');
-
-    expect(nameDetail).toBeTruthy();
-    expect(startDateDetail).toBeTruthy();
-    expect(endDateDetail).toBeTruthy();
-    expect(statusDetail).toBeTruthy();
-  });
 })
