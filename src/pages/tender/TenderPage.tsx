@@ -35,7 +35,7 @@ export default function TenderPage({ email }: any){
   const handleOnPageChange = (page:number) => {
     const filter = {
       ...tenderState.pagination,
-      page: page
+      page: page+1
     }
     dispatch(changeFilterTenders(filter))
   }

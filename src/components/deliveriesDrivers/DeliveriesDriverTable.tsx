@@ -32,7 +32,7 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
   }, [fetchDrivers])
 
   const handleOnPageChange = (page:number) => {
-    dispatch(changeFilterDrivers({...driversStore.pagination, page:page}))
+    dispatch(changeFilterDrivers({...driversStore.pagination, page:page+1}))
   }
 
   const handleOnPageSizeChange = (size:number) => {

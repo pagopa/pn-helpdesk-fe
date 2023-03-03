@@ -56,6 +56,6 @@ const costSlice = createSlice({
   }
 })
 
-export const {resetStateCost, resetSelectedCost, setSelectedCost} = costSlice.actions
+export const {resetStateCost, changePaginationCost, resetSelectedCost, setSelectedCost} = costSlice.actions
 
 export default costSlice;

@@ -49,7 +49,7 @@ export function ButtonsActionTenderTable(props:{value:any}){
           <ListItemIcon>
             <InfoIcon fontSize="small"/>
           </ListItemIcon>
-          <ListItemText>Dettagli</ListItemText>
+          <ListItemText data-testid={"detail-tender"}>Dettagli</ListItemText>
         </MenuItem >
         {
           (props.value?.status && props.value.status === "CREATED") ?
@@ -57,7 +57,7 @@ export function ButtonsActionTenderTable(props:{value:any}){
               <ListItemIcon>
                 <EditIcon fontSize="small"/>
               </ListItemIcon>
-              <ListItemText>Modifica</ListItemText>
+              <ListItemText data-testid={"edit-tender"}>Modifica</ListItemText>
             </MenuItem>
             : null
         }
@@ -68,7 +68,7 @@ export function ButtonsActionTenderTable(props:{value:any}){
               <ListItemIcon>
                 <SystemUpdateAltIcon fontSize="small"/>
               </ListItemIcon>
-              <ListItemText>{(props.value.status === "VALIDATED") ? "Torna in Bozza" : "Convalida"}</ListItemText>
+              <ListItemText data-testid={"validated-tender"}>{(props.value.status === "VALIDATED") ? "Torna in Bozza" : "Convalida"}</ListItemText>
             </MenuItem>
             : null
         }
@@ -80,7 +80,7 @@ export function ButtonsActionTenderTable(props:{value:any}){
               <ListItemIcon>
                 <DeleteIcon fontSize="small"/>
               </ListItemIcon>
-              <ListItemText>Elimina</ListItemText>
+              <ListItemText data-testid={"delete-tender"}>Elimina</ListItemText>
             </MenuItem>
             : null
         }
