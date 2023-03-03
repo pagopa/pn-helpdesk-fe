@@ -39,7 +39,7 @@ const MonitorPage = () => {
 
   const [modalStatus, setModalStatus] = useState<boolean>(false);
 
-  const [modalEventDate, setModalEventDate] = useState("");
+  const [modalEventDate, setModalEventDate] = useState(new Date());
 
   const [modalPayload, setModalPaylod] = useState({});
 
@@ -47,14 +47,13 @@ const MonitorPage = () => {
 
   useEffect(() => {
     if (!modalStatus) {
-      setModalEventDate("");
+      setModalEventDate(new Date());
       setError("");
     }
   }, [modalStatus]);
 
   const handleChange = (value: any) => {
     if (value) {
-      value = format(value, "yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
       setError("");
     }
     setModalEventDate(value);
@@ -141,9 +140,10 @@ const MonitorPage = () => {
       const params = [
         {
           ...modalPayload,
-          timestamp: new Date(
-            new Date(modalEventDate).toUTCString()
-          ).toISOString(),
+          timestamp: format(
+            new Date(modalEventDate),
+            "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+          ),
         },
       ];
       apiRequests
