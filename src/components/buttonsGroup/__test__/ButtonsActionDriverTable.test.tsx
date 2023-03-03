@@ -2,7 +2,7 @@ import {fireEvent, RenderResult, screen, waitFor} from "@testing-library/react";
 import {reducer} from "../../../mocks/mockReducer";
 import * as hook from "../../../redux/hook";
 import * as hookPaperChannel from "../../../hooks/usePaperChannel";
-import {ButtonsActionDriverTable} from "../ButtonsActionDriverTable";
+import {ButtonsActionDriverTable, ButtonShowCosts} from "../ButtonsActionDriverTable";
 import {DeliveryDriver} from "../../../model";
 
 const driver:DeliveryDriver = {
@@ -87,6 +87,47 @@ describe("ButtonActionsDriverTable Test", () => {
     await waitFor(async() => {
       expect(mockDeleteFn).toBeCalledTimes(1);
       expect(mockDeleteFn).toBeCalledWith(driver.tenderCode,  driver.taxId);
+    })
+  })
+
+})
+
+describe("ButtonShowCosts Driver test",  () => {
+  let mockDispatchFn: jest.Mock
+
+  beforeEach(async () => {
+    const scenario = await doPrepareTestScenario()
+    mockDispatchFn = scenario.mockDispatchFn
+  })
+
+  afterEach(() => {
+    jest.resetAllMocks();
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  it("Test in document", () => {
+    reducer(<ButtonShowCosts value={driver}/>)
+    const element = screen.getByTestId('show-cost-button');
+    expect(element).toBeInTheDocument();
+  })
+
+  it("Test on click button", async() => {
+    reducer(<ButtonShowCosts value={driver}/>)
+    const element = screen.getByTestId('show-cost-button');
+    expect(element).toBeInTheDocument();
+    fireEvent.click(element)
+
+    await waitFor(async() => {
+      expect(mockDispatchFn).toBeCalledTimes(1);
+      expect(mockDispatchFn).toBeCalledWith({
+          payload: {
+            tenderCode: driver.tenderCode,
+            driverCode: driver.taxId
+          },
+          type: "deliveriesDriverSlice/setDialogCosts"
+        }
+      )
     })
   })
 

@@ -57,7 +57,9 @@ export function ButtonShowCosts(props:{value:any}) {
     dispatch(setDialogCosts({tenderCode: driver.tenderCode, driverCode: driver.taxId }))
   }
 
-  return <IconButton onClick={handleClickShowCosts}>
+  return <IconButton
+    data-testid={"show-cost-button"}
+    onClick={handleClickShowCosts}>
     <VisibilityIcon/>
   </IconButton>
 }
