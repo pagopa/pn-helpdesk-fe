@@ -1,55 +1,15 @@
 import MainLayout from "../mainLayout/MainLayout";
-import React, {useCallback, useEffect} from "react";
+import React from "react";
 import {Box, Button, Card, Container, Grid, Typography} from "@mui/material";
 import {Add} from "@mui/icons-material";
-import {ModelType, PaginationDataGrid} from "../../components/paginationGrid";
-import {useAppDispatch, useAppSelector} from "../../redux/hook";
-import {getTenders} from "../../redux/tender/actions";
 import {useNavigate} from "react-router-dom";
 import {CREATE_TENDER_ROUTE} from "../../navigation/router.const";
-import {changeFilterTenders} from "../../redux/tender/reducers";
-import {FilterRequest, Tender} from "../../model";
+import {TenderTable} from "../../components/deliveriesDrivers/TenderTable";
 
 
-export default function TenderPage({ email }: any){
 
-  const tenderState = useAppSelector(state => state.tender);
-  const dispatch = useAppDispatch();
+export default function TenderPage({ email= "" }: any){
   const navigate = useNavigate();
-
-  const fetchTenders = useCallback(() => {
-    const filter = {
-      ...tenderState.pagination,
-      force: true
-    } as FilterRequest
-    dispatch(getTenders(filter))
-    //eslint-disable-next-line
-  }, [tenderState.pagination])
-
-  useEffect(() => {
-    fetchTenders();
-    // eslint-disable-next-line
-  }, [fetchTenders])
-
-
-  const handleOnPageChange = (page:number) => {
-    const filter = {
-      ...tenderState.pagination,
-      page: page+1
-    }
-    dispatch(changeFilterTenders(filter))
-  }
-
-  const handleOnPageSizeChange = (pageSize: number) => {
-    const filter = {
-      ...tenderState.pagination,
-      page: 1,
-      tot: pageSize
-    }
-    dispatch(changeFilterTenders(filter))
-  }
-
-
 
   return <MainLayout email={email}>
     <Container>
@@ -73,6 +33,7 @@ export default function TenderPage({ email }: any){
           >
             <Grid item container justifyContent="right">
               <Button
+                data-testid={"button-added-tender"}
                 variant="outlined"
                 startIcon={<Add />}
                 onClick={() => navigate(CREATE_TENDER_ROUTE)}
@@ -83,12 +44,11 @@ export default function TenderPage({ email }: any){
                 Aggiungi
               </Button>
             </Grid>
-            <PaginationDataGrid <Tender> data={tenderState.allData}
-                                            type={ModelType.TENDER}
-                                            loading={tenderState.loading}
-                                            rowId={row => row.code}
-                                            onPageChange={handleOnPageChange}
-                                            onPageSizeChange={handleOnPageSizeChange}/>
+            <Grid item container>
+              <div data-testid={"tenders-table"}>
+                <TenderTable/>
+              </div>
+            </Grid>
           </Card>
         </Grid>
 
