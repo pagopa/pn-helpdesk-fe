@@ -14,6 +14,17 @@ import {
 import { format } from "date-fns";
 import { getEventsType } from "../../api/apiRequestTypes";
 import * as snackbarActions from "../../redux/snackbarSlice";
+import { DateTimePicker } from "@mui/lab";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Grid,
+  TextField,
+  FormHelperText,
+  DialogActions,
+  Button,
+} from "@mui/material";
 
 /**
  * Monitor page
@@ -25,6 +36,28 @@ const MonitorPage = () => {
   const [rows, setRows] = useState<any[]>([]);
 
   const [backEndStatus, setBackEndStatus] = useState<boolean>(true);
+
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
+
+  const [modalEventDate, setModalEventDate] = useState(new Date());
+
+  const [modalPayload, setModalPaylod] = useState({});
+
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!modalStatus) {
+      setModalEventDate(new Date());
+      setError("");
+    }
+  }, [modalStatus]);
+
+  const handleChange = (value: any) => {
+    if (value) {
+      setError("");
+    }
+    setModalEventDate(value);
+  };
 
   const updateSnackbar = useCallback(
     (response: any) => {
@@ -100,19 +133,35 @@ const MonitorPage = () => {
     };
   }, [dispatch, getEvents]);
 
-  const events = (params: any) => {
-    apiRequests
-      .getEvents(params as getEventsType)
-      .then((res: any) => {
-        dispatch(spinnerActions.updateSpinnerOpened(true));
-        getEvents();
-        dispatch(spinnerActions.updateSpinnerOpened(false));
-        updateSnackbar(res);
-      })
-      .catch((error: any) => {
-        dispatch(spinnerActions.updateSpinnerOpened(false));
-        updateSnackbar(error.response);
-      });
+  const events = () => {
+    if (!modalEventDate) {
+      setError("Inserire un valore");
+    } else {
+      const params = [
+        {
+          ...modalPayload,
+          timestamp: format(
+            new Date(modalEventDate),
+            "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+          ),
+        },
+      ];
+      apiRequests
+        .getEvents(params as getEventsType)
+        .then((res: any) => {
+          dispatch(spinnerActions.updateSpinnerOpened(true));
+          getEvents();
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+          updateSnackbar(res);
+        })
+        .catch((error: any) => {
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+          updateSnackbar(error.response);
+        })
+        .finally(() => {
+          setModalStatus(false);
+        });
+    }
   };
 
   const columns = [
@@ -170,38 +219,30 @@ const MonitorPage = () => {
         return params.row.state
           ? [
               <GridActionsCellItem
+                key={"Inserire KO"}
                 label="Inserire KO"
                 onClick={() => {
-                  const payload = [
-                    {
-                      status: "KO",
-                      timestamp: new Date(
-                        new Date().toUTCString()
-                      ).toISOString(),
-                      functionality: Array(params.row.functionalityName),
-                      sourceType: "OPERATOR",
-                    },
-                  ];
-                  events(payload);
+                  setModalPaylod({
+                    status: "KO",
+                    functionality: Array(params.row.functionalityName),
+                    sourceType: "OPERATOR",
+                  });
+                  setModalStatus(true);
                 }}
                 showInMenu
               />,
             ]
           : [
               <GridActionsCellItem
+                key="Inserire OK"
                 label="Inserire OK"
                 onClick={() => {
-                  const payload = [
-                    {
-                      status: "OK",
-                      timestamp: new Date(
-                        new Date().toUTCString()
-                      ).toISOString(),
-                      functionality: Array(params.row.functionalityName),
-                      sourceType: "OPERATOR",
-                    },
-                  ];
-                  events(payload);
+                  setModalPaylod({
+                    status: "OK",
+                    functionality: Array(params.row.functionalityName),
+                    sourceType: "OPERATOR",
+                  });
+                  setModalStatus(true);
                 }}
                 showInMenu
               />,
@@ -213,6 +254,40 @@ const MonitorPage = () => {
   return (
     <MainLayout>
       <DataGridComponent columns={columns} rows={rows} />
+      <Dialog
+        open={modalStatus}
+        onClose={() => setModalStatus(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Nuovo evento</DialogTitle>
+        <DialogContent>
+          <Grid container columnSpacing={2} sx={{ pt: 2 }}>
+            <Grid item>
+              <DateTimePicker
+                label="Data e ora evento"
+                value={modalEventDate}
+                onChange={(e) => handleChange(e)}
+                renderInput={(params) => (
+                  <TextField {...params} error={error ? true : false} />
+                )}
+              />
+            </Grid>
+          </Grid>
+          <FormHelperText error>{error ? error : " "}</FormHelperText>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "space-between" }}>
+          <Button
+            onClick={() => setModalStatus(false)}
+            sx={{ padding: "0 18px" }}
+          >
+            Annulla
+          </Button>
+          <Button autoFocus onClick={events}>
+            Inserisci
+          </Button>
+        </DialogActions>
+      </Dialog>
     </MainLayout>
   );
 };

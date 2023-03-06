@@ -101,7 +101,7 @@ const DateRangePickerComponent = (props: Props) => {
       {dates.map((date, index) => (
         <Grid
           item
-          key={index}
+          key={date.label}
           xs={12}
           lg={6}
           sx={{ paddingRight: "0px!important" }}
