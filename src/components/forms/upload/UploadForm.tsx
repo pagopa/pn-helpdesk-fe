@@ -28,13 +28,11 @@ export default function UploadBox() {
 
   useEffect(() => {
     if (file && uploadState.upload.presignedUrl && uploadState.upload.status === UPLOAD_STATUS_ENUM.RETRIEVED_PRESIGNED_URL){
-      console.log("presigned url retrieved")
       dispatch(uploadFile({
         url:uploadState.upload.presignedUrl,
         file: file
       }))
     } else if (file && uploadState.upload.status === UPLOAD_STATUS_ENUM.WAITING_FILE){
-      console.log("Retrieve presigned url")
       dispatch(getPresignedUrl({}));
     }
     // eslint-disable-next-line
@@ -44,21 +42,13 @@ export default function UploadBox() {
   const statusDescription = () => {
     switch (uploadState.upload.status){
       case UPLOAD_STATUS_ENUM.RETRIEVING_PRESIGNED_URL:
-        return <Typography variant="body1">
-          In attesa dell'url di caricamento
-        </Typography>
+        return "In attesa del url di caricamento";
       case UPLOAD_STATUS_ENUM.UPLOADING_FILE_S3:
-        return <Typography variant="body1">
-          Caricamento file in corso
-        </Typography>
+        return "Caricamento file in corso";
       case UPLOAD_STATUS_ENUM.ERROR_PRESIGNED_URL:
-        return <Typography variant="body1" color={"red"}>
-          Errore con il recupero dell'url di caricamento
-        </Typography>
+        return "Errore con il recupero del url di caricamento"
       case UPLOAD_STATUS_ENUM.ERROR_UPLOADING_FILE_S3:
-        return <Typography variant="body1" color={"red"}>
-          Errore con il caricamento del file
-        </Typography>
+        return "Errore con il caricamento del file"
       default:
         return null
     }
@@ -84,15 +74,18 @@ export default function UploadBox() {
               <Typography variant="subtitle1">
                 Carica file xlsx dei recapitisti
               </Typography>
+              <Typography variant="body1" data-testid={"status-description-upload"}>
               {
                 statusDescription()
               }
+              </Typography>
             </Stack>
 
           </Grid>
           <Grid item container xs={12} sm={6}>
 
             <SingleFileInput
+              data-testid={"file-input"}
               label="Documento (richiesto)"
               loading={uploadState.upload.loading}
               error={!!(uploadState.upload.error)}
