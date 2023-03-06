@@ -55,28 +55,28 @@ const tender: TenderDTO = {
       cleanup()
     });
 
-  it("Delivery Driver Table rendered", async () => {
+  it("whenTenderPageRenderedThenTableShow", async () => {
     reducer(<TenderDetailPage/>);
 
     const deliveryDriverTable = await screen.findByTestId('deliveryDriverTable');
     expect(deliveryDriverTable).toBeInTheDocument();
   });
 
-  it("DataInfo rendered", async () => {
+  it("whenTenderHasInfoThenShowDataInfo", async () => {
     reducer(<TenderDetailPage/>);
 
     const dataInfo = await screen.findByTestId('dataInfo');
     expect(dataInfo).toBeInTheDocument();
   });
 
-  it("Is present typograghy tender name", async () => {
+  it("whenTenderWithNameTitleShowName", async () => {
     reducer(<TenderDetailPage/>);
 
     const titleTenderName = screen.queryByLabelText(tender.name);
     expect(titleTenderName).toBeInTheDocument();
   });
 
-  it("Is not present typograghy tender name", async () => {
+  it("whenTenderWithEmptyNameTitleIsEmpty", async () => {
     const local = {...tender, name: undefined}
     delete local.name
     mockingStore(local);
@@ -87,7 +87,7 @@ const tender: TenderDTO = {
     expect(typograhyName).toBeEmpty()
   });
 
-  it("Button modify rendered", async () => {
+  it("whenTenderIsCreatedStatusEditButtonMustBeRendered", async () => {
     reducer(<TenderDetailPage/>);
 
     const buttonModify = screen.getByRole(/Button/i, {
@@ -96,7 +96,7 @@ const tender: TenderDTO = {
     expect(buttonModify).toBeInTheDocument();
   });
 
-  it("Button modify is not rendered", async () => {
+  it("whenTenderIsInProgressEditButtonMustNotBeRendered", async () => {
     const local = {
       ...tender,
       status: TenderDTOStatusEnum.InProgress
@@ -111,7 +111,7 @@ const tender: TenderDTO = {
     expect(buttonModify).not.toBeInTheDocument();
   });
 
-  test('Navigate to tender route', () => {
+  it('whenTenderIsUndefinedOrEmptyGoToTendersRoute', () => {
     mockingStore({});
 
     render(<BrowserRouter >
@@ -127,7 +127,7 @@ const tender: TenderDTO = {
   })
 
 
-  it("Modify tender and navigate to tender create route", async () => {
+  it("whenClickedEditTenderNavigateToCreateTenderRoute", async () => {
     reducer(<TenderDetailPage />);
     const editButton = screen.getByRole(/Button/i, {
       name: "Modifica",
@@ -140,14 +140,25 @@ const tender: TenderDTO = {
     })
   });
 
-    it("whenTenderStateNotCreatedHideEditButton", async () => {
-      const local = {...tender, status: TenderDTOStatusEnum.InProgress}
-      mockingStore(local);
+  it("whenTenderStateNotCreatedHideEditButton", async () => {
+    const local = {...tender, status: TenderDTOStatusEnum.InProgress}
+    mockingStore(local);
+    reducer(<TenderDetailPage />);
+    const editButton = screen.queryByRole(/Button/i, {
+      name: "Modifica",
+    });
+    expect(editButton).not.toBeInTheDocument()
+  });
+
+    it("whenClickBackButtonNavigateToTendersRoute", async () => {
       reducer(<TenderDetailPage />);
-      const editButton = screen.queryByRole(/Button/i, {
-        name: "Modifica",
-      });
-      expect(editButton).not.toBeInTheDocument()
+      const backButton = screen.getByTestId("back-button-tenders");
+      expect(backButton).toBeInTheDocument()
+      fireEvent.click(backButton);
+      await waitFor(async() => {
+        await expect(navigateMock).toBeCalledTimes(1);
+        expect(navigateMock).toBeCalledWith(TENDERS_TABLE_ROUTE);
+      })
     });
 
 })

@@ -85,7 +85,11 @@ export function TenderDetailPage() {
           </Card>
         </Grid>
         <Grid item container direction="row" justifyContent="space-between">
-          <Button variant={"outlined"} onClick={()=> navigate(TENDERS_TABLE_ROUTE)}>Torna alle Gare</Button>
+          <Button variant={"outlined"}
+                  data-testid={"back-button-tenders"}
+                  onClick={()=> navigate(TENDERS_TABLE_ROUTE)}>
+            Torna alle Gare
+          </Button>
           {
             (tenderState?.status && tenderState.status === "CREATED") ?
               <Button variant={"contained"}
