@@ -24,6 +24,7 @@ const tender: TenderDTO = {
 }
 
   describe("TenderDetailPage", () => {
+    jest.spyOn(React, "useEffect").mockImplementation(() => jest.fn());
     const navigateMock = jest.fn();
     const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
     const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');

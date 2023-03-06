@@ -22,6 +22,7 @@ describe("TenderPageTest", () => {
   const navigateMock = jest.fn();
 
   beforeEach(() =>{
+    jest.spyOn(React, "useEffect").mockImplementation(() => jest.fn());
     const useNavigate = jest.spyOn(router, 'useNavigate');
     useNavigate.mockReturnValue(navigateMock);
   })
