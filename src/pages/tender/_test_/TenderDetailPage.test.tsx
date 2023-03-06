@@ -62,29 +62,30 @@ const tender: TenderDTO = {
     expect(deliveryDriverTable).toBeInTheDocument();
   });
 
-  it("whenTenderHasInfoThenShowDataInfo", async () => {
+  it("whenTenderHasInfoThenShowDataInfo", () => {
     reducer(<TenderDetailPage/>);
 
-    const dataInfo = await screen.findByTestId('dataInfo');
+    const dataInfo = screen.getByTestId('dataInfo');
     expect(dataInfo).toBeInTheDocument();
   });
 
-  it("whenTenderWithNameTitleShowName", async () => {
+  it("whenTenderWithNameTitleShowName", () => {
     reducer(<TenderDetailPage/>);
 
-    const titleTenderName = screen.queryByLabelText(tender.name);
+    const titleTenderName = screen.getByTestId("title-tender");
     expect(titleTenderName).toBeInTheDocument();
+    expect(titleTenderName.textContent).toEqual(tender.name)
   });
 
-  it("whenTenderWithEmptyNameTitleIsEmpty", async () => {
+  it("whenTenderWithEmptyNameTitleIsEmpty",  () => {
     const local = {...tender, name: undefined}
     delete local.name
     mockingStore(local);
 
     reducer(<TenderDetailPage/>);
 
-    const typograhyName = screen.getByTestId('typograghyTenderDetail');
-    expect(typograhyName).toBeEmpty()
+    const typograhyName = screen.getByTestId('title-tender');
+    expect(typograhyName).toBeEmptyDOMElement()
   });
 
   it("whenTenderIsCreatedStatusEditButtonMustBeRendered", async () => {

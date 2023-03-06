@@ -42,7 +42,7 @@ export function TenderDetailPage() {
 
         </Grid>
         <Grid item container>
-          <Typography variant="h4" color="text.primary" data-testid={'typograghyTenderDetail'}>
+          <Typography variant="h4" color="text.primary" data-testid={'title-tender'}>
             {tenderState?.name}
           </Typography>
         </Grid>
