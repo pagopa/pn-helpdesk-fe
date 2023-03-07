@@ -29,7 +29,9 @@ export function TenderDetailPage() {
   }, [tenderState, dispatch])
 
 
+  console.log("State", tenderState)
   if (!tenderState || !tenderState?.code){
+    console.log("return navigate")
     return <Navigate to={TENDERS_TABLE_ROUTE}/>
   }
 

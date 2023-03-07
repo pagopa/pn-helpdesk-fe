@@ -21,16 +21,17 @@ export function CapAutocompleteField(props:Props){
   const [inputText, setInputText] = useState("");
   const [cap, setCap] = useState<string[]>([]);
 
-  const fetch = useCallback(()=>{
-    retrieveCaps(inputText, (caps) => {
+  const fetch = useCallback(async ()=>{
+    try {
+      const response = await retrieveCaps(inputText);
       if (props.field.fsu) {
-        setCap(["99999", ...caps.map(item => item.cap)])
+        setCap(["99999", ...response.content.map(item => item.cap)])
       } else {
-        setCap(caps.map(item => item.cap))
+        setCap(response.content.map(item => item.cap))
       }
-    } , (e) => {
+    }catch(e){
       console.error("Error with caps request ", e);
-    })
+    }
   }, [inputText])
 
   useEffect(() => {
@@ -45,11 +46,13 @@ export function CapAutocompleteField(props:Props){
   return <Autocomplete
     multiple
     id="caps-autocomplete"
+    data-testid={"caps-autocomplete"}
     options={cap}
     value={props.value}
     fullWidth={true}
     limitTags={3}
     onInputChange={(event, newInputValue) => {
+      console.log(event, newInputValue)
       setInputText(newInputValue);
     }}
     onChange={handleOnChange}
@@ -71,6 +74,7 @@ export function CapAutocompleteField(props:Props){
     renderInput={(params) => (
       <TextField
         {...params}
+        data-testid={"input-text-cap"}
         label={props.field.label}
         placeholder={props.field.placeholder}
       />

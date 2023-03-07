@@ -56,15 +56,6 @@ function Router() {
           </PrivateRoute>}
         />
       </Route>
-
-      <Route
-        path={CREATE_TENDER_ROUTE}
-        element={
-          <PrivateRoute condition="token">
-            <FormTenderPage />
-          </PrivateRoute>
-        }
-      />
       <Route
         path="/monitoring"
         element={

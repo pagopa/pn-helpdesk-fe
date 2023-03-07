@@ -1,5 +1,4 @@
 import {
-  CapDto,
   Configuration,
   CostDTO,
   DeliveryDriverApi,
@@ -79,14 +78,11 @@ export const createCost = async (tenderCode:string, driverCode:string, body:Cost
 
 }
 
-export const retrieveCaps = async (inputText:string,
-                                 callbackSuccess:(data:CapDto[])=>void,
-                                 callbackError:(e:any)=>void) => {
+export const retrieveCaps = async (inputText:string) => {
   try {
     const response = await apiCaps().getAllCap(inputText);
-
-    callbackSuccess(response.data.content);
+    return response.data
   } catch (e){
-    return callbackError(e);
+    throw e;
   }
 }
