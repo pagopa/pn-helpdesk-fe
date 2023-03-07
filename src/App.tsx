@@ -1,8 +1,8 @@
 import { Backdrop, CircularProgress } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { getUser } from './Authentication/auth';
+import { getUserData } from './Authentication/auth';
 import { ConfirmationProvider } from './components/confirmationDialog/ConfirmationProvider';
 import SnackbarComponent from './components/snackbar/SnackbarComponent';
 import { useCurrentUser } from './hooks/useCurrentUser';
@@ -14,17 +14,39 @@ function App() {
 
   const { setCurrentUser } = useCurrentUser();
 
-  /**
-   * fetch user data and let the hook store it
+  const [hasCheckedUser, setHasCheckedUser] = useState(false);
+
+  /*
+   * If the webapp is reloaded, then the user won't pass through the login.
+   * While the tokens are in session storage, the user data *including permissions*.
+   * must be reloaded from Cognito.
+   * 
+   * Hence this effect is run on app loading.
+   * - If there is a logged user, then getUserData returns a UserData object.
+   *   In this case, we set the user data including the permissions.
+   *   Consequently, the user can proceed to the previously accessed page within the app.
+   * - Otherwise, getUserData returns null, and therefore there is nothing to set.
+   *   As the initial set of permissions is empty, the navigation will be redirected to the login page.
+   *   This is the behavior of PrivateRoute for any situation in which the user has not the required permissions.
+   * 
+   * In order to avoid navigating to the login before the existence of a logged user is checked,
+   * we define the hasCheckedUser state, and we set it to true *after* the verification has been performed.
+   * 
+   * Cfr. PN-4348.
    */
   useEffect(() => {
-    getUser().then((userData) => {
-      setCurrentUser(userData);
-    });
+    const setUserIfLoggedIn = async () => {
+      const userData = await getUserData();
+      if (userData) {
+        setCurrentUser(userData);
+      }
+      setHasCheckedUser(true);
+    };
+    setUserIfLoggedIn();
   }, [setCurrentUser]);
 
-
-  return (
+  // actual contents are rendered after the reload-with-logged-user check is completed only.
+  return hasCheckedUser ? (
     <div>
       <BrowserRouter>
         <Backdrop
@@ -41,7 +63,7 @@ function App() {
         <SnackbarComponent />
       </BrowserRouter>
     </div>
-  );
+  ) : <div/>;
 }
 
 export default App;

@@ -2,7 +2,7 @@ import awsmobile from "./aws-exports";
 import Amplify, { Auth } from "aws-amplify";
 import { setStorage, resetStorage, deleteStorage } from "./storage";
 import { CognitoUser } from "@aws-amplify/auth";
-import { UserData } from "../model/user-permission";
+import { Permission, UserData } from "../model/user-permission";
 
 type Props = {
   /**
@@ -13,29 +13,43 @@ type Props = {
    * the password for logging
    */
   password: string;
+  /**
+   * the function to set the user attributes other than tokens
+   */
+  setCurrentUser: (u: UserData) => void;
 };
 
 Amplify.configure(awsmobile);
 
+function userDataForUser(user: any): UserData {
+  return {
+    email: user.attributes.email,
+    permissions: [Permission.API_KEY_READ],
+  };
+}
+
 /**
- *
- * @param {Object} data login data
- * @returns
+ * Performs the login and set both the tokens (in session storage) 
+ * and the user data (through setCurrentUser)
  */
-const login = ({ email, password }: Props): Promise<any> => {
+const login = ({ email, password, setCurrentUser }: Props): Promise<any> => {
   return Auth.signIn(email, password)
-    .then(async (user) => {
+    .then((user) => {
       if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
-        return await setStorage("session", user.Session).then(() => user);
+        return setStorage("session", user.Session).then(() => user);
       } else {
         const token = user.signInUserSession.idToken.jwtToken;
         const refreshToken = user.signInUserSession.refreshToken.token;
         const accessToken = user.signInUserSession.accessToken.jwtToken;
-        return await Promise.allSettled([
+        return Promise.allSettled([
           setStorage("token", token),
           setStorage("refreshToken", refreshToken),
           setStorage("accessToken", accessToken),
-        ]).then(() => user);
+        ])
+        .then(() => {
+          setCurrentUser(userDataForUser(user));
+          return user;
+        });
       }
     })
     .catch((error: any) => {
@@ -100,18 +114,10 @@ const changePassword = (user: any, newPassword: string): Promise<any> => {
     });
 };
 
-const getUser = async (): Promise<UserData> => {
+const getUserData = async (): Promise<UserData | null> => {
   return await Auth.currentAuthenticatedUser()
-    .then(async (user) => {
-      return await Auth.userAttributes(user).then((userAttr) => {
-        return {
-          email: userAttr.find((attr) => attr.Name === "email")?.Value,
-          permissions: [],
-      }});
-    })
-    .catch((error: any) => {
-      throw error;
-    });
+    .then(user => userDataForUser(user))
+    .catch((_error: any) => null);
 };
 
-export { login, logout, refreshToken, changePassword, getUser };
+export { login, logout, refreshToken, changePassword, getUserData };

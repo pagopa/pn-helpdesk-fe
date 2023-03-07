@@ -1,8 +1,9 @@
 import { Navigate } from "react-router-dom";
+import { useHasPermissions } from "../hooks/useHasPermissions";
+import { Permission } from "../model/user-permission";
 
-const PrivateRoute = ({ condition, children }: any) => {
-  let accepted = sessionStorage.getItem(condition) ? true : false;
-
+const PrivateRoute = ({ roles, children }: { roles: Array<Permission>, children: JSX.Element }): JSX.Element => {
+  const accepted = useHasPermissions(roles);
   return accepted ? children : <Navigate to="/" replace={true} />;
 };
 
