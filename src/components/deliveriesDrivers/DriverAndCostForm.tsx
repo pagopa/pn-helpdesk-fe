@@ -1,5 +1,5 @@
 import {Button, Card, Grid, Typography} from "@mui/material";
-import DeliveryDriverFormBox from "../forms/deliveryDriver/DeliveryDriverForm";
+import DeliveryDriverForm from "../forms/deliveryDriver/DeliveryDriverForm";
 import React, {useCallback, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {
@@ -63,11 +63,11 @@ export function DriverAndCostForm(props: DriverAndCostFormProps){
 
   return <Grid item container rowSpacing={2}>
     <Grid item>
-      <DeliveryDriverFormBox fsu={props.fsu}
-                             key={"DRIVER_"+driverStore?.detail?.taxId}
-                             onChanged={handleOnSavedDriver}
-                             tenderCode={props.tenderCode}
-                             initialValue={driverStore.detail} />
+      <DeliveryDriverForm fsu={props.fsu}
+                          key={"DRIVER_"+driverStore?.detail?.taxId}
+                          onChanged={handleOnSavedDriver}
+                          tenderCode={props.tenderCode}
+                          initialValue={driverStore.detail} />
     </Grid>
     {
       (driverStore.detail?.taxId) ?

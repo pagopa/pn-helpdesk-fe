@@ -25,7 +25,7 @@ interface PropsDeliveryBox{
   onChanged ?: (value:DeliveryDriver) => void
 }
 
-export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
+export default function DeliveryDriverForm(props:PropsDeliveryBox) {
   const fields = ["taxId", "businessName", "denomination", "registeredOffice", "fiscalCode", "pec", "phoneNumber", "uniqueCode"];
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);

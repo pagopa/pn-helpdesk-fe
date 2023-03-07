@@ -30,10 +30,12 @@ const tender: TenderDTO = {
     const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
 
   const mockingStore  = (state:any) => {
-
     useSelectorMock.mockReturnValue(state);
     const mockStore = configureStore();
     let updatedStore = mockStore(state);
+    mockingDispatch(updatedStore);
+  }
+  const mockingDispatch = (updatedStore:any) => {
     const mockDispatch = jest.fn();
     useDispatchMock.mockReturnValue(mockDispatch);
     updatedStore.dispatch = mockDispatch;
@@ -44,22 +46,17 @@ const tender: TenderDTO = {
     useNavigate.mockReturnValue(navigateMock);
     useSelectorMock.mockClear()
     useDispatchMock.mockClear()
-    // useNavigate.mockClear()
-
-    const selectedState = {
-      code: "1", name: "BRT", startDate: "01-31-2021 00:00", endDate: "01-31-2022 00:00", status: TenderDTOStatusEnum.Created
-    }
-    mockingStore(selectedState);
+    mockingStore(tender);
   });
 
-    afterEach(() => {
-      cleanup()
-    });
+  afterEach(() => {
+    cleanup()
+  });
 
   it("whenTenderPageRenderedThenTableShow", async () => {
     reducer(<TenderDetailPage/>);
 
-    const deliveryDriverTable = await screen.findByTestId('deliveryDriverTable');
+    const deliveryDriverTable = await screen.findByTestId('delivery-driver-table');
     expect(deliveryDriverTable).toBeInTheDocument();
   });
 
@@ -123,9 +120,8 @@ const tender: TenderDTO = {
       </Routes>
     </BrowserRouter>);
 
-    //expect(location.pathname).toEqual(TENDERS_TABLE_ROUTE);
-    //expect(screen.getByTestId("tender-page")).toBeInTheDocument()
-
+    expect(location.pathname).toEqual(TENDERS_TABLE_ROUTE);
+    expect(screen.getByTestId("tender-page")).toBeInTheDocument()
   })
 
 
@@ -143,7 +139,7 @@ const tender: TenderDTO = {
   });
 
   it("whenTenderStateNotCreatedHideEditButton", async () => {
-    const local = {...tender, status: TenderDTOStatusEnum.InProgress}
+    const local = {...tender, status: TenderDTOStatusEnum.Ended}
     mockingStore(local);
     reducer(<TenderDetailPage />);
     const editButton = screen.queryByRole(/Button/i, {
@@ -152,15 +148,15 @@ const tender: TenderDTO = {
     expect(editButton).not.toBeInTheDocument()
   });
 
-    it("whenClickBackButtonNavigateToTendersRoute", async () => {
-      reducer(<TenderDetailPage />);
-      const backButton = screen.getByTestId("back-button-tenders");
-      expect(backButton).toBeInTheDocument()
-      fireEvent.click(backButton);
-      await waitFor(async() => {
-        await expect(navigateMock).toBeCalledTimes(1);
-        expect(navigateMock).toBeCalledWith(TENDERS_TABLE_ROUTE);
-      })
-    });
+  it("whenClickBackButtonNavigateToTendersRoute", async () => {
+    reducer(<TenderDetailPage />);
+    const backButton = screen.getByTestId("back-button-tenders");
+    expect(backButton).toBeInTheDocument()
+    fireEvent.click(backButton);
+    await waitFor(async() => {
+      await expect(navigateMock).toBeCalledTimes(1);
+      expect(navigateMock).toBeCalledWith(TENDERS_TABLE_ROUTE);
+    })
+  });
 
 })

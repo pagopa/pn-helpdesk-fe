@@ -1,10 +1,10 @@
 import {cleanup, fireEvent, screen, within} from "@testing-library/react";
 import {reducer} from "../../../../mocks/mockReducer";
 import React from "react";
-import DeliveryDriverFormBox from "../DeliveryDriverForm";
+import DeliveryDriverForm from "../DeliveryDriverForm";
 
 
-describe(DeliveryDriverFormBox, () => {
+describe(DeliveryDriverForm, () => {
 /*
   afterEach(cleanup);
   beforeEach(() => {

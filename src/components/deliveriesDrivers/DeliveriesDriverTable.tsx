@@ -1,12 +1,12 @@
-import {useAppDispatch, useAppSelector} from "../../redux/hook";
-import {ModelType, PaginationDataGrid} from "../paginationGrid";
-import {DeliveryDriver, Page} from "../../model";
-import {Grid} from "@mui/material";
-import React, {useCallback, useEffect} from "react";
-import {changeFilterDrivers, setDialogCosts} from "../../redux/deliveriesDrivers/reducers";
-import {getAllDrivers} from "../../redux/deliveriesDrivers/actions";
-import {DriverCostsDialog} from "../dialogs";
-import {resetStateCost} from "../../redux/costs/reducers";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { ModelType, PaginationDataGrid } from "../paginationGrid";
+import { DeliveryDriver, Page } from "../../model";
+import { Grid } from "@mui/material";
+import React, { useCallback, useEffect } from "react";
+import { changeFilterDrivers, setDialogCosts } from "../../redux/deliveriesDrivers/reducers";
+import { getAllDrivers } from "../../redux/deliveriesDrivers/actions";
+import { DriverCostsDialog } from "../dialogs";
+import { resetStateCost } from "../../redux/costs/reducers";
 
 interface DeliveriesDriverTableProps{
   tenderCode: string,
@@ -40,7 +40,7 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
   }
 
 
-  return <Grid item container data-testid={'deliveryDriverTable'}>
+  return <Grid item container data-testid={'delivery-driver-table'}>
     <PaginationDataGrid <DeliveryDriver> data={(driversStore?.allData) ? driversStore?.allData : {} as Page<DeliveryDriver> }
                                          type={(!props.withActions) ? ModelType.DELIVERY_DRIVER : ModelType.DELIVERY_DRIVER_WITH_ACTIONS}
                                          loading={false}

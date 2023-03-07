@@ -68,20 +68,21 @@ function reducer(
           pagesKey: [],
         },
       },
-        pagination : {
-            limit : 10,
-            page: 0,
-            total: 0,
-            pagesKey: []
-        },
-          deliveries :{loading: false,
-          detail: undefined,
-          allData: {} as Page<DeliveryDriver>,
-          pagination: {
-          page:1,
-              tot:10,
-          } as FilterRequest
-        }
+      pagination : {
+          limit : 10,
+          page: 0,
+          total: 0,
+          pagesKey: []
+      },
+      deliveries : {
+        loading: false,
+        detail: undefined,
+        allData: {} as Page<DeliveryDriver>,
+        pagination: {
+        page:1,
+            tot:10,
+        } as FilterRequest
+      }
 
     });
     return (
