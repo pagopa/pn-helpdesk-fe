@@ -9,6 +9,7 @@ import { store } from "./redux/store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { it } from "date-fns/locale";
+import { UserContextProvider } from "./contexts/UserContextProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -20,10 +21,12 @@ root.render(
       <ThemeProvider theme={theme}>
         {/* for date formatting in italian style */}
         <LocalizationProvider locale={it} dateAdapter={AdapterDateFns}>
-          <CssBaseline />
-          <Suspense fallback="loading...">
-            <App />
-          </Suspense>
+          <UserContextProvider>
+            <CssBaseline />
+            <Suspense fallback="loading...">
+              <App />
+            </Suspense>
+          </UserContextProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </Provider>

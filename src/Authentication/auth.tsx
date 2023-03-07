@@ -2,6 +2,7 @@ import awsmobile from "./aws-exports";
 import Amplify, { Auth } from "aws-amplify";
 import { setStorage, resetStorage, deleteStorage } from "./storage";
 import { CognitoUser } from "@aws-amplify/auth";
+import { UserData } from "../model/user-permission";
 
 type Props = {
   /**
@@ -99,12 +100,14 @@ const changePassword = (user: any, newPassword: string): Promise<any> => {
     });
 };
 
-const getUser = async (): Promise<any> => {
+const getUser = async (): Promise<UserData> => {
   return await Auth.currentAuthenticatedUser()
     .then(async (user) => {
       return await Auth.userAttributes(user).then((userAttr) => {
-        return userAttr.find((attr) => attr.Name === "email")?.Value;
-      });
+        return {
+          email: userAttr.find((attr) => attr.Name === "email")?.Value,
+          permissions: [],
+      }});
     })
     .catch((error: any) => {
       throw error;
