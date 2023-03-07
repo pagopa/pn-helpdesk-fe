@@ -13,7 +13,7 @@ import {Tender} from "../../model";
 import {TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
 
 
-export default function StepTender(){
+export function StepTender(){
   const formTender = useAppSelector(state => state.tenderForm.formTender);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

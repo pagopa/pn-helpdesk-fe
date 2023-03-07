@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {DriverAndCostForm} from "../deliveriesDrivers/DriverAndCostForm";
 
 
-export default function StepFSU(){
+export function StepFSU(){
   const formState = useAppSelector(state => state.tenderForm);
   const dispatch = useAppDispatch();
 
