@@ -2,7 +2,7 @@ import { Backdrop, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { getUserData } from './Authentication/auth';
+import { useAuth } from './Authentication/auth';
 import { ConfirmationProvider } from './components/confirmationDialog/ConfirmationProvider';
 import SnackbarComponent from './components/snackbar/SnackbarComponent';
 import { useCurrentUser } from './hooks/useCurrentUser';
@@ -13,6 +13,7 @@ function App() {
   const openedSpinner = useSelector(opened);
 
   const { setCurrentUser } = useCurrentUser();
+  const { getUserData } = useAuth();
 
   const [hasCheckedUser, setHasCheckedUser] = useState(false);
 
@@ -43,7 +44,7 @@ function App() {
       setHasCheckedUser(true);
     };
     setUserIfLoggedIn();
-  }, [setCurrentUser]);
+  }, [setCurrentUser, getUserData]);
 
   // actual contents are rendered after the reload-with-logged-user check is completed only.
   return hasCheckedUser ? (

@@ -5,5 +5,8 @@ import { UserContext } from "../contexts/UserContext";
 export function useCurrentUser() {
   const userContext = useContext(UserContext);
 
-  return { currentUser: userContext.currentUser, setCurrentUser: userContext.setCurrentUser };
+  return { 
+    currentUser: userContext.currentUser, setCurrentUser: userContext.setCurrentUser,
+    clearCurrentUser: userContext.clearCurrentUser,
+  };
 }

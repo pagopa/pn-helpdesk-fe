@@ -16,7 +16,7 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { infoMessages } from "../../helpers/messagesConstants";
 import { Divider, Grid, Typography } from "@material-ui/core";
-import { logout } from "../../Authentication/auth";
+import { useAuth } from "../../Authentication/auth";
 import { useDispatch } from "react-redux";
 import * as spinnerActions from "../../redux/spinnerSlice";
 import NavigationMenu from "../navigationMenu/NavigationMenu";
@@ -37,6 +37,8 @@ const Header = () => {
   const email = useMemo(() => currentUser?.email || "no email", [currentUser]);
 
   const navigate = useNavigate();
+
+  const { logout } = useAuth();
 
   /**
    * dispatch redux actions

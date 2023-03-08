@@ -12,7 +12,7 @@ import AggregateDetailPage from "../pages/aggregates/AggregateDetailPage";
 import AssociationPage from "../pages/paAssociation/PaAssociationPage";
 import PaTransferListPage from "../pages/paTransfer/PaTransferListPage";
 import * as routes from "./routes";
-import { Permission } from "../model/user-permission";
+
 /**
  * Create the routing of the page
  */

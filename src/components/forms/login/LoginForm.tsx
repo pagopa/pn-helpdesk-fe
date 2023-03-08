@@ -12,12 +12,11 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FieldsProperties, FormField } from "../../formFields/FormFields";
-import { login } from "../../../Authentication/auth";
+import { useAuth } from "../../../Authentication/auth";
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import { useDispatch } from "react-redux";
 import * as spinnerActions from "../../../redux/spinnerSlice";
 import { MonogramPagoPACompany } from "@pagopa/mui-italia";
-import { useCurrentUser } from "../../../hooks/useCurrentUser";
 
 /**
  * default values of the form fields
@@ -32,6 +31,8 @@ const defaultFormValues: { [key: string]: string } = {
  * @component
  */
 const LoginForm = ({ setUser }: any) => {
+  const { login } = useAuth();
+
   /**
    * form fields
    */
@@ -65,10 +66,6 @@ const LoginForm = ({ setUser }: any) => {
    */
   const navigate = useNavigate();
 
-  // obtain the function which sets the user data 
-  // to pass it to the login function, so the login does set user data
-  const { setCurrentUser } = useCurrentUser();
-
   /**
    * function handling the form submitting
    * @param data the data from the form
@@ -76,7 +73,7 @@ const LoginForm = ({ setUser }: any) => {
   /* istanbul ignore next */
   const onSubmit = async (data: { [x: string]: string }) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
-    await login({ email: data.email, password: data.password, setCurrentUser })
+    await login({ email: data.email, password: data.password })
       .then((user: { [key: string]: any }) => {
         if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
           dispatch(spinnerActions.updateSpinnerOpened(false));
