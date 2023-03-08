@@ -30,7 +30,7 @@ function Router() {
       <Route
         path="/search"
         element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <SearchPage />
           </PrivateRoute>
         }
@@ -39,20 +39,20 @@ function Router() {
       <Route
         path={TENDERS_TABLE_ROUTE}
         element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <TenderPage />
           </PrivateRoute>
         }
       />
       <Route path={CREATE_TENDER_ROUTE}>
         <Route path=":tenderCode" element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <FormTenderPage />
           </PrivateRoute>}
         />
 
         <Route path="" element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <FormTenderPage />
           </PrivateRoute>}
         />
@@ -61,7 +61,7 @@ function Router() {
       <Route
         path={CREATE_TENDER_ROUTE}
         element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <FormTenderPage />
           </PrivateRoute>
         }
@@ -69,7 +69,7 @@ function Router() {
       <Route
         path="/monitoring"
         element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <MonitorPage />
           </PrivateRoute>
         }
@@ -77,7 +77,7 @@ function Router() {
       <Route
         path={routes.AGGREGATES}
         element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <AggregatesPage />
           </PrivateRoute>
         }
@@ -85,7 +85,7 @@ function Router() {
       <Route
         path={routes.UPDATE_AGGREGATE}
         element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <AggregateDetailPage />
           </PrivateRoute>
         }
@@ -93,7 +93,7 @@ function Router() {
       <Route
         path={routes.AGGREGATE}
         element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <AggregateDetailPage />
           </PrivateRoute>
         }
@@ -101,7 +101,7 @@ function Router() {
       <Route
         path={routes.ADD_PA}
         element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <AssociationPage />
           </PrivateRoute>
         }
@@ -109,7 +109,7 @@ function Router() {
       <Route
         path={routes.TRANSFER_PA}
         element={
-          <PrivateRoute roles={[Permission.API_KEY_READ]}>
+          <PrivateRoute roles={[]}>
             <PaTransferListPage />
           </PrivateRoute>
         }
@@ -119,7 +119,7 @@ function Router() {
         <Route
             path={TENDER_DETAIL_ROUTE}
             element={
-                <PrivateRoute roles={[Permission.API_KEY_READ]}>
+                <PrivateRoute roles={[]}>
                     <TenderDetailPage />
                 </PrivateRoute>
             }
