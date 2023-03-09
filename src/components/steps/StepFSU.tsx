@@ -18,8 +18,18 @@ export function StepFSU(){
     }
 
     <Grid item container direction="row" justifyContent="space-between">
-      <Button onClick={() => dispatch(backStep())} variant={"outlined"}>Torna a FSU</Button>
-      <Button variant={"contained"} onClick={() => dispatch(goTenderDriversStep())} disabled={!(formState.formFsu?.taxId)} >Avanti</Button>
+      <Button onClick={() => dispatch(backStep())}
+              data-testid={"btn-back-fsu"}
+              variant={"outlined"}>
+        Torna ai dettagli gara
+      </Button>
+
+      <Button variant={"contained"}
+              data-testid={"btn-next-fsu"}
+              onClick={() => dispatch(goTenderDriversStep())}
+              disabled={!(formState.formFsu?.taxId)} >
+        Avanti
+      </Button>
     </Grid>
   </Stack>
 

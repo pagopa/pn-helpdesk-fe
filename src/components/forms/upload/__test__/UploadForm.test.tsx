@@ -1,5 +1,5 @@
 import {screen, render, fireEvent, act} from "@testing-library/react";
-import UploadBox from "../UploadForm";
+import {UploadBox} from "../UploadForm";
 import React from "react";
 import {UPLOAD_STATUS_ENUM} from "../../../../model";
 import * as reactRedux from "../../../../redux/hook";

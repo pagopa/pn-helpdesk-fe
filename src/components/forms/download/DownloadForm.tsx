@@ -16,7 +16,7 @@ interface DownloadBoxProps {
   tenderCode ?: string
 }
 
-export default function DownloadBox(props: DownloadBoxProps) {
+export function DownloadBox(props: DownloadBoxProps) {
   const downloadState = useAppSelector(state => state.uploadAndDownload);
   const dispatch = useAppDispatch();
 
@@ -109,4 +109,4 @@ export default function DownloadBox(props: DownloadBoxProps) {
       </Grid>
     </Card>
   );
-};
+}

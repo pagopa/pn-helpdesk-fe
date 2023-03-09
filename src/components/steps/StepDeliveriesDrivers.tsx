@@ -20,8 +20,6 @@ export function StepDeliveriesDrivers(){
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log("Recupero StepDeliveries")
-    console.log(driversStore.detail);
     if (!formState.formTender?.code) {
       dispatch(changeKey({key: 0}))
     }

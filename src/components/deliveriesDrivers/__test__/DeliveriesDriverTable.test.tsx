@@ -1,7 +1,6 @@
 import { DeliveriesDriverTable } from "../DeliveriesDriverTable";
 import * as reactRedux from "../../../redux/hook";
-import configureStore from "redux-mock-store";
-import { act, cleanup, fireEvent, screen } from "@testing-library/react";
+import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import { DeliveryDriver, FilterRequest, Page } from "../../../model";
 import { reducer } from "../../../mocks/mockReducer";
 import React from "react";
@@ -23,31 +22,28 @@ const driversStore = {
   } as FilterRequest,
   dialogCost: undefined,
 };
-describe(DeliveriesDriverTable, () => {
+describe("DeliveriesDriverTableTest", () => {
 
-  const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
+  const useSelectorSpy = jest.spyOn(reactRedux, 'useAppSelector');
+  const useDispatchSpy = jest.spyOn(reactRedux, 'useAppDispatch');
+  const dispatchMockFn = jest.fn()
 
-  const mockingStore  = (state:any) => {
-    useSelectorMock.mockReturnValue(state);
-    const mockStore = configureStore();
-    let updatedStore = mockStore(state);
-    mockingDispatch(updatedStore);
-  }
-  const mockingDispatch = (updatedStore:any) => {
-    const mockDispatch = jest.fn();
-    useDispatchMock.mockReturnValue(mockDispatch);
-    updatedStore.dispatch = mockDispatch;
+  const changeStore = (state: any) => {
+    const reduxStore = {
+      deliveries: state
+    }
+    useSelectorSpy.mockImplementation((s: any) => s(reduxStore));
   }
 
   beforeEach(() => {
-    useSelectorMock.mockClear()
-    useDispatchMock.mockClear()
-    mockingStore(driversStore);
+    useDispatchSpy.mockReturnValue(dispatchMockFn);
+    changeStore(driversStore);
   });
 
   afterEach(() => {
     cleanup()
+    useSelectorSpy.mockClear()
+    useDispatchSpy.mockClear()
   });
 
   it("whenDeliveryDriverIsRecovered", async () => {
@@ -59,7 +55,7 @@ describe(DeliveriesDriverTable, () => {
   it("whenDeliveryDriverIsNotRecovered", async () => {
     const local = {...driversStore, allData: undefined }
     delete local.allData;
-    mockingStore(local);
+    changeStore(local);
     reducer(<DeliveriesDriverTable tenderCode={"12345"} onlyFsu={true} withActions={true}/>)
     const grid = await screen.findByRole('grid');
     expect(grid.getAttribute("aria-rowcount")).toEqual("1");
@@ -85,29 +81,67 @@ describe(DeliveriesDriverTable, () => {
         tenderCode: "12345"
       }
     }
-    mockingStore(local);
+    changeStore(local)
     reducer(<DeliveriesDriverTable tenderCode={"12345"} onlyFsu={true} withActions={true}/>)
-    // const dd = await screen.findByTestId('deliveryDriverTable');
-    // eslint-disable-next-line testing-library/no-debugging-utils
-    // screen.debug(dd);
 
     const dialog = await screen.findByTestId('driver-cost-dialog');
-    fireEvent.click(dialog);
-    const buttonPreviousPage = screen.getByRole("button", {name: "Go to previous page"});
-    fireEvent.click(buttonPreviousPage);
+    expect(dialog).toBeInTheDocument()
 
-    // eslint-disable-next-line testing-library/no-debugging-utils
-    // screen.debug(buttons);
-    const buttonNextPage = screen.getByRole("button", {name: "Go to next page"});
-    fireEvent.click(buttonNextPage);
+    // @ts-ignore
+    fireEvent.click(dialog["firstChild"])
 
 
-
-    // await waitFor(async() => {
-    //   await expect(navigateMock).toBeCalledTimes(1);
-    //   expect(navigateMock).toBeCalledWith(TENDERS_TABLE_ROUTE);
-    // })
-    // eslint-disable-next-line testing-library/no-debugging-utils
-    // screen.debug(dialog);
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act( async  () => {
+      await expect(dispatchMockFn).toBeCalledWith({
+        payload: undefined,
+        type: "deliveriesDriverSlice/setDialogCosts"
+      })
+    })
   })
+
+  it("whenChangedPageSize", async () => {
+
+    changeStore({...driversStore, allData: {}})
+    reducer( <DeliveriesDriverTable  tenderCode={"12345"} onlyFsu={true} withActions={true} />);
+
+
+    const button =  screen.getByRole('button', {
+      name: /10/i
+    })
+
+    fireEvent.mouseDown(button);
+
+
+
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await act( async ()=> {
+      const role = screen.queryByRole("listbox");
+      expect(role).toBeInTheDocument();
+      const options = screen.getAllByRole("option");
+      expect(options[1]).toBeInTheDocument();
+      expect(options[1].textContent).toEqual("25");
+      options[1].click()
+      await waitFor(async ()=> {
+        expect(dispatchMockFn).toBeCalledWith({
+          payload: {
+            ...driversStore.pagination,
+            page: 1,
+            tot: 25
+          },
+          type: "deliveriesDriverSlice/changeFilterDrivers"
+        })
+      })
+    })
+
+  });
+
 })
+
+jest.mock("../CostsTable",
+  () => ({
+    CostsTable: () => {
+      // @ts-ignore
+      return <mock-table data-testid="cost-table-mock"/>;
+    },
+  }));

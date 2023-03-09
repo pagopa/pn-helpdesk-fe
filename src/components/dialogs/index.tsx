@@ -17,11 +17,17 @@ interface DriverCostsDialogProps extends DialogBaseProps {
 
 export function DriverCostsDialog(props:DriverCostsDialogProps){
   return <>
-    <Dialog open={props.open} onClose={props.onClickNegative} fullWidth maxWidth={"lg"}
+    <Dialog open={props.open}
+            onClose={props.onClickNegative}
+            fullWidth
+            maxWidth={"lg"}
             data-testid={'driver-cost-dialog'}>
       <DialogTitle>Costi del recapitista</DialogTitle>
       <DialogContent>
-        <CostsTable key={props.tenderCode+props.driverCode} tenderCode={props.tenderCode} driverCode={props.driverCode} withActions={false}/>
+        <CostsTable key={props.tenderCode+props.driverCode}
+                    tenderCode={props.tenderCode}
+                    driverCode={props.driverCode}
+                    withActions={false}/>
       </DialogContent>
     </Dialog>
   </>

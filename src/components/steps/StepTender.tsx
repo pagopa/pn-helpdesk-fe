@@ -52,7 +52,6 @@ export function StepTender(){
     }
   }
 
-
   const handleUpload = () => {
     dispatch(goUploadStep());
   }
@@ -104,7 +103,12 @@ const ButtonCancel = () => {
 
 
   return <>
-    <Button onClick={() => setOpen(true)} variant={"outlined"} startIcon={<Reply/>}>Annulla</Button>
+    <Button onClick={() => setOpen(true)}
+            variant={"outlined"}
+            data-testid={"btn-back-tenders"}
+            startIcon={<Reply/>}>
+      Annulla
+    </Button>
     <AlertDialog title={"Vuoi tornare alle gare ?"}
                  message={"Confermando tornerai alla pagina di tutte le gare. Vuoi continuare"}
                  open={open}

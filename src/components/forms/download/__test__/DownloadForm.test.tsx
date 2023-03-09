@@ -4,7 +4,7 @@ import * as reactRedux from "../../../../redux/hook";
 import configureStore from "redux-mock-store";
 import {UPLOAD_STATUS_ENUM} from "../../../../model";
 import {fireEvent, render, screen, act} from "@testing-library/react";
-import DownloadBox from "../DownloadForm";
+import {DownloadBox} from "../DownloadForm";
 import * as  utils from "../../../../helpers/utils";
 
 

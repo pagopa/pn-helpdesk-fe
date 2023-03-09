@@ -11,7 +11,7 @@ import {UPLOAD_STATUS_ENUM} from "../../../model";
 
 
 
-export default function UploadBox() {
+export function UploadBox() {
   const [file, setFile] = useState<File|undefined>(undefined);
   const uploadState = useAppSelector(state => state.uploadAndDownload);
   const dispatch = useAppDispatch();
