@@ -45,7 +45,11 @@ export function StepDeliveriesDrivers(){
                        driverCode={driversStore.detail?.taxId}/>
 
       <Grid item container direction="row" justifyContent="space-between">
-        <Button onClick={handleBackOnDrivers} variant={"outlined"}>Torna ai recapitisti</Button>
+        <Button onClick={handleBackOnDrivers}
+                data-testid={"btn-back-on-drivers"}
+                variant={"outlined"}>
+          Torna ai recapitisti
+        </Button>
       </Grid>
     </Stack>
   }
@@ -69,6 +73,7 @@ export function StepDeliveriesDrivers(){
         </Grid>
         <Grid item>
           <Button variant={"outlined"}
+                  data-testid={"btn-add-new-driver"}
                   onClick={() => dispatch(setDetailDriver({} as DeliveryDriver ))}
                   startIcon={<Add />}>
             Aggiungi
@@ -82,8 +87,11 @@ export function StepDeliveriesDrivers(){
     </Card>
 
     <Grid item container direction="row" justifyContent="space-between">
-      <Button onClick={() => dispatch(goFSUStep())} variant={"outlined"}>Torna a FSU</Button>
+      <Button onClick={() => dispatch(goFSUStep())}
+              data-testid={"btn-back-fsu"}
+              variant={"outlined"}>Torna a FSU</Button>
       <Button variant={"contained"}
+              data-testid={"btn-next"}
               onClick={() => dispatch(goFinalStep())}
               type={"submit"} >
         Avanti
