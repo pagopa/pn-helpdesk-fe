@@ -21,7 +21,7 @@ interface CostFormProps {
   driverCode: string
   cost ?: Cost,
   onSave : () => void,
-  onCancel: () => void
+  onCancel ?: () => void
 }
 
 export default function CostsForm(props:CostFormProps) {
@@ -132,7 +132,7 @@ export default function CostsForm(props:CostFormProps) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onCancel}>Annulla</Button>
+        <Button onClick={props?.onCancel}>Annulla</Button>
         <LoadingButton loading={submitting} autoFocus onClick={handleSubmit(onSubmit)}>
           Salva
         </LoadingButton>

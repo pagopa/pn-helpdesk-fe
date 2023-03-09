@@ -1,33 +1,15 @@
 import { DriverAndCostForm } from "../DriverAndCostForm";
 import * as reactRedux from "../../../redux/hook";
-import configureStore from "redux-mock-store";
-import { cleanup, screen } from "@testing-library/react";
-import { DeliveryDriver, FilterRequest, Page } from "../../../model";
+import { cleanup, screen, act } from "@testing-library/react";
 import { reducer } from "../../../mocks/mockReducer";
 import React from "react";
-import { DriverCostsDialog } from "../../dialogs/index";
 
-const driversStore = {
-  loading: false,
-  detail: { tenderCode: "12345", denomination: "denomination", businessName: "businessName", registeredOffice: "registeredOffice", pec: "pec@pec.it", fiscalCode: "fiscalCode", taxId: "0987654321", phoneNumber: "0123456", uniqueCode: "q1w2e3r4t5", fsu: false },
-  allData: {
-    page: 1,
-    size: 10,
-    total: 1,
-    content: Array<DeliveryDriver>(
-      { tenderCode: "12345", denomination: "denomination", businessName: "businessName", registeredOffice: "registeredOffice", pec: "pec@pec.it", fiscalCode: "fiscalCode", taxId: "0987654321", phoneNumber: "0123456", uniqueCode: "q1w2e3r4t5", fsu: false } )
-  } as Page<DeliveryDriver>,
-  pagination: {
-    page:1,
-    tot:10,
-    fsu: undefined
-  } as FilterRequest,
-  dialogCost: undefined,
-};
 
-const costSelected = {
-    type: "NATIONAL", nationalProductType: "AR", internationalProductType: "AR", price: 123, priceAdditional: 456, cap: ["01234", "56789"], zone: "ZONE_1"
-};
+const driverDetail = { tenderCode: "12345", denomination: "denomination", businessName: "businessName", registeredOffice: "registeredOffice", pec: "pec@pec.it", fiscalCode: "fiscalCode", taxId: "0987654321", phoneNumber: "0123456", uniqueCode: "q1w2e3r4t5", fsu: false }
+
+const costSelected = {};
+
+
 
 jest.mock("../../../components/forms/deliveryDriver/DeliveryDriverForm", () => ({
   DeliveryDriverForm: () => {
@@ -36,61 +18,88 @@ jest.mock("../../../components/forms/deliveryDriver/DeliveryDriverForm", () => (
       },
   }));
 
-jest.mock("../../../components/dialogs/index", () => ({
-  index: () => {
+jest.mock("../CostsTable", () => ({
+  CostsTable: () => {
     // @ts-ignore
-    return <mock-table data-testid="driver-costs-dialog-mock"/>;
+    return <mock-table data-testid="driver-costs-table-mock"/>;
   },
 }));
 
 describe(DriverAndCostForm, () => {
 
-  const useSelectorMockDriver = jest.spyOn(reactRedux, 'useAppSelector');
-  const useSelectorMockCost = jest.spyOn(reactRedux, 'useAppSelector');
+  const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
   const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
-  const useEffectMock = jest.spyOn(React, "useEffect").mockImplementation(() => jest.fn());
-  const useCallbackMock = jest.spyOn(React, "useCallback").mockImplementation(() => jest.fn());
+  const mockDispatch = jest.fn();
 
-  const mockingStoreDriver = (state:any) => {
-    useSelectorMockDriver.mockReturnValueOnce(state);
-    const mockStore = configureStore();
-    let updatedStore = mockStore(state);
-    mockingDispatch(updatedStore);
-  }
-  const mockingStoreCost = (state:any) => {
-    useSelectorMockCost.mockReturnValueOnce(state);
-    const mockStore = configureStore();
-    let updatedStore = mockStore(state);
-    mockingDispatch(updatedStore);
-  }
-  const mockingDispatch = (updatedStore:any) => {
-    const mockDispatch = jest.fn();
-    useDispatchMock.mockReturnValue(mockDispatch);
-    updatedStore.dispatch = mockDispatch;
+  const mockingStoreDriver = (deliveries:any = { }, costStore = costSelected) => {
+    const reduxStore = {
+      deliveries: {
+        detail: deliveries,
+        dialogCost: undefined,
+      },
+      costs:{
+        selectedCost: costStore
+      }
+    } as any
+
+    useSelectorMock.mockImplementation((selector) => selector(reduxStore))
+    //useSelectorMock.mockReturnValue(state)
   }
 
   beforeEach(() => {
-    useSelectorMockDriver.mockClear()
-    useSelectorMockCost.mockClear()
+    useSelectorMock.mockClear()
     useDispatchMock.mockClear()
-    mockingStoreDriver(driversStore);
-    mockingStoreCost(costSelected);
+
+    useDispatchMock.mockReturnValue(mockDispatch);
+    mockingStoreDriver();
   });
 
   afterEach(() => {
     cleanup()
   });
 
+
+  it("whenIsCreatedFSU", async () => {
+    reducer(<DriverAndCostForm tenderCode={"1234"} fsu={true}/>)
+    expect(screen.getByTestId("delivery-driver-form-mock")).toBeInTheDocument()
+    await act(async () => {
+      expect(mockDispatch).toBeCalledTimes(1)
+      //expect(mockDispatch).toBeCalledWith(expect(Function))
+    })
+  })
+
+  it("whenIsCreatedDriver", async () => {
+    reducer(<DriverAndCostForm tenderCode={"1234"} fsu={false}/>)
+    expect(screen.getByTestId("delivery-driver-form-mock")).toBeInTheDocument()
+  })
+
+
+  it("whenIsEditingFSU", async () => {
+    mockingStoreDriver(driverDetail)
+    reducer(<DriverAndCostForm tenderCode={"1234"} fsu={true}/>)
+    expect(screen.getByTestId("delivery-driver-form-mock")).toBeInTheDocument()
+    expect(screen.getByTestId("driver-costs-table-mock")).toBeInTheDocument()
+    await act(async () => {
+      expect(mockDispatch).toBeCalledTimes(2)
+      //expect(mockDispatch).toBeCalledWith(expect(Function))
+    })
+  })
+
+
+
+
   it("whenDeliveryDriverAndCostAreRecovered", async () => {
+    mockingStoreDriver(driverDetail)
     reducer(<DriverAndCostForm tenderCode={"12345"} driverCode={"0987654321"} fsu={true} />);
     // eslint-disable-next-line testing-library/no-debugging-utils
-    screen.debug()
     const driverMockTable = screen.getByTestId("delivery-driver-form-mock")
     expect(driverMockTable).toBeInTheDocument()
 
-    const dialogMockTable = screen.getByTestId("driver-costs-dialog-mock")
+    const dialogMockTable = screen.getByTestId("driver-costs-table-mock")
     expect(dialogMockTable).toBeInTheDocument()
   })
+
+
 
   it("whenDeliveryDriverAndCostAreRecovered2", async () => {
     reducer(<DriverAndCostForm tenderCode={"12345"} fsu={false} />);

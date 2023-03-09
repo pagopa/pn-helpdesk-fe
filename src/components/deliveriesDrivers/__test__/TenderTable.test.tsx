@@ -1,6 +1,6 @@
-import { TenderTable } from "../../../components/deliveriesDrivers/TenderTable";
+import { TenderTable } from "../TenderTable";
 import { reducer } from "../../../mocks/mockReducer";
-import { act, cleanup, fireEvent, screen } from "@testing-library/react";
+import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import * as reactRedux from "../../../redux/hook";
 import configureStore from "redux-mock-store";
 import React from "react";
@@ -20,7 +20,7 @@ const tenderStore = {
   selected: {},
   pagination: {
     page:1,
-    tot:20,
+    tot:10,
     force: false
   }
 };
@@ -29,6 +29,7 @@ describe(TenderTable, () => {
 
   const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
   const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
+  const mockDispatch = jest.fn();
 
   const mockingStore  = (state:any) => {
     useSelectorMock.mockReturnValue(state);
@@ -37,7 +38,7 @@ describe(TenderTable, () => {
     mockingDispatch(updatedStore);
   }
   const mockingDispatch = (updatedStore:any) => {
-    const mockDispatch = jest.fn();
+
     useDispatchMock.mockReturnValue(mockDispatch);
     updatedStore.dispatch = mockDispatch;
   }
@@ -61,16 +62,43 @@ describe(TenderTable, () => {
   });
 
   it("whenChangedPageSize", async () => {
+
+    mockingStore({...tenderStore, allData: {}})
     reducer( <TenderTable />);
     // eslint-disable-next-line testing-library/no-debugging-utils
-    screen.debug()
+
+    //expect(screen.getByText("No rows")).toBeInTheDocument()
 
     // const grid = await screen.findByRole('grid');
-    const button =  screen.getByRole('button', {
-      name: /Rows per page: 10/i
+    const buttons =  screen.getAllByRole('button')
+
+    fireEvent.mouseDown(buttons[0]);
+
+
+
+    await act( async ()=> {
+      const role = screen.queryByRole("listbox");
+      expect(role).toBeInTheDocument();
+      screen.debug(role);
+      const options = screen.getAllByRole("option");
+      expect(options[1]).toBeInTheDocument();
+      expect(options[1].textContent).toEqual("25");
+      options[1].click()
+      await waitFor(async ()=> {
+        await expect(mockDispatch).toBeCalledTimes(2)
+        expect(mockDispatch).toBeCalledWith({
+          payload: {
+            ...tenderStore.pagination,
+            page: 1,
+            tot: 25
+          },
+          type: "tenderSlice/changeFilterTenders"
+        })
+      })
     })
-    expect(button).toBeInTheDocument();
-    fireEvent.click(button);
+
+
+
     // fireEvent.change(inputBox, { target: { value: 20 } })
 
   });

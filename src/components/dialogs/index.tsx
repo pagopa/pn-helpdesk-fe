@@ -6,7 +6,7 @@ import {CostsTable} from "../deliveriesDrivers/CostsTable";
 
 interface DialogBaseProps {
   open: boolean,
-  onClickNegative : () => void,
+  onClickNegative ?: () => void,
   onClickPositive : () => void,
 }
 
