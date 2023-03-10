@@ -12,7 +12,7 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { FieldsProperties, FormField } from "../../formFields/FormFields";
-import { login } from "../../../Authentication/auth";
+import { useAuth } from "../../../Authentication/auth";
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import { useDispatch } from "react-redux";
 import * as spinnerActions from "../../../redux/spinnerSlice";
@@ -31,6 +31,8 @@ const defaultFormValues: { [key: string]: string } = {
  * @component
  */
 const LoginForm = ({ setUser }: any) => {
+  const { login } = useAuth();
+
   /**
    * form fields
    */

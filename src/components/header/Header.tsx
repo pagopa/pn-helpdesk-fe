@@ -12,15 +12,16 @@ import {
   DialogTitle,
   Tooltip,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { infoMessages } from "../../helpers/messagesConstants";
 import { Divider, Grid, Typography } from "@material-ui/core";
-import { logout, getUser } from "../../Authentication/auth";
+import { useAuth } from "../../Authentication/auth";
 import { useDispatch } from "react-redux";
 import * as spinnerActions from "../../redux/spinnerSlice";
 import NavigationMenu from "../navigationMenu/NavigationMenu";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 /**
  * General component presenting the header of the app.
@@ -31,23 +32,18 @@ const Header = () => {
    */
   const [open, setOpen] = useState(false);
 
-  const [email, setEmail] = useState("no email");
+  const { currentUser } = useCurrentUser();
+  
+  const email = useMemo(() => currentUser?.email || "no email", [currentUser]);
 
   const navigate = useNavigate();
+
+  const { logout } = useAuth();
 
   /**
    * dispatch redux actions
    */
   const dispatch = useDispatch();
-
-  /**
-   * get the user email
-   */
-  useEffect(() => {
-    getUser().then((email) => {
-      setEmail(email);
-    });
-  }, []);
 
   /**
    * Function closing the confirmation modal

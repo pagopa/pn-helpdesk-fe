@@ -3,7 +3,7 @@ import Header from "../../components/header/Header";
 
 import Footer from "../../components/footer/Footer";
 import { useEffect } from "react";
-import { logout, refreshToken } from "../../Authentication/auth";
+import { useAuth } from "../../Authentication/auth";
 import { useNavigate } from "react-router-dom";
 import {Grid} from "@mui/material";
 
@@ -13,6 +13,7 @@ import {Grid} from "@mui/material";
  */
 const MainLayout = ({ children }: any) => {
   const navigate = useNavigate();
+  const { logout, refreshToken } = useAuth();
 
   useEffect(() => {
     const idTokenInterval = setInterval(async () => {
