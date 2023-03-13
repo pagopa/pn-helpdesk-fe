@@ -12,10 +12,6 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     hidden: false,
     size: 0.5,
     rules: {
-      pattern: {
-        value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
-        message: errorMessages.INCORRECT,
-      },
       required: errorMessages.REQUIRED,
     },
     required: true,

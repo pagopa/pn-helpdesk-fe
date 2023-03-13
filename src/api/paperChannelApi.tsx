@@ -47,17 +47,15 @@ export const createTender = async (body:Tender) => {
   }
 }
 
-export const createDeliveryDriver = async (tenderCode:string, body:DeliveryDriver,
-                                     callbackSuccess:(data:DeliveryDriver)=>void,
-                                     callbackError:(e:any)=>void) => {
+export const createDeliveryDriver = async (tenderCode:string, body:DeliveryDriver) => {
   try {
     const request = {
       ...body,
     } as DeliveryDriverDTO
-    await apiPaperChannel().createUpdateDriver(tenderCode, request);
-    callbackSuccess(body);
+    const response = await apiPaperChannel().createUpdateDriver(tenderCode, request);
+    return response.data
   } catch (e){
-    return callbackError(e);
+    throw e
   }
 
 }
