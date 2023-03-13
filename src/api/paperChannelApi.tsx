@@ -32,9 +32,7 @@ const apiCaps = () => {
 }
 
 
-export const createTender = async (body:Tender,
-                                           callbackSuccess:(data:Tender)=>void,
-                                           callbackError:(e:any)=>void) => {
+export const createTender = async (body:Tender) => {
   try {
     const request = {
       name: body.name,
@@ -43,11 +41,9 @@ export const createTender = async (body:Tender,
       code: body.code,
     } as TenderCreateRequestDTO
     const response = await apiPaperChannel().createUpdateTender(request);
-    callbackSuccess( {
-      ...response.data.tender
-    } as Tender);
+    return response.data.tender
   } catch (e){
-    return callbackError(e);
+    throw e;
   }
 }
 

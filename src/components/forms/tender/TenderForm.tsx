@@ -20,7 +20,7 @@ import {useAppDispatch} from "../../../redux/hook";
 
 const initialValue = (data?:Tender):{ [x: string]: any } => (
   {
-    name: data?.name,
+    name: data?.name || "",
     dateInterval:[(data?.startDate) ? data?.startDate : format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.ss'Z'"),
                   (data?.endDate) ? data?.endDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.ss'Z'")]
   }
@@ -46,22 +46,27 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
     reValidateMode: "onSubmit",
   });
 
-  const onSubmit = async (data: { [x: string]: any }) => {
-    setLoading(true);
-    await createTender(tenderMap(data), handleSuccessSaved, handelErrorSaved);
+  const onSubmit = (data: { [x: string]: any }) => {
+    _creationTender(tenderMap(data))
   }
 
-  const handleSuccessSaved = (value:Tender) => {
-    setLoading(false);
-    props.onChanged?.(value);
-    dispatch(snackbarActions.updateSnackbacrOpened(true));
-    dispatch(snackbarActions.updateStatusCode(200));
-    const updateString = (props.initialValue) ? "aggiornata" : "salvata"
-    dispatch(snackbarActions.updateMessage("Gara " + updateString + " correttamente"));
-  }
+  const _creationTender = async (tender:Tender) => {
+    const updateString = (props.initialValue?.code) ? "aggiornata" : "salvata"
+    try {
+      setLoading(true)
+      const response = await createTender(tender);
+      setLoading(false);
+      props.onChanged?.(response);
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(200));
+      dispatch(snackbarActions.updateMessage("Gara " + updateString + " correttamente"));
+    } catch(e){
+      setLoading(false)
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(400));
+      dispatch(snackbarActions.updateMessage("Gara non " + updateString + " correttamente"));
 
-  const handelErrorSaved = (e:any) => {
-    setLoading(false);
+    }
   }
 
   const tenderMap = (data: { [x: string]: any }) => {
@@ -131,7 +136,12 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
 
         </Stack>
         <Grid item container direction="row" justifyContent={"right"}>
-          <LoadingButton loading={loading} variant={"contained"} type={"submit"}>Salva</LoadingButton>
+          <LoadingButton data-testid={"btn-save-tender"}
+                         loading={loading}
+                         variant={"contained"}
+                         type={"submit"}>
+            Salva
+          </LoadingButton>
         </Grid>
       </Card>
     </form>
