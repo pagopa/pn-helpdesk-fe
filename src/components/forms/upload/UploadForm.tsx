@@ -5,6 +5,7 @@ import {useAppDispatch, useAppSelector} from "../../../redux/hook";
 import {getPresignedUrl, uploadFile} from "../../../redux/uploading/actions";
 import {resetStateUpload} from "../../../redux/uploading/reducers";
 import {UPLOAD_STATUS_ENUM} from "../../../model";
+import {calcSha256String} from "../../../helpers/utils";
 
 
 
@@ -12,12 +13,13 @@ import {UPLOAD_STATUS_ENUM} from "../../../model";
 
 
 export function UploadBox() {
-  const [file, setFile] = useState<File|undefined>(undefined);
+  const [file, setFile] = useState<{ file:File, sha:string }|undefined>(undefined);
   const uploadState = useAppSelector(state => state.uploadAndDownload);
   const dispatch = useAppDispatch();
 
-  const handleSelect = (file: File) => {
-    setFile(file);
+  const handleSelect = async (file: File) => {
+    const sha = await calcSha256String(file);
+    setFile({file: file, sha: sha.hashBase64});
     dispatch(resetStateUpload())
   };
 
@@ -30,7 +32,8 @@ export function UploadBox() {
     if (file && uploadState.upload.presignedUrl && uploadState.upload.status === UPLOAD_STATUS_ENUM.RETRIEVED_PRESIGNED_URL){
       dispatch(uploadFile({
         url:uploadState.upload.presignedUrl,
-        file: file
+        file: file.file,
+        sha: file.sha
       }))
     } else if (file && uploadState.upload.status === UPLOAD_STATUS_ENUM.WAITING_FILE){
       dispatch(getPresignedUrl({}));
@@ -89,10 +92,11 @@ export function UploadBox() {
               label="Documento (richiesto)"
               loading={uploadState.upload.loading}
               error={!!(uploadState.upload.error)}
-              value={(file) ? file : null}
+              value={(file) ? file.file : null}
               accept={["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"]}
               onFileSelected={handleSelect}
               onFileRemoved={handleRemove}
+
               dropzoneLabel="Trascinare e rilasciare un file .xlsx o fare click per selezionarne uno"
               rejectedLabel="Tipo di file non supportato"
             />

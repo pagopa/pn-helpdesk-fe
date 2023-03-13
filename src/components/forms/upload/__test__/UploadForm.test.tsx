@@ -1,9 +1,8 @@
-import {screen, render, fireEvent, act} from "@testing-library/react";
+import {screen, render, fireEvent, act, waitFor} from "@testing-library/react";
 import {UploadBox} from "../UploadForm";
 import React from "react";
 import {UPLOAD_STATUS_ENUM} from "../../../../model";
 import * as reactRedux from "../../../../redux/hook";
-import configureStore from "redux-mock-store";
 import * as input from "@pagopa/mui-italia/dist/components/SingleFileInput/utils";
 
 
@@ -18,18 +17,17 @@ const initialState = {
   }
 }
 
-describe("UploadBox Test", () => {
+describe("UploadBoxTest", () => {
   const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
   const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
   const mockDispatch = jest.fn();
 
   const mockingStore  = (state:any) => {
-    useSelectorMock.mockReturnValue(state);
-    const mockStore = configureStore();
-    let updatedStore = mockStore(state);
-
+    const reduxStore = {
+      uploadAndDownload: state
+    } as any
+    useSelectorMock.mockImplementation((selector:any) => selector(reduxStore));
     useDispatchMock.mockReturnValue(mockDispatch);
-    updatedStore.dispatch = mockDispatch;
   }
 
   beforeEach(() => {
@@ -62,7 +60,7 @@ describe("UploadBox Test", () => {
       },
     })
 
-    await act(async () => {
+    await waitFor(async () => {
       await expect(mockDispatch).toBeCalledTimes(2);
       await expect(mockDispatch).toBeCalledWith({
         payload: undefined,
@@ -91,11 +89,6 @@ describe("UploadBox Test", () => {
   })
 
   it("whenUploadFile", async () => {
-    const uploadState = {
-      ...initialState.upload,
-      presignedUrl: "https://....",
-      status: UPLOAD_STATUS_ENUM.RETRIEVED_PRESIGNED_URL
-    }
     render(<UploadBox/>);
 
     const buttonLoadFromPc = screen.getByTestId("loadFromPc")
@@ -117,7 +110,7 @@ describe("UploadBox Test", () => {
       },
     })
 
-    await act(async () => {
+    await waitFor(async () => {
       await expect(mockDispatch).toBeCalledTimes(2);
       await expect(mockDispatch).toBeCalledWith({
         payload: undefined,

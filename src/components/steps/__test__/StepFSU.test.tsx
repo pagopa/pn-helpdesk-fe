@@ -1,10 +1,9 @@
 import * as reactRedux from "../../../redux/hook";
-import React, {useState} from "react";
+import React from "react";
 import {act, fireEvent, screen} from "@testing-library/react";
 
 import {render} from "@testing-library/react";
 import {StepFSU} from "../StepFSU";
-import {CostDialog} from "../../dialogs";
 
 
 
@@ -25,7 +24,7 @@ const initialState = {
   }
 }
 
-describe("StepFSU test", () => {
+describe("StepFSUTest", () => {
   const mockDispatchFn = jest.fn()
   const spyUseSelector = jest.spyOn(reactRedux, "useAppSelector");
 
@@ -131,16 +130,6 @@ describe("StepFSU test", () => {
 
 })
 
-
-const CostDialogScenario = () => {
-  const [open, setOpen] = useState(true);
-  // @ts-ignore
-  return <CostDialog open={open}
-                     driverCode={"cccc"}
-                     tenderCode={"2222"} fsu={true}
-                     onClickPositive={()=>{}}
-                     onClickNegative={() => setOpen(false)}/>;
-}
 
 
 

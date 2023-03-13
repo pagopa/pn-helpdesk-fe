@@ -1,4 +1,4 @@
-import {cleanup, render, screen, act, fireEvent} from "@testing-library/react";
+import {cleanup, render, screen, act, fireEvent, waitFor} from "@testing-library/react";
 import React from "react";
 import { CapAutocompleteField } from "../CapAutocompleteField";
 import * as apis from "../../../api/paperChannelApi";
@@ -28,11 +28,11 @@ describe("Cap Autocomplete Test", () => {
     })
 
     expect(screen.getByTestId("caps-autocomplete")).toBeInTheDocument()
-    const buttonDropdown = screen.getByRole('button', {
-      title: /Open/i
-    })
-    expect(buttonDropdown).toBeInTheDocument()
-    fireEvent.click(buttonDropdown);
+    const [button] = screen.getAllByRole('button')
+    expect(button).toBeInTheDocument()
+
+    fireEvent.click(button);
+
     await act(async () => {
       await expect(screen.queryByText("99999")).not.toBeInTheDocument()
       responseDTO.content.map(cap => {
@@ -52,11 +52,9 @@ describe("Cap Autocomplete Test", () => {
     })
 
     expect(screen.getByTestId("caps-autocomplete")).toBeInTheDocument()
-    const buttonDropdown = screen.getByRole('button', {
-      title: /Open/i
-    })
-    expect(buttonDropdown).toBeInTheDocument()
-    fireEvent.click(buttonDropdown);
+    const [button] = screen.getAllByRole('button')
+    expect(button).toBeInTheDocument()
+    fireEvent.click(button);
     await act(async () => {
       await expect(screen.getByText("99999")).toBeInTheDocument()
       responseDTO.content.map(cap => {
@@ -70,20 +68,19 @@ describe("Cap Autocomplete Test", () => {
   it("whenInputChangeWithNewCap", async() => {
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await act (async ()=>{
-
       render(<CapAutocompleteField field={{...fieldsProps}}
                                    value={[]} required={true}
                                    error={false} onChange={()=>{}}/>)
     })
 
     expect(screen.getByTestId("caps-autocomplete")).toBeInTheDocument()
-    const inputBox = screen.getByRole('combobox', {
-      id: /caps-autocomplete/i
-    })
+    const [inputBox] = screen.getAllByRole('combobox')
     expect(inputBox).toBeInTheDocument()
 
-    await act ( async () => {
-      await userEvent.type(inputBox, '12345')
+    await userEvent.type(inputBox, '12345')
+
+    await waitFor( async () => {
+
       await expect(screen.getByText("12345")).toBeInTheDocument()
     });
   })
@@ -98,13 +95,10 @@ describe("Cap Autocomplete Test", () => {
     })
 
     expect(screen.getByTestId("caps-autocomplete")).toBeInTheDocument()
-    const inputBox = screen.getByRole('combobox', {
-      id: /caps-autocomplete/i
-    })
+    const [inputBox] = screen.getAllByRole('combobox')
     expect(inputBox).toBeInTheDocument()
-
-    await act ( async () => {
-      await userEvent.type(inputBox, '99999')
+    await userEvent.type(inputBox, '99999')
+    await waitFor( async () => {
       await expect(screen.queryByText("12345")).not.toBeInTheDocument()
     });
   })
