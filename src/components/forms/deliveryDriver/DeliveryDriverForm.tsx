@@ -26,7 +26,16 @@ interface PropsDeliveryBox{
 }
 
 export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
-  const fields = ["taxId", "businessName", "denomination", "registeredOffice", "fiscalCode", "pec", "phoneNumber", "uniqueCode"];
+  const fields = [
+    "taxId",
+    "businessName",
+    "denomination",
+    "registeredOffice",
+    "fiscalCode",
+    "pec",
+    "phoneNumber",
+    "uniqueCode"
+  ];
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -58,7 +67,7 @@ export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
     dispatch(snackbarActions.updateMessage("Recapitista " + updateString + " correttamente"));
   }
 
-  const handleError = (e:any) => {
+  const handleError = (e: any) => {
     let message = "Errore durante il salvataggio del recapitista";
     if (e instanceof AxiosError){
       if (e.response?.data?.detail) {
