@@ -26,7 +26,7 @@ interface CostFormProps {
 
 export function CostsForm(props:CostFormProps) {
   const [fields, setFields] = useState<string[]>((props?.cost?.type) ? fieldsOfType[props?.cost?.type] : ["type"]);
-  const [typeOfCost, setTypeOfCost] = useState<String | undefined>( undefined);
+  const [typeOfCost, setTypeOfCost] = useState<string | undefined>( undefined);
   const [submitting, setSubmitting] = useState(false);
   const dispatch = useAppDispatch();
 
