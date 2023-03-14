@@ -51,7 +51,7 @@ export function DeliveryDriverForm(props:PropsDeliveryBox) {
   const _saveOrUpdate = async (driver:DeliveryDriver) => {
     try {
       setLoading(true);
-      const response = await createDeliveryDriver(props.tenderCode, driver);
+      await createDeliveryDriver(props.tenderCode, driver);
       setLoading(false)
       props.onChanged?.(driver);
       dispatch(snackbarActions.updateSnackbacrOpened(true));
@@ -85,7 +85,11 @@ export function DeliveryDriverForm(props:PropsDeliveryBox) {
           >
         <Grid container rowSpacing={2}>
           <Grid item>
-            <Typography variant="h5" component="div"> Nuovo FSU </Typography>
+            <Typography variant="h5" component="div">
+              {
+                (props.initialValue?.taxId) ? (props.fsu) ? "Modifica FSU" : "Modifica recapitista" : (props.fsu) ? "Nuovo FSU" : "Nuovo recapitista"
+              }
+            </Typography>
           </Grid>
           <Grid item container>
             <Grid item container spacing={1} alignItems="center">

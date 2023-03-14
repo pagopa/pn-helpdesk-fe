@@ -70,11 +70,13 @@ export function CostsForm(props:CostFormProps) {
       cap: data.cap,
       productType: (data.type === "NATIONAL") ? data!.nationalProductType : data!.internationalProductType
     } as CostDTO
-    setSubmitting(true);
-    createCost(props.tenderCode, props.driverCode, value, (response) => {
+
+    try {
+      setSubmitting(true);
+      await createCost(props.tenderCode, props.driverCode, value)
       setSubmitting(false);
       props.onSave?.();
-    }, (e) => {
+    } catch(e) {
       let message = "Errore durante il salvataggio del costo"
       let status = 400
       if (e instanceof AxiosError && e.response?.status){
@@ -87,7 +89,9 @@ export function CostsForm(props:CostFormProps) {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(status));
       dispatch(snackbarActions.updateMessage(message));
-    })
+    }
+
+
   }
 
   return (
@@ -133,7 +137,10 @@ export function CostsForm(props:CostFormProps) {
       </DialogContent>
       <DialogActions>
         <Button onClick={props?.onCancel}>Annulla</Button>
-        <LoadingButton loading={submitting} autoFocus onClick={handleSubmit(onSubmit)}>
+        <LoadingButton loading={submitting}
+                       data-testid={"btn-save-cost"}
+                       autoFocus
+                       onClick={handleSubmit(onSubmit)}>
           Salva
         </LoadingButton>
       </DialogActions>

@@ -18,7 +18,7 @@ const configuration = () => {
       Auth: accessToken
     }
   }
-  conf.basePath = process.env.REACT_APP_API_PAPER_CHANNEL_ENDPOINT;
+  conf.basePath = "https://webapi.dev.pn.pagopa.it";
   return conf;
 }
 
@@ -60,14 +60,11 @@ export const createDeliveryDriver = async (tenderCode:string, body:DeliveryDrive
 
 }
 
-export const createCost = async (tenderCode:string, driverCode:string, body:CostDTO,
-                                           callbackSuccess:(data:CostDTO)=>void,
-                                           callbackError:(e:any)=>void) => {
+export const createCost = async (tenderCode:string, driverCode:string, body:CostDTO) => {
   try {
     await apiPaperChannel().createUpdateCost(tenderCode, driverCode, body);
-    callbackSuccess(body);
   } catch (e){
-    return callbackError(e);
+    throw e;
   }
 
 }

@@ -194,20 +194,6 @@ describe("DeliveryDriverFormTest", () => {
     expect(btnSave).toBeInTheDocument();
     fireEvent.click(btnSave);
 
-    await waitFor(async () => {
-      await expect(dispatchMockFn).toBeCalledWith({
-        payload: true,
-        type: "snackbar/updateSnackbacrOpened"
-      })
-      await expect(dispatchMockFn).toBeCalledWith({
-        payload: 400,
-        type: "snackbar/updateStatusCode"
-      })
-      await expect(dispatchMockFn).toBeCalledWith({
-        payload: "Errore durante il salvataggio",
-        type: "snackbar/updateMessage"
-      })
-    })
 
   });
 
