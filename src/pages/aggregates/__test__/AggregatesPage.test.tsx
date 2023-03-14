@@ -1,4 +1,4 @@
-import { fireEvent, RenderResult, waitFor, screen } from '@testing-library/react';
+import { fireEvent, RenderResult, screen } from '@testing-library/react';
 import AggregatesPage from '../AggregatesPage';
 import { renderWithProviders } from "../../../mocks/mockReducer";
 import * as routes from '../../../navigation/router.const';
