@@ -45,9 +45,7 @@ export default function TenderPage({ email= "" }: any){
               </Button>
             </Grid>
             <Grid item container>
-              <div data-testid={"tenders-table"}>
-                <TenderTable/>
-              </div>
+              <TenderTable/>
             </Grid>
           </Card>
         </Grid>
