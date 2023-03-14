@@ -6,7 +6,7 @@ import { renderWithProviders } from "../../../mocks/mockReducer";
 import { ConfirmationProvider } from '../../confirmationDialog/ConfirmationProvider';
 import { formatDate } from '../../../helpers/formatter.utility';
 import * as router from 'react-router'
-import * as routes from '../../../navigation/routes';
+import * as routes from '../../../navigation/router.const';
 import { getAggregatesResponse } from '../../../api/apiRequestTypes';
 
 const navigate = jest.fn();

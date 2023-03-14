@@ -8,7 +8,7 @@ import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import CreateIcon from '@mui/icons-material/Create';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import apiRequests from "../../api/apiRequests";
-import * as routes from '../../navigation/routes';
+import * as routes from '../../navigation/router.const';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
 import { useDispatch } from 'react-redux';
 import * as snackbarActions from "../../redux/snackbarSlice";
@@ -58,7 +58,7 @@ const AggregateDetailPage = ({ email }: any) => {
                 dispatch(snackbarActions.updateSnackbacrOpened(true));
                 dispatch(snackbarActions.updateStatusCode("400"));
                 dispatch(snackbarActions.updateMessage(`Errore nel caricamento dei dati`));
-                navigate(routes.AGGREGATES);
+                navigate(routes.AGGREGATES_LIST);
             })
             .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
 
@@ -83,7 +83,7 @@ const AggregateDetailPage = ({ email }: any) => {
     const breadcrumbsLinks = [
         {
             linkLabel: 'Gestione Aggregazioni ApiKey',
-            linkRoute: routes.AGGREGATES
+            linkRoute: routes.AGGREGATES_LIST
         }
     ]
 

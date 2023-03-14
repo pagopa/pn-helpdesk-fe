@@ -14,7 +14,7 @@ import apiRequests from '../../api/apiRequests';
 import CustomPagination from "../Pagination/Pagination";
 import { calculatePages } from "../../helpers/pagination.utility";
 import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
-import * as routes from '../../navigation/routes';
+import * as routes from '../../navigation/router.const';
 import { FieldsProperties } from "../formFields/FormFields";
 import FilterTable from "../forms/filterTable/FilterTable";
 

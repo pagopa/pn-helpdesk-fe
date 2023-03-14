@@ -6,7 +6,8 @@ export function useCurrentUser() {
   const userContext = useContext(UserContext);
 
   return { 
-    currentUser: userContext.currentUser, setCurrentUser: userContext.setCurrentUser,
+    currentUser: userContext.currentUser,
+    setCurrentUser: userContext.setCurrentUser,
     clearCurrentUser: userContext.clearCurrentUser,
   };
 }

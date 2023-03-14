@@ -9,7 +9,7 @@ import * as snackbarActions from "../../../redux/snackbarSlice";
 import * as spinnerActions from "../../../redux/spinnerSlice";
 import apiRequests from "../../../api/apiRequests";
 import { createAggregateType, getAggregateResponse, UsagePlan } from "../../../api/apiRequestTypes";
-import * as routes from '../../../navigation/routes';
+import * as routes from '../../../navigation/router.const';
 
 type FormType = {
     [k: string]: any
@@ -136,7 +136,7 @@ const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
                     dispatch(snackbarActions.updateSnackbacrOpened(true));
                     dispatch(snackbarActions.updateStatusCode("200"));
                     dispatch(snackbarActions.updateMessage(`Aggregato eliminato con successo`));
-                    navigate(routes.AGGREGATES);
+                    navigate(routes.AGGREGATES_LIST);
                 })
                 .catch(err => {
                     dispatch(snackbarActions.updateSnackbacrOpened(true));

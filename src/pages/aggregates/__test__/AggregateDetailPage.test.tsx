@@ -12,7 +12,7 @@ import { ConfirmationProvider } from '../../../components/confirmationDialog/Con
 import { act } from 'react-test-renderer';
 import { renderWithProviders } from "../../../mocks/mockReducer";
 import * as router from 'react-router'
-import * as routes from '../../../navigation/routes';
+import * as routes from '../../../navigation/router.const';
 import { aggregate, usage_plan_list, pa_list } from '../../../api/mock_agg_response';
 
 const navigate = jest.fn();
@@ -102,6 +102,6 @@ describe("AggregateDetailPage FAILED_PROMISE", () => {
         jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate)
         await renderWithProviders(<ConfirmationProvider><AggregateDetailPage email="test@test.com" /></ConfirmationProvider>);
         await waitFor(() => expect(apiRequests.getUsagePlans).toHaveBeenCalled());
-        await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.AGGREGATES));
+        await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.AGGREGATES_LIST));
     })
 })

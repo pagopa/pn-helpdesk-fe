@@ -1,7 +1,7 @@
 import { fireEvent, RenderResult, waitFor, screen } from '@testing-library/react';
 import AggregatesPage from '../AggregatesPage';
 import { renderWithProviders } from "../../../mocks/mockReducer";
-import * as routes from '../../../navigation/routes';
+import * as routes from '../../../navigation/router.const';
 import * as router from 'react-router'
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
 

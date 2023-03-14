@@ -6,7 +6,7 @@ export enum Permission {
   LOG_DOWNTIME_WRITE = 'log-downtime-write',
   TENDER_READ = 'tender-read',
   TENDER_WRITE = 'tender-write',
-};
+}
 
 export interface UserData {
   email?: string;

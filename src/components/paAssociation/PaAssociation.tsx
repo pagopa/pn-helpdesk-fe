@@ -11,7 +11,7 @@ import CustomCard from '../customCard/CustomCard';
 import { CardActionType, CardHeaderType } from '../customCard/types';
 import BusinessIcon from '@mui/icons-material/Business';
 import useConfirmDialog from '../confirmationDialog/useConfirmDialog';
-import * as routes from '../../navigation/routes';
+import * as routes from '../../navigation/router.const';
 import { Pa } from '../../api/apiRequestTypes';
 
 type Props = {
