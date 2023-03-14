@@ -31,8 +31,6 @@ describe(PaginationDataGrid, () => {
   it("verify PaginationDataGrid is rendered", async() => {
     const grid = await screen.findByRole('grid');
     expect(grid).toBeInTheDocument();
-    // eslint-disable-next-line testing-library/no-debugging-utils
-    screen.debug(grid)
   })
 
   it("verify columns size", async () => {
