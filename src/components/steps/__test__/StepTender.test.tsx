@@ -108,38 +108,38 @@ describe("StepTenderTest", () => {
     reducer(<StepTender />);
 
     const tenderForm = screen.getByTestId("tender-form-mock");
-    const buttonCarica = screen.getByText("Carica");
-    const buttonAvanti = screen.getByText("Avanti");
+    const buttonUpload = screen.getByTestId("btn-upload-tender");
+    const buttonForward = screen.getByTestId("btn-go-forward");
 
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await act(async () => {
       expect(tenderForm).toBeInTheDocument();
 
-      expect(buttonCarica).toBeInTheDocument();
-      expect(buttonCarica).not.toBeDisabled()
+      expect(buttonUpload).toBeInTheDocument();
+      expect(buttonUpload).not.toBeDisabled()
 
-      expect(buttonAvanti).toBeInTheDocument();
-      expect(buttonAvanti).not.toBeDisabled()
+      expect(buttonForward).toBeInTheDocument();
+      expect(buttonForward).not.toBeDisabled()
     })
 
 
-    // fireEvent.mouseDown(buttonCarica);
-    // // eslint-disable-next-line testing-library/no-unnecessary-act
-    // await waitFor(async () => {
-    //   await expect(dispatchMockFn).toBeCalledWith({
-    //     payload: undefined,
-    //     type: "formTenderSlice/goUploadStep"
-    //   })
-    // })
-    //
-    // fireEvent.mouseDown(buttonAvanti);
-    // // eslint-disable-next-line testing-library/no-unnecessary-act
-    // await waitFor(async () => {
-    //   await expect(dispatchMockFn).toBeCalledWith({
-    //     payload: undefined,
-    //     type: "formTenderSlice/goFSUStep"
-    //   })
-    // })
+    fireEvent.click(buttonUpload);
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await waitFor(async () => {
+      await expect(dispatchMockFn).toBeCalledWith({
+        payload: undefined,
+        type: "formTenderSlice/goUploadStep"
+      })
+    })
+
+    fireEvent.click(buttonForward);
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await waitFor(async () => {
+      await expect(dispatchMockFn).toBeCalledWith({
+        payload: undefined,
+        type: "formTenderSlice/goFSUStep"
+      })
+    })
   })
 
   it('whenTenderDetailIsNotPresent', async () => {
@@ -246,22 +246,26 @@ describe("StepTenderTest", () => {
     })
   })
 
-  // it("whenButtonCancelActionPositiveIsCalled", async () => {
-  //   useParamsSpy.mockReturnValue({tenderCode: undefined})
-  //   reducer(<StepTender />);
-  //   const buttonDialog = screen.getByTestId("btn-back-tenders");
-  //   expect(buttonDialog).toBeInTheDocument();
-  //
-  //   fireEvent.mouseDown(buttonDialog);
-  //
-  //   // eslint-disable-next-line testing-library/no-unnecessary-act
-  //   await waitFor(async () => {
-  //     await expect(navigateMockFn).toBeCalledTimes(1);
-  //     await expect(dispatchMockFn).toBeCalledWith({
-  //         payload: undefined,
-  //         type: "formTenderSlice/clearFormState"
-  //     })
-  //   })
-  // })
+  it("whenButtonCancelActionPositiveIsCalled", async () => {
+    useParamsSpy.mockReturnValue({tenderCode: undefined})
+    reducer(<StepTender />);
+
+    // eslint-disable-next-line testing-library/no-debugging-utils
+    screen.debug()
+
+    const buttonDialog = screen.getByTestId("btn-back-tenders");
+    expect(buttonDialog).toBeInTheDocument();
+
+    fireEvent.click(buttonDialog);
+
+    // eslint-disable-next-line testing-library/no-unnecessary-act
+    await waitFor(async () => {
+      await expect(navigateMockFn).toBeCalledTimes(1);
+      await expect(dispatchMockFn).toBeCalledWith({
+          payload: undefined,
+          type: "formTenderSlice/clearFormState"
+      })
+    })
+  })
 
 });

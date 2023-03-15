@@ -72,12 +72,16 @@ export function StepTender(){
       <ButtonCancel />
 
       <Stack direction={"row"} spacing={3}>
-        <Button variant={"outlined"}
+        <Button
+                data-testid={"btn-upload-tender"}
+                variant={"outlined"}
                 disabled={!(formTender?.code)}
                 startIcon={<NoteAdd/>}
                 onClick={handleUpload}>Carica</Button>
 
-        <Button variant={"contained"}
+        <Button
+                data-testid={"btn-go-forward"}
+                variant={"contained"}
                 disabled={!(formTender?.code)}
                 onClick={handleGoFSU} >Avanti</Button>
       </Stack>
