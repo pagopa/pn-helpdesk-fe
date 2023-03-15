@@ -8,7 +8,7 @@ import { ConfirmationProvider } from '../../../../components/confirmationDialog/
 import apiRequests from '../../../../api/apiRequests';
 import { aggregate, usage_plan_list } from '../../../../api/mock_agg_response';
 import { renderWithProviders } from "../../../../mocks/mockReducer";
-import * as routes from '../../../../navigation/routes';
+import * as routes from '../../../../navigation/router.const';
 import * as router from 'react-router'
 const navigate = jest.fn();
 
@@ -139,6 +139,6 @@ describe("AggregateForm MODIFY", () => {
         const confirmButton = await screen.findByRole("button", {name : "Conferma"});
 
         await act(() => {fireEvent.click(confirmButton)});
-        await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.AGGREGATES));
+        await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.AGGREGATES_LIST));
     })
 })

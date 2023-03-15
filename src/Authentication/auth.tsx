@@ -20,10 +20,13 @@ type Props = {
 Amplify.configure(awsmobile);
 
 function userDataForUser(user: any): UserData {
-  const rawPermissions = user.attributes['custom:backoffice_tags'];
+  const rawPermissions: string | undefined | null = user.attributes['custom:backoffice_tags'];
 
   // these are the permissions indicated in the Cognito state
-  const possiblePermissions: Array<string> = rawPermissions && rawPermissions.length ? rawPermissions.split(',') : [];
+  // rawPermissions could contain spaces after the commas, so we must trim the permission strings
+  const possiblePermissions: Array<string> = rawPermissions && rawPermissions.length
+    ? rawPermissions.split(',').map((permission) => permission.trim())
+    : [];
   const allLegalPermissions = Object.values(Permission) as Array<string>;
   // these are the permissions indicated in the Cognito state *and* recognized by this app
   const validatedPermissions = possiblePermissions.filter(perm => allLegalPermissions.includes(perm));

@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 import PaAssociation from "../../components/paAssociation/PaAssociation";
 import AggregateAccordion from '../../components/aggregates/AggregateAccordion';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
-import * as routes from '../../navigation/routes';
+import * as routes from '../../navigation/router.const';
 import { getAggregateResponse } from "../../api/apiRequestTypes";
 
 /**
@@ -17,7 +17,7 @@ const PaAssociationPage = ({email}: any) => {
     const breadcrumbsLinks = [
         {
             linkLabel: 'Gestione Aggregazioni ApiKey',
-            linkRoute: routes.AGGREGATES
+            linkRoute: routes.AGGREGATES_LIST
         },
         {
             linkLabel: 'Dettaglio Aggregazione',

@@ -5,7 +5,7 @@ import PaAssociation from '../../paAssociation/PaAssociation';
 import { renderWithProviders } from "../../../mocks/mockReducer";
 import { pa_list_associated } from '../../../api/mock_agg_response';
 import * as router from 'react-router'
-import * as routes from '../../../navigation/routes';
+import * as routes from '../../../navigation/router.const';
 
 const navigate = jest.fn();
 

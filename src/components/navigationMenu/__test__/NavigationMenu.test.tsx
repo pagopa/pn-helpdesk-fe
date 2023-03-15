@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import React from "react";
+import React, {useCallback, useState} from "react";
 import "regenerator-runtime/runtime";
 
 import {
@@ -13,6 +13,24 @@ import NavigationMenu from "../NavigationMenu";
 import { BrowserRouter as Router } from "react-router-dom";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
+import { Permission, UserData } from "../../../model/user-permission";
+import { UserContext } from "../../../contexts/UserContext";
+
+const mockedUser = {
+  email: "test@test.com",
+  permissions: Object.values(Permission)
+};
+
+const MockedUserContext = ({children}: {children: React.ReactNode}) => {
+  const [_, setCurrentUser] = useState<UserData | null>(null);
+  const currentUser = mockedUser;
+
+  const clearCurrentUser = useCallback(() => setCurrentUser(null), [setCurrentUser]);
+
+  return <UserContext.Provider value={{currentUser, setCurrentUser, clearCurrentUser}}>
+    {children}
+  </UserContext.Provider>
+}
 
 describe("NavigationMenu Component", () => {
   beforeAll(() => {
@@ -43,9 +61,11 @@ describe("NavigationMenu Component", () => {
 
   it("click button and show menu component", async () => {
     render(
-      <Router>
-        <NavigationMenu />
-      </Router>
+      <MockedUserContext>
+        <Router>
+          <NavigationMenu />
+        </Router>
+      </MockedUserContext>
     );
     const icon = screen.getByRole("button", {
       name: "menu",
@@ -69,9 +89,11 @@ describe("NavigationMenu Component", () => {
 
   it("simulate tab click", async () => {
     render(
-      <Router>
-        <NavigationMenu />
-      </Router>
+      <MockedUserContext>
+        <Router>
+          <NavigationMenu />
+        </Router>
+      </MockedUserContext>
     );
     const icon = screen.getByRole("button", {
       name: "menu",
@@ -96,9 +118,11 @@ describe("NavigationMenu Component", () => {
 
   it("simulate click escape", async () => {
     render(
-      <Router>
-        <NavigationMenu />
-      </Router>
+      <MockedUserContext>
+        <Router>
+          <NavigationMenu />
+        </Router>
+      </MockedUserContext>
     );
     const icon = screen.getByRole("button", {
       name: "menu",

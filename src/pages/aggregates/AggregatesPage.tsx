@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import AggregatesTable from "../../components/aggregates/AggregatesTable";
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import * as routes from '../../navigation/routes';
+import * as routes from '../../navigation/router.const';
 
 /**
  * Aggregates page
@@ -19,7 +19,6 @@ const AggregatesPage = ({email}: any) => {
 
   return (
       <MainLayout email={email}>
-
         <Box px={2}>
           <Grid container marginBottom={3}>
             <Grid item xs={8}>
