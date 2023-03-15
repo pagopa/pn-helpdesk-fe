@@ -104,15 +104,14 @@ function Router() {
             </PrivateRoute>
           }
         />
-        <Route path="*" element={<Navigate replace to={routes.SEARCH_ROUTE} />} />
-          <Route
-              path={TENDER_DETAIL_ROUTE}
-              element={
-                  <PrivateRoute roles={[Permission.TENDER_READ]}>
-                      <TenderDetailPage />
-                  </PrivateRoute>
-              }
-          />
+        <Route
+            path={TENDER_DETAIL_ROUTE}
+            element={
+                <PrivateRoute roles={[Permission.TENDER_READ]}>
+                    <TenderDetailPage />
+                </PrivateRoute>
+            }
+        />
       </Route>
     </Routes>
   );

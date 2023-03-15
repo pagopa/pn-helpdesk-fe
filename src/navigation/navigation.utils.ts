@@ -15,7 +15,7 @@ export const allNavigationItems: { title: string; link: string; permissions?: Ar
   {
     title: "Gestione gare",
     link: routes.TENDERS_TABLE_ROUTE,
-    permissions: [Permission.LOG_DOWNTIME_READ]
+    permissions: [Permission.TENDER_READ]
   },
   {
     title: "Gestione Aggregazioni ApiKey",
