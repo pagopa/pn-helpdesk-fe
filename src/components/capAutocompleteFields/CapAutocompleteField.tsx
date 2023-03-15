@@ -52,7 +52,7 @@ export function CapAutocompleteField(props:Props){
     fullWidth={true}
     limitTags={3}
     onInputChange={(event, newInputValue) => {
-      console.log(event, newInputValue)
+      // console.log(event, newInputValue)
       setInputText(newInputValue);
     }}
     onChange={handleOnChange}

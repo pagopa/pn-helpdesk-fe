@@ -26,12 +26,12 @@ const initialValue = (data?:Tender):{ [x: string]: any } => (
   }
 )
 
-interface TenderFormBoxProps {
+interface TenderFormProps {
   initialValue ?: Tender;
   onChanged ?: (value:Tender) => void
 }
 
-export default function TenderFormBox(props:TenderFormBoxProps) {
+export function TenderForm(props:TenderFormProps) {
   const fields = ["name", "dateInterval"];
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();

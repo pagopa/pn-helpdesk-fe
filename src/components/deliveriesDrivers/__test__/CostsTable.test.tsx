@@ -25,7 +25,7 @@ const costsTable = {
   },
   error: false,
 };
-describe(CostsTable, () => {
+describe("Costs Table Test", () => {
 
   const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
   const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');

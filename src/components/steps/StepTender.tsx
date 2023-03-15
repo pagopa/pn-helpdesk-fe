@@ -5,9 +5,9 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import { addedTender, clearFormState, goFSUStep, goUploadStep} from "../../redux/formTender/reducers";
 import {AlertDialog} from "../dialogs";
-import TenderFormBox from "../forms/tender/TenderForm";
+import {TenderForm} from "../forms/tender/TenderForm";
 import * as spinnerActions from "../../redux/spinnerSlice";
-import {apiPaperChannel} from "../../api/paperChannelApi";
+import { retrieveTenderDetails } from "../../api/paperChannelApi";
 import * as snackbarActions from "../../redux/snackbarSlice";
 import {Tender} from "../../model";
 import {TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
@@ -29,8 +29,8 @@ export function StepTender(){
   const retrieveDetail = async (tenderCode:string) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
     try {
-      const response = await apiPaperChannel().getTenderDetails(tenderCode);
-      const tender = response.data.tender;
+      const response = await retrieveTenderDetails(tenderCode);
+      const tender = response.tender;
       if (tender.status !== "CREATED"){
         dispatch(spinnerActions.updateSpinnerOpened(false));
         dispatch(snackbarActions.updateSnackbacrOpened(true));
@@ -66,7 +66,7 @@ export function StepTender(){
 
   return <Stack spacing={2} sx={{width: 1}} >
 
-    <TenderFormBox key={"TENDER-"+formTender?.code} initialValue={formTender} onChanged={handleChangeTenderData} />
+    <TenderForm key={"TENDER-"+formTender?.code} initialValue={formTender} onChanged={handleChangeTenderData} />
 
     <Grid item container direction="row" justifyContent="space-between">
       <ButtonCancel />

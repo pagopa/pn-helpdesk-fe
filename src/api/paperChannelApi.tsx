@@ -77,3 +77,12 @@ export const retrieveCaps = async (inputText:string) => {
     throw e;
   }
 }
+
+export const retrieveTenderDetails = async (tenderCode:string) => {
+  try {
+    const response = await apiPaperChannel().getTenderDetails(tenderCode);
+    return response.data
+  } catch (e){
+    throw e;
+  }
+}

@@ -3,7 +3,7 @@ import {act, fireEvent, render, screen, waitFor} from "@testing-library/react";
 import * as reactRedux from "../../../../redux/hook";
 import * as paperChannelApi from "../../../../api/paperChannelApi";
 import {reducer} from "../../../../mocks/mockReducer";
-import TenderFormBox from "../TenderForm";
+import {TenderForm} from "../TenderForm";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import * as italianStyle from "date-fns/locale";
@@ -19,7 +19,7 @@ const tenderResponse = {
   status: "CREATED"
 } as TenderDTO
 
-describe("TenderFormBoxTest", () => {
+describe("TenderFormTest", () => {
   const dispatchMockFn = jest.fn();
   const createTenderMockFn = jest.fn((body:Tender) => Promise.resolve(tenderResponse));
   const createTenderSpy = jest.spyOn(paperChannelApi, "createTender");
@@ -32,7 +32,7 @@ describe("TenderFormBoxTest", () => {
 
 
   it('whenClickSaveOnEmptyDescription', async function () {
-    reducer(<TenderFormBox />)
+    reducer(<TenderForm />)
     // description field, startDate field, endDateField
     const [inputDescription,,] = screen.getAllByRole("textbox");
     expect(inputDescription).toBeInTheDocument();
@@ -50,7 +50,7 @@ describe("TenderFormBoxTest", () => {
 
   it('whenClickSaveOnRealDescription', async function () {
     render((<LocalizationProvider locale={italianStyle.it} dateAdapter={AdapterDateFns}>
-        <TenderFormBox />
+        <TenderForm />
     </LocalizationProvider>
     ))
     // description field, startDate field, endDateField
@@ -87,7 +87,7 @@ describe("TenderFormBoxTest", () => {
   it('whenClickSaveOnError', async function () {
     createTenderSpy.mockRejectedValue(new Error("Error with creation"));
     render((<LocalizationProvider locale={italianStyle.it} dateAdapter={AdapterDateFns}>
-        <TenderFormBox />
+        <TenderForm />
       </LocalizationProvider>
     ))
     // description field, startDate field, endDateField
