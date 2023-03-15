@@ -77,7 +77,7 @@ describe("StepTenderTest", () => {
       retrieveTenderDetailSpy.mockResolvedValue(response);
     }
     else {
-      retrieveTenderDetailSpy.mockRejectedValue(new AxiosError("Error request", "400", undefined, undefined, response));
+      retrieveTenderDetailSpy.mockRejectedValue(new AxiosError("Error request", "404", undefined, undefined, response));
     }
   }
 
