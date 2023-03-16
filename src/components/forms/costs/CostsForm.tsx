@@ -136,11 +136,12 @@ export function CostsForm(props:CostFormProps) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props?.onCancel}>Annulla</Button>
-        <LoadingButton loading={submitting}
+        <Button onClick={props?.onCancel} variant="outlined" >Annulla</Button>
+        <LoadingButton variant="outlined"
                        data-testid={"btn-save-cost"}
+                       loading={submitting}
                        autoFocus
-                       onClick={handleSubmit(onSubmit)}>
+                       onClick={handleSubmit(onSubmit)} >
           Salva
         </LoadingButton>
       </DialogActions>
