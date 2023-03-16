@@ -12,4 +12,5 @@ export function TenderStatusChip(props:{data:Tender}) {
         return <Chip  sx={{bgcolor: '#81d4fa'}} label={"IN CORSO"}/>
     if (props.data.status === "ENDED")
         return <Chip label={"TERMINATA"}/>
+    return <Chip label={"-"}/>
 }
