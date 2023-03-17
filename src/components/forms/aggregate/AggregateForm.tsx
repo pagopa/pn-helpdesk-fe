@@ -24,18 +24,18 @@ const defaultFormValues: FormType = {
     burst: 0
 }
 
-type Props = { isCreate: boolean, aggregate: getAggregateResponse | undefined, usagePlans: Array<UsagePlan> };
+type Props = { isCreate: boolean, isUserWriter: boolean, aggregate: getAggregateResponse | undefined, usagePlans: Array<UsagePlan> };
 
-const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
+const AggregateForm = ({aggregate, isCreate, isUserWriter, usagePlans}: Props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const confirmDialog = useConfirmDialog();
     const fields = [
-        FieldsProperties["Nome Aggregazione"], 
-        FieldsProperties["Descrizione Aggregazione"], 
-        {...FieldsProperties["Usage Plan"], selectItems: usagePlans.map((u) => u.name)},
-        FieldsProperties["Rate"],
-        FieldsProperties["Burst"]
+        {...FieldsProperties["Nome Aggregazione"], disabled: !isUserWriter}, 
+        {...FieldsProperties["Descrizione Aggregazione"], disabled: !isUserWriter}, 
+        {...FieldsProperties["Usage Plan"], selectItems: usagePlans.map((u) => u.name), disabled: !isUserWriter},
+        {...FieldsProperties["Rate"], disabled: !isUserWriter},
+        {...FieldsProperties["Burst"], disabled: !isUserWriter}
     ];
 
     const { control, watch, formState: { errors, isValid }, reset, clearErrors, setValue } = useForm({
@@ -243,22 +243,24 @@ const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
                     
                 </Grid>
             </form>
-            <Grid item container spacing={2}>
-                {isCreate ? (
-                    <Grid item>
-                        {CreateButton}
-                    </Grid>
-                ) : (
-                    <>
+            {isUserWriter && 
+                <Grid item container spacing={2}>
+                    {isCreate ? (
                         <Grid item>
-                            {UpdateButton}
+                            {CreateButton}
                         </Grid>
-                        <Grid item>
-                            {DeleteButton}
-                        </Grid>
-                    </>
-                )}
-            </Grid>
+                    ) : (
+                        <>
+                            <Grid item>
+                                {UpdateButton}
+                            </Grid>
+                            <Grid item>
+                                {DeleteButton}
+                            </Grid>
+                        </>
+                    )}
+                </Grid>
+            }
         </>
         
     )

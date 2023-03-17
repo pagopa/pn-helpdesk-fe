@@ -32,14 +32,14 @@ describe("AggregateForm CREATE", () => {
     })
 
     it("renders", async () => {
-        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)
+        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} isUserWriter={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)
         expect(screen.getByRole("textbox", {name : "Nome Aggregazione"}));
         expect(screen.getByRole("textbox", {name : "Descrizione Aggregazione"}));
         expect(screen.getByTestId("select-usagePlanName"));
     })
 
     it("Updates Rate and Burst inputs on change of usage plan", async () => {
-        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)
+        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} isUserWriter={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)
         const select_usageplan_wrapper = await screen.findByTestId("select-usagePlanName");
         expect(select_usageplan_wrapper).toBeInTheDocument();
         const usageplan_input = select_usageplan_wrapper.querySelector("input");
@@ -52,7 +52,7 @@ describe("AggregateForm CREATE", () => {
     })
 
     it("Create aggregate", async () => {
-        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
+        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} isUserWriter={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
         const aggregate_name_input = screen.getByRole("textbox", {name : "Nome Aggregazione"});
         const aggregate_desc_input = screen.getByRole("textbox", {name : "Descrizione Aggregazione"});
         const select_usageplan_wrapper = screen.getByTestId("select-usagePlanName");
@@ -105,7 +105,7 @@ describe("AggregateForm MODIFY", () => {
     const mockAggregate = aggregate;
 
     it("renders with input value defined", async () => { 
-        await act(() => { renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)});
+        await act(() => { renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} isUserWriter={true} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)});
         const aggregate_name_input = screen.getByRole("textbox", {name : "Nome Aggregazione"});
         const aggregate_desc_input = screen.getByRole("textbox", {name : "Descrizione Aggregazione"});
         const select_usageplan_wrapper = screen.getByTestId("select-usagePlanName");
@@ -117,7 +117,7 @@ describe("AggregateForm MODIFY", () => {
     })
 
     it("click modifica button", async () => { 
-        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
+        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} isUserWriter={true} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
         const edit_button = screen.getByRole("button", { name: "Salva"});
         await waitFor(() => expect(edit_button).not.toBeDisabled());
         await act(() => {fireEvent.click(edit_button);});
@@ -130,7 +130,7 @@ describe("AggregateForm MODIFY", () => {
     })
 
     it("click delete button", async () => { 
-        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
+        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} isUserWriter={true} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
         const delete_button = screen.getByRole("button", { name: "Elimina"});
         await waitFor(() => expect(delete_button).not.toBeDisabled());
         await act(() => {fireEvent.click(delete_button)});

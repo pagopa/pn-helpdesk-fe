@@ -1,17 +1,21 @@
-import { fireEvent, RenderResult, waitFor, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { fireEvent, RenderResult, waitFor, screen, waitForElementToBeRemoved, act } from '@testing-library/react';
 import apiRequests from '../../../api/apiRequests';
 import { aggregates_list } from '../../../api/mock_agg_response';
 import AggregatesTable from '../AggregatesTable';
-import { renderWithProviders } from "../../../mocks/mockReducer";
+import { renderWithProviders, renderWithProvidersAndPermissions } from "../../../mocks/mockReducer";
 import { ConfirmationProvider } from '../../confirmationDialog/ConfirmationProvider';
 import { formatDate } from '../../../helpers/formatter.utility';
 import * as router from 'react-router'
 import * as routes from '../../../navigation/router.const';
 import { getAggregatesResponse } from '../../../api/apiRequestTypes';
+import { UserContextProvider } from '../../../contexts/UserContextProvider';
+import { UserContext } from '../../../contexts/UserContext';
+import { current } from '@reduxjs/toolkit';
+import { Permission, UserData } from '../../../model/user-permission';
 
 const navigate = jest.fn();
 
-describe("AggregatesTable Component", () => {
+describe("AggregatesTable Component with Write permission", () => {
     
     let result: RenderResult | undefined;
     
@@ -37,8 +41,10 @@ describe("AggregatesTable Component", () => {
         });
 
         let apiSpyDeleteAggregate = jest.spyOn(apiRequests, 'deleteAggregate');
-        apiSpyDeleteAggregate.mockImplementation((id) => {
+        apiSpyDeleteAggregate.mockImplementationOnce((id) => {
             return Promise.resolve({id});
+        }).mockImplementation((id) => {
+            return Promise.reject({detail: "Errore"});
         })
 
         // mock navigation
@@ -49,10 +55,26 @@ describe("AggregatesTable Component", () => {
         jest.resetAllMocks();
         jest.clearAllMocks();
         jest.restoreAllMocks();
+        result = undefined;
     });
 
-    it('renders aggregates table', async () => {
-        result = renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>);
+    it('renders aggregates table with write permission', async () => {
+        result = renderWithProvidersAndPermissions(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>, [Permission.API_KEY_WRITE]);
+
+        const filterForm = result?.container.querySelector('form');
+        expect(filterForm).toBeInTheDocument();
+        const aggregatesTable = screen.getByRole('table');
+        expect(aggregatesTable).toBeInTheDocument();
+        const pageSelector = result?.queryByTestId('pageSelector');
+        expect(pageSelector).toBeInTheDocument();
+        await waitFor(() => {
+            //Aggregates fetched and displayed
+            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(mockData.items.length)
+        })
+    });
+
+    it('renders aggregates table with read permission', async () => {
+        result = renderWithProvidersAndPermissions(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>, [Permission.API_KEY_READ]);
 
         const filterForm = result?.container.querySelector('form');
         expect(filterForm).toBeInTheDocument();
@@ -67,7 +89,8 @@ describe("AggregatesTable Component", () => {
     });
 
     it('handle click on column', async () => {
-        let result = renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>)
+        result = renderWithProvidersAndPermissions(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>, [Permission.API_KEY_WRITE]);
+
         await waitFor(() => {
             //Aggregates fetched and displayed
             expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(mockData.items.length)
@@ -79,7 +102,7 @@ describe("AggregatesTable Component", () => {
     })
 
     it('delete aggregate', async () => {
-        let result = renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>)
+        result = renderWithProvidersAndPermissions(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>, [Permission.API_KEY_WRITE]);
 
         await waitFor(() => {
             //Aggregates fetched and displayed
@@ -101,12 +124,23 @@ describe("AggregatesTable Component", () => {
     })
 
     it("filter single aggregate by name", async() => {
-        let result = renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>)
+        result = renderWithProvidersAndPermissions(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>, [Permission.API_KEY_WRITE]);
+
+        await waitFor(() => {
+            //Aggregates fetched and displayed
+            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(mockData.items.length)
+        })
 
         const aggregateNameInput = screen.getByRole("textbox", {name: "Nome aggregazione"});
+        const filterButton = screen.getByRole("button", {name: "Filtra"});
         let firstAggregateName = mockData.items[0].name; 
+
         fireEvent.change(aggregateNameInput, { target : {value : firstAggregateName} });
-        fireEvent.click(screen.getByRole("button", {name: "Filtra"}));
+        await waitFor(() => {
+            expect(aggregateNameInput).toHaveValue(firstAggregateName);
+        });
+
+        await act(() => { fireEvent.click(filterButton)});
         await waitFor(() => {
             expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(1);
             expect(screen.getByText(firstAggregateName)).toBeInTheDocument();
@@ -129,7 +163,7 @@ describe("AggregatesTable Component error", () => {
     })
 
     it("handles error in api rest", async () => {
-        renderWithProviders(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>);
+        renderWithProvidersAndPermissions(<ConfirmationProvider><AggregatesTable /></ConfirmationProvider>, [Permission.API_KEY_WRITE]);
         await waitFor(() => expect(screen.getByText(/Non ci sono elementi da visualizzare/i)).toBeInTheDocument());
     })
 })

@@ -10,6 +10,8 @@ import { DeliveryDriverDTO, TenderDTO } from "../api/paperChannel";
 import { RootState, store as realStore } from "../../src/redux/store";
 import { EnhancedStore, PreloadedState } from "@reduxjs/toolkit";
 import { PropsWithChildren } from "react";
+import { Permission, UserData } from "../model/user-permission";
+import { UserContext } from "../contexts/UserContext";
 
 function reducer(
   ui: any,
@@ -113,6 +115,35 @@ export function renderWithProviders(
     );
   }
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+}
+
+export function renderWithProvidersAndPermissions(
+  ui: React.ReactElement,
+  permissions: Array<Permission> = [],
+  {
+    preloadedState,
+    // Automatically create a store instance if no store was passed in
+    store = realStore,
+    ...renderOptions
+  }: ExtendedRenderOptions = {}
+) {
+    let currentUser : UserData = {
+      email: "test@test.com",
+      permissions
+    }  
+    let setCurrentUser = () => {};
+    let clearCurrentUser = () => {};
+
+    function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+      return (
+        <Provider store={store}>
+          <UserContext.Provider value={{currentUser, setCurrentUser, clearCurrentUser}}>
+            <Router>{children}</Router>
+          </UserContext.Provider>
+        </Provider>
+      );
+    }
+    return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }
 
 export { reducer };

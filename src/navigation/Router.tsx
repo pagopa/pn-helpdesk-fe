@@ -64,6 +64,7 @@ function Router() {
             </PrivateRoute>
           }
         />
+        {/* Pagina di Elenco Aggregati*/}
         <Route
           path={routes.AGGREGATES_LIST}
           element={
@@ -72,22 +73,25 @@ function Router() {
             </PrivateRoute>
           }
         />
+        {/* Pagina di Modifica/Dettaglio aggregato*/}
         <Route
           path={routes.UPDATE_AGGREGATE}
-          element={
-            <PrivateRoute roles={[Permission.API_KEY_WRITE]}>
-              <AggregateDetailPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path={routes.AGGREGATE}
           element={
             <PrivateRoute roles={[Permission.API_KEY_READ]}>
               <AggregateDetailPage />
             </PrivateRoute>
           }
         />
+        {/* Pagina di Creazione Aggregato*/}
+        <Route
+          path={routes.AGGREGATE}
+          element={
+            <PrivateRoute roles={[Permission.API_KEY_WRITE]}>
+              <AggregateDetailPage />
+            </PrivateRoute>
+          }
+        />
+        {/* Pagina di Associazione PA all'aggregato*/}
         <Route
           path={routes.ADD_PA}
           element={
@@ -96,6 +100,7 @@ function Router() {
             </PrivateRoute>
           }
         />
+        {/* Pagina di Trasferimento PA tra aggregati*/}
         <Route
           path={routes.TRANSFER_PA}
           element={
