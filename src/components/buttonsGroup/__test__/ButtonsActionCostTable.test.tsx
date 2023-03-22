@@ -5,6 +5,7 @@ import {CostDTO} from "../../../api/paperChannel";
 import {reducer} from "../../../mocks/mockReducer";
 import * as hook from "../../../redux/hook";
 import * as hookPaperChannel from "../../../hooks/usePaperChannel";
+import * as hookPermission from "../../../hooks/useHasPermissions";
 
 const cost:CostDTO = {
   cap: ["20110", "99999"],
@@ -33,10 +34,16 @@ describe("ButtonActionsCostTable Test", () => {
   let mockDispatchFn: jest.Mock
   let mockDeleteFn: jest.Mock
 
+  const setHasPermission = (value: boolean = true) => {
+    const spyUsePermission = jest.spyOn(hookPermission, "useHasPermissions");
+    spyUsePermission.mockReturnValue(value)
+  }
+
   beforeEach(async () => {
     const scenario = await doPrepareTestScenario()
     mockDispatchFn = scenario.mockDispatchFn
     mockDeleteFn = scenario.mockDeleteFn
+    setHasPermission();
   })
 
   afterEach(() => {
@@ -72,7 +79,7 @@ describe("ButtonActionsCostTable Test", () => {
     await expect(menuItemEdit).toBeInTheDocument()
     fireEvent.click(menuItemEdit)
     await waitFor(async() => {
-      expect(mockDispatchFn).toBeCalledTimes(1);
+      await expect(mockDispatchFn).toBeCalledTimes(1);
       expect(mockDispatchFn).toBeCalledWith({
         payload: {
           uid: cost.uid,
@@ -100,7 +107,7 @@ describe("ButtonActionsCostTable Test", () => {
     await expect(menuItemEdit).toBeInTheDocument()
     fireEvent.click(menuItemEdit)
     await waitFor(async() => {
-      expect(mockDispatchFn).toBeCalledTimes(1);
+      await expect(mockDispatchFn).toBeCalledTimes(1);
       expect(mockDispatchFn).toBeCalledWith({
           payload: {
             uid: costInternational.uid,
@@ -128,9 +135,17 @@ describe("ButtonActionsCostTable Test", () => {
     await expect(menuItemEdit).toBeInTheDocument()
     fireEvent.click(menuItemEdit)
     await waitFor(async() => {
-      expect(mockDeleteFn).toBeCalledTimes(1);
+      await expect(mockDeleteFn).toBeCalledTimes(1);
       expect(mockDeleteFn).toBeCalledWith(cost.tenderCode,  cost.driverCode, cost.uid);
     })
+  })
+
+  it("When permission of write is false", async () => {
+    setHasPermission(false);
+    reducer(<ButtonsActionCostTable value={cost}/>)
+
+    expect(screen.queryByTestId("menu-button-cost")).not.toBeInTheDocument()
+
   })
 
 })

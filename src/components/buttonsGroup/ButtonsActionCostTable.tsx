@@ -9,10 +9,13 @@ import {setSelectedCost} from "../../redux/costs/reducers";
 import {Cost} from "../../model";
 import {usePaperChannel} from "../../hooks/usePaperChannel";
 import {DropdownMenu} from "./DropdownMenu";
+import {useHasPermissions} from "../../hooks/useHasPermissions";
+import {Permission} from "../../model/user-permission";
 
 export function ButtonsActionCostTable(props:{value:CostDTO}){
   const dispatch = useAppDispatch();
   const {deleteCost} = usePaperChannel();
+  const canWrite = useHasPermissions([Permission.TENDER_WRITE]);
 
 
 
@@ -35,6 +38,9 @@ export function ButtonsActionCostTable(props:{value:CostDTO}){
   const handleDeleteCost = () => {
     deleteCost(props.value.tenderCode as string , props.value.driverCode as string, props.value.uid as string)
   }
+
+
+  if (!canWrite) return null
 
 
   return <>

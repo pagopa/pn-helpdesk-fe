@@ -6,6 +6,7 @@ import TenderPage from "../TenderPage";
 import * as router from "react-router";
 import {CREATE_TENDER_ROUTE} from "../../../navigation/router.const";
 import {reducer} from "../../../mocks/mockReducer";
+import * as hookPermission from "../../../hooks/useHasPermissions";
 
 
 jest.mock("../../../components/deliveriesDrivers/TenderTable",
@@ -21,10 +22,16 @@ jest.mock("../../../components/deliveriesDrivers/TenderTable",
 describe("TenderPageTest", () => {
   const navigateMock = jest.fn();
 
+  const setHasPermission = (value: boolean = true) => {
+    const spyUsePermission = jest.spyOn(hookPermission, "useHasPermissions");
+    spyUsePermission.mockReturnValue(value)
+  }
+
   beforeEach(() =>{
     jest.spyOn(React, "useEffect").mockImplementation(() => jest.fn());
     const useNavigate = jest.spyOn(router, 'useNavigate');
     useNavigate.mockReturnValue(navigateMock);
+    setHasPermission()
   })
 
   it("whenRenderedPageAndClickedButtonCreateTender", async () => {
@@ -39,6 +46,14 @@ describe("TenderPageTest", () => {
       await expect(navigateMock).toBeCalledTimes(1);
       expect(navigateMock).toBeCalledWith(CREATE_TENDER_ROUTE);
     })
+  })
+
+  it("whenRenderedPageWithPermissionWriteIsFalse", async () => {
+    setHasPermission(false)
+    reducer(<TenderPage />)
+    expect(screen.queryByTestId("button-added-tender")).not.toBeInTheDocument()
+    const mockTable = screen.getByTestId("tender-table-mock")
+    expect(mockTable).toBeInTheDocument()
 
   })
 

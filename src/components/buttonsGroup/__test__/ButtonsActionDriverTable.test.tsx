@@ -4,6 +4,8 @@ import * as hook from "../../../redux/hook";
 import * as hookPaperChannel from "../../../hooks/usePaperChannel";
 import {ButtonsActionDriverTable, ButtonShowCosts} from "../ButtonsActionDriverTable";
 import {DeliveryDriver} from "../../../model";
+import * as hookPermission from "../../../hooks/useHasPermissions";
+
 
 const driver:DeliveryDriver = {
   businessName: "",
@@ -18,17 +20,20 @@ const driver:DeliveryDriver = {
   uniqueCode: ""
 }
 
-
-
-
 describe("ButtonActionsDriverTable Test", () => {
   let mockDispatchFn: jest.Mock
   let mockDeleteFn: jest.Mock
+
+  const setHasPermission = (value: boolean = true) => {
+    const spyUsePermission = jest.spyOn(hookPermission, "useHasPermissions");
+    spyUsePermission.mockReturnValue(value)
+  }
 
   beforeEach(async () => {
     const scenario = await doPrepareTestScenario()
     mockDispatchFn = scenario.mockDispatchFn
     mockDeleteFn = scenario.mockDeleteFn
+    setHasPermission()
   })
 
   afterEach(() => {
@@ -39,7 +44,7 @@ describe("ButtonActionsDriverTable Test", () => {
 
   it("Button rendered", async () => {
     reducer(<ButtonsActionDriverTable value={driver}/>)
-    const element = screen.getByTestId('menu-button-driver');
+    const element = screen.getByTestId("menu-button-driver");
     const menuElement = screen.queryByTestId("action-menu-button-driver");
 
     expect(menuElement).toBeNull()
@@ -48,7 +53,7 @@ describe("ButtonActionsDriverTable Test", () => {
 
   it('When click on Button show Menu', async function () {
     reducer(<ButtonsActionDriverTable value={driver}/>)
-    const element = screen.getByTestId('menu-button-driver');
+    const element = screen.getByTestId("menu-button-driver");
     fireEvent.click(element)
     await expect(screen.getByTestId("action-menu-button-driver")).toBeInTheDocument()
     await expect(screen.getByText("Modifica")).toBeInTheDocument()
@@ -58,13 +63,13 @@ describe("ButtonActionsDriverTable Test", () => {
 
   it("When click on edit menu item", async function () {
     reducer(<ButtonsActionDriverTable value={driver} />)
-    const element = screen.getByTestId('menu-button-driver')
+    const element = screen.getByTestId("menu-button-driver")
     fireEvent.click(element)
     const menuItemEdit = screen.getByText("Modifica")
     await expect(menuItemEdit).toBeInTheDocument()
     fireEvent.click(menuItemEdit)
     await waitFor(async() => {
-      expect(mockDispatchFn).toBeCalledTimes(1);
+      await expect(mockDispatchFn).toBeCalledTimes(1);
       expect(mockDispatchFn).toBeCalledWith({
         payload: {
           ...driver
@@ -79,15 +84,23 @@ describe("ButtonActionsDriverTable Test", () => {
 
   it("When click on delete menu item", async function () {
     reducer(<ButtonsActionDriverTable value={driver} />)
-    const element = screen.getByTestId('menu-button-driver')
+    const element = screen.getByTestId("menu-button-driver")
     fireEvent.click(element)
     const menuItemEdit = screen.getByText("Elimina")
     await expect(menuItemEdit).toBeInTheDocument()
     fireEvent.click(menuItemEdit)
     await waitFor(async() => {
-      expect(mockDeleteFn).toBeCalledTimes(1);
+      await expect(mockDeleteFn).toBeCalledTimes(1);
       expect(mockDeleteFn).toBeCalledWith(driver.tenderCode,  driver.taxId);
     })
+  })
+
+  it("When permission of write is false", async () => {
+    setHasPermission(false);
+    reducer(<ButtonsActionDriverTable value={driver}/>)
+
+    expect(screen.queryByTestId("menu-button-driver")).not.toBeInTheDocument()
+
   })
 
 })
@@ -119,7 +132,7 @@ describe("ButtonShowCosts Driver test",  () => {
     fireEvent.click(element)
 
     await waitFor(async() => {
-      expect(mockDispatchFn).toBeCalledTimes(1);
+      await expect(mockDispatchFn).toBeCalledTimes(1);
       expect(mockDispatchFn).toBeCalledWith({
           payload: {
             tenderCode: driver.tenderCode,

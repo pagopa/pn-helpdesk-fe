@@ -9,6 +9,8 @@ import {CREATE_TENDER_ROUTE, TENDERS_TABLE_ROUTE} from "../../navigation/router.
 import {DeliveriesDriverTable} from "../../components/deliveriesDrivers/DeliveriesDriverTable";
 import {resetStateDrivers} from "../../redux/deliveriesDrivers/reducers";
 import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
+import {useHasPermissions} from "../../hooks/useHasPermissions";
+import { Permission } from "../../model/user-permission";
 
 
 const breadcrumbsLinks = [
@@ -19,7 +21,7 @@ const breadcrumbsLinks = [
 ]
 
 export function TenderDetailPage() {
-
+  const canWrite = useHasPermissions([Permission.TENDER_WRITE]);
   const tenderState = useAppSelector(state => state.tender.selected);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -93,7 +95,7 @@ export function TenderDetailPage() {
             Torna alle Gare
           </Button>
           {
-            (tenderState?.status && tenderState.status === "CREATED") ?
+            (tenderState?.status && tenderState.status === "CREATED" && canWrite) ?
               <Button variant={"contained"}
                       type={"submit"}
                       onClick={() => navigate(CREATE_TENDER_ROUTE+"/"+tenderState.code)}>

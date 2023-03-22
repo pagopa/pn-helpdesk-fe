@@ -6,6 +6,7 @@ import * as hookRouter from "react-router";
 import {TenderDTO} from "../../../api/paperChannel";
 import {ButtonsActionTenderTable} from "../ButtonsActionTenderTable";
 import {CREATE_TENDER_ROUTE, TENDER_DETAIL_ROUTE} from "../../../navigation/router.const";
+import * as hookPermission from "../../../hooks/useHasPermissions";
 
 
 const tenderCreated:TenderDTO = {
@@ -40,12 +41,18 @@ describe("ButtonActionsTenderTable Test", () => {
   let mockNavigateFn: jest.Mock
   let mockChangeStautsFn: jest.Mock
 
+  const setHasPermission = (value: boolean = true) => {
+    const spyUsePermission = jest.spyOn(hookPermission, "useHasPermissions");
+    spyUsePermission.mockReturnValue(value)
+  }
+
   beforeEach(async () => {
     const scenario = await doPrepareTestScenario()
     mockDispatchFn = scenario.mockDispatchFn
     mockDeleteFn = scenario.mockDeleteFn
     mockNavigateFn = scenario.mockNavigateFn
     mockChangeStautsFn = scenario.mockChangeStatusFn
+    setHasPermission()
   })
 
   afterEach(() => {
@@ -73,7 +80,18 @@ describe("ButtonActionsTenderTable Test", () => {
     await expect(screen.getByTestId("validated-tender")).toBeInTheDocument()
     await expect(screen.getByText("Convalida")).toBeInTheDocument()
     await expect(screen.getByTestId("delete-tender")).toBeInTheDocument()
+  })
 
+  it('whenClickButtonShowMenuOnlyItemTenderCREATEDWithPermissionFalse', async () => {
+    setHasPermission(false)
+    reducer(<ButtonsActionTenderTable value={tenderCreated}/>)
+    const element = screen.getByTestId('menu-button-tender');
+    fireEvent.click(element)
+    await expect(screen.getByTestId("action-menu-button-tender")).toBeInTheDocument()
+    await expect(screen.queryByTestId("edit-tender")).not.toBeInTheDocument()
+    await expect(screen.getByTestId("detail-tender")).toBeInTheDocument()
+    await expect(screen.queryByTestId("validated-tender")).not.toBeInTheDocument()
+    await expect(screen.queryByTestId("delete-tender")).not.toBeInTheDocument()
   })
 
   it('whenClickButtonShowMenuOnlyItemTenderVALIDATED', async () => {
@@ -85,6 +103,19 @@ describe("ButtonActionsTenderTable Test", () => {
     await expect(screen.getByTestId("detail-tender")).toBeInTheDocument()
     await expect(screen.getByTestId("validated-tender")).toBeInTheDocument()
     await expect(screen.getByText("Torna in Bozza")).toBeInTheDocument()
+    await expect(screen.queryByTestId("delete-tender")).not.toBeInTheDocument()
+  })
+
+  it('whenClickButtonShowMenuOnlyItemTenderVALIDATEDWithPermissionFalse', async () => {
+    setHasPermission(false)
+    reducer(<ButtonsActionTenderTable value={tenderValidated}/>)
+    const element = screen.getByTestId('menu-button-tender');
+    fireEvent.click(element)
+    await expect(screen.getByTestId("action-menu-button-tender")).toBeInTheDocument()
+    await expect(screen.queryByTestId("edit-tender")).not.toBeInTheDocument()
+    await expect(screen.getByTestId("detail-tender")).toBeInTheDocument()
+    await expect(screen.queryByTestId("validated-tender")).not.toBeInTheDocument()
+    await expect(screen.queryByTestId("Torna in Bozza")).not.toBeInTheDocument()
     await expect(screen.queryByTestId("delete-tender")).not.toBeInTheDocument()
   })
 

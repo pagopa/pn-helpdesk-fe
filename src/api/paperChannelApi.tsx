@@ -18,7 +18,7 @@ const configuration = () => {
       Auth: accessToken
     }
   }
-  conf.basePath = "https://webapi.dev.pn.pagopa.it";
+  conf.basePath = process.env.REACT_APP_API_PAPER_CHANNEL_ENDPOINT;
   return conf;
 }
 

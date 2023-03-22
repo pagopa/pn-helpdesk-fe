@@ -5,11 +5,15 @@ import {Add} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
 import {CREATE_TENDER_ROUTE} from "../../navigation/router.const";
 import {TenderTable} from "../../components/deliveriesDrivers/TenderTable";
+import {useHasPermissions} from "../../hooks/useHasPermissions";
+import {Permission} from "../../model/user-permission";
 
 
 
 export default function TenderPage({ email= "" }: any){
   const navigate = useNavigate();
+  const canWrite = useHasPermissions([Permission.TENDER_WRITE]);
+
 
   return <MainLayout email={email}>
     <Container>
@@ -31,19 +35,24 @@ export default function TenderPage({ email= "" }: any){
               backgroundColor: "background.paper",
             }}
           >
-            <Grid item container justifyContent="right">
-              <Button
-                data-testid={"button-added-tender"}
-                variant="outlined"
-                startIcon={<Add />}
-                onClick={() => navigate(CREATE_TENDER_ROUTE)}
-                sx={{
-                  "&:hover": { backgroundColor: "action.hover" },
-                }}
-              >
-                Aggiungi
-              </Button>
-            </Grid>
+            {
+              (canWrite) ?
+                <Grid item container justifyContent="right">
+                  <Button
+                    data-testid={"button-added-tender"}
+                    variant="outlined"
+                    startIcon={<Add />}
+                    onClick={() => navigate(CREATE_TENDER_ROUTE)}
+                    sx={{
+                      "&:hover": { backgroundColor: "action.hover" },
+                    }}
+                  >
+                    Aggiungi
+                  </Button>
+                </Grid>
+                : null
+            }
+
             <Grid item container>
               <TenderTable/>
             </Grid>

@@ -15,11 +15,14 @@ import {addSelected} from "../../redux/tender/reducers";
 import {CREATE_TENDER_ROUTE, TENDER_DETAIL_ROUTE} from "../../navigation/router.const";
 import {usePaperChannel} from "../../hooks/usePaperChannel";
 import {DropdownMenu} from "./DropdownMenu";
+import {useHasPermissions} from "../../hooks/useHasPermissions";
+import {Permission} from "../../model/user-permission";
 
 
 export function ButtonsActionTenderTable(props:{value:any}){
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const canWrite = useHasPermissions([Permission.TENDER_WRITE]);
   const {deleteTender, changeStatusTender} = usePaperChannel();
 
   const handleClickShowDetail = () => {
@@ -52,7 +55,7 @@ export function ButtonsActionTenderTable(props:{value:any}){
           <ListItemText data-testid={"detail-tender"}>Dettagli</ListItemText>
         </MenuItem >
         {
-          (props.value?.status && props.value.status === "CREATED") ?
+          (props.value?.status && props.value.status === "CREATED" && canWrite) ?
             <MenuItem onClick={handleClickEdit}>
               <ListItemIcon>
                 <EditIcon fontSize="small"/>
@@ -63,7 +66,7 @@ export function ButtonsActionTenderTable(props:{value:any}){
         }
 
         {
-          (props.value?.status && props.value.status !== "ENDED" && props.value.status !== "IN_PROGRESS") ?
+          (props.value?.status && props.value.status !== "ENDED" && props.value.status !== "IN_PROGRESS" && canWrite) ?
             <MenuItem onClick={handleOnChangeStatus}>
               <ListItemIcon>
                 <SystemUpdateAltIcon fontSize="small"/>
@@ -75,7 +78,7 @@ export function ButtonsActionTenderTable(props:{value:any}){
 
 
         {
-          (props.value?.status && props.value.status === "CREATED") ?
+          (props.value?.status && props.value.status === "CREATED" && canWrite) ?
             <MenuItem onClick={handleDeleteTender}>
               <ListItemIcon>
                 <DeleteIcon fontSize="small"/>

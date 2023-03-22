@@ -1,14 +1,11 @@
-/**
- * Detail Test
- */
-
 import { cleanup, screen, fireEvent, waitFor, render } from "@testing-library/react";
 import "regenerator-runtime/runtime"
 import { TenderDetailPage } from "../TenderDetailPage";
 import * as reactRedux from '../../../redux/hook'
-import configureStore from "redux-mock-store";
 import { TenderDTO, TenderDTOStatusEnum } from "../../../api/paperChannel";
 import { reducer } from "../../../mocks/mockReducer";
+import * as hookPermission from "../../../hooks/useHasPermissions";
+
 
 import {
   BrowserRouter,
@@ -23,22 +20,22 @@ const tender: TenderDTO = {
   code: "1", name: "BRT", startDate: "01-31-2021 00:00", endDate: "01-31-2022 00:00", status: TenderDTOStatusEnum.Created
 }
 
-  describe("TenderDetailPage", () => {
-    jest.spyOn(React, "useEffect").mockImplementation(() => jest.fn());
-    const navigateMock = jest.fn();
-    const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
-    const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
-
+describe("TenderDetailPage", () => {
+  jest.spyOn(React, "useEffect").mockImplementation(() => jest.fn());
+  const navigateMock = jest.fn();
+  const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
+  const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
+  const setHasPermission = (value: boolean = true) => {
+    const spyUsePermission = jest.spyOn(hookPermission, "useHasPermissions");
+    spyUsePermission.mockReturnValue(value)
+  }
   const mockingStore  = (state:any) => {
     useSelectorMock.mockReturnValue(state);
-    const mockStore = configureStore();
-    let updatedStore = mockStore(state);
-    mockingDispatch(updatedStore);
+    mockingDispatch();
   }
-  const mockingDispatch = (updatedStore:any) => {
+  const mockingDispatch = () => {
     const mockDispatch = jest.fn();
     useDispatchMock.mockReturnValue(mockDispatch);
-    updatedStore.dispatch = mockDispatch;
   }
 
   beforeEach(() => {
@@ -47,6 +44,7 @@ const tender: TenderDTO = {
     useSelectorMock.mockClear()
     useDispatchMock.mockClear()
     mockingStore(tender);
+    setHasPermission()
   });
 
   afterEach(() => {
@@ -93,6 +91,16 @@ const tender: TenderDTO = {
       name: "Modifica",
     });
     expect(buttonModify).toBeInTheDocument();
+  });
+
+  it("whenTenderIsCreatedStatusAndPermissionWriteIsFalse", async () => {
+    setHasPermission(false)
+    reducer(<TenderDetailPage/>);
+
+    const buttonModify = screen.queryByRole(/Button/i, {
+      name: "Modifica",
+    });
+    expect(buttonModify).not.toBeInTheDocument();
   });
 
   it("whenTenderIsInProgressEditButtonMustNotBeRendered", async () => {
