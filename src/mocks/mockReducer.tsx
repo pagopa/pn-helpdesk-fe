@@ -5,8 +5,8 @@ import configureMockStore from "redux-mock-store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { it } from "date-fns/locale";
-import {DeliveryDriver, FilterRequest, Page, UPLOAD_STATUS_ENUM} from "../model";
-import {DeliveryDriverDTO, TenderDTO} from "../api/paperChannel";
+import { DeliveryDriver, FilterRequest, Page, UPLOAD_STATUS_ENUM } from "../model";
+import { DeliveryDriverDTO, TenderDTO } from "../api/paperChannel";
 import { RootState, store as realStore } from "../../src/redux/store";
 import { EnhancedStore, PreloadedState } from "@reduxjs/toolkit";
 import { PropsWithChildren } from "react";
@@ -32,10 +32,10 @@ function reducer(
         opened: false,
       },
       uploadAndDownload: {
-        download : {
+        download: {
           loading: false
         },
-         upload: {
+        upload: {
           loading: false,
           error: undefined,
           status: UPLOAD_STATUS_ENUM.WAITING_FILE
@@ -51,8 +51,8 @@ function reducer(
         allData: {} as Page<TenderDTO>,
         selected: {} as TenderDTO,
         pagination: {
-          page:1,
-          tot:10,
+          page: 1,
+          tot: 10,
           force: false
         }
       },
@@ -68,19 +68,19 @@ function reducer(
           pagesKey: [],
         },
       },
-      pagination : {
-          limit : 10,
-          page: 0,
-          total: 0,
-          pagesKey: []
+      pagination: {
+        limit: 10,
+        page: 0,
+        total: 0,
+        pagesKey: []
       },
-      deliveries : {
+      deliveries: {
         loading: false,
         detail: undefined,
         allData: {} as Page<DeliveryDriver>,
         pagination: {
-        page:1,
-            tot:10,
+          page: 1,
+          tot: 10,
         } as FilterRequest
       }
 

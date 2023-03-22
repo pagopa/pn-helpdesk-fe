@@ -8,17 +8,11 @@ import { screen, act, cleanup } from "@testing-library/react";
 import { reducer } from "../../../../mocks/mockReducer";
 import SearchForm from "../SearchForm";
 import userEvent from "@testing-library/user-event";
-import * as auth from "../../../../Authentication/auth";
 
 describe("SearchForm", () => {
   afterEach(cleanup);
 
   beforeEach(() => {
-    jest.spyOn(auth, "getUser").mockImplementation(() => {
-      return new Promise((resolve, reject) => {
-        return resolve("test");
-      });
-    });
     reducer(<SearchForm />);
   });
 

@@ -81,7 +81,8 @@ const MonitorPage = () => {
               let incident = res.data.openIncidents.filter(
                 (element: any) => element.functionality === item
               );
-              let date = incident.length === 0 ? "" : incident[0].startDate;
+              let date =
+                incident.length === 0 ? "" : incident[0].startDate.slice(0, -1);
               let row = {
                 id: res.data.functionalities.indexOf(item) + 1,
                 functionality: functionalitiesNames[item],
@@ -265,11 +266,16 @@ const MonitorPage = () => {
           <Grid container columnSpacing={2} sx={{ pt: 2 }}>
             <Grid item>
               <DateTimePicker
+                disableFuture
                 label="Data e ora evento"
                 value={modalEventDate}
                 onChange={(e) => handleChange(e)}
                 renderInput={(params) => (
-                  <TextField {...params} error={error ? true : false} />
+                  <TextField
+                    onKeyDown={(e) => e.preventDefault()}
+                    {...params}
+                    error={error ? true : false}
+                  />
                 )}
               />
             </Grid>

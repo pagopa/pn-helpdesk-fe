@@ -18,7 +18,7 @@ import * as snackbarActions from "../../redux/snackbarSlice";
 import * as spinnerActions from "../../redux/spinnerSlice";
 import { useDispatch } from 'react-redux';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
-import * as routes from '../../navigation/routes';
+import * as routes from '../../navigation/router.const';
 import { Pa } from "../../api/apiRequestTypes";
 
 const PaTransferListPage = ({ email }: any) => {
@@ -144,7 +144,7 @@ const PaTransferListPage = ({ email }: any) => {
     const breadcrumbsLinks = aggParam ? [
         {
             linkLabel: 'Gestione Aggregazioni ApiKey',
-            linkRoute: routes.AGGREGATES
+            linkRoute: routes.AGGREGATES_LIST
         },
         {
             linkLabel: 'Dettaglio Aggregazione',
