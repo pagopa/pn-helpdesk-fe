@@ -2,16 +2,13 @@ import { fireEvent, RenderResult, waitFor, screen, waitForElementToBeRemoved, ac
 import apiRequests from '../../../api/apiRequests';
 import { aggregates_list } from '../../../api/mock_agg_response';
 import AggregatesTable from '../AggregatesTable';
-import { renderWithProviders, renderWithProvidersAndPermissions } from "../../../mocks/mockReducer";
+import { renderWithProvidersAndPermissions } from "../../../mocks/mockReducer";
 import { ConfirmationProvider } from '../../confirmationDialog/ConfirmationProvider';
 import { formatDate } from '../../../helpers/formatter.utility';
 import * as router from 'react-router'
 import * as routes from '../../../navigation/router.const';
 import { getAggregatesResponse } from '../../../api/apiRequestTypes';
-import { UserContextProvider } from '../../../contexts/UserContextProvider';
-import { UserContext } from '../../../contexts/UserContext';
-import { current } from '@reduxjs/toolkit';
-import { Permission, UserData } from '../../../model/user-permission';
+import { Permission } from '../../../model/user-permission';
 
 const navigate = jest.fn();
 
@@ -71,6 +68,9 @@ describe("AggregatesTable Component with Write permission", () => {
             //Aggregates fetched and displayed
             expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(mockData.items.length)
         })
+
+        //check presence of delete button in table rows
+        expect(result?.getAllByRole("button", {name:"Cancella aggregato"})).toHaveLength(mockData.items.length);
     });
 
     it('renders aggregates table with read permission', async () => {
@@ -86,6 +86,9 @@ describe("AggregatesTable Component with Write permission", () => {
             //Aggregates fetched and displayed
             expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(mockData.items.length)
         })
+
+        //check absence of delete button in table rows
+        expect(result?.queryByRole("button", {name:"Cancella aggregato"})).not.toBeInTheDocument();
     });
 
     it('handle click on column', async () => {

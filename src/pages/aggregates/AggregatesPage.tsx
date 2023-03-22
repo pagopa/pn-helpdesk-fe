@@ -16,7 +16,7 @@ const AggregatesPage = ({email}: any) => {
   const navigate = useNavigate();
 
   const handleClickNew = () => {
-    navigate(routes.AGGREGATE);
+    navigate(routes.CREATE_AGGREGATE);
   };
 
   const isUserWriter = useHasPermissions([Permission.API_KEY_WRITE]);

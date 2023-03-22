@@ -84,7 +84,7 @@ function Router() {
         />
         {/* Pagina di Creazione Aggregato*/}
         <Route
-          path={routes.AGGREGATE}
+          path={routes.CREATE_AGGREGATE}
           element={
             <PrivateRoute roles={[Permission.API_KEY_WRITE]}>
               <AggregateDetailPage />

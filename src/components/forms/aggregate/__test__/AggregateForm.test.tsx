@@ -104,7 +104,7 @@ describe("AggregateForm MODIFY", () => {
 
     const mockAggregate = aggregate;
 
-    it("renders with input value defined", async () => { 
+    it("renders with input value defined for user with write permission", async () => { 
         await act(() => { renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} isUserWriter={true} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)});
         const aggregate_name_input = screen.getByRole("textbox", {name : "Nome Aggregazione"});
         const aggregate_desc_input = screen.getByRole("textbox", {name : "Descrizione Aggregazione"});
@@ -114,6 +114,36 @@ describe("AggregateForm MODIFY", () => {
         await waitFor(() => expect(aggregate_desc_input).toHaveValue(String(mockAggregate.description)));
         expect(usageplan_input).toHaveValue(String(mockAggregate.usagePlan.name));
         expect(aggregate_name_input).toHaveValue(String(mockAggregate.name));
+
+        expect(aggregate_name_input).not.toBeDisabled();
+        expect(aggregate_desc_input).not.toBeDisabled();
+        expect(usageplan_input).not.toBeDisabled();
+
+        const edit_button = screen.getByRole("button", { name: "Salva"});
+        const delete_button = screen.getByRole("button", { name: "Elimina"});
+        expect(edit_button).toBeInTheDocument();
+        expect(delete_button).toBeInTheDocument();
+    })
+
+    it("renders with input value defined for user with read permission", async () => { 
+        await act(() => { renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} isUserWriter={false} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)});
+        const aggregate_name_input = screen.getByRole("textbox", {name : "Nome Aggregazione"});
+        const aggregate_desc_input = screen.getByRole("textbox", {name : "Descrizione Aggregazione"});
+        const select_usageplan_wrapper = screen.getByTestId("select-usagePlanName");
+        const usageplan_input = select_usageplan_wrapper.querySelector("input");
+
+        await waitFor(() => expect(aggregate_desc_input).toHaveValue(String(mockAggregate.description)));
+        expect(usageplan_input).toHaveValue(String(mockAggregate.usagePlan.name));
+        expect(aggregate_name_input).toHaveValue(String(mockAggregate.name));
+
+        expect(aggregate_name_input).toBeDisabled();
+        expect(aggregate_desc_input).toBeDisabled();
+        expect(usageplan_input).toBeDisabled();
+
+        const edit_button = screen.queryByRole("button", { name: "Salva"});
+        const delete_button = screen.queryByRole("button", { name: "Elimina"});
+        expect(edit_button).not.toBeInTheDocument();
+        expect(delete_button).not.toBeInTheDocument();
     })
 
     it("click modifica button", async () => { 

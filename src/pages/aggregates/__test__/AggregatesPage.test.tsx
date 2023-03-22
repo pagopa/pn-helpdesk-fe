@@ -29,7 +29,7 @@ describe("AggregatesPage test", () => {
         expect(nuovaAggregazioneButton).toBeInTheDocument();
         fireEvent.click(nuovaAggregazioneButton);
 
-        expect(navigate).toBeCalledWith(routes.AGGREGATE);
+        expect(navigate).toBeCalledWith(routes.CREATE_AGGREGATE);
 
     })
 })
