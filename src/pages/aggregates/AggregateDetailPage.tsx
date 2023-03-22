@@ -18,6 +18,8 @@ import { CardHeaderType } from '../../components/customCard/types';
 import PaTable from "../../components/aggregates/PaTable";
 import AggregateForm from "../../components/forms/aggregate/AggregateForm";
 import { getAggregateResponse, UsagePlan } from "../../api/apiRequestTypes";
+import { useHasPermissions } from "../../hooks/useHasPermissions";
+import { Permission } from "../../model/user-permission";
 
 /**
  * AggregateDetail page
@@ -26,6 +28,7 @@ import { getAggregateResponse, UsagePlan } from "../../api/apiRequestTypes";
 const AggregateDetailPage = ({ email }: any) => {
     const { idAggregate } = useParams();
     const isCreate = !idAggregate;
+    const isUserWriter = useHasPermissions([Permission.API_KEY_WRITE]);
     const dispatch = useDispatch();
     const [aggregate, setAggregate]: any = useState(undefined);
     const [pas, setPas]: any = useState([]);
@@ -93,14 +96,13 @@ const AggregateDetailPage = ({ email }: any) => {
         sx: { px: 3, pt: 4, pb: 1 }
     };
 
-    const formCardBody = <AggregateForm isCreate={isCreate} aggregate={aggregate} usagePlans={usagePlans} />;
+    const formCardBody = <AggregateForm isCreate={isCreate} isUserWriter={isUserWriter} aggregate={aggregate} usagePlans={usagePlans} />;
 
-    const associatedPasCardHeader : CardHeaderType = {
-        title: <Typography gutterBottom variant="h5" component="div">
-            PA Associate
-        </Typography>,
-        avatar: <BusinessIcon />,
-        action: <>
+    const getAssociatedPasAction = () => {
+        if(!isUserWriter)
+            return null;
+        
+        return <>
             <Button
                 variant="contained"
                 type="submit"
@@ -120,7 +122,15 @@ const AggregateDetailPage = ({ email }: any) => {
             >
                 Associa PA
             </Button>
-        </>,
+        </>
+    }
+
+    const associatedPasCardHeader : CardHeaderType = {
+        title: <Typography gutterBottom variant="h5" component="div">
+            PA Associate
+        </Typography>,
+        avatar: <BusinessIcon />,
+        action: getAssociatedPasAction(),
         sx: {px: 3, pt: 4, pb: 1}
     }
 
