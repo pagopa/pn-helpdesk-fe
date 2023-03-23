@@ -33,6 +33,7 @@ const SelectField = (props: Props) => {
         onChange={onChange}
         value={value}
         sx={{ width: "100%" }}
+        disabled={field.disabled}
       >
         {
           (field.label !== "Tipo Estrazione") && (<MenuItem key="none" value=""></MenuItem>)

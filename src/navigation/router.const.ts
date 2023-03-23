@@ -1,10 +1,10 @@
 export const AGGREGATES_LIST = `/aggregates`;
-export const AGGREGATE = `/aggregate`;
-export const UPDATE_AGGREGATE = `${AGGREGATE}/:idAggregate`;
-export const ADD_PA = `${AGGREGATE}/add-pa`;
-export const TRANSFER_PA = `${AGGREGATE}/pa-transfer`;
+export const CREATE_AGGREGATE = `/aggregate`;
+export const UPDATE_AGGREGATE = `${CREATE_AGGREGATE}/:idAggregate`;
+export const ADD_PA = `${CREATE_AGGREGATE}/add-pa`;
+export const TRANSFER_PA = `${CREATE_AGGREGATE}/pa-transfer`;
 
-export const GET_UPDATE_AGGREGATE_PATH = (idAggregate: string) => `${AGGREGATE}/${idAggregate}`;
+export const GET_UPDATE_AGGREGATE_PATH = (idAggregate: string) => `${CREATE_AGGREGATE}/${idAggregate}`;
 
 export const TENDERS_TABLE_ROUTE = "/tender";
 export const TENDER_DETAIL_ROUTE = `${TENDERS_TABLE_ROUTE}/details`;

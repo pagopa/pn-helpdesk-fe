@@ -17,6 +17,9 @@ import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
 import * as routes from '../../navigation/router.const';
 import { FieldsProperties } from "../formFields/FormFields";
 import FilterTable from "../forms/filterTable/FilterTable";
+import IconButton from '@mui/material/IconButton';
+import { useHasPermissions } from "../../hooks/useHasPermissions";
+import { Permission } from "../../model/user-permission";
 
 type AggregateColumn = 
 | 'id'
@@ -30,6 +33,7 @@ type AggregateColumn =
  * @component
  */
 const AggregatesTable = () => {
+    const isUserWriter = useHasPermissions([Permission.API_KEY_WRITE]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -118,7 +122,7 @@ const AggregatesTable = () => {
       paginationData.page + 1
     );
 
-    const columns: Array<Column<AggregateColumn>> = [
+    const USER_WRITER_COLUMNS: Array<Column<AggregateColumn>> = [
         {
             id: 'name',
             label: 'Nome aggregazione',
@@ -170,10 +174,61 @@ const AggregatesTable = () => {
           label: '',
           width: '5%',
           getCellLabel(value: string) {
-            return <DeleteIcon sx={{ color: red[500] }} />;
+            return <IconButton aria-label="Cancella aggregato" sx={{ color: red[500] }}>
+            <DeleteIcon />
+          </IconButton>;
           },
           onClick(row: Item) {
             handleClickDelete(row.id);
+          },
+        }
+      ];
+
+      const USER_READER_COLUMNS: Array<Column<AggregateColumn>> = [
+        {
+            id: 'name',
+            label: 'Nome aggregazione',
+            width: '20%',
+            getCellLabel(value: string) {
+                return value;
+            },
+            onClick(row: Item) {
+                handleRowClick(row);
+            },
+        },
+        {
+            id: 'usagePlan',
+            label: 'Usage plan',
+            width: '20%',
+            sortable: false,
+            getCellLabel(value: string) {
+              return value;
+            },
+            onClick(row: Item) {
+              handleRowClick(row);
+            },
+        },
+        {
+          id: 'createdAt',
+          label: 'Data creazione',
+          width: '20%',
+          sortable: false,
+          getCellLabel(value: string) {
+            return value;
+          },
+          onClick(row: Item) {
+            handleRowClick(row);
+          },
+        },
+        {
+          id: 'lastUpdate',
+          label: 'Data ultimo aggiornamento',
+          width: '20%',
+          getCellLabel(value: string) {
+            return value;
+          },
+          onClick(row: Item) {
+            handleRowClick(row);
           },
         }
       ];
@@ -194,7 +249,7 @@ const AggregatesTable = () => {
     return (
       <>
         <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} />
-        <ItemsTable columns={columns} rows={rows} />
+        <ItemsTable columns={isUserWriter ? USER_WRITER_COLUMNS : USER_READER_COLUMNS} rows={rows} />
         <CustomPagination
           paginationData={{
             limit: paginationData.limit,
