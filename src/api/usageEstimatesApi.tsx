@@ -1,21 +1,35 @@
-import {Configuration} from "./paperChannel";
+import {Estimate, EstimateSearchTable, InfoDownload, Page} from "../model";
+import {usageEstimatesRepo} from "./usageEstimates";
 
-import {EstimateApi} from "./usageEstimates";
 
-const configuration = () => {
-  const conf = new Configuration();
-  const token = sessionStorage.getItem("token")
-  const accessToken = sessionStorage.getItem("accessToken")
-  conf.baseOptions = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Auth: accessToken
-    }
+const getAllEstimates = async (description:string, page:number, tot:number):Promise<Page<EstimateSearchTable>> => {
+  try {
+    const response = await usageEstimatesRepo.getAllEstimate(description, description, page, tot);
+    return {
+      content: response.data.content as EstimateSearchTable,
+      page: response.data.number,
+      size: response.data.size,
+      total: response.data.totalElements,
+    } as Page<EstimateSearchTable>
+  } catch (error:any){
+   throw error
   }
-  conf.basePath = process.env.REACT_APP_API_USAGE_ESTIMATES_ENDPOINT;
-  return conf;
 }
 
-export const estimateApi = () => {
-  return new EstimateApi(configuration());
+const getDetailEstimate = async (paId:string, referenceMonth:string): Promise<Estimate> => {
+  try {
+    const response = await usageEstimatesRepo.getDetail(paId, referenceMonth);
+    return response.data as Estimate;
+  } catch (error:any){
+    throw error
+  }
+}
+
+const getFilesDownload = async (paId: string): Promise<InfoDownload[]> => {
+  try {
+    const response = await usageEstimatesRepo.getFilesInfo(paId);
+    return response.data as InfoDownload[]
+  } catch (error: any) {
+    throw error
+  }
 }
