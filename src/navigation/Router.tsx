@@ -2,7 +2,12 @@ import {Navigate, Outlet, Route, Routes} from "react-router-dom";
 import TenderPage from "../pages/tender/TenderPage";
 import { TenderDetailPage } from "../pages/tender/TenderDetailPage";
 import { FormTenderPage } from "../pages/createTender/FormTenderPage";
-import { CREATE_TENDER_ROUTE, TENDER_DETAIL_ROUTE, TENDERS_TABLE_ROUTE } from "./router.const";
+import {
+  CREATE_TENDER_ROUTE,
+  SEARCH_USAGE_ESTIMATES_ROUTE,
+  TENDER_DETAIL_ROUTE,
+  TENDERS_TABLE_ROUTE
+} from "./router.const";
 import MonitorPage from "../pages/monitor/MonitorPage";
 import LoginPage from "../pages/login/LoginPage";
 import SearchPage from "../pages/search/SearchPage";
@@ -15,6 +20,7 @@ import * as routes from "./router.const";
 import { Permission } from "../model/user-permission";
 import HomePage from "../pages/home/HomePage";
 import {useCurrentUser} from "../hooks/useCurrentUser";
+import {SearchUsageEstimationsPage} from "../pages/usageEstimates/SearchUsageEstimationsPage";
 
 /**
  * Create the routing of the page
@@ -114,6 +120,14 @@ function Router() {
             element={
                 <PrivateRoute roles={[Permission.TENDER_READ]}>
                     <TenderDetailPage />
+                </PrivateRoute>
+            }
+        />
+        <Route
+            path={SEARCH_USAGE_ESTIMATES_ROUTE}
+            element={
+                <PrivateRoute roles={[Permission.TENDER_READ]}>
+                    <SearchUsageEstimationsPage/>
                 </PrivateRoute>
             }
         />
