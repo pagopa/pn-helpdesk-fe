@@ -25,10 +25,19 @@ const getDetailEstimate = async (paId:string, referenceMonth:string): Promise<Es
   }
 }
 
-const getFilesDownload = async (paId: string): Promise<InfoDownload[]> => {
+const getFiles = async (paId: string): Promise<InfoDownload[]> => {
   try {
     const response = await usageEstimatesRepo.getFilesInfo(paId);
     return response.data as InfoDownload[]
+  } catch (error: any) {
+    throw error
+  }
+}
+
+const getFileDownload = async (paId: string, id:string): Promise<InfoDownload> => {
+  try {
+    const response = await usageEstimatesRepo.getFileDownload(paId, id);
+    return response.data as InfoDownload
   } catch (error: any) {
     throw error
   }

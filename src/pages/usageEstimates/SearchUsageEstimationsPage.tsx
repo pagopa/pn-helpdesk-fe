@@ -1,7 +1,6 @@
 import MainLayout from "../mainLayout/MainLayout";
-import {Box, Button, Card, Container, Grid, TextField, Typography} from "@mui/material";
+import {Box, Card, Container, Grid, Typography} from "@mui/material";
 import React from "react";
-import SearchIcon from "@mui/icons-material/Search";
 
 
 export function SearchUsageEstimationsPage({email=""}){

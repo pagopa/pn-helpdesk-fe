@@ -1,44 +1,55 @@
 import React from "react";
 
 export interface Estimate {
-  paId: string;
-  status?: EstimateDtoStatusEnum;
-  deadlineDate?: string;
-  referenceMonth?: string;
-  totalDigitalNotif?: number;
-  totalPaper890Notif?: number;
-  totalPaperNationalNotif?: number;
-  totalPaperInternationalNotif?: number;
-  lastModifiedTimestamp?: string;
+  paId: string,
+  paName: string,
+  taxId: string,
+  address: string,
+  fiscalCode: string,
+  ipaCode: string,
+  sdiCode: string,
+  splitPayment: boolean
+  description: string,
+  pec: string,
+  mailAddress: string,
+  status: EstimateStatusEnum,
+  deadlineDate: string,
+  referenceMonth: string,
+  totalDigitalNotif: number,
+  totalPaper890Notif: number,
+  totalPaperNationalNotif: number,
+  totalPaperInternationalNotif: number,
+  lastModifiedTimestamp: string
 }
 
-export const EstimateDtoStatusEnum = {
+export const EstimateStatusEnum = {
   Created: 'CREATED',
   Validated: 'VALIDATED',
   InProgress: 'IN_PROGRESS',
   Ended: 'ENDED'
 } as const;
 
-export type EstimateDtoStatusEnum = typeof EstimateDtoStatusEnum[keyof typeof EstimateDtoStatusEnum];
+export type EstimateStatusEnum = typeof EstimateStatusEnum[keyof typeof EstimateStatusEnum];
 
 export interface EstimateSearchTable {
   referenceMonth?: string;
   lastModifiedTimestamp?: string;
-  status?: EstimateDtoStatusEnum;
+  status?: EstimateStatusEnum;
   checkPDND?: boolean;
 }
 
 export interface InfoDownload {
   paId?: string;
-  status?: InfoDownloadDTOStatusEnum;
+  status?: InfoDownloadStatusEnum;
+
 }
 
-export const InfoDownloadDTOStatusEnum = {
+export const InfoDownloadStatusEnum = {
   Uploading: 'UPLOADING',
   Uploaded: 'UPLOADED'
 } as const;
 
-export type InfoDownloadDTOStatusEnum = typeof InfoDownloadDTOStatusEnum[keyof typeof InfoDownloadDTOStatusEnum];
+export type InfoDownloadStatusEnum = typeof InfoDownloadStatusEnum[keyof typeof InfoDownloadStatusEnum];
 
 
 export type FilterRequest = {
