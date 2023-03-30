@@ -25,6 +25,8 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
+import { useHasPermissions } from "../../hooks/useHasPermissions";
+import { Permission } from "../../model/user-permission";
 
 /**
  * Monitor page
@@ -44,6 +46,8 @@ const MonitorPage = () => {
   const [modalPayload, setModalPaylod] = useState({});
 
   const [error, setError] = useState("");
+
+  const isUserWriter = useHasPermissions([Permission.LOG_DOWNTIME_WRITE]);
 
   useEffect(() => {
     if (!modalStatus) {
@@ -215,7 +219,7 @@ const MonitorPage = () => {
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      hide: !backEndStatus,
+      hide: !backEndStatus && !isUserWriter,
       getActions: (params: any) => {
         return params.row.state
           ? [
