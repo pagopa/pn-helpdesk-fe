@@ -33,7 +33,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import ResponseData from "../../responseData/ResponseData";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { format, subMonths } from "date-fns";
+import axios from "axios";
+import { WritableStream } from 'web-streams-polyfill/ponyfill';
+import streamSaver from 'streamsaver';
+import { v4 as uuid } from "uuid";
 
+//const fs = require('fs');
 /**
  * default values of the form fields
  */
@@ -256,8 +261,59 @@ const SearchForm = () => {
     resetStore();
     dispatch(spinnerActions.updateSpinnerOpened(true));
     const payload = createPayload(data);
-    createRequest(payload);
+    //createRequest(payload);
+    //testRequest(JSON.stringify(payload));
+    esempio(JSON.stringify(payload));
   };
+
+  const esempio=(payload: any): any => {
+    dispatch(spinnerActions.updateSpinnerOpened(true));
+    const token = sessionStorage.getItem("token");
+    const url = process.env.REACT_APP_API_ENDPOINT! + '/logs/v1/persons';
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            "x-pagopa-uid": uuid(),
+            "x-pagopa-cx-type": "BO",
+        },
+        body: payload
+    })
+    .then(res => {
+      let fileName = res.headers.get('content-disposition');
+      if (!fileName) {
+        fileName = '=log.zip';
+      }
+      const fileStream = streamSaver.createWriteStream(fileName?.split('=')[1]);
+      const readableStream = res.body
+      const pass = res.headers.get('password');
+      updateResponse({password: pass});
+      // more optimized
+      if (window.WritableStream && readableStream &&  readableStream.pipeTo) {
+        return readableStream.pipeTo(fileStream)
+          .then(() => {
+            console.log('done writing');
+            dispatch(spinnerActions.updateSpinnerOpened(false));
+          });
+      }else{
+
+        const writer = fileStream.getWriter();
+
+        const reader = res.body?.getReader();
+
+        const pump:any = () => reader?.read()
+          .then(res => res.done
+            ? writer.close().then(()=>{dispatch(spinnerActions.updateSpinnerOpened(false));}) 
+            : writer.write(res.value).then(pump));
+
+        pump();
+      }
+    });
+    
+  };
+
 
   /**
    * Formatting the data ready to be sent
@@ -299,6 +355,7 @@ const SearchForm = () => {
     }
     return payload;
   };
+
 
   /**
    * Create request depending on the use case
@@ -370,11 +427,12 @@ const SearchForm = () => {
    * update the snackbar component depneding on the response
    * @param response
    */
-  const updateSnackbar = (response: any) => {
+  const updateSnackbar = (response: any, duration?: number) => {
     const message = response.data?.detail ?? response.data.message;
     message && dispatch(snackbarActions.updateMessage(message));
     dispatch(snackbarActions.updateSnackbacrOpened(true));
     dispatch(snackbarActions.updateStatusCode(response.status));
+    if (duration) dispatch(snackbarActions.updateAutoHideDuration(duration));
   };
 
   /**
@@ -453,7 +511,9 @@ const SearchForm = () => {
             <Grid container rowSpacing={2}>
               <Grid item width={1}>
                 <form
-                  onSubmit={handleSubmit((data) => onSubmit(data))}
+                  onSubmit={
+                    handleSubmit((data) => onSubmit(data))
+                  }
                   style={{ width: "100%" }}
                 >
                   <Grid item container>
