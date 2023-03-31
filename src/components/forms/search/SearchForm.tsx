@@ -37,6 +37,7 @@ import axios from "axios";
 import { WritableStream } from 'web-streams-polyfill/ponyfill';
 import streamSaver from 'streamsaver';
 import { v4 as uuid } from "uuid";
+import { getPresignedUrl } from "../../../redux/uploading/actions";
 
 //const fs = require('fs');
 /**
@@ -266,10 +267,43 @@ const SearchForm = () => {
     esempio(JSON.stringify(payload));
   };
 
+  const getUrl= (): string => {
+    switch (selectedValue) {
+      case "Ottieni EncCF":
+        return '/persons/v1/person-id';
+        break;
+      case "Ottieni CF":
+        return '/persons/v1/tax-id';
+        break;
+      case "Ottieni notifica":
+        return '/logs/v1/notifications/info';
+        break;
+      case "Ottieni notifiche di una PA":
+        return '/logs/v1/notifications/monthly';
+        break;
+      case "Get process logs":
+        return '/logs/v1/processes';
+        break;
+      case "Ottieni log completi":
+        return '/logs/v1/persons';
+        break;
+      case "Ottieni log di processo":
+        return '/logs/v1/processes';
+        break;
+      case "Ottieni log di sessione":
+        return '/logs/v1/sessions';
+        break;
+      default:
+        break;
+    }
+    return '';
+  }
   const esempio=(payload: any): any => {
+
+    const url = process.env.REACT_APP_API_ENDPOINT! + getUrl();
+    
     dispatch(spinnerActions.updateSpinnerOpened(true));
     const token = sessionStorage.getItem("token");
-    const url = process.env.REACT_APP_API_ENDPOINT! + '/logs/v1/persons';
 
     fetch(url, {
         method: 'POST',
