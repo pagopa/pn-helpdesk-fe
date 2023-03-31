@@ -16,7 +16,7 @@ const getAllEstimates = async (description:string, page:number, tot:number):Prom
   }
 }
 
-const getDetailEstimate = async (paId:string, referenceMonth:string): Promise<Estimate> => {
+export const getDetailEstimate = async (paId:string, referenceMonth:string): Promise<Estimate> => {
   try {
     const response = await usageEstimatesRepo.getDetail(paId, referenceMonth);
     return response.data as Estimate;
