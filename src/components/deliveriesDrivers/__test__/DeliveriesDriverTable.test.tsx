@@ -84,7 +84,7 @@ describe("DeliveriesDriverTableTest", () => {
     changeStore(local)
     reducer(<DeliveriesDriverTable tenderCode={"12345"} onlyFsu={true} withActions={true}/>)
 
-    const dialog = await screen.findByTestId('driver-cost-dialog');
+    const dialog = await screen.findByTestId('driver-costs-dialog');
     expect(dialog).toBeInTheDocument()
 
     // @ts-ignore

@@ -120,6 +120,7 @@ describe("TenderDetailPage", () => {
 
   it('whenTenderIsUndefinedOrEmptyGoToTendersRoute', () => {
     mockingStore({});
+    window.history.pushState({}, '', TENDERS_TABLE_ROUTE)
 
     render(<BrowserRouter >
       <Routes>
