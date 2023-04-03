@@ -1,7 +1,7 @@
 import {UPLOAD_STATUS_ENUM} from "../../../model";
 import * as reactRedux from "../../../redux/hook";
 import * as router from "react-router";
-import {act, fireEvent, render, screen} from "@testing-library/react";
+import {fireEvent, render, screen} from "@testing-library/react";
 import {StepDriverUpload} from "../StepDriverUpload";
 import React from "react";
 
@@ -53,13 +53,12 @@ describe('StepDriverUploadTest', function () {
     const btnBackTender = screen.getByTestId("btn-back-tender");
     expect(btnBackTender).toBeInTheDocument()
     fireEvent.click(btnBackTender)
-    await act(async () => {
-      await expect(mockDispatchFn).toBeCalledWith({
-        payload: {
-          key: 0
-        },
-        type: "formTenderSlice/changeKey"
-      })
+
+    await expect(mockDispatchFn).toBeCalledWith({
+      payload: {
+        key: 0
+      },
+      type: "formTenderSlice/changeKey"
     })
 
   });
@@ -81,11 +80,10 @@ describe('StepDriverUploadTest', function () {
     expect(btnNext).toBeEnabled()
 
     fireEvent.click(btnNext)
-    await act(async () => {
-      await expect(mockDispatchFn).toBeCalledWith({
-        payload: undefined,
-        type: "formTenderSlice/goFinalStep"
-      })
+
+    await expect(mockDispatchFn).toBeCalledWith({
+      payload: undefined,
+      type: "formTenderSlice/goFinalStep"
     })
 
   });
@@ -106,10 +104,8 @@ describe('StepDriverUploadTest', function () {
     jest.spyOn(global, 'setTimeout');
     render(<StepDriverUpload tenderCode={"1234"} />)
 
-    await act( async () => {
-      await expect(setTimeout).toHaveBeenCalledTimes(1);
-      await expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
-    })
+    await expect(setTimeout).toHaveBeenCalledTimes(1);
+    await expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
 
     expect(screen.queryByTestId("error-log-box")).not.toBeInTheDocument()
     const btnSave = screen.getByTestId("btn-save");
@@ -135,15 +131,14 @@ describe('StepDriverUploadTest', function () {
     expect(btnSave).toBeEnabled()
     fireEvent.click(btnSave);
 
-    await act(async () => {
-      await expect(mockDispatchFn).toBeCalledWith({
-        payload: true,
-        type: "snackbar/updateSnackbacrOpened"
-      })
-      expect(mockDispatchFn).toBeCalledWith({
-        payload: 500,
-        type: "snackbar/updateStatusCode"
-      })
+    await expect(mockDispatchFn).toBeCalledWith({
+      payload: true,
+      type: "snackbar/updateSnackbacrOpened"
+    })
+
+    expect(mockDispatchFn).toBeCalledWith({
+      payload: 500,
+      type: "snackbar/updateStatusCode"
     })
 
   });
@@ -166,9 +161,8 @@ describe('StepDriverUploadTest', function () {
     expect(btnSave).toBeEnabled()
     fireEvent.click(btnSave);
 
-    await act(async () => {
-      await expect(mockDispatchFn).toBeCalledWith(expect.any(Function))
-    })
+    await expect(mockDispatchFn).toBeCalledWith(expect.any(Function))
+
 
   });
 

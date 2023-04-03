@@ -1,6 +1,6 @@
 import * as reactRedux from "../../../redux/hook";
 import React from "react";
-import {act, fireEvent, screen} from "@testing-library/react";
+import {fireEvent, screen} from "@testing-library/react";
 
 import {render} from "@testing-library/react";
 import {StepFSU} from "../StepFSU";
@@ -58,12 +58,11 @@ describe("StepFSUTest", () => {
     expect(driverForm).not.toBeInTheDocument()
 
     fireEvent.click(buttonBack);
-    await act(async () => {
-      await expect(mockDispatchFn).toBeCalledTimes(1)
-      expect(mockDispatchFn).toBeCalledWith({
-        payload: undefined,
-        type: "formTenderSlice/backStep"
-      })
+
+    await expect(mockDispatchFn).toBeCalledTimes(1)
+    expect(mockDispatchFn).toBeCalledWith({
+      payload: undefined,
+      type: "formTenderSlice/backStep"
     })
 
   });
@@ -117,12 +116,11 @@ describe("StepFSUTest", () => {
 
 
     fireEvent.click(buttonNext);
-    await act(async () => {
-      await expect(mockDispatchFn).toBeCalledTimes(1)
-      expect(mockDispatchFn).toBeCalledWith({
-        payload: undefined,
-        type: "formTenderSlice/goTenderDriversStep"
-      })
+
+    await expect(mockDispatchFn).toBeCalledTimes(1)
+    expect(mockDispatchFn).toBeCalledWith({
+      payload: undefined,
+      type: "formTenderSlice/goTenderDriversStep"
     })
 
   });

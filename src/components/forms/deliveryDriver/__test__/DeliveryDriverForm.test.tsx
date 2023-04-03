@@ -1,4 +1,4 @@
-import {act, fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import React from "react";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import * as italianStyle from "date-fns/locale";
@@ -42,10 +42,7 @@ describe("DeliveryDriverFormTest", () => {
     expect(btnSave).toBeInTheDocument();
     fireEvent.click(btnSave);
 
-    await act(async () => {
-      await expect(createDriverMockFn).toBeCalledTimes(0)
-    })
-
+    await expect(createDriverMockFn).toBeCalledTimes(0)
   });
 
 
@@ -66,9 +63,8 @@ describe("DeliveryDriverFormTest", () => {
     expect(btnSave).toBeInTheDocument();
     fireEvent.click(btnSave);
 
-    await act(async () => {
-      await expect(createDriverMockFn).toBeCalledTimes(0)
-    })
+    await expect(createDriverMockFn).toBeCalledTimes(0)
+
 
   });
 
@@ -91,11 +87,8 @@ describe("DeliveryDriverFormTest", () => {
       }
     })
 
-    await act(async () => {
-      await expect(taxId.getAttribute("value")).toEqual("12345678901");
-      await expect(ragSoc.getAttribute("value")).toEqual("Ragione Sociale");
-    })
-
+    await expect(taxId.getAttribute("value")).toEqual("12345678901");
+    await expect(ragSoc.getAttribute("value")).toEqual("Ragione Sociale");
 
     const btnSave = screen.getByTestId("btn-save-driver");
     expect(btnSave).toBeInTheDocument();
@@ -135,10 +128,9 @@ describe("DeliveryDriverFormTest", () => {
       }
     })
 
-    await act(async () => {
-      await expect(taxId.getAttribute("value")).toEqual("12345678901");
-      await expect(ragSoc.getAttribute("value")).toEqual("Ragione Sociale");
-    })
+    await expect(taxId.getAttribute("value")).toEqual("12345678901");
+    await expect(ragSoc.getAttribute("value")).toEqual("Ragione Sociale");
+
 
 
     const btnSave = screen.getByTestId("btn-save-driver");
@@ -184,17 +176,14 @@ describe("DeliveryDriverFormTest", () => {
       }
     })
 
-    await act(async () => {
-      await expect(taxId.getAttribute("value")).toEqual("12345678901");
-      await expect(ragSoc.getAttribute("value")).toEqual("Ragione Sociale");
-    })
+    await expect(taxId.getAttribute("value")).toEqual("12345678901");
+    await expect(ragSoc.getAttribute("value")).toEqual("Ragione Sociale");
+
 
 
     const btnSave = screen.getByTestId("btn-save-driver");
     expect(btnSave).toBeInTheDocument();
     fireEvent.click(btnSave);
-
-
   });
 
 

@@ -141,9 +141,9 @@ describe("TenderDetailPage", () => {
     });
     expect(editButton).toBeInTheDocument();
     fireEvent.click(editButton);
-    await waitFor(async() => {
+    await waitFor(async () => {
       await expect(navigateMock).toBeCalledTimes(1);
-      expect(navigateMock).toBeCalledWith(CREATE_TENDER_ROUTE+"/"+tender.code);
+      expect(navigateMock).toBeCalledWith(CREATE_TENDER_ROUTE + "/" + tender.code);
     })
   });
 

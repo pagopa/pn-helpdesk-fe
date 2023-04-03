@@ -1,6 +1,6 @@
 import { DriverAndCostForm } from "../DriverAndCostForm";
 import * as reactRedux from "../../../redux/hook";
-import { cleanup, screen, act } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
 import { reducer } from "../../../mocks/mockReducer";
 import React from "react";
 
@@ -25,7 +25,7 @@ jest.mock("../CostsTable", () => ({
   },
 }));
 
-describe(DriverAndCostForm, () => {
+describe("DriverAndCostFormTest", () => {
 
   const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
   const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
@@ -62,10 +62,8 @@ describe(DriverAndCostForm, () => {
   it("whenIsCreatedFSU", async () => {
     reducer(<DriverAndCostForm tenderCode={"1234"} fsu={true}/>)
     expect(screen.getByTestId("delivery-driver-form-mock")).toBeInTheDocument()
-    await act(async () => {
-      expect(mockDispatch).toBeCalledTimes(1)
-      //expect(mockDispatch).toBeCalledWith(expect(Function))
-    })
+    expect(mockDispatch).toBeCalledTimes(1)
+
   })
 
   it("whenIsCreatedDriver", async () => {
@@ -79,10 +77,9 @@ describe(DriverAndCostForm, () => {
     reducer(<DriverAndCostForm tenderCode={"1234"} fsu={true}/>)
     expect(screen.getByTestId("delivery-driver-form-mock")).toBeInTheDocument()
     expect(screen.getByTestId("driver-costs-table-mock")).toBeInTheDocument()
-    await act(async () => {
-      expect(mockDispatch).toBeCalledTimes(2)
-      //expect(mockDispatch).toBeCalledWith(expect(Function))
-    })
+
+    expect(mockDispatch).toBeCalledTimes(2)
+
   })
 
 
@@ -99,11 +96,4 @@ describe(DriverAndCostForm, () => {
     expect(dialogMockTable).toBeInTheDocument()
   })
 
-
-
-  it("whenDeliveryDriverAndCostAreRecovered2", async () => {
-    reducer(<DriverAndCostForm tenderCode={"12345"} fsu={false} />);
-    // eslint-disable-next-line testing-library/no-debugging-utils
-    screen.debug()
-  })
 })

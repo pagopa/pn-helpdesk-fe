@@ -58,12 +58,6 @@ describe("Costs Table Test", () => {
     expect(grid.getAttribute("aria-rowcount")).toEqual("3");
   })
 
-  it("whenCostAreRecoveredWithNoActions", async () => {
-    reducer(<CostsTable tenderCode={"12345"} driverCode={"67890"} withActions={false}/>)
-
-    // eslint-disable-next-line testing-library/no-debugging-utils
-    screen.debug();
-  })
 
   it("whenCostAreNotRecovered", async () => {
     const local = {...costsTable, costs: undefined}

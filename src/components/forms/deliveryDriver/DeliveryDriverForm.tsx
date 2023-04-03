@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 
-import {fieldsDriver} from "./fields";
+import {fieldsDriver, FieldTypesDriver} from "./fields";
 import {DeliveryDriver} from "../../../model";
 
 import {LoadingButton} from "@mui/lab";
@@ -26,7 +26,6 @@ interface PropsDeliveryBox{
 }
 
 export function DeliveryDriverForm(props:PropsDeliveryBox) {
-  const fields = ["taxId", "businessName", "denomination", "registeredOffice", "fiscalCode", "pec", "phoneNumber", "uniqueCode"];
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -94,7 +93,7 @@ export function DeliveryDriverForm(props:PropsDeliveryBox) {
           <Grid item container>
             <Grid item container spacing={1} alignItems="center">
               {
-                fields.map(field => (
+                (Object.keys(fieldsDriver) as Array<FieldTypesDriver>).map(field => (
                   <Grid
                     item
                     key={fieldsDriver[field].name + "Item"}
