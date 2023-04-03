@@ -316,6 +316,13 @@ const SearchForm = () => {
         body: payload
     })
     .then(res => {
+      if (res.status===500){
+        updateSnackbar({data:{message:'Si è verificato un errore durante l\'estrazione', status:500}});
+
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+        return;
+      }
+
       let fileName = res.headers.get('content-disposition');
       if (!fileName) {
         fileName = '=log.zip';
@@ -344,6 +351,10 @@ const SearchForm = () => {
 
         pump();
       }
+    }).catch(err=>{
+      updateSnackbar({data:{message:'Si è verificato un errore durante l\'estrazione', status:500}});
+
+      dispatch(spinnerActions.updateSpinnerOpened(false));
     });
     
   };
