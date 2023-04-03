@@ -3,10 +3,10 @@ import {createAxiosInstance} from "./axiosInstance";
 
 
 const pathEstimates = {
-  GET_ALL: (paId: string, taxId: string, page:number, tot:number) => `/template/v1/estimates?paId=${paId}&taxId=${taxId}&page=${page}&tot=${tot}`,
-  DETAIL: (paId:string, referenceMonth:string) => `/template/v1/estimate/${paId}/detail/${referenceMonth}`,
-  FILES: (paId:string) => `/template/v1/estimate/${paId}/files`,
-  FILE_DOWNLOAD: (paId:string, id:string) => `/template/v1/estimate/${paId}/file/${id}`,
+  GET_ALL: (paId: string, taxId: string, page:number, tot:number) => `/pn-usage-estimates/v1/estimates?paId=${paId}&taxId=${taxId}&page=${page}&tot=${tot}`,
+  DETAIL: (paId:string, referenceMonth:string) => `/pn-usage-estimates/v1/estimate/${paId}/detail/${referenceMonth}`,
+  FILES: (paId:string) => `/pn-usage-estimates/v1/estimate/${paId}/files`,
+  FILE_DOWNLOAD: (paId:string, id:string) => `/pn-usage-estimates/v1/estimate/${paId}/file/${id}`,
 }
 
 class UsageEstimatesRepo {
