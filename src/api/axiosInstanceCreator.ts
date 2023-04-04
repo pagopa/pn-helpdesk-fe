@@ -26,8 +26,8 @@ export const createAxiosInstance = (baseURL: string): AxiosInstance => {
       ...request.headers,
       Authorization: `Bearer ${token}`,
       ...(process.env.NODE_ENV === "development" && {
-        "x-pagopa-pn-uid": uuid(),
-        "x-pagopa-pn-cx-type": "BO",
+        "x-pagopa-uid": uuid(),
+        "x-pagopa-cx-type": "BO",
       }),
     };
 
