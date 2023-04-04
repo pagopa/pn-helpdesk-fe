@@ -353,8 +353,9 @@ const SearchForm = () => {
         body: payload
     })
     .then(res => {
-      if (res.status === 500){
-        updateSnackbar({data:{message:'Si è verificato un errore durante l\'estrazione', status:500}});
+      if (res.status === 500 || res.status === 400){
+        let msg = res.status === 400 ? 'Nessun dato disponibile' :'Si è verificato un errore durante l\'estrazione';
+        updateSnackbar({data:{message:msg, status:500}});
 
         dispatch(spinnerActions.updateSpinnerOpened(false));
         return;
