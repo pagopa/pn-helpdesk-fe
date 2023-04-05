@@ -12,16 +12,16 @@ enum TenderStatusLabel {
 
 export function TenderStatusChip(props:{data:Tender}) {
     if (props.data.status === TenderStatusEnum.CREATED)
-        return <Chip sx={{bgcolor: '#fff000'}} label={TenderStatusLabel.CREATED}/>
+        return <Chip color={"warning"} label={TenderStatusLabel.CREATED}/>
 
     if (props.data.status === TenderStatusEnum.VALIDATED)
-        return <Chip sx={{bgcolor: '#b2ff59'}}  label={TenderStatusLabel.VALIDATED}/>
+        return <Chip color={"success"}  label={TenderStatusLabel.VALIDATED}/>
 
     if (props.data.status === TenderStatusEnum.IN_PROGRESS)
-        return <Chip  sx={{bgcolor: '#81d4fa'}} label={TenderStatusLabel.IN_PROGRESS}/>
+        return <Chip label={TenderStatusLabel.IN_PROGRESS}/>
 
     if (props.data.status === TenderStatusEnum.ENDED)
-        return <Chip label={TenderStatusLabel.ENDED}/>
+        return <Chip variant={"outlined"} label={TenderStatusLabel.ENDED}/>
 
     return <Chip label={"-"}/>
 }
