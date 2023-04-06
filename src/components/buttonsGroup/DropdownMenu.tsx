@@ -23,6 +23,7 @@ export const DropdownMenu = (props:DropdownMenuProps) => {
   return <>
   <IconButton
     id={props.id}
+    data-testid={props.id}
     aria-controls={open ? "action-"+props.id : undefined}
     aria-haspopup="true"
     aria-expanded={open ? "true" : undefined}
@@ -31,6 +32,7 @@ export const DropdownMenu = (props:DropdownMenuProps) => {
     <MoreVertIcon/>
   </IconButton>
   <Menu id={"action-"+props.id}
+        data-testid={"action-"+props.id}
         aria-labelledby="button-action-cost"
         anchorEl={anchorEl}
         open={open}

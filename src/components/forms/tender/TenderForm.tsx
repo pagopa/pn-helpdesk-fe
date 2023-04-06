@@ -1,38 +1,30 @@
 import React, {useState} from "react";
-import {
-  Card,
-  Typography,
-  Grid,
-  Stack,
-  FormHelperText
-} from "@mui/material";
+import {Card, FormHelperText, Grid, Stack, Typography} from "@mui/material";
 import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
-import {Tender} from "../../../model";
+import {Tender, TenderStatusEnum} from "../../../model";
 import {format} from "date-fns";
-import {fieldsTender} from "./fields";
+import {fieldsTender, FieldTypesTender} from "./fields";
 import {LoadingButton} from "@mui/lab";
 import {createTender} from "../../../api/paperChannelApi";
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import {useAppDispatch} from "../../../redux/hook";
 
 
-
 const initialValue = (data?:Tender):{ [x: string]: any } => (
   {
-    name: data?.name,
+    name: data?.name || "",
     dateInterval:[(data?.startDate) ? data?.startDate : format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.ss'Z'"),
                   (data?.endDate) ? data?.endDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.ss'Z'")]
   }
 )
 
-interface TenderFormBoxProps {
+interface TenderFormProps {
   initialValue ?: Tender;
   onChanged ?: (value:Tender) => void
 }
 
-export default function TenderFormBox(props:TenderFormBoxProps) {
-  const fields = ["name", "dateInterval"];
+export function TenderForm(props:TenderFormProps) {
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -46,22 +38,27 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
     reValidateMode: "onSubmit",
   });
 
-  const onSubmit = async (data: { [x: string]: any }) => {
-    setLoading(true);
-    await createTender(tenderMap(data), handleSuccessSaved, handelErrorSaved);
+  const onSubmit = (data: { [x: string]: any }) => {
+    _creationTender(tenderMap(data))
   }
 
-  const handleSuccessSaved = (value:Tender) => {
-    setLoading(false);
-    props.onChanged?.(value);
-    dispatch(snackbarActions.updateSnackbacrOpened(true));
-    dispatch(snackbarActions.updateStatusCode(200));
-    const updateString = (props.initialValue) ? "aggiornata" : "salvata"
-    dispatch(snackbarActions.updateMessage("Gara " + updateString + " correttamente"));
-  }
+  const _creationTender = async (tender:Tender) => {
+    const updateString = (props.initialValue?.code) ? "aggiornata" : "salvata"
+    try {
+      setLoading(true)
+      const response = await createTender(tender);
+      setLoading(false);
+      props.onChanged?.(response as Tender);
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(200));
+      dispatch(snackbarActions.updateMessage("Gara " + updateString + " correttamente"));
+    } catch(e){
+      setLoading(false)
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(400));
+      dispatch(snackbarActions.updateMessage("Gara non " + updateString + " correttamente"));
 
-  const handelErrorSaved = (e:any) => {
-    setLoading(false);
+    }
   }
 
   const tenderMap = (data: { [x: string]: any }) => {
@@ -73,7 +70,7 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
       startDate: fromDate,
       endDate: onDate,
       code: (props?.initialValue) ? props.initialValue.code : undefined,
-      status: "CREATED"
+      status: TenderStatusEnum.CREATED
     }
     return tender;
   }
@@ -100,7 +97,7 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
 
           <Grid item container direction="column" rowSpacing={2}>
             {
-              fields.map(field => (
+              (Object.keys(fieldsTender) as Array<FieldTypesTender>).map(field => (
                 <Controller
                   key={field}
                   control={control}
@@ -131,7 +128,12 @@ export default function TenderFormBox(props:TenderFormBoxProps) {
 
         </Stack>
         <Grid item container direction="row" justifyContent={"right"}>
-          <LoadingButton loading={loading} variant={"contained"} type={"submit"}>Salva</LoadingButton>
+          <LoadingButton data-testid={"btn-save-tender"}
+                         loading={loading}
+                         variant={"contained"}
+                         type={"submit"}>
+            Salva
+          </LoadingButton>
         </Grid>
       </Card>
     </form>

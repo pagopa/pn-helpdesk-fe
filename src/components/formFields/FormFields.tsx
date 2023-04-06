@@ -14,7 +14,7 @@ import DateRangePickerComponent from "../dataRangePicker/DataRangePickerComponen
 import { CalendarPickerView } from "@mui/lab";
 import { errorMessages } from "../../helpers/messagesConstants";
 import { format, isSameDay, isBefore, subMonths, isAfter } from "date-fns";
-import { CapAutocompleteField } from "../capAutocompleteFields";
+import { CapAutocompleteField } from "../capAutocompleteFields/CapAutocompleteField";
 import SelectCustomField, {
   OptionCustom,
 } from "../selectField/SelectCustomField";

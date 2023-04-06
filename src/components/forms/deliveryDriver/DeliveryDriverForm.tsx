@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
 
-import {fieldsDriver} from "./fields";
+import {fieldsDriver, FieldTypesDriver} from "./fields";
 import {DeliveryDriver} from "../../../model";
 
 import {LoadingButton} from "@mui/lab";
@@ -25,17 +25,7 @@ interface PropsDeliveryBox{
   onChanged ?: (value:DeliveryDriver) => void
 }
 
-export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
-  const fields = [
-    "taxId",
-    "businessName",
-    "denomination",
-    "registeredOffice",
-    "fiscalCode",
-    "pec",
-    "phoneNumber",
-    "uniqueCode"
-  ];
+export function DeliveryDriverForm(props:PropsDeliveryBox) {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -54,35 +44,36 @@ export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
       ...data,
       fsu: props.fsu
     } as DeliveryDriver
-    setLoading(true);
-    createDeliveryDriver(props.tenderCode, driver, handleSaved, handleError);
+    _saveOrUpdate(driver)
   }
 
-  const handleSaved = (data:DeliveryDriver) => {
-    setLoading(false);
-    props.onChanged?.(data);
-    dispatch(snackbarActions.updateSnackbacrOpened(true));
-    dispatch(snackbarActions.updateStatusCode(200));
-    const updateString = (props.initialValue) ? "aggiornato" : "salvato"
-    dispatch(snackbarActions.updateMessage("Recapitista " + updateString + " correttamente"));
-  }
-
-  const handleError = (e: any) => {
-    let message = "Errore durante il salvataggio del recapitista";
-    if (e instanceof AxiosError){
-      if (e.response?.data?.detail) {
-        message = e.response?.data?.detail
+  const _saveOrUpdate = async (driver:DeliveryDriver) => {
+    try {
+      setLoading(true);
+      await createDeliveryDriver(props.tenderCode, driver);
+      setLoading(false)
+      props.onChanged?.(driver);
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(200));
+      const updateString = (props.initialValue) ? "aggiornato" : "salvato"
+      dispatch(snackbarActions.updateMessage("Recapitista " + updateString + " correttamente"));
+    } catch (e) {
+      let message = "Errore durante il salvataggio del recapitista";
+      if (e instanceof AxiosError){
+        if (e.response?.data?.detail) {
+          message = e.response?.data?.detail
+        }
       }
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateStatusCode(400));
+      dispatch(snackbarActions.updateMessage(message));
+      setLoading(false);
     }
-    dispatch(snackbarActions.updateSnackbacrOpened(true));
-    dispatch(snackbarActions.updateStatusCode(400));
-    dispatch(snackbarActions.updateMessage(message));
-    setLoading(false);
   }
 
 
   return (
-    <form data-testid='deliverydriverform' onSubmit={handleSubmit((data) => onSubmit(data))}>
+    <form onSubmit={handleSubmit((data) => onSubmit(data))}>
       <Card elevation={24}
             sx={{
               width: 1,
@@ -93,12 +84,16 @@ export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
           >
         <Grid container rowSpacing={2}>
           <Grid item>
-            <Typography variant="h5" component="div"> Nuovo FSU </Typography>
+            <Typography variant="h5" component="div">
+              {
+                (props.initialValue?.taxId) ? (props.fsu) ? "Modifica FSU" : "Modifica recapitista" : (props.fsu) ? "Nuovo FSU" : "Nuovo recapitista"
+              }
+            </Typography>
           </Grid>
           <Grid item container>
             <Grid item container spacing={1} alignItems="center">
               {
-                fields.map(field => (
+                (Object.keys(fieldsDriver) as Array<FieldTypesDriver>).map(field => (
                   <Grid
                     item
                     key={fieldsDriver[field].name + "Item"}
@@ -136,7 +131,12 @@ export default function DeliveryDriverFormBox(props:PropsDeliveryBox) {
           </Grid>
         </Grid>
         <Grid item container direction="row" justifyContent={"right"}>
-          <LoadingButton loading={loading} variant={"contained"} type={"submit"}>Salva</LoadingButton>
+          <LoadingButton loading={loading}
+                         data-testid={"btn-save-driver"}
+                         variant={"contained"}
+                         type={"submit"}>
+            Salva
+          </LoadingButton>
         </Grid>
       </Card>
     </form>

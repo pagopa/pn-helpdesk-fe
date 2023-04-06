@@ -1,54 +1,18 @@
 import MainLayout from "../mainLayout/MainLayout";
-import React, {useCallback, useEffect} from "react";
+import React from "react";
 import {Box, Button, Card, Container, Grid, Typography} from "@mui/material";
 import {Add} from "@mui/icons-material";
-import {ModelType, PaginationDataGrid} from "../../components/paginationGrid";
-import {useAppDispatch, useAppSelector} from "../../redux/hook";
-import {getTenders} from "../../redux/tender/actions";
 import {useNavigate} from "react-router-dom";
 import {CREATE_TENDER_ROUTE} from "../../navigation/router.const";
-import {changeFilterTenders} from "../../redux/tender/reducers";
-import {FilterRequest, Tender} from "../../model";
+import {TenderTable} from "../../components/deliveriesDrivers/TenderTable";
+import {useHasPermissions} from "../../hooks/useHasPermissions";
+import {Permission} from "../../model/user-permission";
 
 
-export default function TenderPage({ email }: any){
 
-  const tenderState = useAppSelector(state => state.tender);
-  const dispatch = useAppDispatch();
+export default function TenderPage({ email= "" }: any){
   const navigate = useNavigate();
-
-  const fetchTenders = useCallback(() => {
-    const filter = {
-      ...tenderState.pagination,
-      force: true
-    } as FilterRequest
-    dispatch(getTenders(filter))
-    //eslint-disable-next-line
-  }, [tenderState.pagination])
-
-  useEffect(() => {
-    fetchTenders();
-    // eslint-disable-next-line
-  }, [fetchTenders])
-
-
-  const handleOnPageChange = (page:number) => {
-    const filter = {
-      ...tenderState.pagination,
-      page: page
-    }
-    dispatch(changeFilterTenders(filter))
-  }
-
-  const handleOnPageSizeChange = (pageSize: number) => {
-    const filter = {
-      ...tenderState.pagination,
-      page: 1,
-      tot: pageSize
-    }
-    dispatch(changeFilterTenders(filter))
-  }
-
+  const canWrite = useHasPermissions([Permission.TENDER_WRITE]);
 
 
   return <MainLayout email={email}>
@@ -71,24 +35,27 @@ export default function TenderPage({ email }: any){
               backgroundColor: "background.paper",
             }}
           >
-            <Grid item container justifyContent="right">
-              <Button
-                variant="outlined"
-                startIcon={<Add />}
-                onClick={() => navigate(CREATE_TENDER_ROUTE)}
-                sx={{
-                  "&:hover": { backgroundColor: "action.hover" },
-                }}
-              >
-                Aggiungi
-              </Button>
+            {
+              (canWrite) ?
+                <Grid item container justifyContent="right">
+                  <Button
+                    data-testid={"button-added-tender"}
+                    variant="outlined"
+                    startIcon={<Add />}
+                    onClick={() => navigate(CREATE_TENDER_ROUTE)}
+                    sx={{
+                      "&:hover": { backgroundColor: "action.hover" },
+                    }}
+                  >
+                    Aggiungi
+                  </Button>
+                </Grid>
+                : null
+            }
+
+            <Grid item container>
+              <TenderTable/>
             </Grid>
-            <PaginationDataGrid <Tender> data={tenderState.allData}
-                                            type={ModelType.TENDER}
-                                            loading={tenderState.loading}
-                                            rowId={row => row.code}
-                                            onPageChange={handleOnPageChange}
-                                            onPageSizeChange={handleOnPageSizeChange}/>
           </Card>
         </Grid>
 

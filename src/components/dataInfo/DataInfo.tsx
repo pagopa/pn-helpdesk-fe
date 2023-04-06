@@ -18,7 +18,7 @@ export interface DataInfoProps {
 
 export function DataInfo(props: DataInfoProps){
 
-  return <Grid item container spacing={1}>
+  return <Grid item container spacing={1} data-testid={'dataInfo'}>
     {
       props.rows.map(row => (
         <Grid key={row.id} item container direction="row" width="1">

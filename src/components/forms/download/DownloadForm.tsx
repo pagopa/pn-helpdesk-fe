@@ -16,7 +16,7 @@ interface DownloadBoxProps {
   tenderCode ?: string
 }
 
-export default function DownloadBox(props: DownloadBoxProps) {
+export function DownloadBox(props: DownloadBoxProps) {
   const downloadState = useAppSelector(state => state.uploadAndDownload);
   const dispatch = useAppDispatch();
 
@@ -69,7 +69,7 @@ export default function DownloadBox(props: DownloadBoxProps) {
             {
               (downloadState.download?.loading && downloadState.download.loading) ?
                 <Box sx={{ width: '100%' }}>
-                  <LinearProgress />
+                  <LinearProgress data-testid={"progress-bar-download"} />
                 </Box>
                 :
                 (downloadState.download?.data && downloadState.download.data) ?
@@ -78,14 +78,17 @@ export default function DownloadBox(props: DownloadBoxProps) {
                     <Grid item>
                       <Button onClick={() => {
                         downloadFile(downloadState.download.data || "")
-                      }}>
+                      }} data-testid={"button-download-exist-file"}>
                         Scarica file
                       </Button>
                     </Grid>
                     <Grid>
-                      <IconButton onClick={() => {
-                        dispatch(resetStateDownload())
-                      }}><CloseIcon/> </IconButton>
+                      <IconButton data-testid={"button-cancel-state"}
+                                  onClick={() => {
+                                    dispatch(resetStateDownload())
+                                  }}>
+                        <CloseIcon/>
+                      </IconButton>
                     </Grid>
 
                   </Grid>
@@ -93,6 +96,7 @@ export default function DownloadBox(props: DownloadBoxProps) {
                   :
 
                   <Button id="idButtonDownload"
+                          data-testid={"button-start-download"}
                           variant="contained"
                           size="medium"
                           onClick={handleOnClickDownload}
@@ -105,4 +109,4 @@ export default function DownloadBox(props: DownloadBoxProps) {
       </Grid>
     </Card>
   );
-};
+}

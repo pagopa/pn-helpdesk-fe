@@ -2,7 +2,7 @@ import {DataInfo} from "../DataInfo";
 import {cleanup, screen} from "@testing-library/react";
 import {tenderRowsInfo} from "../rows";
 import React from "react";
-import {Page} from "../../../model";
+import {Page, Tender} from "../../../model";
 import {TenderDTO, TenderDTOStatusEnum} from "../../../api/paperChannel";
 import {reducer} from "../../../mocks/mockReducer";
 
@@ -10,7 +10,7 @@ import {reducer} from "../../../mocks/mockReducer";
 describe("DataInfo", () => {
   const tenderState = {
     loading: false,
-    allData: {} as Page<TenderDTO>,
+    allData: {} as Page<Tender>,
     selected: {code: "1", name: "UPS", startDate: "01-31-2023 00:00", endDate: "01-31-2024 00:00", status: TenderDTOStatusEnum.Created} as TenderDTO
   };
   afterEach(cleanup);

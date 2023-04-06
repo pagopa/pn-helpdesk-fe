@@ -88,6 +88,7 @@ export const getPresignedUrl = createAsyncThunk<
 interface UploadFileRequest{
   url: string,
   file: File,
+  sha: string,
 }
 
 interface UploadFileResponse {
@@ -101,7 +102,7 @@ export const uploadFile = createAsyncThunk<
   DOWNLOAD_UPLOAD_ACTIONS.UPLOAD_FILE,
   async (request, thunkAPI) => {
     try {
-      await apiUpload(request.url, request.file);
+      await apiUpload(request.url, request.file, request.sha);
       return {}
     } catch (e){
       return thunkAPI.rejectWithValue(e);
