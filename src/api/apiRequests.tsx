@@ -13,6 +13,7 @@ import {
   createAggregateType,
   AggregateSummary,
   Pa,
+  searchPaType
 } from "./apiRequestTypes";
 import { http as logExtractoraggregateApiClient } from "./logExtractorAxiosClient";
 import { http as aggregateApiClient } from "./aggregateAxiosClient";
@@ -153,11 +154,11 @@ const getAggregates = async (data: getAggregateParams) => {
     .then((result) => {
       const items = result.data.items.map(
         (agg) =>
-          ({
-            ...agg,
-            createdAt: formatDate(agg.createdAt, true),
-            lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
-          } as AggregateSummary)
+        ({
+          ...agg,
+          createdAt: formatDate(agg.createdAt, true),
+          lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
+        } as AggregateSummary)
       );
 
       return {
@@ -198,6 +199,14 @@ const createAggregate = async (data: createAggregateType) => {
     });
 };
 
+const searchPa = async (data: searchPaType) => {
+  return await aggregateApiClient
+    .searchPa(data)
+    .then((result) => result.data)
+    .catch((error) => {
+      throw error;
+    });
+};
 /**
  * Modify an aggregation
  */
@@ -317,6 +326,7 @@ const apiRequests = {
   getUsagePlans,
   addPa,
   getAssociablePaList,
+  searchPa
 };
 
 export default apiRequests;

@@ -100,7 +100,6 @@ type createAggregateType = {
   description: string;
   usagePlanId: string;
 };
-
 /**
  * @typedef {Object} modifyAggregateType
  */
@@ -151,6 +150,21 @@ type getAggregatesResponse = {
   lastEvaluatedName: string;
   total: number;
 };
+
+/**
+ * @typedef {Object} searchPaType
+ */
+type searchPaType = {
+  limit?: number,
+  lastKey?: string
+}
+
+/**
+ * @typedef {Object} searchPaResponse
+ */
+type searchPaResponse = {
+  items: Array<searchPaType>
+}
 
 /**
  * @typedef {Object} Pa
@@ -257,4 +271,6 @@ export type {
   getAggregateDetailsType,
   aggregateId,
   ErrorResponse,
+  searchPaResponse,
+  searchPaType
 };
