@@ -66,21 +66,38 @@ const search_pa = {
     ]
 }
 
+
 const api_key =
 {
     items: [
-        [
-            {
-                id: "0",
-                name: "key 1",
-                value: "attiva",
-                groups: [
-                    "gruppo key 1"
-                ],
-                status: "CREATED",
-                pdnd: true
-            }
-        ]
+        {
+            id: "001",
+            name: "Key Group 1",
+            groups: "Group 1",
+            state: "attiva",
+            pdnd: "1"
+        },
+        {
+            id: "002",
+            name: "Key Group 2",
+            groups: "Group 2",
+            state: "attiva",
+            pdnd: "0"
+        },
+        {
+            id: "003",
+            name: "Key Group 3",
+            groups: "Group 3",
+            state: "attiva",
+            pdnd: "1"
+        },
+        {
+            id: "004",
+            name: "Key Group 4",
+            groups: "Group 4",
+            state: "attiva",
+            pdnd: "0"
+        }
     ],
     total: 1
 }

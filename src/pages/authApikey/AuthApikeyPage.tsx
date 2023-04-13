@@ -46,7 +46,7 @@ const AuthApikeyPage = ({ email }: any) => {
               </Typography>
             </Grid>
             <Box marginTop={1}>
-              <VirtualKeyTable />
+              <VirtualKeyTable id={"1"} />
             </Box>
           </Grid>
         </Grid>
