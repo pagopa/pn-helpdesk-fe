@@ -319,5 +319,6 @@ export type {
   searchApikeyResponse,
   keyType,
   changePdndResponse,
-  updatePdndRequest, virtualKey
+  updatePdndRequest,
+  virtualKey
 };

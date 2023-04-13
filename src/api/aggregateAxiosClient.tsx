@@ -58,15 +58,14 @@ class Http {
     }));
   }
 
-  searchApiKey<T = searchApikeyResponse>(payload: string): Promise<AxiosResponse<T>> {
+  searchApiKey<T = searchApikeyResponse>(paID: string): Promise<AxiosResponse<T>> {
     if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
       return this._mock(api_key);
     }
-
     return this.http.get(compileRoute({
       path: "api-keys/:id",
       params: {
-        id: payload
+        id: paID
       }
     }));
   }
