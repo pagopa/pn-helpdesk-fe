@@ -22,6 +22,7 @@ import { useHasPermissions } from "../../hooks/useHasPermissions";
 import { Permission } from "../../model/user-permission";
 import { Alert, Grid } from "@mui/material";
 import PaList from "../../components/apikey/PaList";
+import { setVirtualKeys } from "../../redux/virtualKeysSlice";
 
 
 type GroupsTable =
@@ -132,7 +133,17 @@ const GroupsTable = () => {
   ];
 
   const handleSelection = (pa: Pa) => {
-    alert(pa.id)
+    apiRequests.searchApiKey(pa.id)
+      .then(res => {
+        dispatch(setVirtualKeys(res));
+      })
+      .catch(err => {
+        dispatch(snackbarActions.updateSnackbacrOpened(true))
+        dispatch(snackbarActions.updateStatusCode(400))
+        dispatch(snackbarActions.updateMessage("Errore"))
+        console.log("Errore: ", err)
+      })
+      .finally(() => { dispatch(spinnerActions.updateSpinnerOpened(false)) })
   }
   return (
     <>

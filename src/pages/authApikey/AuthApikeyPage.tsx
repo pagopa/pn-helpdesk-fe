@@ -30,26 +30,29 @@ const AuthApikeyPage = ({ email }: any) => {
             Gestione Autorizzazioni Apikey
           </Typography>
         </Grid>
-        <Grid container spacing={8}>
+        <Grid container spacing={10}>
           <Grid item xs={4} style={{ alignItems: 'left', textAlign: "center" }} >
             <Typography gutterBottom variant="h6" component="div">
               Seleziona una PA
             </Typography>
-            <Box marginTop={6}>
+            <Box marginTop={4.4}>
               <GroupsTable />
             </Box>
           </Grid>
-          <Grid item xs={8} justifyContent={'center'}>
+          <Grid item xs={8} justifyContent={'flex-start'}>
             <Grid style={{ textAlign: "center" }}>
-              <Typography gutterBottom variant="h6" component="div" justifyContent={'center'}>
+              <Typography gutterBottom variant="h6" component="div">
                 Virtual Keys
               </Typography>
             </Grid>
-            <VirtualKeyTable />
+            <Box marginTop={1}>
+              <VirtualKeyTable />
+            </Box>
           </Grid>
         </Grid>
       </Box>
     </MainLayout>
   );
+
 };
 export default AuthApikeyPage;

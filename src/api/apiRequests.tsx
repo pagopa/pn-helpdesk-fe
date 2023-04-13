@@ -13,7 +13,8 @@ import {
   createAggregateType,
   AggregateSummary,
   Pa,
-  searchPaType
+  searchPaType,
+  updatePdndRequest
 } from "./apiRequestTypes";
 import { http as logExtractoraggregateApiClient } from "./logExtractorAxiosClient";
 import { http as aggregateApiClient } from "./aggregateAxiosClient";
@@ -199,6 +200,9 @@ const createAggregate = async (data: createAggregateType) => {
     });
 };
 
+/**
+ * Create an aggregation
+ */
 const searchPa = async (data: searchPaType) => {
   return await aggregateApiClient
     .searchPa(data)
@@ -207,6 +211,28 @@ const searchPa = async (data: searchPaType) => {
       throw error;
     });
 };
+
+/**
+ * Create an 
+ */
+const searchApiKey = async (data: string) => {
+  return await aggregateApiClient
+    .searchApiKey(data)
+    .then((result) => result.data)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+const modifyPdnd = async (data: updatePdndRequest) => {
+  return await aggregateApiClient
+    .modifyPdnd(data)
+    .then((result) => result.data)
+    .catch((error) => {
+      throw error;
+    });
+};
+
 /**
  * Modify an aggregation
  */
@@ -326,7 +352,9 @@ const apiRequests = {
   getUsagePlans,
   addPa,
   getAssociablePaList,
-  searchPa
+  searchPa,
+  searchApiKey,
+  modifyPdnd
 };
 
 export default apiRequests;

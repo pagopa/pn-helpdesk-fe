@@ -158,6 +158,24 @@ type searchPaType = {
   limit?: number,
   lastKey?: string
 }
+/**
+ * @typedef {Object} searchApikeyResponse
+ */
+type searchApikeyResponse = {
+  items: Array<virtualKey>,
+  total: number
+}
+
+/**
+ * @typedef {Object} virtualKey
+ */
+type virtualKey = {
+  id: string,
+  name: string,
+  groups: Array<string>,
+  status: string,
+  pdnd: boolean
+}
 
 /**
  * @typedef {Object} searchPaResponse
@@ -165,6 +183,28 @@ type searchPaType = {
 type searchPaResponse = {
   items: Array<searchPaType>
 }
+
+/**
+ * @typedef {Object} updatePdndRequest
+ */
+type updatePdndRequest = {
+  items: Array<KeyType>
+};
+
+/**
+ * @typedef {Object} keyType
+ */
+type keyType = {
+  id: string;
+  pdnd: boolean;
+};
+
+/**
+ * @typedef {Object} changePdndResponse
+ */
+type changePdndResponse = {
+  unprocessedKey: Array<string>
+};
 
 /**
  * @typedef {Object} Pa
@@ -272,5 +312,9 @@ export type {
   aggregateId,
   ErrorResponse,
   searchPaResponse,
-  searchPaType
+  searchPaType,
+  searchApikeyResponse,
+  keyType,
+  changePdndResponse,
+  updatePdndRequest, virtualKey
 };

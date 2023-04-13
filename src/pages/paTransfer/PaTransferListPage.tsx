@@ -52,12 +52,11 @@ const PaTransferListPage = ({ email }: any) => {
 
         getAggregates();
 
-        if(aggParam)
-        {
+        if (aggParam) {
             setInput1Value(aggParam);
             getPas1(null, aggParam);
         }
-        
+
     }, [dispatch, aggParam]);
 
     const handleChangeInput1 = (e: any, value: any) => {
@@ -109,10 +108,10 @@ const PaTransferListPage = ({ email }: any) => {
                 let statusCode = "200";
                 let message = "";
 
-                if(res.processed === checked.length) {
+                if (res.processed === checked.length) {
                     message = "Tutte le PA sono state trasferite con successo";
                 } else {
-                    if(res.processed === 0) {
+                    if (res.processed === 0) {
                         message = "Non è stato possibile trasferire le PA selezionate";
                         statusCode = "400";
                     } else {
@@ -120,7 +119,7 @@ const PaTransferListPage = ({ email }: any) => {
                         statusCode = "202"
                     }
                 }
-            
+
                 dispatch(snackbarActions.updateMessage(message));
                 dispatch(snackbarActions.updateStatusCode(statusCode));
                 dispatch(snackbarActions.updateAutoHideDuration(null));
@@ -137,8 +136,8 @@ const PaTransferListPage = ({ email }: any) => {
                 dispatch(snackbarActions.updateMessage("Errore nel trasferimento delle PA"))
                 console.log("Errore: ", err)
             })
-            .finally(() => {dispatch(spinnerActions.updateSpinnerOpened(false))})
-        
+            .finally(() => { dispatch(spinnerActions.updateSpinnerOpened(false)) })
+
     }
 
     const breadcrumbsLinks = aggParam ? [
@@ -231,15 +230,15 @@ const PaTransferListPage = ({ email }: any) => {
                 <div className="transfer-list" style={{ display: 'flex', gap: 100, marginTop: 50 }}>
                     {list1}
                     <div style={{ width: 150, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                        {(isInput2Disabled || areInputsEqual || !input1Value || !input2Value || checked?.length < 1) 
+                        {(isInput2Disabled || areInputsEqual || !input1Value || !input2Value || checked?.length < 1)
                             ?
-                                <Button variant="contained" disabled>
-                                    Trasferisci<SendIcon fontSize="small" style={{ marginLeft: 10 }} />
-                                </Button>
-                            : 
-                                <Button variant="contained" onClick={handleTransfer}>
-                                    Trasferisci<SendIcon fontSize="small" style={{ marginLeft: 10 }} />
-                                </Button>
+                            <Button variant="contained" disabled>
+                                Trasferisci<SendIcon fontSize="small" style={{ marginLeft: 10 }} />
+                            </Button>
+                            :
+                            <Button variant="contained" onClick={handleTransfer}>
+                                Trasferisci<SendIcon fontSize="small" style={{ marginLeft: 10 }} />
+                            </Button>
                         }
                     </div>
                     {list2}

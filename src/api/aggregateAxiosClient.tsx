@@ -13,7 +13,10 @@ import {
   getAssociatedPaListResponse,
   aggregateId,
   searchPaResponse,
-  searchPaType
+  searchPaType,
+  searchApikeyResponse,
+  changePdndResponse,
+  updatePdndRequest
 } from "./apiRequestTypes";
 import { createAxiosInstance } from "./axiosInstanceCreator";
 import {
@@ -23,7 +26,8 @@ import {
   aggregates_list,
   move_pa,
   pa_list_associated,
-  listKey
+  list_key,
+  api_key
 } from "./mock_agg_response";
 class Http {
   private instance: AxiosInstance | null = null;
@@ -44,7 +48,33 @@ class Http {
   }
 
   searchPa<T = searchPaResponse>(payload: searchPaType): Promise<AxiosResponse<T>> {
-    return this._mock(listKey);
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+      return this._mock(list_key);
+    }
+
+    return this.http.get(compileRoute({
+      path: 'pa',
+      query: payload
+    }));
+  }
+
+  searchApiKey<T = searchApikeyResponse>(payload: string): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+      return this._mock(api_key);
+    }
+
+    return this.http.get(compileRoute({
+      path: "api-keys/:id",
+      params: {
+        id: payload
+      }
+    }));
+  }
+
+  modifyPdnd<T = changePdndResponse>(payload: updatePdndRequest): Promise<AxiosResponse<T>> {
+    return this.http.put(compileRoute({
+      path: "interop"
+    }), payload);
   }
 
   getAggregateDetails<T = getAggregateResponse>(id: string): Promise<AxiosResponse<T>> {

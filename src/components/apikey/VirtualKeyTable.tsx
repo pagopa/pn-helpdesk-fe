@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { ErrorResponse, getAggregateParams } from "../../api/apiRequestTypes";
 import { useSelector, useDispatch } from 'react-redux';
 import { filtersSelector, paginationSelector, aggregatesSelector, setPagination, setAggregates, resetState, setFilters } from '../../redux/aggregateSlice';
+import { VirtualKeySelector } from "../../redux/virtualKeysSlice";
 import { PaginationData } from "../Pagination/types";
 import apiRequests from '../../api/apiRequests';
 import CustomPagination from "../Pagination/Pagination";
@@ -42,6 +43,8 @@ const VirtualKeyTable = () => {
   const confirmDialog = useConfirmDialog();
 
   const filters = useSelector(filtersSelector);
+
+  const virtualKeys = useSelector(VirtualKeySelector);
 
   const paginationData = useSelector(paginationSelector);
 
@@ -94,6 +97,39 @@ const VirtualKeyTable = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
   };
+
+  /*const handleClickUpdate = () => {
+    apiRequests.modifyPdnd()
+      
+      .then(res => {
+      
+      let statusCode = "200";
+      let message = "";
+
+      if(res.unprocessedKey.length === 0) {
+          message = "Operazione effettuata con successo";
+      } else {  
+              message = "Riscontrati problemi nel trasferimento delle seguenti Virtual Keys : " + res.unprocessedKey.toString() + ". Le restanti Virtual Keys selezionate sono state aggiornate con successo";
+              statusCode = "202"
+      }
+  
+      dispatch(snackbarActions.updateMessage(message));
+      dispatch(snackbarActions.updateStatusCode(statusCode));
+      dispatch(snackbarActions.updateAutoHideDuration(null));
+      dispatch(snackbarActions.updateSnackbacrOpened(true));
+
+      //Refresh lists
+
+  })
+  .catch(err => {
+      dispatch(snackbarActions.updateSnackbacrOpened(true))
+      dispatch(snackbarActions.updateStatusCode(400))
+      dispatch(snackbarActions.updateMessage("Errore durante l'aggiornamento delle Virtual Keys"))
+      console.log("Errore: ", err)
+  })
+  .finally(() => {dispatch(spinnerActions.updateSpinnerOpened(false))})
+
+  }*/
 
   const USER_WRITER_COLUMNS: Array<Column<VirtualKeyColumn>> = [
     {
@@ -172,43 +208,7 @@ const VirtualKeyTable = () => {
       groups: "Group 4",
       state: "attiva",
       pdnd: "0"
-    },
-    {
-      id: "001",
-      name: "Key Group 1",
-      groups: "Group 1",
-      state: "attiva",
-      pdnd: "1"
-    },
-    {
-      id: "001",
-      name: "Key Group 1",
-      groups: "Group 1",
-      state: "attiva",
-      pdnd: "1"
-    },
-    {
-      id: "001",
-      name: "Key Group 1",
-      groups: "Group 1",
-      state: "attiva",
-      pdnd: "1"
-    },
-    {
-      id: "001",
-      name: "Key Group 1",
-      groups: "Group 1",
-      state: "attiva",
-      pdnd: "1"
-    },
-    {
-      id: "001",
-      name: "Key Group 1",
-      groups: "Group 1",
-      state: "attiva",
-      pdnd: "1"
-    },
-
+    }
   ];
 
   return (
@@ -233,8 +233,15 @@ const VirtualKeyTable = () => {
             }
           }
         />
-        <Grid direction={"row-reverse"} container marginTop={1}>
-          <Button variant="outlined">Salva modifiche</Button>
+        <Grid direction={"row-reverse"} container marginTop={0.1}>
+          <Button
+            variant="outlined"
+            type="submit"
+          //onClick={handleClickUpdate}
+
+          >
+            Salva modifiche
+          </Button>
         </Grid>
       </Box>
     </>

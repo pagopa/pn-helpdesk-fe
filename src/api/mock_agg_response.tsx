@@ -40,11 +40,29 @@ const aggregate = {
     createdAt: "2022-11-10"
 };
 
-const listKey = {
+const list_key = {
     limit: 1,
     lastKey: "Key"
 }
 
+const api_key =
+{
+    items: [
+        [
+            {
+                id: "0",
+                name: "key 1",
+                value: "attiva",
+                groups: [
+                    "gruppo key 1"
+                ],
+                status: "CREATED",
+                pdnd: true
+            }
+        ]
+    ],
+    total: 1
+}
 const usage_plan_list = {
     items: [
         {
@@ -77,4 +95,4 @@ const move_pa = {
     unprocessedPA: []
 }
 
-export { pa_list, aggregate, pa_list_associated, usage_plan_list, aggregates_list, move_pa, listKey }
+export { pa_list, aggregate, pa_list_associated, usage_plan_list, aggregates_list, move_pa, list_key, api_key }

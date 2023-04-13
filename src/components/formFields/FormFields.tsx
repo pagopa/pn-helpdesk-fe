@@ -476,7 +476,8 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     componentType: "textfield",
     label: "Nome PA",
     hidden: false,
-    Size: 'small'
+    Size: 'small',
+    size: 10
   },
   "Nome Aggregazione": {
     name: "name",
