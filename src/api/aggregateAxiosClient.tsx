@@ -49,7 +49,7 @@ class Http {
 
   searchPa<T = searchPaResponse>(payload: searchPaType): Promise<AxiosResponse<T>> {
     if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
-      return this._mock(search_pa);
+      return this._mock(search_pa(payload.limit!, payload.lastKey, payload.paName));
     }
 
     return this.http.get(compileRoute({

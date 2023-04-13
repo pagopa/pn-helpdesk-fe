@@ -1,28 +1,15 @@
-import { useCallback, useEffect, useReducer } from "react";
-import { Column, Item } from "../table/tableTypes";
-import ItemsTable from '../table/table';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { red } from "@mui/material/colors";
+import { useEffect, useReducer } from "react";
 import * as spinnerActions from "../../redux/spinnerSlice";
 import * as snackbarActions from "../../redux/snackbarSlice";
-import { useNavigate } from "react-router-dom";
-import { ErrorResponse, Pa, getAggregateParams, searchPaResponse, searchPaType } from "../../api/apiRequestTypes";
+import { ErrorResponse, Pa, searchPaResponse } from "../../api/apiRequestTypes";
 import { useSelector, useDispatch } from 'react-redux';
-import { filtersSelector, paginationSelector, aggregatesSelector, setPagination, setAggregates, resetState, setFilters } from '../../redux/aggregateSlice';
 import { PaginationData } from "../Pagination/types";
-import apiRequests from '../../api/apiRequests';
 import CustomPagination from "../Pagination/Pagination";
 import { calculatePages } from "../../helpers/pagination.utility";
 import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
-import * as routes from '../../navigation/router.const';
 import { FieldsProperties } from "../formFields/FormFields";
 import FilterTable from "../forms/filterTable/FilterTable";
-import IconButton from '@mui/material/IconButton';
-import { useHasPermissions } from "../../hooks/useHasPermissions";
-import { Permission } from "../../model/user-permission";
-import { Alert, Grid } from "@mui/material";
 import PaList from "../../components/apikey/PaList";
-import { setVirtualKeys } from "../../redux/virtualKeysSlice";
 
 import apiRequest from '../../api/apiRequests';
 
@@ -36,7 +23,7 @@ type ReducerState = {
     limit: number,
     page: number,
     total: number,
-    lastEvaluatedKey?: string
+    pagesKey: Array<string>,
   },
   filters: {
     paName: string
@@ -45,7 +32,7 @@ type ReducerState = {
 };
 
 
-type PaginationActionType = { type: 'pagination', payload: { limit: number, page: number, total: number }};
+type PaginationActionType = { type: 'pagination', payload: { limit: number, page: number }};
 
 type FilterActionType = { type: 'filter', payload: { paName: string }};
 
@@ -58,9 +45,26 @@ type Action = PaginationActionType | FilterActionType | SelectPaActionType | Fet
 const reducer = (state: ReducerState, action: Action): ReducerState => {
   const {payload, type} = action;
   switch(type) {
-    case 'fetchPa': return {...state, paList: payload.items, paginationData: {...state.paginationData, lastEvaluatedKey: payload.lastEvaluatedKey}}
+    case 'fetchPa': {
+      const {items, total, lastEvaluatedKey} = payload;
+      const pagesKey = [...state.paginationData.pagesKey];
+      if (state.paginationData.pagesKey.findIndex(pageKey => lastEvaluatedKey === pageKey) === -1) {
+        pagesKey.push(lastEvaluatedKey);
+      }
+      return {...state, paList: items, paginationData: {...state.paginationData, pagesKey, total}}
+    }
     case 'filter': return {...state, filters: payload};
-    case 'pagination': return {...state, paginationData: payload};
+    case 'pagination': {
+      const newPaginationData = {...state.paginationData};
+      if (action.payload.limit !== newPaginationData.limit) {
+        newPaginationData.pagesKey = [];
+        newPaginationData.page = 0;
+      }
+
+      newPaginationData.limit = action.payload.limit;
+      newPaginationData.page = action.payload.page;
+      return {...state, paginationData: newPaginationData};
+    }
     case 'selectPa': return {...state, selectedPa: payload};
     default: return {...state};
   }
@@ -72,7 +76,7 @@ const initialState : ReducerState = {
     limit: 10,
     page: 0,
     total: 0,
-    lastEvaluatedKey: ""
+    pagesKey: [],
   },
   filters: {
     paName: ""
@@ -86,24 +90,24 @@ const initialState : ReducerState = {
  */
 const GroupsTable = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const isUserWriter = useHasPermissions([Permission.API_KEY_WRITE]);
-  const navigate = useNavigate();
   const reduxDispatch = useDispatch();
 
   const confirmDialog = useConfirmDialog();
   const { paginationData } = state;
   const { paList } = state;
+  const { filters } = state;
 
   useEffect(() => {
     reduxDispatch(spinnerActions.updateSpinnerOpened(true));
-    const { limit, lastEvaluatedKey } = state.paginationData; 
+    const { limit } = state.paginationData; 
     const { paName } = state.filters;
-    apiRequest.searchPa({limit, paName, lastKey: lastEvaluatedKey})
+    const lastEvaluatedId = paginationData.page === 0 ? "" : paginationData.pagesKey[paginationData.page - 1];
+    apiRequest.searchPa({limit, paName, lastKey: lastEvaluatedId})
       .then(res => {
         dispatch({type:"fetchPa", payload: res});
         reduxDispatch(spinnerActions.updateSpinnerOpened(false));
       })
-  }, [])
+  }, [paginationData.limit, paginationData.page, filters.paName])
 
   /*const fetchAggregates = useCallback(() => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
@@ -138,22 +142,22 @@ const GroupsTable = () => {
   )*/
 
   const handlePaginationChange = (paginationData: PaginationData) => {
-    const {limit, page, total} = paginationData;
-    dispatch({type: 'pagination', payload: {limit, page, total}});
+    const {limit, page} = paginationData;
+    dispatch({type: 'pagination', payload: {limit, page}});
   };
 
 
-  const pagesToShow: Array<number> = [0, 1, 2];
-  // const pagesToShow: Array<number> = calculatePages(
-  //   paginationData.limit,
-  //   paginationData.total,
-  //   Math.min(paginationData.pagesKey.length + 1, 3),
-  //   paginationData.page + 1
-  // );
+  const pagesToShow: Array<number> = calculatePages(
+    paginationData.limit,
+    paginationData.total,
+    Math.min(paginationData.pagesKey.length + 1, 3),
+    paginationData.page + 1
+  );
 
 
   const handleFiltersSubmit = (filters: any) => {
-    // dispatch(setFilters(filters));
+    const {paName} = filters;
+    dispatch({type: "filter", payload: {paName}});
   }
 
   const fields = [FieldsProperties["Nome ListaPa"]];

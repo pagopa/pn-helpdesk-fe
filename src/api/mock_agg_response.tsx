@@ -40,30 +40,19 @@ const aggregate = {
     createdAt: "2022-11-10"
 };
 
-const search_pa = {
-    lastEvaluatedKey: "1",
-    items: [
-        {
-            id: "001",
-            name: "Comune di Camposano",
-        },
-        {
-            id: "002",
-            name: "Comune di Cicciano"
-        },
-        {
-            id: "003",
-            name: "Comune di Nola"
-        },
-        {
-            id: "004",
-            name: "Comune di Napoli"
-        },
-        {
-            id: "005",
-            name: "Comune di Casamarciano"
-        }
-    ]
+const search_pa = (limit:number, lastKey:string = "1", name: string = "") => {
+    let items = Array.from({ length: limit }, (v, k) => ({id: k, name: "Comune indice " + (k * Number(lastKey))})); 
+    let total = items.length + 12;
+    if(name != "") {
+        items = items.filter((item) => item.name.includes(name));
+        total = items.length
+    }
+    return {
+        lastEvaluatedKey: String(Number(lastKey) + 1),
+        items: items,
+        total: total
+    }
+    
 }
 
 const api_key =

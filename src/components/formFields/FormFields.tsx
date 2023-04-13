@@ -472,7 +472,7 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
     },
   },
   "Nome ListaPa": {
-    name: "name",
+    name: "paName",
     componentType: "textfield",
     label: "Nome PA",
     hidden: false,

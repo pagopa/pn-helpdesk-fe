@@ -183,7 +183,8 @@ type virtualKey = {
  */
 type searchPaResponse = {
   items: Array<Pa>,
-  lastEvaluatedKey: string
+  lastEvaluatedKey: string,
+  total: number
 }
 
 /**
