@@ -2,7 +2,6 @@ import { formatDate } from "../helpers/formatter.utility";
 import {
   getLogsProcessesType,
   getNotificationsInfoLogsType,
-  getNotificationsMonthlyStatsLogsType,
   getPersonIdType,
   getPersonTaxIdType,
   getPersonsLogsType,
@@ -70,23 +69,6 @@ const getPersonsLogs = async (data: getPersonsLogsType) => {
 const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
   return await logExtractoraggregateApiClient
     .getNotificationsInfoLogs(data)
-    .then((result: any) => {
-      return result;
-    })
-    .catch((error: any) => {
-      throw error;
-    });
-};
-
-/**
- * Download the logs' archive containing the notifications sent in a specific month
- * @param {getNotificationsMonthlyStatsLogsType} data
- */
-const getNotificationsMonthlyStatsLogs = async (
-  data: getNotificationsMonthlyStatsLogsType
-) => {
-  return await logExtractoraggregateApiClient
-    .getNotificationsMonthlyStatsLogs(data)
     .then((result: any) => {
       return result;
     })
@@ -302,7 +284,6 @@ const apiRequests = {
   getPersonTaxId,
   getPersonsLogs /*getOperatorsLogs,*/,
   getNotificationsInfoLogs,
-  getNotificationsMonthlyStatsLogs,
   getLogsProcesses,
   getStatus,
   getEvents,

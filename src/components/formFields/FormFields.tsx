@@ -27,11 +27,6 @@ let MenuItems: { [key: string]: Array<string> } = {
   "Ottieni EncCF": ["ticketNumber", "taxId", "recipientType"],
   "Ottieni CF": ["personId"],
   "Ottieni notifica": ["ticketNumber", "iun"],
-  "Ottieni notifiche di una PA": [
-    "ticketNumber",
-    "publicAuthorityName",
-    "monthInterval",
-  ],
   // use case 9 dissabled for now
   // "Ottieni log completi + organizzazione": ["ticketNumber", "taxId", "Time interval"],
   "Ottieni log completi": ["ticketNumber", "taxId", "iun", "personId"],
