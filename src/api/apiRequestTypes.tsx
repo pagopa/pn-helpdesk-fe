@@ -156,7 +156,8 @@ type getAggregatesResponse = {
  */
 type searchPaType = {
   limit?: number,
-  lastKey?: string
+  lastKey?: string,
+  paName?: string
 }
 /**
  * @typedef {Object} searchApikeyResponse
@@ -181,7 +182,8 @@ type virtualKey = {
  * @typedef {Object} searchPaResponse
  */
 type searchPaResponse = {
-  items: Array<searchPaType>
+  items: Array<Pa>,
+  lastEvaluatedKey: string
 }
 
 /**

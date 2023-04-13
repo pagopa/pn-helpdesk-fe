@@ -40,9 +40,30 @@ const aggregate = {
     createdAt: "2022-11-10"
 };
 
-const list_key = {
-    limit: 1,
-    lastKey: "Key"
+const search_pa = {
+    lastEvaluatedKey: "1",
+    items: [
+        {
+            id: "001",
+            name: "Comune di Camposano",
+        },
+        {
+            id: "002",
+            name: "Comune di Cicciano"
+        },
+        {
+            id: "003",
+            name: "Comune di Nola"
+        },
+        {
+            id: "004",
+            name: "Comune di Napoli"
+        },
+        {
+            id: "005",
+            name: "Comune di Casamarciano"
+        }
+    ]
 }
 
 const api_key =
@@ -95,4 +116,4 @@ const move_pa = {
     unprocessedPA: []
 }
 
-export { pa_list, aggregate, pa_list_associated, usage_plan_list, aggregates_list, move_pa, list_key, api_key }
+export { pa_list, aggregate, pa_list_associated, usage_plan_list, aggregates_list, move_pa, search_pa, api_key }

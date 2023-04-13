@@ -26,7 +26,7 @@ import {
   aggregates_list,
   move_pa,
   pa_list_associated,
-  list_key,
+  search_pa,
   api_key
 } from "./mock_agg_response";
 class Http {
@@ -49,7 +49,7 @@ class Http {
 
   searchPa<T = searchPaResponse>(payload: searchPaType): Promise<AxiosResponse<T>> {
     if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
-      return this._mock(list_key);
+      return this._mock(search_pa);
     }
 
     return this.http.get(compileRoute({

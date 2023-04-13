@@ -14,25 +14,22 @@ type Props = {
 const PaList = ({ paList, onSelection }: Props) => {
     return (
         <>
-            <PaginatedComponent<Pa> list={paList} defaultLimit={10} displayedPage={3} >
-                {
-                    (slicedList) => slicedList.length > 0 && <List data-testid="paList">
-                        {slicedList.map((pa) => (
-                            <ListItemButton
-                                style={{ backgroundColor: 'white', cursor: 'pointer' }}
-                                onClick={() => onSelection(pa)}
-                                key={`list-${pa.id}`}
-                                divider={true}
-                                data-testid="paList-item"
-                            >
-                                <ListItemText
-                                    primary={pa.name}
-                                />
-                            </ListItemButton >
-                        ))}
-                    </List>
-                }
-            </PaginatedComponent>
+            
+                <List data-testid="paList">
+                    {paList.map((pa) => (
+                        <ListItemButton
+                            style={{ backgroundColor: 'white', cursor: 'pointer' }}
+                            onClick={() => onSelection(pa)}
+                            key={`list-${pa.id}`}
+                            divider={true}
+                            data-testid="paList-item"
+                        >
+                            <ListItemText
+                                primary={pa.name}
+                            />
+                        </ListItemButton >
+                    ))}
+                </List>
         </>
     );
 }

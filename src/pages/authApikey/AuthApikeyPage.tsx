@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MainLayout from "../mainLayout/MainLayout";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
@@ -14,7 +14,7 @@ import { Permission } from "../../model/user-permission";
  * @component
  */
 const AuthApikeyPage = ({ email }: any) => {
-
+  const [selectedPa, setSelectedPa] = useState(null);
   const navigate = useNavigate();
   const handleClickNew = () => {
     navigate(routes.CREATE_AGGREGATE);
