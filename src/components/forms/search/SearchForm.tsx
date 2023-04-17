@@ -347,8 +347,8 @@ const SearchForm = () => {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
-            "x-pagopa-uid": uuid(),
-            "x-pagopa-cx-type": "BO",
+            "x-pagopa-pn-uid": uuid(),
+            "x-pagopa-pn-cx-type": "BO",
         },
         body: payload
     })
