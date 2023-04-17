@@ -21,12 +21,12 @@ interface CostFormProps {
   driverCode: string
   cost ?: Cost,
   onSave : () => void,
-  onCancel: () => void
+  onCancel ?: () => void
 }
 
-export default function CostsForm(props:CostFormProps) {
+export function CostsForm(props:CostFormProps) {
   const [fields, setFields] = useState<string[]>((props?.cost?.type) ? fieldsOfType[props?.cost?.type] : ["type"]);
-  const [typeOfCost, setTypeOfCost] = useState<String | undefined>( undefined);
+  const [typeOfCost, setTypeOfCost] = useState<string | undefined>( undefined);
   const [submitting, setSubmitting] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -70,11 +70,13 @@ export default function CostsForm(props:CostFormProps) {
       cap: data.cap,
       productType: (data.type === "NATIONAL") ? data!.nationalProductType : data!.internationalProductType
     } as CostDTO
-    setSubmitting(true);
-    createCost(props.tenderCode, props.driverCode, value, (response) => {
+
+    try {
+      setSubmitting(true);
+      await createCost(props.tenderCode, props.driverCode, value)
       setSubmitting(false);
       props.onSave?.();
-    }, (e) => {
+    } catch(e) {
       let message = "Errore durante il salvataggio del costo"
       let status = 400
       if (e instanceof AxiosError && e.response?.status){
@@ -87,7 +89,9 @@ export default function CostsForm(props:CostFormProps) {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(status));
       dispatch(snackbarActions.updateMessage(message));
-    })
+    }
+
+
   }
 
   return (
@@ -132,8 +136,12 @@ export default function CostsForm(props:CostFormProps) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onCancel}>Annulla</Button>
-        <LoadingButton loading={submitting} autoFocus onClick={handleSubmit(onSubmit)}>
+        <Button onClick={props?.onCancel} variant="outlined" >Annulla</Button>
+        <LoadingButton variant="outlined"
+                       data-testid={"btn-save-cost"}
+                       loading={submitting}
+                       autoFocus
+                       onClick={handleSubmit(onSubmit)} >
           Salva
         </LoadingButton>
       </DialogActions>

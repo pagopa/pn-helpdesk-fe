@@ -1,5 +1,5 @@
 import {Button, Card, Grid, Typography} from "@mui/material";
-import DeliveryDriverFormBox from "../forms/deliveryDriver/DeliveryDriverForm";
+import {DeliveryDriverForm} from "../forms/deliveryDriver/DeliveryDriverForm";
 import React, {useCallback, useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {
@@ -25,6 +25,7 @@ export function DriverAndCostForm(props: DriverAndCostFormProps){
   const driverStore = useAppSelector(state => state.deliveries);
   const costSelected = useAppSelector(state => state.costs.selectedCost);
   const dispatch = useAppDispatch();
+
 
   const fetchCorrectDriver = useCallback(() => {
     if (props.fsu && props.tenderCode){
@@ -53,21 +54,13 @@ export function DriverAndCostForm(props: DriverAndCostFormProps){
     //eslint-disable-next-line
   }, [driverStore.detail])
 
-  const handleOnClickPositive = () => {
-    dispatch(resetSelectedCost())
-  }
-
-  const handleOnSavedDriver = (data:DeliveryDriver) => {
-    dispatch(setDetailDriver(data));
-  }
-
   return <Grid item container rowSpacing={2}>
     <Grid item>
-      <DeliveryDriverFormBox fsu={props.fsu}
-                             key={"DRIVER_"+driverStore?.detail?.taxId}
-                             onChanged={handleOnSavedDriver}
-                             tenderCode={props.tenderCode}
-                             initialValue={driverStore.detail} />
+      <DeliveryDriverForm fsu={props.fsu}
+                          key={"DRIVER_"+driverStore?.detail?.taxId}
+                          onChanged={(data:DeliveryDriver) => dispatch(setDetailDriver(data))}
+                          tenderCode={props.tenderCode}
+                          initialValue={driverStore.detail} />
     </Grid>
     {
       (driverStore.detail?.taxId) ?
@@ -106,8 +99,7 @@ export function DriverAndCostForm(props: DriverAndCostFormProps){
                     driverCode={driverStore.detail?.taxId}
                     fsu={props.fsu}
                     open={!!(costSelected)}
-                    onClickNegative={() => dispatch(resetSelectedCost())}
-                    onClickPositive={handleOnClickPositive}/>
+                    onClickPositive={() => dispatch(resetSelectedCost())}/>
         </>
           : null
     }

@@ -30,6 +30,7 @@ export default function SelectCustomField(props: Props){
       <Select
         labelId={field.label}
         id={field.label}
+        data-testid={field.name+"-select-custom"}
         label={field.label}
         onChange={onChange}
         defaultValue={keySelected ?? ""}

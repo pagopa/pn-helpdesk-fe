@@ -1,12 +1,12 @@
-import {useAppDispatch, useAppSelector} from "../../redux/hook";
-import {ModelType, PaginationDataGrid} from "../paginationGrid";
-import {DeliveryDriver, Page} from "../../model";
-import {Grid} from "@mui/material";
-import React, {useCallback, useEffect} from "react";
-import {changeFilterDrivers, setDialogCosts} from "../../redux/deliveriesDrivers/reducers";
-import {getAllDrivers} from "../../redux/deliveriesDrivers/actions";
-import {DriverCostsDialog} from "../dialogs";
-import {resetStateCost} from "../../redux/costs/reducers";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { ModelType, PaginationDataGrid } from "../paginationGrid";
+import { DeliveryDriver, Page } from "../../model";
+import { Grid } from "@mui/material";
+import React, { useCallback, useEffect } from "react";
+import { changeFilterDrivers, setDialogCosts } from "../../redux/deliveriesDrivers/reducers";
+import { getAllDrivers } from "../../redux/deliveriesDrivers/actions";
+import { DriverCostsDialog } from "../dialogs";
+import { resetStateCost } from "../../redux/costs/reducers";
 
 interface DeliveriesDriverTableProps{
   tenderCode: string,
@@ -32,7 +32,7 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
   }, [fetchDrivers])
 
   const handleOnPageChange = (page:number) => {
-    dispatch(changeFilterDrivers({...driversStore.pagination, page:page}))
+    dispatch(changeFilterDrivers({...driversStore.pagination, page:page+1}))
   }
 
   const handleOnPageSizeChange = (size:number) => {
@@ -40,11 +40,11 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
   }
 
 
-  return <Grid item container>
+  return <Grid item container data-testid={'delivery-driver-table'}>
     <PaginationDataGrid <DeliveryDriver> data={(driversStore?.allData) ? driversStore?.allData : {} as Page<DeliveryDriver> }
                                          type={(!props.withActions) ? ModelType.DELIVERY_DRIVER : ModelType.DELIVERY_DRIVER_WITH_ACTIONS}
                                          loading={false}
-                                         rowId={row => row!.taxId}
+                                         rowId={row => row.taxId}
                                          onPageChange={handleOnPageChange}
                                          onPageSizeChange={handleOnPageSizeChange}/>
 
@@ -56,7 +56,9 @@ export function DeliveriesDriverTable(props:DeliveriesDriverTableProps){
                            onClickNegative={() => {
                              dispatch(setDialogCosts(undefined))
                              dispatch(resetStateCost())
-                           }} onClickPositive={() => {}} />: null
+                           }}
+                           onClickPositive={() => {}} />
+        : null
     }
 
   </Grid>

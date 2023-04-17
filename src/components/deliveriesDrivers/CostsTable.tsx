@@ -3,9 +3,9 @@ import {ModelType, PaginationDataGrid} from "../paginationGrid";
 import {Page} from "../../model";
 import {Grid} from "@mui/material";
 import React, {useCallback, useEffect} from "react";
-import {changeFilterDrivers} from "../../redux/deliveriesDrivers/reducers";
 import {getCosts} from "../../redux/costs/actions";
 import {CostDTO} from "../../api/paperChannel";
+import {changePaginationCost} from "../../redux/costs/reducers";
 
 interface CostsTableProps{
   tenderCode: string,
@@ -31,11 +31,12 @@ export function CostsTable(props:CostsTableProps){
   }, [fetchCosts])
 
   const handleOnPageChange = (page:number) => {
-    dispatch(changeFilterDrivers({...costsStore.pagination, page:page}))
+
+    dispatch(changePaginationCost({...costsStore.pagination, page:page+1}))
   }
 
   const handleOnPageSizeChange = (size:number) => {
-    dispatch(changeFilterDrivers({...costsStore.pagination, page:1, tot:size}))
+    dispatch(changePaginationCost({...costsStore.pagination, page:1, tot:size}))
   }
 
   return <Grid item>

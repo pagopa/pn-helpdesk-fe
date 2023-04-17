@@ -2,25 +2,13 @@ import { FieldsProps } from "../../formFields/FormFields";
 import {regex} from "../../../helpers/validations";
 import {errorMessages} from "../../../helpers/messagesConstants";
 
+const fields = ["taxId", "businessName", "denomination", "registeredOffice", "fiscalCode", "pec", "phoneNumber", "uniqueCode"] as const;
+export type FieldTypesDriver = typeof fields[number];
 
+export type FieldsDriver = Record<FieldTypesDriver, FieldsProps>;
 
-export const fieldsDriver: { [key:string]: FieldsProps } = {
-  "businessName": {
-    name: "businessName",
-    componentType: "textfield",
-    label: "Ragione Sociale",
-    hidden: false,
-    size: 0.5,
-    rules: {
-      pattern: {
-        value: regex.ALPHA_NUMERIC_WITHOUT_SPECIAL_CHAR_PATTERN,
-        message: errorMessages.INCORRECT,
-      },
-      required: errorMessages.REQUIRED,
-    },
-    required: true,
-  },
-  "taxId": {
+export const fieldsDriver: FieldsDriver = {
+  taxId: {
     name: "taxId",
     componentType: "textfield",
     label: "Partita Iva",
@@ -44,7 +32,18 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "denomination": {
+  businessName: {
+    name: "businessName",
+    componentType: "textfield",
+    label: "Ragione Sociale",
+    hidden: false,
+    size: 0.5,
+    rules: {
+      required: errorMessages.REQUIRED,
+    },
+    required: true,
+  },
+  denomination: {
     name: "denomination",
     componentType: "textfield",
     label: "Denominazione",
@@ -58,7 +57,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: false,
   },
-  "registeredOffice": {
+  registeredOffice: {
     name: "registeredOffice",
     componentType: "textfield",
     label: "Sede legale",
@@ -72,7 +71,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: false,
   },
-  "fiscalCode": {
+  fiscalCode: {
     name: "fiscalCode",
     componentType: "textfield",
     label: "Codice Fiscale",
@@ -95,8 +94,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: false,
   },
-
-  "pec": {
+  pec: {
     name: "pec",
     componentType: "textfield",
     label: "Pec",
@@ -119,7 +117,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: false,
   },
-  "phoneNumber": {
+  phoneNumber: {
     name: "phoneNumber",
     componentType: "textfield",
     label: "Numero telefonico",
@@ -142,7 +140,7 @@ export const fieldsDriver: { [key:string]: FieldsProps } = {
     },
     required: false,
   },
-  "uniqueCode": {
+  uniqueCode: {
     name: "uniqueCode",
     componentType: "textfield",
     label: "Codice univoco",

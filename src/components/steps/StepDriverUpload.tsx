@@ -1,5 +1,5 @@
-import DownloadBox from "../forms/download/DownloadForm";
-import UploadBox from "../forms/upload/UploadForm";
+import {DownloadBox} from "../forms/download/DownloadForm";
+import {UploadBox} from "../forms/upload/UploadForm";
 import {Button, Card, Chip, Grid, Stack, Typography} from "@mui/material";
 import {changeKey, goFinalStep} from "../../redux/formTender/reducers";
 import React, {useEffect} from "react";
@@ -57,25 +57,30 @@ export function StepDriverUpload(props:{tenderCode:string}){
 
     {
       (stateUpload.status === UPLOAD_STATUS_ENUM.ERROR_VALIDATION_EXCEL) ?
-        <Grid item container>
+        <Grid item container data-testid={"error-log-box"}>
           <ErrorLog error={stateUpload.error as ErrorsNotify} />
         </Grid>
         : null
     }
 
     <Grid item container direction="row" justifyContent="space-between">
-      <Button onClick={() => dispatch(changeKey({key:0}))} variant={"outlined"}>Torna a Informazioni gara</Button>
+      <Button onClick={() => dispatch(changeKey({key:0}))}
+              data-testid={"btn-back-tender"}
+              variant={"outlined"}>Torna a Informazioni gara</Button>
 
       {
         (stateUpload.status === UPLOAD_STATUS_ENUM.DATA_SAVED) ?
           <Button variant={"contained"}
+                  data-testid={"btn-next"}
                   onClick={() => dispatch(goFinalStep())}
                   type={"submit"} >
             Avanti
           </Button>
           :
           <LoadingButton loading={stateUpload.status === UPLOAD_STATUS_ENUM.NOTIFY_IN_PROGRESS} variant={"contained"}
-                         onClick={notifyUploaded} disabled={stateUpload.status !== UPLOAD_STATUS_ENUM.UPLOADED_FILE_S3} >
+                         data-testid={"btn-save"}
+                         onClick={notifyUploaded}
+                         disabled={stateUpload.status !== UPLOAD_STATUS_ENUM.UPLOADED_FILE_S3} >
             Salva
           </LoadingButton>
       }
@@ -103,12 +108,16 @@ function ErrorLog(props:{error:ErrorsNotify}) {
       <Grid container spacing={1}>
         <Grid item container >
           <Stack direction={"column"} spacing={2} >
-            <Typography variant="subtitle1">
+            <Typography variant="subtitle1" data-testid={"detail-error-message"}>
               {props.error.detail}
             </Typography>
             {
               props.error.errors.map(errorCell => (
-                <Stack direction={"row"} alignItems={"center"} spacing={3}>
+                <Stack direction={"row"}
+                       key={errorCell.message+errorCell.row+errorCell.col}
+                       data-testid={'error-group'}
+                       alignItems={"center"}
+                       spacing={3}>
                   <Chip label="Errore" color="error"/>
                   <Typography>
                     {errorCell.message} ({errorCell.row}, {errorCell.col})

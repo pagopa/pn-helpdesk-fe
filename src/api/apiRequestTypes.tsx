@@ -47,16 +47,7 @@ type getNotificationsInfoLogsType = {
 };
 
 /**
- * @typedef {Object} getNotificationsMonthlyStatsLogsType
- */
-type getNotificationsMonthlyStatsLogsType = {
-  ticketNumber: string;
-  publicAuthorityName: number;
-  referenceMonth: string;
-};
-
-/**
- * @typedef {Object} getNotificationsMonthlyStatsLogsType
+ * @typedef {Object} getLogsProcessesType
  */
 type getLogsProcessesType = {
   traceId: string;
@@ -238,7 +229,6 @@ export type {
   getPersonsLogsType,
   getOperatorsLogsType,
   getNotificationsInfoLogsType,
-  getNotificationsMonthlyStatsLogsType,
   getLogsProcessesType,
   getEventsType,
   getSessionLogsType,
