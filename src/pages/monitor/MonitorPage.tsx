@@ -274,6 +274,7 @@ const MonitorPage = () => {
             <Grid item>
               <DateTimePicker
                 disableFuture
+                maxTime={new Date()}
                 label="Data e ora evento"
                 value={modalEventDate}
                 onChange={(e) => handleChange(e)}
