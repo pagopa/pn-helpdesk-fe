@@ -1,4 +1,4 @@
-import { getAggregatesResponse } from "./apiRequestTypes";
+import { Pa, getAggregatesResponse } from "./apiRequestTypes";
 
 const aggregates_list: getAggregatesResponse = {
     lastEvaluatedId: "agg10",
@@ -40,21 +40,23 @@ const aggregate = {
     createdAt: "2022-11-10"
 };
 
-const search_pa = (limit:number, lastKey:string = "1", name: string = "") => {
-    let items = Array.from({ length: limit }, (v, k) => ({id: k, name: "Comune indice " + (k * Number(lastKey))})); 
+const search_pa = (limit:number, lastKey:string, name: string = "") => {
+    lastKey = lastKey|| "1";
+    let items: Array<Pa> = Array.from({ length: limit }, (v, index) => ({id: String(index), name: "Comune indice " + (index * Number(lastKey))})); 
     let total = items.length + 12;
+
     if(name != "") {
         items = items.filter((item) => item.name.includes(name));
         total = items.length
     }
+
     return {
-        lastEvaluatedKey: String(Number(lastKey) + 1),
+        lastEvaluatedId: String(Number(lastKey) + 1),
         items: items,
         total: total
     }
     
 }
-
 
 const api_key =
 {
@@ -63,33 +65,73 @@ const api_key =
             id: "001",
             name: "Key Group 1",
             groups: "Group 1",
-            state: "attiva",
-            pdnd: "1"
+            status: "attiva",
+            pdnd: true
         },
         {
             id: "002",
             name: "Key Group 2",
             groups: "Group 2",
-            state: "attiva",
-            pdnd: "0"
+            status: "attiva",
+            pdnd: false
         },
         {
             id: "003",
             name: "Key Group 3",
             groups: "Group 3",
-            state: "attiva",
-            pdnd: "1"
+            status: "attiva",
+            pdnd: true
         },
         {
             id: "004",
             name: "Key Group 4",
             groups: "Group 4",
-            state: "attiva",
-            pdnd: "0"
-        }
+            status: "attiva",
+            pdnd: false
+        },
+        {
+            id: "005",
+            name: "Key Group 5",
+            groups: "Group 5",
+            status: "rotata",
+            pdnd: false
+        },
+        {
+            id: "006",
+            name: "Key Group 6",
+            groups: "Group 6",
+            status: "rotata",
+            pdnd: false
+        },
+        {
+            id: "007",
+            name: "Key Group 7",
+            groups: "Group 7",
+            status: "attiva",
+            pdnd: false
+        },
+        {
+            id: "008",
+            name: "Key Group 8",
+            groups: "Group 8",
+            status: "attiva",
+            pdnd: true
+        },
+        {
+            id: "009",
+            name: "Key Group 9",
+            groups: "Group 9",
+            status: "attiva",
+            pdnd: true
+        },
     ],
     total: 1
 }
+
+const modify_pdnd = {
+    unprocessedKey: ["0001"]
+};
+
 const usage_plan_list = {
     items: [
         {
@@ -122,4 +164,4 @@ const move_pa = {
     unprocessedPA: []
 }
 
-export { pa_list, aggregate, pa_list_associated, usage_plan_list, aggregates_list, move_pa, search_pa, api_key }
+export { pa_list, aggregate, pa_list_associated, usage_plan_list, aggregates_list, move_pa, search_pa, api_key, modify_pdnd }

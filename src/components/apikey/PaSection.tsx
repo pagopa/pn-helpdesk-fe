@@ -1,21 +1,16 @@
 import { useEffect, useReducer } from "react";
 import * as spinnerActions from "../../redux/spinnerSlice";
 import * as snackbarActions from "../../redux/snackbarSlice";
-import { ErrorResponse, Pa, searchPaResponse } from "../../api/apiRequestTypes";
-import { useSelector, useDispatch } from 'react-redux';
+import { Pa, searchPaResponse } from "../../api/apiRequestTypes";
+import { useDispatch } from 'react-redux';
 import { PaginationData } from "../Pagination/types";
 import CustomPagination from "../Pagination/Pagination";
 import { calculatePages } from "../../helpers/pagination.utility";
-import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
 import { FieldsProperties } from "../formFields/FormFields";
 import FilterTable from "../forms/filterTable/FilterTable";
-import PaList from "../../components/apikey/PaList";
-
 import apiRequest from '../../api/apiRequests';
+import PaListWithSelection from "../paList/PaListWithSelection";
 
-
-type GroupsTable =
-  | 'name'
 
 type ReducerState = {
   paList: Array<Pa>,
@@ -27,35 +22,32 @@ type ReducerState = {
   },
   filters: {
     paName: string
-  },
-  selectedPa: string
+  }
 };
-
 
 type PaginationActionType = { type: 'pagination', payload: { limit: number, page: number }};
 
 type FilterActionType = { type: 'filter', payload: { paName: string }};
 
-type SelectPaActionType = { type: 'selectPa', payload: string };
-
 type FetchPaActionType = { type: 'fetchPa', payload: searchPaResponse};
 
-type Action = PaginationActionType | FilterActionType | SelectPaActionType | FetchPaActionType;
+type Action = PaginationActionType | FilterActionType | FetchPaActionType;
 
 const reducer = (state: ReducerState, action: Action): ReducerState => {
   const {payload, type} = action;
   switch(type) {
     case 'fetchPa': {
-      const {items, total, lastEvaluatedKey} = payload;
+      const {items, total, lastEvaluatedId} = payload;
       const pagesKey = [...state.paginationData.pagesKey];
-      if (state.paginationData.pagesKey.findIndex(pageKey => lastEvaluatedKey === pageKey) === -1) {
-        pagesKey.push(lastEvaluatedKey);
+      if (state.paginationData.pagesKey.findIndex(pageKey => lastEvaluatedId === pageKey) === -1) {
+        pagesKey.push(lastEvaluatedId);
       }
       return {...state, paList: items, paginationData: {...state.paginationData, pagesKey, total}}
     }
     case 'filter': return {...state, filters: payload};
     case 'pagination': {
       const newPaginationData = {...state.paginationData};
+      //Reset pagination
       if (action.payload.limit !== newPaginationData.limit) {
         newPaginationData.pagesKey = [];
         newPaginationData.page = 0;
@@ -65,8 +57,10 @@ const reducer = (state: ReducerState, action: Action): ReducerState => {
       newPaginationData.page = action.payload.page;
       return {...state, paginationData: newPaginationData};
     }
-    case 'selectPa': return {...state, selectedPa: payload};
-    default: return {...state};
+    default: {
+      console.error("Invalid action type");
+      return {...state};
+    }
   }
 }
 
@@ -80,72 +74,58 @@ const initialState : ReducerState = {
   },
   filters: {
     paName: ""
-  },
-  selectedPa: ""
+  }
 }
 
+
+type Props = {
+  onSelect: (id:string) => void,
+  selectedPa: string
+}
 /**
  * GroupsTable page
  * @component
  */
-const GroupsTable = () => {
+const PaSection = ({onSelect, selectedPa} : Props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const reduxDispatch = useDispatch();
 
-  const confirmDialog = useConfirmDialog();
   const { paginationData } = state;
   const { paList } = state;
   const { filters } = state;
 
   useEffect(() => {
+    let isFetching = true;
     reduxDispatch(spinnerActions.updateSpinnerOpened(true));
     const { limit } = state.paginationData; 
     const { paName } = state.filters;
     const lastEvaluatedId = paginationData.page === 0 ? "" : paginationData.pagesKey[paginationData.page - 1];
-    apiRequest.searchPa({limit, paName, lastKey: lastEvaluatedId})
+    apiRequest.searchPa({limit, paName, lastEvaluatedId})
       .then(res => {
-        dispatch({type:"fetchPa", payload: res});
-        reduxDispatch(spinnerActions.updateSpinnerOpened(false));
+        if(isFetching) {
+          dispatch({type:"fetchPa", payload: res});
+          reduxDispatch(spinnerActions.updateSpinnerOpened(false));
+        }
       })
+      .catch(
+        err => {
+          if(isFetching) {
+            reduxDispatch(snackbarActions.updateSnackbacrOpened(true));
+            reduxDispatch(snackbarActions.updateStatusCode("400"));
+            reduxDispatch(snackbarActions.updateMessage("Non è stato possibile ottenere i dati richiesti"));
+            reduxDispatch(spinnerActions.updateSpinnerOpened(false));
+          }
+        }
+      );
+
+    return () => {isFetching = false}
   }, [paginationData.limit, paginationData.page, filters.paName])
 
-  /*const fetchAggregates = useCallback(() => {
-    dispatch(spinnerActions.updateSpinnerOpened(true));
-    //take the lastEvaluated id and name from the pagesKey array using page as index.
-    const lastEvaluatedId = paginationData.page === 0 ? "" : paginationData.pagesKey[paginationData.page - 1].lastEvaluatedId;
-    const lastEvaluatedName = paginationData.page === 0 ? "" : paginationData.pagesKey[paginationData.page - 1].lastEvaluatedName;
-    let params: getAggregateParams = {
-      name: filters.name,
-      limit: paginationData.limit,
-      lastEvaluatedId,
-      lastEvaluatedName
-    }
-    apiRequests.getAggregates(params)
-      .then(
-        res => {
-          dispatch(setAggregates(res));
-        }
-      ).catch(
-        err => {
-          dispatch(snackbarActions.updateSnackbacrOpened(true));
-          dispatch(snackbarActions.updateStatusCode("400"));
-          dispatch(snackbarActions.updateMessage("Non è stato possibile ottenere i dati richiesti"));
-          dispatch(resetState());
-        }
-      ).finally(() => { dispatch(spinnerActions.updateSpinnerOpened(false)) })
-  }, [filters.name, paginationData.page, paginationData.limit, dispatch, paginationData.pagesKey])
-
-  useEffect(
-    () => {
-      fetchAggregates();
-    }, [fetchAggregates]
-  )*/
 
   const handlePaginationChange = (paginationData: PaginationData) => {
     const {limit, page} = paginationData;
     dispatch({type: 'pagination', payload: {limit, page}});
   };
-
 
   const pagesToShow: Array<number> = calculatePages(
     paginationData.limit,
@@ -163,28 +143,19 @@ const GroupsTable = () => {
   const fields = [FieldsProperties["Nome ListaPa"]];
 
   const handleSelection = (pa: Pa) => {
-    // apiRequests.searchApiKey(pa.id)
-    //   .then(res => {
-    //     dispatch(setVirtualKeys(res));
-    //   })
-    //   .catch(err => {
-    //     dispatch(snackbarActions.updateSnackbacrOpened(true))
-    //     dispatch(snackbarActions.updateStatusCode(400))
-    //     dispatch(snackbarActions.updateMessage("Errore"))
-    //     console.log("Errore: ", err)
-    //   })
-    //   .finally(() => { dispatch(spinnerActions.updateSpinnerOpened(false)) })
+    onSelect(pa.id);
   }
   return (
     <>
-      <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} />
-      <PaList paList={paList} onSelection={handleSelection} />
+      <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} applyFilterText="" />
+      <PaListWithSelection items={paList} onClick={handleSelection} selectedPa={selectedPa} />
       <CustomPagination
         paginationData={{
           limit: paginationData.limit,
           page: paginationData.page,
           total: paginationData.total
         }}
+        elementsPerPage={[5, 10]}
         onPageRequest={handlePaginationChange}
         pagesToShow={pagesToShow}
         sx={
@@ -200,4 +171,4 @@ const GroupsTable = () => {
     </>
   );
 };
-export default GroupsTable;
+export default PaSection;

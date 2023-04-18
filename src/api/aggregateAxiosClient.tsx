@@ -27,7 +27,8 @@ import {
   move_pa,
   pa_list_associated,
   search_pa,
-  api_key
+  api_key,
+  modify_pdnd
 } from "./mock_agg_response";
 class Http {
   private instance: AxiosInstance | null = null;
@@ -49,7 +50,7 @@ class Http {
 
   searchPa<T = searchPaResponse>(payload: searchPaType): Promise<AxiosResponse<T>> {
     if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
-      return this._mock(search_pa(payload.limit!, payload.lastKey, payload.paName));
+      return this._mock(search_pa(payload.limit!, payload.lastEvaluatedId!, payload.paName));
     }
 
     return this.http.get(compileRoute({
@@ -71,6 +72,9 @@ class Http {
   }
 
   modifyPdnd<T = changePdndResponse>(payload: updatePdndRequest): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+      return this._mock(modify_pdnd);
+    }
     return this.http.put(compileRoute({
       path: "interop"
     }), payload);

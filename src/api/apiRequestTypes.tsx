@@ -156,7 +156,7 @@ type getAggregatesResponse = {
  */
 type searchPaType = {
   limit?: number,
-  lastKey?: string,
+  lastEvaluatedId?: string,
   paName?: string
 }
 /**
@@ -173,7 +173,7 @@ type searchApikeyResponse = {
 type virtualKey = {
   id: string,
   name: string,
-  groups: Array<string>,
+  groups: Array<string> | string,
   status: string,
   pdnd: boolean
 }
@@ -183,7 +183,7 @@ type virtualKey = {
  */
 type searchPaResponse = {
   items: Array<Pa>,
-  lastEvaluatedKey: string,
+  lastEvaluatedId: string,
   total: number
 }
 
@@ -195,9 +195,9 @@ type updatePdndRequest = {
 };
 
 /**
- * @typedef {Object} keyType
+ * @typedef {Object} KeyType
  */
-type keyType = {
+type KeyType = {
   id: string;
   pdnd: boolean;
 };
@@ -317,7 +317,7 @@ export type {
   searchPaResponse,
   searchPaType,
   searchApikeyResponse,
-  keyType,
+  KeyType,
   changePdndResponse,
   updatePdndRequest,
   virtualKey

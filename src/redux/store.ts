@@ -8,7 +8,6 @@ import formTenderSlice from "./formTender/reducers";
 import uploadingDownloadingSlice from "./uploading/reducers";
 import deliveriesDriverSlice from "./deliveriesDrivers/reducers";
 import costSlice from "./costs/reducers";
-import virtualKeysSlice from "./virtualKeysSlice";
 
 
 export const store = configureStore({
@@ -21,8 +20,7 @@ export const store = configureStore({
     uploadAndDownload: uploadingDownloadingSlice.reducer,
     deliveries: deliveriesDriverSlice.reducer,
     costs: costSlice.reducer,
-    aggregate: aggregateReducer,
-    virtualkey: virtualKeysSlice.reducer
+    aggregate: aggregateReducer
   },
 });
 

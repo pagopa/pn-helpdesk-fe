@@ -218,7 +218,12 @@ const searchPa = async (data: searchPaType) => {
 const searchApiKey = async (data: string) => {
   return await aggregateApiClient
     .searchApiKey(data)
-    .then((result) => result.data)
+    .then((result) => {
+      let items = result.data.items;
+      result.data.items = items.map((vk) => ({...vk, groups: Array.isArray(vk.groups) && vk.groups.length > 0 ? vk.groups.join(", ") : ""}));
+      
+      return result.data;
+    })
     .catch((error) => {
       throw error;
     });
