@@ -67,9 +67,11 @@ const MonitorPage = () => {
     (response: any) => {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(response.status));
-      (response.detail || response.data.message) &&
+      (response.data.detail || response.data.message) &&
         dispatch(
-          snackbarActions.updateMessage(response.detail || response.message)
+          snackbarActions.updateMessage(
+            response.data.detail || response.message
+          )
         );
     },
     [dispatch]
