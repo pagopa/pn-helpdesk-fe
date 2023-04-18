@@ -67,8 +67,10 @@ const MonitorPage = () => {
     (response: any) => {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(response.status));
-      response.data.message &&
-        dispatch(snackbarActions.updateMessage(response.data.message));
+      (response.detail || response.data.message) &&
+        dispatch(
+          snackbarActions.updateMessage(response.detail || response.message)
+        );
     },
     [dispatch]
   );
@@ -78,6 +80,7 @@ const MonitorPage = () => {
       .getStatus()
       .then((res) => {
         setBackEndStatus(true);
+        (res.detail || res.data.message) && updateSnackbar(res);
         let rows: any[] = [];
         if (res && res.data) {
           if (res.data.functionalities) {
