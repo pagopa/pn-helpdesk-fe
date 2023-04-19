@@ -119,6 +119,7 @@ const PaSection = ({onSelect, selectedPa} : Props) => {
       );
 
     return () => {isFetching = false}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationData.limit, paginationData.page, filters.paName])
 
 

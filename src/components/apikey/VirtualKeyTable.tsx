@@ -39,7 +39,7 @@ const VirtualKeyTable = ({ id }: Props) => {
   useEffect(() => {
     let didCancel = false;
 
-    if(id != "") {
+    if(id !== "") {
       setFetching(true);
       apiRequests.searchApiKey(id)
         .then(res => {
@@ -62,7 +62,7 @@ const VirtualKeyTable = ({ id }: Props) => {
     }
 
     return () => { didCancel = true }
-  }, [id, needRefresh])
+  }, [id, needRefresh, reduxDispatch])
 
 
   const handleChange = (vk: virtualKey) => {

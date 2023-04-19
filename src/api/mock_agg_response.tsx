@@ -45,7 +45,7 @@ const search_pa = (limit:number, lastKey:string, name: string = "") => {
     let items: Array<Pa> = Array.from({ length: limit }, (v, index) => ({id: String(index), name: "Comune indice " + (index * Number(lastKey))})); 
     let total = items.length + 12;
 
-    if(name != "") {
+    if(name !== "") {
         items = items.filter((item) => item.name.includes(name));
         total = items.length
     }

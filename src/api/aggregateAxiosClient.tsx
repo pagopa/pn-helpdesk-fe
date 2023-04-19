@@ -20,7 +20,6 @@ import {
 } from "./apiRequestTypes";
 import { createAxiosInstance } from "./axiosInstanceCreator";
 import {
-  aggregate,
   pa_list,
   usage_plan_list,
   aggregates_list,

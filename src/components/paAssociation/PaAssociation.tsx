@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Grid, Typography, Badge, IconButton, ListItem, ListItemText } from "@mui/material";
-import PaList from "../paList/PaList";
+import { Button, Grid, Typography, Badge } from "@mui/material";
 import AssociablePaTable from "./AssociablePaTable";
 import { useNavigate } from "react-router-dom";
 import apiRequests from '../../api/apiRequests';
@@ -10,11 +9,9 @@ import { useDispatch } from 'react-redux';
 import CustomCard from '../customCard/CustomCard';
 import { CardActionType, CardHeaderType } from '../customCard/types';
 import BusinessIcon from '@mui/icons-material/Business';
-import ClearIcon from '@mui/icons-material/Clear';
 import useConfirmDialog from '../confirmationDialog/useConfirmDialog';
 import * as routes from '../../navigation/router.const';
 import { Pa } from '../../api/apiRequestTypes';
-import PaginatedComponent from '../paginatedComponent/PaginatedComponent';
 import PaListWithRemoval from '../paList/PaListWithRemoval';
 
 type Props = {
