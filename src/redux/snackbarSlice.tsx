@@ -3,7 +3,7 @@ import type { RootState } from "./store";
 
 export interface SnackbarState {
   opened: boolean,
-  statusCode: any,
+  statusCode: number | undefined,
   message: string,
   autoHideDuration: number | null
 }
