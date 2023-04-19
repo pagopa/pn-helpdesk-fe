@@ -7,8 +7,7 @@ import { KeyType, virtualKey } from "../../api/apiRequestTypes";
 import { useDispatch } from 'react-redux';
 import apiRequests from '../../api/apiRequests';
 import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
-import Checkbox from "@material-ui/core/Checkbox/Checkbox";
-import { Alert, Box, Button, CircularProgress, FormControlLabel, Grid, Typography } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, FormControlLabel, Grid, Typography, Checkbox } from "@mui/material";
 import PaginatedComponent from "../paginatedComponent/PaginatedComponent";
 
 type VirtualKeyColumn =
@@ -136,7 +135,7 @@ const VirtualKeyTable = ({ id }: Props) => {
         value="end"
         control={
           <Checkbox 
-            checked={allSelected} 
+            checked={allSelected}
             onChange={handleSelectAll}
             data-testid={`vkTable-col-checkbox`}
           />}
