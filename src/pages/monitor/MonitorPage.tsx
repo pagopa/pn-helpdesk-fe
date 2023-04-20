@@ -86,7 +86,7 @@ const MonitorPage = () => {
                 (element: any) => element.functionality === item
               );
               let date =
-                incident.length === 0 ? "" : incident[0].startDate.slice(0, -1);
+                incident.length === 0 ? "" : new Date(incident[0].startDate);
               let row = {
                 id: res.data.functionalities.indexOf(item) + 1,
                 functionality: functionalitiesNames[item],
@@ -146,7 +146,7 @@ const MonitorPage = () => {
         {
           ...modalPayload,
           timestamp: format(
-            new Date(modalEventDate),
+            new Date( new Date(new Date(new Date(modalEventDate)).setSeconds(0,0)).setMilliseconds(0)),
             "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
           ),
         },
