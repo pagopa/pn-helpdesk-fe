@@ -75,6 +75,11 @@ const defaultFormValues: { [key: string]: any } = {
  * @component
  */
 const SearchForm = () => {
+
+  const href = document.location.href;
+  streamSaver.mitm = href.substring(0, href.indexOf(document.location.pathname))+'/mitm.html';
+
+
   /**
    * selected value of Tipo Estrazione select menu
    */
