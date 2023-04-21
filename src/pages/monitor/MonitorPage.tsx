@@ -151,7 +151,7 @@ const MonitorPage = () => {
         {
           ...modalPayload,
           timestamp: format(
-            new Date( new Date(new Date(new Date(modalEventDate)).setSeconds(0,0)).setMilliseconds(0)),
+            new Date(modalEventDate.setSeconds(0,0)).setMilliseconds(0),
             "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
           ),
         },
