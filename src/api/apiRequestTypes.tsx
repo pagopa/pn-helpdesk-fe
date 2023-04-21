@@ -155,43 +155,45 @@ type getAggregatesResponse = {
  * @typedef {Object} searchPaType
  */
 type searchPaType = {
-  limit?: number,
-  lastEvaluatedId?: string,
-  paName?: string
-}
+  limit?: number;
+  lastEvaluatedId?: string;
+  lastEvaluatedName?: string;
+  paName?: string;
+};
 /**
  * @typedef {Object} searchApikeyResponse
  */
 type searchApikeyResponse = {
-  items: Array<virtualKey>,
-  total: number
-}
+  items: Array<virtualKey>;
+  total: number;
+};
 
 /**
  * @typedef {Object} virtualKey
  */
 type virtualKey = {
-  id: string,
-  name: string,
-  groups: Array<string> | string,
-  status: string,
-  pdnd: boolean
-}
+  id: string;
+  name: string;
+  groups: Array<string> | string;
+  status: string;
+  pdnd: boolean;
+};
 
 /**
  * @typedef {Object} searchPaResponse
  */
 type searchPaResponse = {
-  items: Array<Pa>,
-  lastEvaluatedId: string,
-  total: number
-}
+  items: Array<Pa>;
+  lastEvaluatedId: string;
+  lastEvaluatedName: string;
+  total: number;
+};
 
 /**
  * @typedef {Object} updatePdndRequest
  */
 type updatePdndRequest = {
-  items: Array<KeyType>
+  items: Array<KeyType>;
 };
 
 /**
@@ -206,7 +208,7 @@ type KeyType = {
  * @typedef {Object} changePdndResponse
  */
 type changePdndResponse = {
-  unprocessedKey: Array<string>
+  unprocessedKey: Array<string>;
 };
 
 /**
@@ -320,5 +322,5 @@ export type {
   KeyType,
   changePdndResponse,
   updatePdndRequest,
-  virtualKey
+  virtualKey,
 };
