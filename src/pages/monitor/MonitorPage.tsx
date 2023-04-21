@@ -67,8 +67,12 @@ const MonitorPage = () => {
     (response: any) => {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(response.status));
-      response.data.message &&
-        dispatch(snackbarActions.updateMessage(response.data.message));
+      (response.data.detail || response.data.message) &&
+        dispatch(
+          snackbarActions.updateMessage(
+            response.data.detail || response.message
+          )
+        );
     },
     [dispatch]
   );
@@ -78,6 +82,7 @@ const MonitorPage = () => {
       .getStatus()
       .then((res) => {
         setBackEndStatus(true);
+        (res.detail || res.data.message) && updateSnackbar(res);
         let rows: any[] = [];
         if (res && res.data) {
           if (res.data.functionalities) {
@@ -271,6 +276,7 @@ const MonitorPage = () => {
             <Grid item>
               <DateTimePicker
                 disableFuture
+                maxTime={new Date()}
                 label="Data e ora evento"
                 value={modalEventDate}
                 onChange={(e) => handleChange(e)}
