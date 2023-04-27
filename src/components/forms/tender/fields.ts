@@ -2,10 +2,15 @@ import {FieldsProps} from "../../formFields/FormFields";
 import {errorMessages} from "../../../helpers/messagesConstants";
 import {isBefore, isSameDay} from "date-fns";
 
-export const fieldsTender: { [key:string]: FieldsProps } = {
+const fields = ["name", "dateInterval"] as const;
+export type FieldTypesTender = typeof fields[number];
+
+export type FieldsTender = Record<FieldTypesTender, FieldsProps>;
+
+export const fieldsTender: FieldsTender = {
 
 
-  "name": {
+  name: {
     name: "name",
     componentType: "textfield",
     label: "Identificativo",
@@ -17,7 +22,7 @@ export const fieldsTender: { [key:string]: FieldsProps } = {
     },
     required: true,
   },
-  "dateInterval": {
+  dateInterval: {
     name: "dateInterval",
     componentType: "dateRangePicker",
     label: "Data inizio e fine",

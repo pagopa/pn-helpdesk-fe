@@ -22,7 +22,6 @@ export function StepSummary(){
     }
     return () => {
       dispatch(resetStateDrivers());
-
     }
     //eslint-disable-next-line
   }, [])
@@ -70,14 +69,20 @@ export function StepSummary(){
             Recapitisti
           </Typography>
         </Grid>
-        <div data-testid="datagrid">
-          <DeliveriesDriverTable tenderCode={stepStore.formTender.code} withActions={false}/>
-        </div>
+        <DeliveriesDriverTable tenderCode={stepStore.formTender.code}
+                               withActions={false}/>
       </Card>
     </Grid>
     <Grid item container direction="row" justifyContent="space-between">
-      <Button variant={"outlined"} onClick={() => dispatch(goTenderDriversStep())}>Torna ai Recapitisti</Button>
-      <Button variant={"contained"} startIcon={<SaveIcon/>} onClick={handleOnExit}>
+      <Button variant={"outlined"}
+              data-testid={"btn-back-step"}
+              onClick={() => dispatch(goTenderDriversStep())}>
+        Torna ai Recapitisti
+      </Button>
+      <Button variant={"contained"}
+              data-testid={"btn-save-exit"}
+              startIcon={<SaveIcon/>}
+              onClick={handleOnExit}>
         Salva
       </Button>
     </Grid>

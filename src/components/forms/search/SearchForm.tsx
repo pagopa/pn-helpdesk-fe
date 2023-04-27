@@ -18,7 +18,6 @@ import apiRequests from "../../../api/apiRequests";
 import {
   getLogsProcessesType,
   getNotificationsInfoLogsType,
-  getNotificationsMonthlyStatsLogsType,
   getPersonsLogsType,
   getPersonIdType,
   getPersonTaxIdType,
@@ -290,13 +289,6 @@ const SearchForm = () => {
     ) {
       payload.deanonimization = payload.hasOwnProperty("taxId");
     }
-
-    // use case 6
-    if (selectedValue === "Ottieni notifiche di una PA") {
-      payload.referenceMonth = payload["monthInterval"][0];
-      payload.endMonth = payload["monthInterval"][1];
-      delete payload["monthInterval"];
-    }
     return payload;
   };
 
@@ -316,11 +308,6 @@ const SearchForm = () => {
       case "Ottieni notifica":
         request = apiRequests.getNotificationsInfoLogs(
           payload as getNotificationsInfoLogsType
-        );
-        break;
-      case "Ottieni notifiche di una PA":
-        request = apiRequests.getNotificationsMonthlyStatsLogs(
-          payload as getNotificationsMonthlyStatsLogsType
         );
         break;
       case "Get process logs":

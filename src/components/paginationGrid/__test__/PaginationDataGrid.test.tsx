@@ -3,10 +3,9 @@ import {reducer} from "../../../mocks/mockReducer";
 import React from "react";
 import {PaginationDataGrid} from "../PaginationDataGrid";
 import {ModelType} from "../index";
-import {TenderDTOStatusEnum} from "../../../api/paperChannel";
-import {Page, Tender} from "../../../model";
+import {Page, Tender, TenderStatusEnum} from "../../../model";
 
-describe(PaginationDataGrid, () => {
+describe("PaginationDataGridTest", () => {
 
   const setOnClickItemMock = jest.fn();
   const setOnPageChangeMock = jest.fn();
@@ -54,9 +53,9 @@ describe(PaginationDataGrid, () => {
       size: 10,
       total: 3,
       content: Array<Tender>(
-        {code: "1", name: "BRT", startDate: "01-31-2021 00:00", endDate: "01-31-2022 00:00", status: TenderDTOStatusEnum.Created},
-        {code: "2", name: "GLS", startDate: "01-31-2022 00:00", endDate: "01-31-2023 00:00", status: TenderDTOStatusEnum.InProgress},
-        {code: "3", name: "UPS", startDate: "01-31-2023 00:00", endDate: "01-31-2024 00:00", status: TenderDTOStatusEnum.Validated})
+        {code: "1", name: "BRT", startDate: "01-31-2021 00:00", endDate: "01-31-2022 00:00", status: TenderStatusEnum.CREATED},
+        {code: "2", name: "GLS", startDate: "01-31-2022 00:00", endDate: "01-31-2023 00:00", status: TenderStatusEnum.IN_PROGRESS},
+        {code: "3", name: "UPS", startDate: "01-31-2023 00:00", endDate: "01-31-2024 00:00", status: TenderStatusEnum.VALIDATED})
     }
 
     reducer(<PaginationDataGrid<Tender> data={tender.allData}
@@ -69,9 +68,6 @@ describe(PaginationDataGrid, () => {
 
     expect(await screen.findByRole('cell', { name: 'BRT' })).toBeTruthy();
     expect(await screen.findByRole('cell', { name: 'GLS' })).toBeTruthy()
-    expect(await screen.findByRole('cell', { name: 'UPS' })).toBeTruthy();
-    expect(await screen.findByRole('cell', { name: 'UPS' })).toBeTruthy();
-    expect(await screen.findByRole('cell', { name: 'UPS' })).toBeTruthy();
     expect(await screen.findByRole('cell', { name: 'UPS' })).toBeTruthy();
   })
 })

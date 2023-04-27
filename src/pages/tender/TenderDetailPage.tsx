@@ -9,6 +9,8 @@ import {CREATE_TENDER_ROUTE, TENDERS_TABLE_ROUTE} from "../../navigation/router.
 import {DeliveriesDriverTable} from "../../components/deliveriesDrivers/DeliveriesDriverTable";
 import {resetStateDrivers} from "../../redux/deliveriesDrivers/reducers";
 import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
+import {useHasPermissions} from "../../hooks/useHasPermissions";
+import { Permission } from "../../model/user-permission";
 
 
 const breadcrumbsLinks = [
@@ -19,8 +21,8 @@ const breadcrumbsLinks = [
 ]
 
 export function TenderDetailPage() {
-
-  const tenderState = useAppSelector(state => state.tender);
+  const canWrite = useHasPermissions([Permission.TENDER_WRITE]);
+  const tenderState = useAppSelector(state => state.tender.selected);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -29,8 +31,8 @@ export function TenderDetailPage() {
   }, [tenderState, dispatch])
 
 
-  if (!tenderState.selected || !tenderState.selected?.code){
-    return <Navigate to={TENDERS_TABLE_ROUTE}/>
+  if (!tenderState || !tenderState?.code){
+   return <Navigate to={TENDERS_TABLE_ROUTE}/>
   }
 
   return <MainLayout>
@@ -42,8 +44,8 @@ export function TenderDetailPage() {
 
         </Grid>
         <Grid item container>
-          <Typography variant="h4" color="text.primary">
-            {tenderState.selected?.name}
+          <Typography variant="h4" color="text.primary" data-testid={'title-tender'}>
+            {tenderState?.name}
           </Typography>
         </Grid>
         <Grid item container>
@@ -61,7 +63,7 @@ export function TenderDetailPage() {
                   Informazioni
                 </Typography>
               </Grid>
-              <DataInfo data={tenderState.selected} rows={tenderRowsInfo}/>
+              <DataInfo data={tenderState} rows={tenderRowsInfo}/>
             </Stack>
           </Card>
         </Grid>
@@ -80,17 +82,21 @@ export function TenderDetailPage() {
               </Typography>
             </Grid>
             <div data-testid="datagrid">
-              <DeliveriesDriverTable tenderCode={tenderState.selected.code} withActions={false}/>
+              <DeliveriesDriverTable tenderCode={tenderState.code} withActions={false}/>
             </div>
           </Card>
         </Grid>
         <Grid item container direction="row" justifyContent="space-between">
-          <Button variant={"outlined"} onClick={()=> navigate(TENDERS_TABLE_ROUTE)}>Torna alle Gare</Button>
+          <Button variant={"outlined"}
+                  data-testid={"back-button-tenders"}
+                  onClick={()=> navigate(TENDERS_TABLE_ROUTE)}>
+            Torna alle Gare
+          </Button>
           {
-            (tenderState.selected?.status && tenderState.selected.status === "CREATED") ?
+            (tenderState?.status && tenderState.status === "CREATED" && canWrite) ?
               <Button variant={"contained"}
                       type={"submit"}
-                      onClick={() => navigate(CREATE_TENDER_ROUTE+"/"+tenderState.selected.code)}>
+                      onClick={() => navigate(CREATE_TENDER_ROUTE+"/"+tenderState.code)}>
                 Modifica
               </Button> : null
           }

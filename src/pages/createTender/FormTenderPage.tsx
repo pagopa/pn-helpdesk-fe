@@ -4,8 +4,8 @@ import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {StepView} from "../../model";
 import {StepDeliveriesDrivers} from "../../components/steps/StepDeliveriesDrivers";
-import StepTender from "../../components/steps/StepTender";
-import StepFSU from "../../components/steps/StepFSU";
+import {StepTender} from "../../components/steps/StepTender";
+import {StepFSU} from "../../components/steps/StepFSU";
 import {useParams} from "react-router-dom";
 import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
 import {TENDERS_TABLE_ROUTE} from "../../navigation/router.const";
@@ -46,7 +46,7 @@ const breadcrumbsLinks = [
   }
 ]
 
-export function FormTenderPage({email}:any) {
+export function FormTenderPage({email=""}:any) {
   const {tenderCode} = useParams();
   const steps = [stepGara, stepFSU, stepDeliveries, stepRiepilogo]
   const tenderFormStepper = useAppSelector(state => state.tenderForm);
@@ -70,14 +70,15 @@ export function FormTenderPage({email}:any) {
                          links={breadcrumbsLinks} />
           </Grid>
           <Grid item container>
-            <Typography variant="h4" color="text.primary">
+            <Typography variant="h4" color="text.primary" data-testid={"title-page"}>
               {(!tenderCode) ? "Nuova Gara" : "Modifica Gara"}
             </Typography>
           </Grid>
         </Grid>
 
         <Grid item container>
-          <Stepper activeStep={tenderFormStepper.activeKey} alternativeLabel sx={{width: "100%"}} >
+          <Stepper activeStep={tenderFormStepper.activeKey}
+                   alternativeLabel sx={{width: "100%"}} >
             {
               steps.map((stepView) => (
                 <Step key={stepView.key}>

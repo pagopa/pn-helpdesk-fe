@@ -1,5 +1,4 @@
 import {
-  CapDto,
   Configuration,
   CostDTO,
   DeliveryDriverApi,
@@ -33,9 +32,7 @@ const apiCaps = () => {
 }
 
 
-export const createTender = async (body:Tender,
-                                           callbackSuccess:(data:Tender)=>void,
-                                           callbackError:(e:any)=>void) => {
+export const createTender = async (body:Tender) => {
   try {
     const request = {
       name: body.name,
@@ -44,49 +41,48 @@ export const createTender = async (body:Tender,
       code: body.code,
     } as TenderCreateRequestDTO
     const response = await apiPaperChannel().createUpdateTender(request);
-    callbackSuccess( {
-      ...response.data.tender
-    } as Tender);
+    return response.data.tender
   } catch (e){
-    return callbackError(e);
+    throw e;
   }
 }
 
-export const createDeliveryDriver = async (tenderCode:string, body:DeliveryDriver,
-                                     callbackSuccess:(data:DeliveryDriver)=>void,
-                                     callbackError:(e:any)=>void) => {
+export const createDeliveryDriver = async (tenderCode:string, body:DeliveryDriver) => {
   try {
     const request = {
       ...body,
     } as DeliveryDriverDTO
-    await apiPaperChannel().createUpdateDriver(tenderCode, request);
-    callbackSuccess(body);
+    const response = await apiPaperChannel().createUpdateDriver(tenderCode, request);
+    return response.data
   } catch (e){
-    return callbackError(e);
+    throw e
   }
 
 }
 
-export const createCost = async (tenderCode:string, driverCode:string, body:CostDTO,
-                                           callbackSuccess:(data:CostDTO)=>void,
-                                           callbackError:(e:any)=>void) => {
+export const createCost = async (tenderCode:string, driverCode:string, body:CostDTO) => {
   try {
     await apiPaperChannel().createUpdateCost(tenderCode, driverCode, body);
-    callbackSuccess(body);
   } catch (e){
-    return callbackError(e);
+    throw e;
   }
 
 }
 
-export const retrieveCaps = async (inputText:string,
-                                 callbackSuccess:(data:CapDto[])=>void,
-                                 callbackError:(e:any)=>void) => {
+export const retrieveCaps = async (inputText:string) => {
   try {
     const response = await apiCaps().getAllCap(inputText);
-
-    callbackSuccess(response.data.content);
+    return response.data
   } catch (e){
-    return callbackError(e);
+    throw e;
+  }
+}
+
+export const retrieveTenderDetails = async (tenderCode:string) => {
+  try {
+    const response = await apiPaperChannel().getTenderDetails(tenderCode);
+    return response.data
+  } catch (e){
+    throw e;
   }
 }

@@ -164,43 +164,6 @@ describe("SearchForm", () => {
     await act(() => user.click(button));
   });
 
-  it("change Tipo estrazione to Ottieni notifiche di una PA and make request", async () => {
-    const selectMenu = screen.getByRole("button", {
-      name: "Ottieni EncCF",
-    });
-    expect(selectMenu).toBeInTheDocument();
-
-    const user = userEvent.setup();
-    await act(() => user.click(selectMenu));
-    const ottieniLogCompleti = await screen.findByRole("option", {
-      name: "Ottieni notifiche di una PA",
-    });
-    expect(ottieniLogCompleti).toBeInTheDocument();
-
-    await act(() => user.click(ottieniLogCompleti));
-    expect(selectMenu.textContent).toEqual("Ottieni notifiche di una PA");
-
-    const ticketNumber = await screen.findByRole("textbox", {
-      name: "Numero Ticket",
-    });
-    const nomePa = await screen.findByRole("textbox", {
-      name: "Nome PA",
-    });
-
-    await act(async () => {
-      await user.clear(ticketNumber);
-      await user.type(ticketNumber, "abc");
-    });
-    await act(async () => {
-      await user.clear(nomePa);
-      await user.type(nomePa, "icn");
-    });
-    const button = await screen.findByRole("button", {
-      name: "Ricerca",
-    });
-    await act(() => user.click(button));
-  });
-
   it("change Tipo estrazione to Ottieni log di sessione", async () => {
     const selectMenu = screen.getByRole("button", {
       name: "Ottieni EncCF",
