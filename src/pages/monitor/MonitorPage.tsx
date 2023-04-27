@@ -151,7 +151,7 @@ const MonitorPage = () => {
         {
           ...modalPayload,
           timestamp: format(
-            new Date(modalEventDate.setSeconds(0,0)).setMilliseconds(0),
+            new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
             "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
           ),
         },
@@ -275,8 +275,7 @@ const MonitorPage = () => {
           <Grid container columnSpacing={2} sx={{ pt: 2 }}>
             <Grid item>
               <DateTimePicker
-                disableFuture
-                maxTime={new Date()}
+                maxDateTime={new Date()}
                 label="Data e ora evento"
                 value={modalEventDate}
                 onChange={(e) => handleChange(e)}
