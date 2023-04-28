@@ -1,7 +1,7 @@
 import { Grid, Typography, AccordionDetails, Accordion, AccordionSummary } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import PaList from './PaList';
 import { getAggregateResponse } from "../../api/apiRequestTypes";
+import PaginatedPaList from "../paList/PaginatedPaList";
 
 type Props = {
     aggregate: getAggregateResponse
@@ -44,7 +44,7 @@ const AggregateAccordion = ({aggregate} : Props) => {
                         <Typography><strong>PA Associate: </strong></Typography>
                     </Grid>
                     <Grid item>
-                        <PaList paList={aggregate?.associatedPa ? aggregate?.associatedPa : []} />
+                        <PaginatedPaList items={aggregate?.associatedPa ?? []} />
                     </Grid>
                 </Grid>
             </AccordionDetails>

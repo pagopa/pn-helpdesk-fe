@@ -7,10 +7,11 @@ import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 
 type Props = {
     fields: Array<FieldsProps>,
-    onFiltersSubmit: (data: any) => void
+    onFiltersSubmit: (data: any) => void,
+    applyFilterText?: string
 };
 
-const FilterTable = memo(({ fields, onFiltersSubmit }: Props) => {
+const FilterTable = memo(({ fields, onFiltersSubmit, applyFilterText = "Filtra" }: Props) => {
 
     const setDefaultValues = (): { [key: string]: any } => {
         return fields.reduce((res, f) => ({ ...res, [f.name]: "" }), {});
@@ -62,14 +63,15 @@ const FilterTable = memo(({ fields, onFiltersSubmit }: Props) => {
                         )
                     )
                 }
-                <Grid item display={'flex'} gap={'10px'}>
+                <Grid item display={'flex'} gap={'6px'}>
                     <Grid item>
                         <Button
                             variant="outlined"
                             type="submit"
                             style={{ height: '100%', display: 'flex', gap: '10px' }}
+                            data-testid="apply-filters"
                         >
-                            Filtra <FilterAltIcon />
+                            {applyFilterText} <FilterAltIcon aria-label='applica filtri' /> 
                         </Button>
                     </Grid>
                     <Grid item>
@@ -80,7 +82,7 @@ const FilterTable = memo(({ fields, onFiltersSubmit }: Props) => {
                             style={{ height: '100%' }}
                             data-testid="clear-filters"
                         >
-                            <FilterAltOffIcon />
+                            <FilterAltOffIcon aria-label='rimuovi filtri' />
                         </Button>
                     </Grid>
                 </Grid>
