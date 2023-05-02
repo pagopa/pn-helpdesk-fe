@@ -12,6 +12,8 @@ import {
   createAggregateType,
   AggregateSummary,
   Pa,
+  searchPaType,
+  updatePdndRequest
 } from "./apiRequestTypes";
 import { http as logExtractoraggregateApiClient } from "./logExtractorAxiosClient";
 import { http as aggregateApiClient } from "./aggregateAxiosClient";
@@ -135,11 +137,11 @@ const getAggregates = async (data: getAggregateParams) => {
     .then((result) => {
       const items = result.data.items.map(
         (agg) =>
-          ({
-            ...agg,
-            createdAt: formatDate(agg.createdAt, true),
-            lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
-          } as AggregateSummary)
+        ({
+          ...agg,
+          createdAt: formatDate(agg.createdAt, true),
+          lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
+        } as AggregateSummary)
       );
 
       return {
@@ -175,6 +177,44 @@ const createAggregate = async (data: createAggregateType) => {
     .then((result) => {
       return result.data;
     })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+/**
+ * Create an aggregation
+ */
+const searchPa = async (data: searchPaType) => {
+  return await aggregateApiClient
+    .searchPa(data)
+    .then((result) => result.data)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+/**
+ * Create an 
+ */
+const searchApiKey = async (data: string) => {
+  return await aggregateApiClient
+    .searchApiKey(data)
+    .then((result) => {
+      let items = result.data.items;
+      result.data.items = items.map((vk) => ({...vk, groups: Array.isArray(vk.groups) && vk.groups.length > 0 ? vk.groups.join(", ") : ""}));
+      
+      return result.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+const modifyPdnd = async (data: updatePdndRequest) => {
+  return await aggregateApiClient
+    .modifyPdnd(data)
+    .then((result) => result.data)
     .catch((error) => {
       throw error;
     });
@@ -298,6 +338,9 @@ const apiRequests = {
   getUsagePlans,
   addPa,
   getAssociablePaList,
+  searchPa,
+  searchApiKey,
+  modifyPdnd
 };
 
 export default apiRequests;

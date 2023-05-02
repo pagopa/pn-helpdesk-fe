@@ -14,10 +14,12 @@ export const MONITOR_ROUTE = "/monitoring";
 export const SEARCH_ROUTE = "/search";
 
 export const LOGIN_ROUTE = "/login";
+export const AUTH_APIKEY = "/auth-apikey";
 
 export const nameOfRoute: Record<string, string> = {
   [TENDERS_TABLE_ROUTE] : "Gare",
   [CREATE_TENDER_ROUTE] : "Nuova Gara",
   [TENDER_DETAIL_ROUTE]: "Dettagli Gara"
 }
+
 

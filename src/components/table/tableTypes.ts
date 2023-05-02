@@ -1,3 +1,4 @@
+import { CheckboxClassKey } from '@mui/material';
 import { ReactNode } from 'react';
 
 type Order = 'asc' | 'desc';
@@ -9,15 +10,15 @@ export interface Sort<OrderByOption> {
 
 export interface Column<ColumnId> {
   id: ColumnId;
-  label: string;
+  label: string | ReactNode;
   width: string;
   align?: 'center' | 'inherit' | 'left' | 'right' | 'justify';
   sortable?: boolean;
-  getCellLabel(value: string | number | Array<string>, row?: Item): ReactNode;
+  getCellLabel(value: string | number | Array<string> | boolean, row?: Item): ReactNode;
   onClick?(row: Item, column: Column<ColumnId>): void;
 }
 
 export interface Item {
   id: string;
-  [key: string]: string | number | Array<string>;
+  [key: string]: string | number | Array<string> | boolean;
 }

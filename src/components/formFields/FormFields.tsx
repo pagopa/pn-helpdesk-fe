@@ -5,6 +5,7 @@ import {
   FormControlLabel,
   Grid,
   InputAdornment,
+  TextFieldPropsSizeOverrides,
   Tooltip,
 } from "@mui/material";
 import SelectField from "../selectField/SelectField";
@@ -100,6 +101,10 @@ type FieldsProps = {
   /**
    * size of the field in percents
    */
+  Size?: 'small' | 'medium';
+  /**
+   * size 
+  */
   size?: number;
   /**
    * some additional input props for text fields
@@ -460,6 +465,14 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
         message: errorMessages.MIN_LENGTH(3),
       },
     },
+  },
+  "Nome ListaPa": {
+    name: "paName",
+    componentType: "textfield",
+    label: "Nome PA",
+    hidden: false,
+    Size: 'small',
+    size: 10
   },
   "Nome Aggregazione": {
     name: "name",
