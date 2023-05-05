@@ -253,6 +253,15 @@ const VirtualKeyTable = ({ id }: Props) => {
     confirmDialog({
       title: " Applica modifiche",
       message: "Sei sicuro di voler confermare le modifiche?",
+      extraContent: (
+        <Box sx={{ marginTop: 2 }}>
+          <Alert severity="warning">
+            {" "}
+            Attenzione: le modifiche non sono istantanee e potrebbero richiedere
+            qualche minuto per essere applicate.{" "}
+          </Alert>
+        </Box>
+      ),
     })
       .then(handleSave)
       .catch(() => {});
