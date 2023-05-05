@@ -67,8 +67,12 @@ const MonitorPage = () => {
     (response: any) => {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(response.status));
-      response.data.message &&
-        dispatch(snackbarActions.updateMessage(response.data.message));
+      (response.data.detail || response.data.message) &&
+      dispatch(
+        snackbarActions.updateMessage(
+          response.data.detail || response.message
+        )
+      );
     },
     [dispatch]
   );
@@ -78,6 +82,7 @@ const MonitorPage = () => {
       .getStatus()
       .then((res) => {
         setBackEndStatus(true);
+        (res.detail || res.data.message) && updateSnackbar(res);
         let rows: any[] = [];
         if (res && res.data) {
           if (res.data.functionalities) {
@@ -86,7 +91,7 @@ const MonitorPage = () => {
                 (element: any) => element.functionality === item
               );
               let date =
-                incident.length === 0 ? "" : incident[0].startDate.slice(0, -1);
+              incident.length === 0 ? "" : new Date(incident[0].startDate);
               let row = {
                 id: res.data.functionalities.indexOf(item) + 1,
                 functionality: functionalitiesNames[item],
@@ -142,20 +147,12 @@ const MonitorPage = () => {
     if (!modalEventDate) {
       setError("Inserire un valore");
     } else {
-      const formatDateTimezone = new Date(modalEventDate).toLocaleString('en-US', {
-        timeZone: 'Europe/Rome',
-        timeZoneName: 'short',
-      })
-      const timeZoneRegex = /[+-]\d{1,2}/;
-      const offsetMatch = formatDateTimezone.match(timeZoneRegex);
-      const offset = offsetMatch ? offsetMatch[0] : "";
-
       const params = [
         {
           ...modalPayload,
           timestamp: format(
             new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-            "yyyy-MM-dd'T'HH:mm:ss.sss'Z'".replace('Z', offset)
+            "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
           ),
         },
       ];
@@ -279,6 +276,7 @@ const MonitorPage = () => {
             <Grid item>
               <DateTimePicker
                 disableFuture
+                maxDateTime={new Date()}
                 label="Data e ora evento"
                 value={modalEventDate}
                 onChange={(e) => handleChange(e)}
