@@ -68,11 +68,11 @@ const MonitorPage = () => {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(response.status));
       (response.data.detail || response.data.message) &&
-        dispatch(
-          snackbarActions.updateMessage(
-            response.data.detail || response.message
-          )
-        );
+      dispatch(
+        snackbarActions.updateMessage(
+          response.data.detail || response.message
+        )
+      );
     },
     [dispatch]
   );
@@ -91,7 +91,7 @@ const MonitorPage = () => {
                 (element: any) => element.functionality === item
               );
               let date =
-                incident.length === 0 ? "" : new Date(incident[0].startDate);
+              incident.length === 0 ? "" : new Date(incident[0].startDate);
               let row = {
                 id: res.data.functionalities.indexOf(item) + 1,
                 functionality: functionalitiesNames[item],
@@ -152,7 +152,7 @@ const MonitorPage = () => {
           ...modalPayload,
           timestamp: format(
             new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-            "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+            "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
           ),
         },
       ];
@@ -275,6 +275,7 @@ const MonitorPage = () => {
           <Grid container columnSpacing={2} sx={{ pt: 2 }}>
             <Grid item>
               <DateTimePicker
+                disableFuture
                 maxDateTime={new Date()}
                 label="Data e ora evento"
                 value={modalEventDate}
