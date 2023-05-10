@@ -32,7 +32,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import ResponseData from "../../responseData/ResponseData";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { format, subMonths } from "date-fns";
+import axios from "axios";
+import { WritableStream } from 'web-streams-polyfill/ponyfill';
+import streamSaver from 'streamsaver';
+import { v4 as uuid } from "uuid";
+import { getPresignedUrl } from "../../../redux/uploading/actions";
 
+//const fs = require('fs');
 /**
  * default values of the form fields
  */
@@ -69,6 +75,11 @@ const defaultFormValues: { [key: string]: any } = {
  * @component
  */
 const SearchForm = () => {
+
+  const href = document.location.href;
+  streamSaver.mitm = href.substring(0, href.indexOf(document.location.pathname))+'/mitm.html';
+
+
   /**
    * selected value of Tipo Estrazione select menu
    */
@@ -255,8 +266,143 @@ const SearchForm = () => {
     resetStore();
     dispatch(spinnerActions.updateSpinnerOpened(true));
     const payload = createPayload(data);
-    createRequest(payload);
+    if (selectedValue === "Ottieni EncCF" || selectedValue === "Ottieni CF"){
+      createRequest(payload);
+    }else{
+      downloadZip(JSON.stringify(payload));
+    }
   };
+
+  const createRequest = (payload: any) => {
+    let request = undefined;
+    switch (selectedValue) {
+      case "Ottieni EncCF":
+        request = apiRequests.getPersonId(payload as getPersonIdType);
+        break;
+      case "Ottieni CF":
+        request = apiRequests.getPersonTaxId(payload as getPersonTaxIdType);
+        break;
+      default:
+        break;
+    }
+    if (request) {
+      request
+        .then((res) => {
+          updateSnackbar(res);
+          if ( res.data.data) {
+            let response =
+                selectedValue === "Ottieni CF"
+                  ? { taxId: res.data.data }
+                  : { internalId: res.data.data };
+            updateResponse(response);
+
+          }
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+        })
+        .catch((error) => {
+          updateSnackbar(error.response);
+
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+        });
+    }
+  };
+
+  const getUrl= (): string => {
+    switch (selectedValue) {
+      // case "Ottieni EncCF":
+      //   return '/persons/v1/person-id';
+      //   break;
+      // case "Ottieni CF":
+      //   return '/persons/v1/tax-id';
+      //   break;
+      case "Ottieni notifica":
+        return '/logs/v1/notifications/info';
+        break;
+      case "Ottieni notifiche di una PA":
+        return '/logs/v1/notifications/monthly';
+        break;
+      case "Get process logs":
+        return '/logs/v1/processes';
+        break;
+      case "Ottieni log completi":
+        return '/logs/v1/persons';
+        break;
+      case "Ottieni log di processo":
+        return '/logs/v1/processes';
+        break;
+      case "Ottieni log di sessione":
+        return '/logs/v1/sessions';
+        break;
+      default:
+        break;
+    }
+    return '';
+  }
+
+  const downloadZip=(payload: any): any => {
+
+    const url = process.env.REACT_APP_API_ENDPOINT! + getUrl();
+    
+    dispatch(spinnerActions.updateSpinnerOpened(true));
+    const token = sessionStorage.getItem("token");
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            "x-pagopa-pn-uid": uuid(),
+            "x-pagopa-pn-cx-type": "BO",
+        },
+        body: payload
+    })
+    .then(res => {
+      if (res.status != 200 ){
+        let msg = res.status === 204 ? 'Nessun dato disponibile' :'Si è verificato un errore durante l\'estrazione';
+        updateSnackbar({data:{message:msg, status:500}});
+
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+        return;
+      }
+
+      let fileName = res.headers.get('content-disposition');
+      const pass = res.headers.get('password');
+
+      if (!fileName) {
+        fileName = '=log.zip';
+      }
+      const fileStream = streamSaver.createWriteStream(fileName?.split('=')[1]);
+      const readableStream = res.body
+      
+      updateResponse({password: pass});
+      // more optimized
+      if (window.WritableStream && readableStream &&  readableStream.pipeTo) {
+        return readableStream.pipeTo(fileStream)
+          .then(() => {
+            console.log('done writing');
+            dispatch(spinnerActions.updateSpinnerOpened(false));
+          });
+      }else{
+
+        const writer = fileStream.getWriter();
+
+        const reader = res.body?.getReader();
+
+        const pump:any = () => reader?.read()
+          .then(res => res.done
+            ? writer.close().then(()=>{dispatch(spinnerActions.updateSpinnerOpened(false));}) 
+            : writer.write(res.value).then(pump));
+
+        pump();
+      }
+    }).catch(err=>{
+      updateSnackbar({data:{message:'Si è verificato un errore durante l\'estrazione', status:500}});
+
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+    });
+    
+  };
+
 
   /**
    * Formatting the data ready to be sent
@@ -292,76 +438,17 @@ const SearchForm = () => {
     return payload;
   };
 
-  /**
-   * Create request depending on the use case
-   * @param payload the request paylod
-   */
-  const createRequest = (payload: any) => {
-    let request = undefined;
-    switch (selectedValue) {
-      case "Ottieni EncCF":
-        request = apiRequests.getPersonId(payload as getPersonIdType);
-        break;
-      case "Ottieni CF":
-        request = apiRequests.getPersonTaxId(payload as getPersonTaxIdType);
-        break;
-      case "Ottieni notifica":
-        request = apiRequests.getNotificationsInfoLogs(
-          payload as getNotificationsInfoLogsType
-        );
-        break;
-      case "Get process logs":
-        request = apiRequests.getLogsProcesses(payload as getLogsProcessesType);
-        break;
-      case "Ottieni log completi":
-        request = apiRequests.getPersonsLogs(payload as getPersonsLogsType);
-        break;
-      case "Ottieni log di processo":
-        request = apiRequests.getLogsProcesses(payload as getLogsProcessesType);
-        break;
-      case "Ottieni log di sessione":
-        request = apiRequests.getSessionLogs(payload as getSessionLogsType);
-        break;
-      default:
-        break;
-    }
-    if (request) {
-      request
-        .then((res) => {
-          updateSnackbar(res);
-          if ((res.data.password && res.data.zip) || res.data.data) {
-            let response = null;
-            if (res.data.password) {
-              response = { password: res.data.password };
-            } else {
-              response =
-                selectedValue === "Ottieni CF"
-                  ? { taxId: res.data.data }
-                  : { internalId: res.data.data };
-            }
-            updateResponse(response);
-
-            res.data.zip && downloadZip(res.data.zip);
-          }
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-        })
-        .catch((error) => {
-          updateSnackbar(error.response);
-
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-        });
-    }
-  };
 
   /**
    * update the snackbar component depneding on the response
    * @param response
    */
-  const updateSnackbar = (response: any) => {
+  const updateSnackbar = (response: any, duration?: number) => {
     const message = response.data?.detail ?? response.data.message;
     message && dispatch(snackbarActions.updateMessage(message));
     dispatch(snackbarActions.updateSnackbacrOpened(true));
     dispatch(snackbarActions.updateStatusCode(response.status));
+    if (duration) dispatch(snackbarActions.updateAutoHideDuration(duration));
   };
 
   /**
@@ -380,18 +467,6 @@ const SearchForm = () => {
     dispatch(snackbarActions.resetState());
   };
 
-  /**
-   * downloading zip file
-   * @param zip file in base64
-   */
-  const downloadZip = (zip: string) => {
-    let file = base64StringToBlob(zip, "application/zip");
-    let fileURL = URL.createObjectURL(file);
-    let fileLink = document.createElement("a");
-    fileLink.href = fileURL;
-    fileLink.download = getValues("ticketNumber");
-    fileLink.click();
-  };
 
   /**
    * check if every necessaty field is filled
@@ -440,7 +515,9 @@ const SearchForm = () => {
             <Grid container rowSpacing={2}>
               <Grid item width={1}>
                 <form
-                  onSubmit={handleSubmit((data) => onSubmit(data))}
+                  onSubmit={
+                    handleSubmit((data) => onSubmit(data))
+                  }
                   style={{ width: "100%" }}
                 >
                   <Grid item container>

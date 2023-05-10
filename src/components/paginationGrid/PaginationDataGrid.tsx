@@ -25,7 +25,7 @@ export function PaginationDataGrid<T>(props:PaginationProps<T>) {
 
   return <>
     <DataGrid
-      rows={(props.data?.content) ? props.data.content : []}
+      rows={((props.data?.content) ? props.data.content : []) as GridValidRowModel[]}
       columns={getColumn(props.type)}
       onRowClick={rowClickHandler}
       experimentalFeatures={{ newEditingApi: true }}
