@@ -273,6 +273,27 @@ const SearchForm = () => {
     }
   };
 
+  const testWS = ()=>{
+    var connection = new WebSocket('ws://localhost:8080/chat', ['soap', 'xmpp']);
+
+    connection.onopen = function () {
+      connection.send('Ping'); // 
+    };
+
+
+    connection.onerror = function (error) {
+      console.log('WebSocket Error ' + error);
+    };
+
+    //to receive the message from server
+    connection.onmessage = function (e) {
+      console.log('Server: ' + e.data);
+    };
+
+    // Sending String  
+    connection.send('your message')
+  }
+
   const createRequest = (payload: any) => {
     let request = undefined;
     switch (selectedValue) {
@@ -295,12 +316,11 @@ const SearchForm = () => {
                   ? { taxId: res.data.data }
                   : { internalId: res.data.data };
             updateResponse(response);
-
           }
           dispatch(spinnerActions.updateSpinnerOpened(false));
         })
         .catch((error) => {
-          updateSnackbar(error.response);
+          updateSnackbar({data:{error, status:500}});
 
           dispatch(spinnerActions.updateSpinnerOpened(false));
         });
@@ -365,36 +385,39 @@ const SearchForm = () => {
         return;
       }
 
-      let fileName = res.headers.get('content-disposition');
+      res.json().then(data=>{
+      let fileName = data?.message;
       const pass = res.headers.get('password');
 
-      if (!fileName) {
-        fileName = '=log.zip';
-      }
-      const fileStream = streamSaver.createWriteStream(fileName?.split('=')[1]);
-      const readableStream = res.body
+      // if (!fileName) {
+      //   fileName = '=log.zip';
+      // }
+      // const fileStream = streamSaver.createWriteStream(fileName?.split('=')[1]);
+      // const readableStream = res.body
       
       updateResponse({password: pass});
+      polling(fileName);
       // more optimized
-      if (window.WritableStream && readableStream &&  readableStream.pipeTo) {
-        return readableStream.pipeTo(fileStream)
-          .then(() => {
-            console.log('done writing');
-            dispatch(spinnerActions.updateSpinnerOpened(false));
-          });
-      }else{
+      // if (window.WritableStream && readableStream &&  readableStream.pipeTo) {
+      //   return readableStream.pipeTo(fileStream)
+      //     .then(() => {
+      //       console.log('done writing');
+      //       dispatch(spinnerActions.updateSpinnerOpened(false));
+      //     });
+      // }else{
 
-        const writer = fileStream.getWriter();
+      //   const writer = fileStream.getWriter();
 
-        const reader = res.body?.getReader();
+      //   const reader = res.body?.getReader();
 
-        const pump:any = () => reader?.read()
-          .then(res => res.done
-            ? writer.close().then(()=>{dispatch(spinnerActions.updateSpinnerOpened(false));}) 
-            : writer.write(res.value).then(pump));
+      //   const pump:any = () => reader?.read()
+      //     .then(res => res.done
+      //       ? writer.close().then(()=>{dispatch(spinnerActions.updateSpinnerOpened(false));}) 
+      //       : writer.write(res.value).then(pump));
 
-        pump();
-      }
+      //   pump();
+      // }
+      })
     }).catch(err=>{
       updateSnackbar({data:{message:'Si è verificato un errore durante l\'estrazione', status:500}});
 
@@ -402,6 +425,24 @@ const SearchForm = () => {
     });
     
   };
+
+  var timerId:any;
+
+  const polling = (data:any): any => {
+
+    if (!data || data==='') return;
+
+    if (timerId) clearTimeout(timerId);
+    apiRequests.getDownloadUrl(data).then(ret=>{
+      if (ret.data.message === 'notready'){
+        timerId=setTimeout(polling(data) , 5000);
+      }else{
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+      }
+    })
+
+    return;
+  }
 
 
   /**

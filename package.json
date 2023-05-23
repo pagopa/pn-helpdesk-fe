@@ -2,7 +2,7 @@
   "name": "pn-logextractor-fe",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost:8080/log-extractor",
   "dependencies": {
     "@aws-amplify/auth": "^4.5.4",
     "@emotion/react": "^11.9.0",
