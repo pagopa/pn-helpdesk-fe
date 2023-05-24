@@ -10,12 +10,14 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
+  Grid,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { infoMessages } from "../../helpers/messagesConstants";
-import { Divider, Grid, Typography } from "@material-ui/core";
 import { useAuth } from "../../Authentication/auth";
 import { useDispatch } from "react-redux";
 import * as spinnerActions from "../../redux/spinnerSlice";

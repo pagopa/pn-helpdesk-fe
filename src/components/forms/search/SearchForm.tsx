@@ -16,29 +16,20 @@ import {
 } from "../../formFields/FormFields";
 import apiRequests from "../../../api/apiRequests";
 import {
-  getLogsProcessesType,
-  getNotificationsInfoLogsType,
-  getPersonsLogsType,
   getPersonIdType,
   getPersonTaxIdType,
-  getSessionLogsType,
 } from "../../../api/apiRequestTypes";
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import * as responseActions from "../../../redux/responseSlice";
 import * as spinnerActions from "../../../redux/spinnerSlice";
 import { useDispatch } from "react-redux";
-import { base64StringToBlob } from "blob-util";
 import SearchIcon from "@mui/icons-material/Search";
 import ResponseData from "../../responseData/ResponseData";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { format, subMonths } from "date-fns";
-import axios from "axios";
-import { WritableStream } from 'web-streams-polyfill/ponyfill';
 import streamSaver from 'streamsaver';
 import { v4 as uuid } from "uuid";
-import { getPresignedUrl } from "../../../redux/uploading/actions";
 
-//const fs = require('fs');
 /**
  * default values of the form fields
  */
@@ -317,26 +308,19 @@ const SearchForm = () => {
       //   break;
       case "Ottieni notifica":
         return '/logs/v1/notifications/info';
-        break;
       case "Ottieni notifiche di una PA":
         return '/logs/v1/notifications/monthly';
-        break;
       case "Get process logs":
         return '/logs/v1/processes';
-        break;
       case "Ottieni log completi":
         return '/logs/v1/persons';
-        break;
       case "Ottieni log di processo":
         return '/logs/v1/processes';
-        break;
       case "Ottieni log di sessione":
         return '/logs/v1/sessions';
-        break;
       default:
-        break;
+        return '';
     }
-    return '';
   }
 
   const downloadZip=(payload: any): any => {
@@ -357,7 +341,7 @@ const SearchForm = () => {
         body: payload
     })
     .then(res => {
-      if (res.status != 200 ){
+      if (res.status !== 200 ){
         let msg = res.status === 204 ? 'Nessun dato disponibile' :'Si è verificato un errore durante l\'estrazione';
         updateSnackbar({data:{message:msg, status:500}});
 
