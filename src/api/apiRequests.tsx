@@ -79,6 +79,17 @@ const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
     });
 };
 
+const getDownloadUrl = async (data: string) => {
+  return await logExtractoraggregateApiClient.getDownloadUrl(data)
+  .then((result: any) => {
+    return result;
+  })
+  .catch((error: any) => {
+    throw error;
+  });
+
+}
+
 /**
  * Extract all log paths by given a specific traceId
  */
@@ -340,7 +351,8 @@ const apiRequests = {
   getAssociablePaList,
   searchPa,
   searchApiKey,
-  modifyPdnd
+  modifyPdnd,
+  getDownloadUrl
 };
 
 export default apiRequests;
