@@ -32,7 +32,7 @@ export function CapAutocompleteField(props:Props){
     }catch(e){
       console.error("Error with caps request ", e);
     }
-  }, [inputText])
+  }, [inputText, props.field.fsu])
 
   useEffect(() => {
     fetch();
