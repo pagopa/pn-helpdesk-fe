@@ -98,7 +98,7 @@ const Header = () => {
               </Grid>
             </Grid>
             <Grid item xs={3} md={6}>
-              <Typography align="center">PagoPA S.p.A.</Typography>
+              <Typography align="center" color="primary.contrastText">PagoPA S.p.A.</Typography>
             </Grid>
             <Grid
               container
