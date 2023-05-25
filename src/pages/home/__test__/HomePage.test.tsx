@@ -32,7 +32,7 @@ describe("HomePage test", () => {
 
     const cards = screen.getAllByRole('heading')
 
-    expect(cards).toHaveLength(5)
+    expect(cards).toHaveLength(6)
     expect(screen.getByText("Ricerca ed estrazione dati")).toBeInTheDocument()
     expect(screen.getByText("Monitoraggio Piattaforma Notifiche")).toBeInTheDocument()
     expect(screen.getByText("Gestione gare")).toBeInTheDocument()
