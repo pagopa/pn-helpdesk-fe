@@ -278,27 +278,6 @@ const SearchForm = () => {
     }
   };
 
-  const testWS = ()=>{
-    var connection = new WebSocket('ws://localhost:8080/chat', ['soap', 'xmpp']);
-
-    connection.onopen = function () {
-      connection.send('Ping'); // 
-    };
-
-
-    connection.onerror = function (error) {
-      console.log('WebSocket Error ' + error);
-    };
-
-    //to receive the message from server
-    connection.onmessage = function (e) {
-      console.log('Server: ' + e.data);
-    };
-
-    // Sending String  
-    connection.send('your message')
-  }
-
   const createRequest = (payload: any) => {
     let request = undefined;
     switch (selectedValue) {
@@ -325,7 +304,7 @@ const SearchForm = () => {
           dispatch(spinnerActions.updateSpinnerOpened(false));
         })
         .catch((error) => {
-          updateSnackbar({data:{error, status:500}});
+          updateSnackbar({data:{error}, status:500});
 
           dispatch(spinnerActions.updateSpinnerOpened(false));
         });
@@ -384,7 +363,7 @@ const SearchForm = () => {
     .then(res => {
       if (res.status != 200 ){
         let msg = res.status === 204 ? 'Nessun dato disponibile' :'Si è verificato un errore durante l\'estrazione';
-        updateSnackbar({data:{message:msg, status:500}});
+        updateSnackbar({data:{message:msg}, status:500});
 
         dispatch(spinnerActions.updateSpinnerOpened(false));
         return;
@@ -424,7 +403,7 @@ const SearchForm = () => {
       // }
       })
     }).catch(err=>{
-      updateSnackbar({data:{message:'Si è verificato un errore durante l\'estrazione', status:500}});
+      updateSnackbar({data:{message:'Si è verificato un errore durante l\'estrazione'}, status:500});
 
       dispatch(spinnerActions.updateSpinnerOpened(false));
     });
@@ -447,7 +426,7 @@ const SearchForm = () => {
       }
     }).catch(err=>{
       dispatch(spinnerActions.updateSpinnerOpened(false));
-      updateSnackbar({data:{error:'Error preparing download', status:500}});
+      updateSnackbar({data:{error:'Error preparing download'}, status:500});
 
     })
 
@@ -565,6 +544,7 @@ const SearchForm = () => {
           >
             <Grid container rowSpacing={2}>
               <Grid item width={1}>
+                
                 <form
                   onSubmit={
                     handleSubmit((data) => onSubmit(data))
