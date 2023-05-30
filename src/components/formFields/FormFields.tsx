@@ -25,7 +25,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
  * Items for the Tipo Estrazione and their coresponding fields
  */
 let MenuItems: { [key: string]: Array<string> } = {
-  "Ottieni EncCF": ["ticketNumber", "taxId", "recipientType"],
+  "Ottieni EncCF": ["ticketNumber", "taxId", "piva","recipientType"],
   "Ottieni CF": ["personId"],
   "Ottieni notifica": ["ticketNumber", "iun"],
   // use case 9 dissabled for now
@@ -183,6 +183,29 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
       },
       maxLength: {
         value: 16,
+        message: errorMessages.INCORRECT,
+      },
+      required: errorMessages.REQUIRED,
+    },
+    required: false,
+  },
+  "Partita Iva": {
+    name: "piva",
+    componentType: "textfield",
+    label: "Partita Iva",
+    hidden: true,
+    inputProps: { maxLength: 11, style: { textTransform: "uppercase" } },
+    rules: {
+      pattern: {
+        value: regex.TAX_ID_PATTERN,
+        message: errorMessages.INCORRECT,
+      },
+      minLength: {
+        value: 11,
+        message: errorMessages.INCORRECT,
+      },
+      maxLength: {
+        value: 11,
         message: errorMessages.INCORRECT,
       },
       required: errorMessages.REQUIRED,
