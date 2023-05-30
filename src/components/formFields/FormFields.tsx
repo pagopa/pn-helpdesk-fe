@@ -5,7 +5,6 @@ import {
   FormControlLabel,
   Grid,
   InputAdornment,
-  TextFieldPropsSizeOverrides,
   Tooltip,
 } from "@mui/material";
 import SelectField from "../selectField/SelectField";
