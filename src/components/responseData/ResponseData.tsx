@@ -50,6 +50,7 @@ const ResponseData = () => {
             </>
           </Typography>
         </Grid>
+        {Object.values(response)[1] as keyof typeof ResponseType &&
         <Grid item container>
           <Grid item >
             <Typography align="center" color="text.primary">
@@ -59,6 +60,7 @@ const ResponseData = () => {
             </Typography>
           </Grid>
         </Grid>
+        }
       </Grid>
     </Grid>
   ) : null;
