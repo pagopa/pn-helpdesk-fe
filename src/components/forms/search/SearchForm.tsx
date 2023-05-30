@@ -167,7 +167,6 @@ const SearchForm = () => {
    * to which fields are filled
    */
   useEffect(() => {
-    console.log('useEffect!');
     let neededFields: string[] = [];
     disableRicerca();
     const values = getValues();
