@@ -169,6 +169,22 @@ const SearchForm = () => {
   useEffect(() => {
     let neededFields: string[] = [];
     disableRicerca();
+    const values = getValues();
+    if (selectedValue ==='Ottieni EncCF'){
+      if (fields && fields.find(f=>f.name==='piva')){
+        const piva = fields.find(f=>f.name==='piva');
+        if (piva) {
+          piva.hidden=(values["recipientType"]==='PF');
+        }
+      }
+      if (fields && fields.find(f=>f.name==='taxId')){
+        const taxId = fields.find(f=>f.name==='taxId');
+        if (taxId) {
+          taxId.hidden=(values["recipientType"]==='PG');
+        }
+      }
+      
+    }
     if (
       Object.keys(dirtyFields).sort().join("") ===
       [...prevDirtyFields].sort().join("")
