@@ -56,6 +56,7 @@ const ResponseData = () => {
             <Typography align="center" color="text.primary">
               <>
             <a target="_blank" href={Object.values(response)[1] as keyof typeof ResponseType}>Download</a>
+            <small><span>&nbsp;</span>I files zip sono protetti da password e posso essere aperti con un tool che supporti encryption AES, come 7Zip</small>
               </>
             </Typography>
           </Grid>
