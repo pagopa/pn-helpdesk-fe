@@ -31,6 +31,7 @@ import streamSaver from 'streamsaver';
 import { v4 as uuid } from "uuid";
 import { getPresignedUrl } from "../../../redux/uploading/actions";
 import { responseData } from "../../../redux/responseSlice";
+import { infoMessages } from "../../../helpers/messagesConstants";
 
 
 /**
@@ -374,34 +375,9 @@ const SearchForm = () => {
       let fileName = data?.message;
       password = res.headers.get('password');
 
-      // if (!fileName) {
-      //   fileName = '=log.zip';
-      // }
-      // const fileStream = streamSaver.createWriteStream(fileName?.split('=')[1]);
-      // const readableStream = res.body
-      
       updateResponse({password: password});
       polling(fileName);
-      // more optimized
-      // if (window.WritableStream && readableStream &&  readableStream.pipeTo) {
-      //   return readableStream.pipeTo(fileStream)
-      //     .then(() => {
-      //       console.log('done writing');
-      //       dispatch(spinnerActions.updateSpinnerOpened(false));
-      //     });
-      // }else{
-
-      //   const writer = fileStream.getWriter();
-
-      //   const reader = res.body?.getReader();
-
-      //   const pump:any = () => reader?.read()
-      //     .then(res => res.done
-      //       ? writer.close().then(()=>{dispatch(spinnerActions.updateSpinnerOpened(false));})
-      //       : writer.write(res.value).then(pump));
-
-      //   pump();
-      // }
+     
       })
     }).catch(err=>{
       updateSnackbar({data:{message:'Si è verificato un errore durante l\'estrazione'}, status:500});
@@ -418,12 +394,14 @@ const SearchForm = () => {
     if (!data || data==='') return;
 
     if (timerId) clearTimeout(timerId);
+
     apiRequests.getDownloadUrl(data).then(ret=>{
       if (ret.data.message === 'notready'){
         timerId=setTimeout(()=>polling(data) , 5000);
       }else{
         dispatch(spinnerActions.updateSpinnerOpened(false));
         updateResponse({password: password,downloadLink: ret.data.message});
+        updateSnackbar({data:{message: infoMessages.OK_RESPONSE}})
       }
     }).catch(err=>{
       dispatch(spinnerActions.updateSpinnerOpened(false));
