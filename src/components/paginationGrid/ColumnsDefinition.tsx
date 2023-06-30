@@ -10,6 +10,8 @@ import {CostDTO} from "../../api/paperChannel";
 import {ButtonsActionDriverTable, ButtonShowCosts} from "../buttonsGroup/ButtonsActionDriverTable";
 import {TenderStatusChip} from "../deliveriesDrivers/TenderStatusChip";
 import {Tender} from "../../model";
+import {EstimateStatusChip} from "../usageEstimates/EstimateStatus";
+import {Button} from "@mui/material";
 
 
 const columnsTender: GridColDef[] = [
@@ -238,6 +240,74 @@ const columnsCost : (withActions:boolean) =>  GridColDef[] = (withActions) => {
 }
 
 
+const columnsEstimates: GridColDef[] = [
+  {
+    field: "referenceMonth",
+    headerName: "Mese di riferimento",
+    width: 200,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+  },
+  {
+    field: "deadlineDate",
+    headerName: "Data di scadenza",
+    type: "date",
+    width: 200,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return params.row.deadlineDate
+        ? format(new Date(params.row.deadlineDate), "dd-MM-yyyy HH:mm")
+        : "";
+    },
+  },
+  {
+    field: "lastModifiedDate",
+    headerName: "Data ultima modifica",
+    type: "date",
+    width: 200,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return params.row.lastModifiedDate
+        ? format(new Date(params.row.lastModifiedDate), "dd-MM-yyyy HH:mm")
+        : "";
+    },
+  },
+  {
+    field: "status",
+    headerName: "Stato",
+    type: "string",
+    width: 400,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return <EstimateStatusChip data={params.row.status}/>
+    },
+  },
+  {
+    field: "actions",
+    headerName: "Azioni",
+    type: "string",
+    width: 400,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return <Button>Click</Button>
+    },
+  },
+]
+
 
 const getColumn = (type:ModelType) => {
     switch (type) {
@@ -251,6 +321,8 @@ const getColumn = (type:ModelType) => {
         return columnsCost(false);
       case ModelType.COST_WITH_ACTIONS:
         return columnsCost(true);
+      case ModelType.USAGE_ESTIMATES:
+        return columnsEstimates;
       default:
         return emptyColumn
     }

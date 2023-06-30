@@ -1,6 +1,7 @@
 import MainLayout from "../mainLayout/MainLayout";
 import {Box, Card, Container, Grid, Typography} from "@mui/material";
 import React from "react";
+import {EstimatesTable} from "../../components/usageEstimates/EstimatesTable";
 
 
 export function SearchUsageEstimationsPage({email=""}){
@@ -26,7 +27,7 @@ export function SearchUsageEstimationsPage({email=""}){
               backgroundColor: "background.paper",
             }}
           >
-
+            <EstimatesTable/>
           </Card>
         </Grid>
 

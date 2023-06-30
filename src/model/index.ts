@@ -1,56 +1,71 @@
 import React from "react";
 
-export interface Estimate {
+export interface EstimatesPageableRequest {
+  paId: string;
+  page: number;
+  tot: number;
+}
+
+export interface EstimatesPageableResponse {
+  actual: EstimatePeriod;
+  history: PageableResponse<EstimateHistory>
+}
+
+export interface EstimateDetailRequest {
   paId: string,
-  paName: string,
-  taxId: string,
-  address: string,
-  fiscalCode: string,
-  ipaCode: string,
-  sdiCode: string,
-  splitPayment: boolean
-  description: string,
-  pec: string,
-  mailAddress: string,
-  status: EstimateStatusEnum,
-  deadlineDate: string,
-  referenceMonth: string,
-  totalDigitalNotif: number,
-  totalPaper890Notif: number,
-  totalPaperNationalNotif: number,
-  totalPaperInternationalNotif: number,
-  lastModifiedTimestamp: string
+  referenceMonth: string
 }
 
-export const EstimateStatusEnum = {
-  Created: 'CREATED',
-  Validated: 'VALIDATED',
-  InProgress: 'IN_PROGRESS',
-  Ended: 'ENDED'
-} as const;
-
-export type EstimateStatusEnum = typeof EstimateStatusEnum[keyof typeof EstimateStatusEnum];
-
-export interface EstimateSearchTable {
-  referenceMonth?: string;
-  lastModifiedTimestamp?: string;
-  status?: EstimateStatusEnum;
-  checkPDND?: boolean;
+export interface EstimateDetailResponse extends EstimatePeriod {
+  paInfo: PaInfo
 }
 
-export interface InfoDownload {
-  paId?: string;
-  status?: InfoDownloadStatusEnum;
-
+export interface Estimate {
+  totalDigitalNotif: number;
+  totalAnalogNotif: number;
+  total890Notif: number;
 }
 
-export const InfoDownloadStatusEnum = {
-  Uploading: 'UPLOADING',
-  Uploaded: 'UPLOADED'
-} as const;
+export interface PaInfo {
+  paId: string;
+  paName: string;
+  taxId: string;
+  registeredOffice: string;
+  fiscalCode: string;
+  ipaCode: string;
+  pec: string;
+  sdiCode: string;
+}
 
-export type InfoDownloadStatusEnum = typeof InfoDownloadStatusEnum[keyof typeof InfoDownloadStatusEnum];
+export interface EstimateHistory {
+  referenceMonth: string;
+  lastModifiedDate: string;
+  deadlineDate: string;
+  status: EstimateStatusEnum;
+}
 
+export interface EstimatePeriod {
+  status: EstimateStatusEnum;
+  showEdit: boolean;
+  deadlineDate: string;
+  referenceMonth: string;
+  lastModifiedDate?: string;
+  estimate: Estimate;
+  billing: Profilation;
+}
+
+export interface Profilation {
+  sdiCode: string;
+  splitPayment: boolean;
+  description: string;
+  mailAddress: string;
+}
+
+export enum EstimateStatusEnum {
+  DRAFT= 'DRAFT',
+  VALIDATED ='VALIDATED',
+  ABSENT ='ABSENT',
+}
 
 export type FilterRequest = {
   tenderCode ?: string,
@@ -63,6 +78,13 @@ export type FilterRequest = {
 
 export type Filter = {
   costCode: string
+}
+
+interface PageableResponse<T> {
+  'number': number;
+  size: number;
+  totalElements: number;
+  content: Array<T>
 }
 
 export type Page<T> = {

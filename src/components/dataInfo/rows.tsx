@@ -10,21 +10,25 @@ export const tenderRowsInfo: RowDataInfo[] = [
   {
     id: "name",
     label: "Identificazione",
+    type: "ROW",
     render: (data) => <Typography>{data?.name}</Typography>
   },
   {
     id: "startDate",
     label: "Data inizio",
+    type: "ROW",
     render: (data) => <Typography>{(data?.startDate) ? format(new Date(data.startDate), "dd-MM-yyyy HH:mm") : ""}</Typography>
   },
   {
     id: "endDate",
     label: "Data fine",
+    type: "ROW",
     render: (data) => <Typography>{(data?.endDate) ? format(new Date(data.endDate), "dd-MM-yyyy HH:mm") : ""}</Typography>
   },
   {
     id: "status",
     label: "Stato",
+    type: "ROW",
     render: (data) => <TenderStatusChip data={data as Tender}/>
   },
 ]
@@ -33,106 +37,197 @@ export const usageInfoPA: RowDataInfo[] = [
   {
     id: "paName",
     label: "Soggetto aderente",
-    render: (data) => <Typography>{(data?.paName) ? data.paName : "-"}</Typography>
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2" sx={{fontWeight: "bold"}}>
+        {(data?.paName) ? data.paName : "-"}
+      </Typography>
+    )
   },
   {
     id: "address",
     label: "Sede legale",
-    render: (data) => <Typography>{(data?.address) ? data.address : "-"}</Typography>
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2" sx={{fontWeight: "bold"}}>
+        {(data?.registeredOffice) ? data.registeredOffice : "-"}
+      </Typography>
+    )
   },
   {
     id: "taxId",
     label: "Partita IVA",
-    render: (data) => <Typography>{(data?.taxId) ? data.taxId : "-"}</Typography>
-  },
-  {
-    id: "fiscalCode",
-    label: "Codice Fiscale",
-    render: (data) => <Typography>{(data?.ipaCode) ? data.ipaCode : "-"}</Typography>
-  },
-  {
-    id: "ipaCode",
-    label: "Codice IPA",
-    render: (data) => <Typography>{(data?.ipaCode) ? data.ipaCode : "-"}</Typography>
-  },
-  {
-    id: "pec",
-    label: "PEC",
-    render: (data) => <Typography>{(data?.pec) ? data.pec : "-"}</Typography>
-  },
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2" sx={{fontWeight: "bold"}}>
+        {(data?.taxId) ? data.taxId : "-"}
+      </Typography>
+    )
+  }
 ]
 
 export const usagePeriodPA: RowDataInfo[] = [
   {
-    id: "paName",
-    label: "Nome PA",
-    render: (data) => <Typography>{data?.paName}</Typography>
-  },{
     id: "referenceMonth",
-    label: "Periodo di riferimento",
-    render: (data) => <Typography>{data?.referenceMonth}</Typography>
-  },{
+    label: "Mese di riferimento",
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2" sx={{fontWeight: "bold"}}>
+        {data?.referenceMonth}
+      </Typography>
+    )
+  },
+  {
     id: "deadlineDate",
     label: "Data di scadenza",
-    render: (data) =><Typography>{(data?.deadlineDate) ? format(new Date(data.deadlineDate), "dd-MM-yyyy HH:mm") : "-"}</Typography>
-  },{
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2" sx={{fontWeight: "bold"}}>
+        {(data?.deadlineDate) ? format(new Date(data.deadlineDate), "dd-MM-yyyy HH:mm") : "-"}
+      </Typography>
+    )
+  },
+  {
+    id: "insertDate",
+    label: "Data di ultima modifica",
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2" sx={{fontWeight: "bold"}}>
+        {(data?.lastModifiedDate) ? format(new Date(data.lastModifiedDate), "dd-MM-yyyy HH:mm") : "-"}
+      </Typography>
+    )
+  },
+  {
     id: "status",
     label: "Stato",
+    type: "ROW",
     render: (data) => <EstimateStatusChip data={data.status}/>
-  },{
-    id: "insertDate",
-    label: "Data inserimento",
-    render: (data) => <Typography>{(data?.lastModifiedTimestamp) ? format(new Date(data.lastModifiedTimestamp), "dd-MM-yyyy HH:mm") : "-"}</Typography>
-  },
+  }
 ]
 
 export const usageBillingDataPA: RowDataInfo[] = [
   {
     id: "sdiCode",
     label: "Codice SDI",
-    render: (data) => <Typography>{(data?.sdiCode) ? data.sdiCode : "-"}</Typography>
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2" sx={{fontWeight: "bold"}}>
+        {(data?.sdiCode) ? data.sdiCode : "-"}
+      </Typography>
+    )
   },
   {
     id: "splitPayment",
     label: "Soggetto Split Payment",
-    render: (data) => <Typography>{(data?.splitPayment) ? "Si" : "No"}</Typography>
-  },
-  {
-    id: "description",
-    label: "Altre informazioni utili ai fini della fatturazione",
-    render: (data) => <Typography>{(data?.description) ? data.description : "-"}</Typography>
+    type: "ROW",
+    render: (data) =>(
+      <Typography variant="body2" sx={{fontWeight: "bold"}}>
+        {(data?.splitPayment) ? "Si" : "No"}
+      </Typography>
+    )
   },
   {
     id: "mailAddress",
-    label: "Indirizzo email amministrativo di riferimento per contatti ",
-    render: (data) => <Typography>{(data?.mailAddress) ? data.mailAddress : "-"}</Typography>
+    label: "Indirizzo e-mail amministrativo",
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2" sx={{fontWeight: "bold"}}>
+        {(data?.mailAddress) ? data.mailAddress : "-"}
+      </Typography>
+    )
   },
+  {
+    id: "description",
+    type: "ROW",
+    label: "Altre informazioni utili alla fatturazione",
+    render: (data) => (
+      <Typography variant="body2" sx={{fontWeight: "bold"}}>
+        {(data?.description) ? data.description : "-"}
+      </Typography>
+    )
+  },
+
 ]
 
 export const usageEstimationsPA: RowDataInfo[] = [
   {
     id: "totalDigitalNotif",
     label: "Numero notifiche per via digitale",
-    render: (data) => <Typography>{data?.totalDigitalNotif}</Typography>
-  },{
-    id: "totalPaperAR",
-    label: "Numero di notifiche per via analogica tramite Raccomandata A/R",
-    render: (data) => <Typography>{data?.totalPaperInternationalNotif + data?.totalPaperInternationalNotif}</Typography>
-  },{
-    id: "totalPaper890Notif",
-    label: "Numero di notifiche per via analogica L. 890/19",
-    render: (data) => <Typography>{data?.totalPaper890Notif}</Typography>
-  },{
-    id: "totalDigital",
-    label: "Totale notifiche digitali",
-    render: (data) => <Typography>{data.a}</Typography>
-  }, {
-    id: "totalPaper",
-    label: "Totale notifiche analogiche",
-    render: (data) => <Typography>{data.b}</Typography>
-  },{
-    id: "totalNotifToWork",
-    label: "Totale notifiche da processare",
-    render: (data) => <Typography>{data.c}</Typography>
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2"
+                  textAlign={"end"}
+                  sx={{fontWeight: "bold"}}>
+        {data?.totalDigitalNotif}
+      </Typography>
+    )
   },
+  {
+    id: "totalPaperAR",
+    label: "Numero notifiche per via analogica tramite A/R",
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2"
+                  textAlign={"end"}
+                  sx={{fontWeight: "bold"}}>
+        {data?.totalAnalogNotif}
+      </Typography>
+    )
+  },
+  {
+    id: "totalPaper890Notif",
+    label: "Numero notifiche per via analogica tramite 890",
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2"
+                  textAlign={"end"}
+                  sx={{fontWeight: "bold"}}>
+        {data?.total890Notif}
+      </Typography>
+    )
+  },
+  {
+    id: "divider-total",
+    label: "divider-label",
+    type: "DIVIDER",
+    render: (data) => null,
+  },
+  {
+    id: "totalNotifToWork",
+    label: "Totale notifiche stimate",
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="subtitle1"
+                  textAlign={"end"}
+                  sx={{fontWeight: "bold"}}>
+        (data.total890Notif && data.totalAnalogNotif && data.totalDigitalNotif) ?
+        data.total890Notif + data.totalAnalogNotif + data.totalDigitalNotif
+        : "-"
+      </Typography>
+    )
+  },
+  {
+    id: "totalDigital",
+    label: "Per via digitale",
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2"
+                  textAlign={"end"}
+                  sx={{fontWeight: "bold"}}>
+        {data?.totalDigitalNotif}
+      </Typography>
+    )
+  },
+  {
+    id: "totalPaper",
+    label: "Per via analogica",
+    type: "ROW",
+    render: (data) => (
+      <Typography variant="body2"
+                  textAlign={"end"}
+                  sx={{fontWeight: "bold"}}>
+        {data?.totalAnalogNotif + data?.total890Notif}
+      </Typography>
+    )
+  }
 ]

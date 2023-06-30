@@ -2,18 +2,15 @@ import {Button, Card, Container, Grid, Stack, Typography} from "@mui/material";
 import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
 import {SEARCH_USAGE_ESTIMATES_ROUTE} from "../../navigation/router.const";
 import MainLayout from "../mainLayout/MainLayout";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
-import {FinalBalances} from "../../components/finalBalances/FinalBalances";
 import * as spinnerActions from "../../redux/spinnerSlice";
-import {getDetailEstimate} from "../../api/usageEstimatesApi";
-import * as snackbarActions from "../../redux/snackbarSlice";
-import {addedTender} from "../../redux/formTender/reducers";
-import {Estimate, Tender} from "../../model";
 import {useParams} from "react-router-dom";
-import {useAppDispatch} from "../../redux/hook";
+import {useAppDispatch, useAppSelector} from "../../redux/hook";
 import {usageInfoPA, usagePeriodPA, usageBillingDataPA, usageEstimationsPA} from "../../components/dataInfo/rows";
 import {DataInfo} from "../../components/dataInfo/DataInfo";
+import {getDetailEstimate} from "../../redux/usageEstimates/actions";
+import {EstimateDetailRequest, EstimateStatusEnum} from "../../model";
 
 const breadcrumbsLinks = [
   {
@@ -23,25 +20,31 @@ const breadcrumbsLinks = [
 ]
 
 export function DetailUsageEstimationPage(){
-  const months = ["GENNAIO", "FEBBRAIO", "MARZO", "APRILE", "MAGGIO", "GIUGNO",
-    "LUGLIO", "AGOSTO", "SETTEMBRE", "OTTOBRE", "NOVEMBRE", "DICEMBRE"];
+  const months = ["GEN", "FEB", "MAR", "APR", "MAG", "GIU",
+    "LUG", "AGO", "SET", "OTT", "NOV", "DIC"];
+  const detailEstimate = useAppSelector(state => state.usageEstimate.detail);
   const {paId, referenceMonth} = useParams();
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [detailEstimate, setDetailEstimate] = useState({});
-  const arrayFiles = ["1"];
+  const dispatch = useAppDispatch();
 
+
+  const fetchDetail = useCallback(() => {
+    if (!redirectCondition) {
+      dispatch(spinnerActions.updateSpinnerOpened(true));
+      dispatch(getDetailEstimate({paId: paId, referenceMonth: referenceMonth} as EstimateDetailRequest))
+        .unwrap().then(() => {
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+      }).catch(() => {
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+      });
+    }
+  }, [paId, referenceMonth])
 
   useEffect(() => {
-    if (!redirectCondition){
-      console.log("useEffect")
-      console.log("paid: ", paId);
-      console.log("referenceMonth: ", referenceMonth);
-      retrieveDetailEstimate(paId, referenceMonth);
-    }
-  }, [])
+    fetchDetail();
+  }, [fetchDetail])
 
-  const isAmonth = (monthToCheck: string | undefined) => {
+  const isAMonth = (monthToCheck: string | undefined) => {
     return months.filter(month => {
       if(monthToCheck === undefined)
         return false;
@@ -50,30 +53,12 @@ export function DetailUsageEstimationPage(){
     });
   }
 
-  const redirectCondition = (!paId || isNaN(Number(paId)) || !referenceMonth || isAmonth(referenceMonth).length === 0);
+  const redirectCondition = (!paId || !referenceMonth || isAMonth(referenceMonth).length === 0);
 
   if (redirectCondition) {
     console.log("return to Search estimation page")
     return <Navigate to={SEARCH_USAGE_ESTIMATES_ROUTE}/>
   }
-
-  const retrieveDetailEstimate = async (paId: string, referenceMonth: string) => {
-    dispatch(spinnerActions.updateSpinnerOpened(true));
-    try {
-      const response = await getDetailEstimate(paId, referenceMonth);
-      const estimate = response;
-      dispatch(spinnerActions.updateSpinnerOpened(false));
-      setDetailEstimate(estimate);
-    } catch (exception){
-      dispatch(spinnerActions.updateSpinnerOpened(false));
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
-      dispatch(snackbarActions.updateStatusCode(404));
-      dispatch(snackbarActions.updateMessage("Stima del mese non trovata!"));
-      navigate(SEARCH_USAGE_ESTIMATES_ROUTE);
-    }
-  }
-
-
 
   return <MainLayout>
     <Container>
@@ -101,11 +86,17 @@ export function DetailUsageEstimationPage(){
             }}>
             <Stack sx={{width: 1}} spacing={2}>
               <Grid item container>
-                <Typography variant="h5">
+                <Typography
+                  color="text.primary"
+                  variant="overline"
+                  fontWeight={700}
+                  textTransform="uppercase"
+                  fontSize={14}
+                >
                   INFORMAZIONI
                 </Typography>
               </Grid>
-              { <DataInfo data={detailEstimate} rows={usageInfoPA}/> }
+              { (detailEstimate) ? <DataInfo data={detailEstimate.paInfo} rows={usageInfoPA}/> : null }
             </Stack>
           </Card>
 
@@ -120,11 +111,17 @@ export function DetailUsageEstimationPage(){
             }}>
             <Stack sx={{width: 1}} spacing={2}>
               <Grid item container>
-                <Typography variant="h5">
+                <Typography
+                  color="text.primary"
+                  variant="overline"
+                  fontWeight={700}
+                  textTransform="uppercase"
+                  fontSize={14}
+                >
                   PERIODO
                 </Typography>
               </Grid>
-              { <DataInfo data={detailEstimate} rows={usagePeriodPA}/> }
+              { (detailEstimate) ? <DataInfo data={detailEstimate} rows={usagePeriodPA}/> : null }
             </Stack>
           </Card>
 
@@ -139,13 +136,49 @@ export function DetailUsageEstimationPage(){
             }}>
             <Stack sx={{width: 1}} spacing={2}>
               <Grid item container>
-                <Typography variant="h5">
+                <Typography
+                  color="text.primary"
+                  variant="overline"
+                  fontWeight={700}
+                  textTransform="uppercase"
+                  fontSize={14}
+                >
                   DATI AGGIUNTIVI PER LA FATTURAZIONE
                 </Typography>
               </Grid>
-              { <DataInfo data={detailEstimate} rows={usageBillingDataPA}/> }
+              {(detailEstimate) ? <DataInfo data={detailEstimate.billing} rows={usageBillingDataPA}/> : null }
             </Stack>
           </Card>
+
+
+          {
+            (detailEstimate && detailEstimate.status !== EstimateStatusEnum.ABSENT) ?
+              <Card
+                elevation={24}
+                sx={{
+                  width: 1,
+                  padding: "1rem 2rem",
+                  boxShadow: "0px 3px 3px -2px ",
+                  backgroundColor: "background.paper",
+                  marginBottom: "1rem"
+                }}>
+                <Stack sx={{width: 1}} spacing={2}>
+                  <Grid item container>
+                    <Typography
+                      color="text.primary"
+                      variant="overline"
+                      fontWeight={700}
+                      textTransform="uppercase"
+                      fontSize={14}
+                    >
+                      DATI AGGIUNTIVI PER LA FATTURAZIONE
+                    </Typography>
+                  </Grid>
+                  <DataInfo data={detailEstimate.estimate} rows={usageEstimationsPA}/>
+                </Stack>
+              </Card> : null
+          }
+
 
           <Card
             elevation={24}
@@ -158,26 +191,13 @@ export function DetailUsageEstimationPage(){
             }}>
             <Stack sx={{width: 1}} spacing={2}>
               <Grid item container>
-                <Typography variant="h5">
-                  DATI AGGIUNTIVI PER LA FATTURAZIONE
-                </Typography>
-              </Grid>
-              { <DataInfo data={detailEstimate} rows={usageEstimationsPA}/> }
-            </Stack>
-          </Card>
-
-          <Card
-            elevation={24}
-            sx={{
-              width: 1,
-              padding: "1rem 2rem",
-              boxShadow: "0px 3px 3px -2px ",
-              backgroundColor: "background.paper",
-              marginBottom: "1rem"
-            }}>
-            <Stack sx={{width: 1}} spacing={2}>
-              <Grid item container>
-                <Typography variant="h5">
+                <Typography
+                  color="text.primary"
+                  variant="overline"
+                  fontWeight={700}
+                  textTransform="uppercase"
+                  fontSize={14}
+                >
                   CONSUNTIVI
                 </Typography>
               </Grid>

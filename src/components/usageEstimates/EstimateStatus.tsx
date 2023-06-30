@@ -3,25 +3,22 @@ import React from "react";
 import {EstimateStatusEnum} from "../../model";
 
 enum StatusChipLabel {
-  CREATED = "IN AGGIORNAMENTO",
-  VALIDATED = "CONSOLIDATO",
-  IN_PROGRESS = "IN CORSO",
+  DRAFT = "Bozza",
+  VALIDATED = "Inviata",
+  ABSENT = "Assente",
   ENDED = "TERMINATA"
 }
 
 
 export function EstimateStatusChip(props:{data:EstimateStatusEnum}) {
-  if (props.data === EstimateStatusEnum.Created)
-    return <Chip sx={{bgcolor: '#ffff00'}} label={StatusChipLabel.CREATED}/>
+  if (props.data === EstimateStatusEnum.DRAFT)
+    return <Chip color={"info"} label={StatusChipLabel.DRAFT}/>
 
-  if (props.data === EstimateStatusEnum.Validated)
-    return <Chip sx={{bgcolor: '#95f202'}}  label={StatusChipLabel.VALIDATED}/>
+  if (props.data === EstimateStatusEnum.VALIDATED)
+    return <Chip color={"success"}  label={StatusChipLabel.VALIDATED}/>
 
-  if (props.data === EstimateStatusEnum.InProgress)
-    return <Chip  sx={{bgcolor: '#81d4fa'}} label={StatusChipLabel.IN_PROGRESS}/>
-
-  if (props.data === EstimateStatusEnum.Ended)
-    return <Chip label={StatusChipLabel.ENDED}/>
+  if (props.data === EstimateStatusEnum.ABSENT)
+    return <Chip color={"error"} label={StatusChipLabel.ABSENT}/>
 
   return <Chip label={"-"}/>
 }
