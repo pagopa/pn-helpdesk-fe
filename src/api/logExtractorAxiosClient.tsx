@@ -2,7 +2,6 @@ import { AxiosInstance, AxiosResponse } from "axios";
 import {
   getLogsProcessesType,
   getNotificationsInfoLogsType,
-  getNotificationsMonthlyStatsLogsType,
   getPersonIdType,
   getPersonsLogsType,
   getPersonTaxIdType,
@@ -48,12 +47,6 @@ class Http {
     return this.http.post<T, R>("logs/v1/notifications/info", payload);
   }
 
-  getNotificationsMonthlyStatsLogs<T = any, R = AxiosResponse<T>>(
-    payload: getNotificationsMonthlyStatsLogsType
-  ): Promise<R> {
-    return this.http.post<T, R>("logs/v1/notifications/monthly", payload);
-  }
-
   getLogsProcesses<T = any, R = AxiosResponse<T>>(
     payload: getLogsProcessesType
   ): Promise<R> {
@@ -73,6 +66,11 @@ class Http {
   ): Promise<R> {
     return this.http.post<T, R>("/logs/v1/sessions", payload);
   }
+
+  getDownloadUrl<T = any, R = AxiosResponse<T>>(key: string): Promise<R> {
+    return this.http.get<T, R>("/logs/v1/status?key="+key);
+  }
+
 }
 
 export const http = new Http();

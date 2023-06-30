@@ -1,5 +1,5 @@
 import { reducer } from "../../../mocks/mockReducer";
-import { act, cleanup, fireEvent, screen, waitFor } from "@testing-library/react";
+import {act, cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import React from "react";
 import * as reactRedux from "../../../redux/hook";
 import { StepTender } from "../StepTender";
@@ -146,19 +146,18 @@ describe("StepTenderTest", () => {
     useParamsSpy.mockReturnValue({tenderCode: undefined})
     reducer(<StepTender />);
 
-    // eslint-disable-next-line testing-library/no-unnecessary-act
-    await act(async () => {
-      const tenderForm = screen.getByTestId("tender-form-mock");
-      expect(tenderForm).toBeInTheDocument();
 
-      const buttonCarica = screen.getByText("Carica");
-      expect(buttonCarica).toBeInTheDocument();
-      expect(buttonCarica).toBeDisabled()
+    const tenderForm = screen.getByTestId("tender-form-mock");
+    expect(tenderForm).toBeInTheDocument();
 
-      const buttonAvanti = screen.getByText("Avanti");
-      expect(buttonAvanti).toBeInTheDocument();
-      expect(buttonAvanti).toBeDisabled()
-    })
+    const buttonCarica = screen.getByText("Carica");
+    expect(buttonCarica).toBeInTheDocument();
+    expect(buttonCarica).toBeDisabled()
+
+    const buttonAvanti = screen.getByText("Avanti");
+    expect(buttonAvanti).toBeInTheDocument();
+    expect(buttonAvanti).toBeDisabled()
+
   })
 
   it("whenRetrieveTenderDetailsReturnTenderWithStatusCreated", async () => {
@@ -250,13 +249,17 @@ describe("StepTenderTest", () => {
     useParamsSpy.mockReturnValue({tenderCode: undefined})
     reducer(<StepTender />);
 
-    // eslint-disable-next-line testing-library/no-debugging-utils
-    screen.debug()
-
     const buttonDialog = screen.getByTestId("btn-back-tenders");
     expect(buttonDialog).toBeInTheDocument();
 
     fireEvent.click(buttonDialog);
+
+    const alertDialog = screen.getByTestId('alert-dialog');
+    expect(alertDialog).toBeInTheDocument();
+
+    const buttonSi = screen.getByText('Si');
+    expect(buttonSi).toBeInTheDocument();
+    fireEvent.click(buttonSi);
 
     // eslint-disable-next-line testing-library/no-unnecessary-act
     await waitFor(async () => {

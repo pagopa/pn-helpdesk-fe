@@ -25,6 +25,8 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
+import { useHasPermissions } from "../../hooks/useHasPermissions";
+import { Permission } from "../../model/user-permission";
 
 /**
  * Monitor page
@@ -45,6 +47,8 @@ const MonitorPage = () => {
 
   const [error, setError] = useState("");
 
+  const isUserWriter = useHasPermissions([Permission.LOG_DOWNTIME_WRITE]);
+
   useEffect(() => {
     if (!modalStatus) {
       setModalEventDate(new Date());
@@ -63,8 +67,12 @@ const MonitorPage = () => {
     (response: any) => {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(response.status));
-      response.data.message &&
-        dispatch(snackbarActions.updateMessage(response.data.message));
+      (response.data.detail || response.data.message) &&
+      dispatch(
+        snackbarActions.updateMessage(
+          response.data.detail || response.message
+        )
+      );
     },
     [dispatch]
   );
@@ -74,6 +82,7 @@ const MonitorPage = () => {
       .getStatus()
       .then((res) => {
         setBackEndStatus(true);
+        (res.detail || res.data.message) && updateSnackbar(res);
         let rows: any[] = [];
         if (res && res.data) {
           if (res.data.functionalities) {
@@ -82,7 +91,7 @@ const MonitorPage = () => {
                 (element: any) => element.functionality === item
               );
               let date =
-                incident.length === 0 ? "" : incident[0].startDate.slice(0, -1);
+              incident.length === 0 ? "" : new Date(incident[0].startDate);
               let row = {
                 id: res.data.functionalities.indexOf(item) + 1,
                 functionality: functionalitiesNames[item],
@@ -142,8 +151,8 @@ const MonitorPage = () => {
         {
           ...modalPayload,
           timestamp: format(
-            new Date(modalEventDate),
-            "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
+            new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
+            "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
           ),
         },
       ];
@@ -215,7 +224,7 @@ const MonitorPage = () => {
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      hide: !backEndStatus,
+      hide: !backEndStatus && !isUserWriter,
       getActions: (params: any) => {
         return params.row.state
           ? [
@@ -267,6 +276,7 @@ const MonitorPage = () => {
             <Grid item>
               <DateTimePicker
                 disableFuture
+                maxDateTime={new Date()}
                 label="Data e ora evento"
                 value={modalEventDate}
                 onChange={(e) => handleChange(e)}

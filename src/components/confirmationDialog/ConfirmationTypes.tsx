@@ -1,6 +1,7 @@
 export type Options = {
-    title?: string,
-    message?: string
-}
+  title?: string;
+  message?: string;
+  extraContent?: React.ReactNode;
+};
 
-export type ContextType = (options: Options) => Promise<any>
+export type ContextType = (options: Options) => Promise<any>;

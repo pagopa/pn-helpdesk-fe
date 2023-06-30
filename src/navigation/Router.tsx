@@ -22,6 +22,8 @@ import HomePage from "../pages/home/HomePage";
 import {useCurrentUser} from "../hooks/useCurrentUser";
 import {SearchUsageEstimationsPage} from "../pages/usageEstimates/SearchUsageEstimationsPage";
 import {DetailUsageEstimationPage} from "../pages/usageEstimates/DetailUsageEstimationPage";
+import AuthApikeyPage from "../pages/authApikey/AuthApikeyPage";
+
 
 /**
  * Create the routing of the page
@@ -141,8 +143,24 @@ function Router() {
             }
         />
       </Route>
+        {/* Pagina di Gestione Autorizzazioni ApiKey*/}
+        <Route
+          path={routes.AUTH_APIKEY}
+          element={
+            <PrivateRoute roles={[Permission.API_KEY_WRITE]}>
+              <AuthApikeyPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+            path={TENDER_DETAIL_ROUTE}
+            element={
+                <PrivateRoute roles={[Permission.TENDER_READ]}>
+                    <TenderDetailPage />
+                </PrivateRoute>
+            }
+        />
     </Routes>
   );
 }
-
 export default Router;

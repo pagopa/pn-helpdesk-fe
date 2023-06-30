@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { cleanup, fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import { reducer } from "../../../mocks/mockReducer";
 import React, { useState } from "react";
 import { AlertDialog, CostDialog, DriverCostsDialog } from "../index";
@@ -69,21 +69,23 @@ describe("Dialogs Test", () => {
       // @ts-ignore
       fireEvent.click(costDialog["firstChild"])
       await waitForElementToBeRemoved(() => screen.queryByTestId("cost-dialog"))
-      await act(async () => {
-        await expect(screen.queryByTestId("cost-dialog")).not.toBeInTheDocument()
-      })
+
+      await expect(screen.queryByTestId("cost-dialog")).not.toBeInTheDocument()
+
   });
 
   it("whenAlertDialogIsOpened", async () => {
     reducer(<AlertDialogCase />);
     const alertDialog = screen.getByTestId('alert-dialog');
     expect(alertDialog).toBeInTheDocument();
+
     // @ts-ignore
     fireEvent.click(alertDialog["firstChild"])
+
     await waitForElementToBeRemoved(() => screen.queryByTestId("alert-dialog"))
-    await act(async () => {
-      await expect(screen.queryByTestId("alert-dialog")).not.toBeInTheDocument()
-    })
+
+    await expect(screen.queryByTestId("alert-dialog")).not.toBeInTheDocument()
+
   });
 
   it("whenDriverCostsDialogIsOpened", async () => {
@@ -93,9 +95,8 @@ describe("Dialogs Test", () => {
     // @ts-ignore
     fireEvent.click(driverCostsDialog["firstChild"])
     await waitForElementToBeRemoved(() => screen.queryByTestId("driver-costs-dialog"))
-    await act(async () => {
-      await expect(screen.queryByTestId("driver-costs-dialog")).not.toBeInTheDocument()
-    })
+
+    await expect(screen.queryByTestId("driver-costs-dialog")).not.toBeInTheDocument()
   });
 
 })

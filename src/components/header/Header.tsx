@@ -2,6 +2,7 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import {
   Button,
   Container,
@@ -10,17 +11,18 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
+  Grid,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { infoMessages } from "../../helpers/messagesConstants";
-import { Divider, Grid, Typography } from "@material-ui/core";
 import { useAuth } from "../../Authentication/auth";
 import { useDispatch } from "react-redux";
 import * as spinnerActions from "../../redux/spinnerSlice";
 import NavigationMenu from "../navigationMenu/NavigationMenu";
-import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 /**
@@ -96,7 +98,7 @@ const Header = () => {
               </Grid>
             </Grid>
             <Grid item xs={3} md={6}>
-              <Typography align="center">PagoPA S.p.A.</Typography>
+              <Typography align="center" color="primary.contrastText">PagoPA S.p.A.</Typography>
             </Grid>
             <Grid
               container
@@ -115,7 +117,6 @@ const Header = () => {
                     edge="start"
                     color="inherit"
                     aria-label="menu"
-                    sx={{ paddingRight: 0 }}
                   >
                     <PermIdentityIcon sx={{ color: "white" }} />
                   </IconButton>
@@ -135,7 +136,7 @@ const Header = () => {
                     color="inherit"
                     aria-label="menu"
                     onClick={handleOpenModal}
-                    sx={{ paddingRight: 0 }}
+                    sx={{ ml: 0, pr: 0 }}
                   >
                     <LogoutIcon sx={{ color: "white" }} />
                   </IconButton>

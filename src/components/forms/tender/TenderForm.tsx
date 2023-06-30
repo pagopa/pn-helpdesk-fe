@@ -1,21 +1,14 @@
 import React, {useState} from "react";
-import {
-  Card,
-  Typography,
-  Grid,
-  Stack,
-  FormHelperText
-} from "@mui/material";
+import {Card, FormHelperText, Grid, Stack, Typography} from "@mui/material";
 import {Controller, useForm} from "react-hook-form";
 import {FormField} from "../../formFields/FormFields";
-import {Tender} from "../../../model";
+import {Tender, TenderStatusEnum} from "../../../model";
 import {format} from "date-fns";
-import {fieldsTender} from "./fields";
+import {fieldsTender, FieldTypesTender} from "./fields";
 import {LoadingButton} from "@mui/lab";
 import {createTender} from "../../../api/paperChannelApi";
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import {useAppDispatch} from "../../../redux/hook";
-
 
 
 const initialValue = (data?:Tender):{ [x: string]: any } => (
@@ -32,7 +25,6 @@ interface TenderFormProps {
 }
 
 export function TenderForm(props:TenderFormProps) {
-  const fields = ["name", "dateInterval"];
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -56,7 +48,7 @@ export function TenderForm(props:TenderFormProps) {
       setLoading(true)
       const response = await createTender(tender);
       setLoading(false);
-      props.onChanged?.(response);
+      props.onChanged?.(response as Tender);
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(200));
       dispatch(snackbarActions.updateMessage("Gara " + updateString + " correttamente"));
@@ -78,7 +70,7 @@ export function TenderForm(props:TenderFormProps) {
       startDate: fromDate,
       endDate: onDate,
       code: (props?.initialValue) ? props.initialValue.code : undefined,
-      status: "CREATED"
+      status: TenderStatusEnum.CREATED
     }
     return tender;
   }
@@ -105,7 +97,7 @@ export function TenderForm(props:TenderFormProps) {
 
           <Grid item container direction="column" rowSpacing={2}>
             {
-              fields.map(field => (
+              (Object.keys(fieldsTender) as Array<FieldTypesTender>).map(field => (
                 <Controller
                   key={field}
                   control={control}

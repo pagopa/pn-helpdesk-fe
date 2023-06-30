@@ -2,7 +2,6 @@ import { formatDate } from "../helpers/formatter.utility";
 import {
   getLogsProcessesType,
   getNotificationsInfoLogsType,
-  getNotificationsMonthlyStatsLogsType,
   getPersonIdType,
   getPersonTaxIdType,
   getPersonsLogsType,
@@ -13,6 +12,8 @@ import {
   createAggregateType,
   AggregateSummary,
   Pa,
+  searchPaType,
+  updatePdndRequest
 } from "./apiRequestTypes";
 import { http as logExtractoraggregateApiClient } from "./logExtractorAxiosClient";
 import { http as aggregateApiClient } from "./aggregateAxiosClient";
@@ -78,22 +79,16 @@ const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
     });
 };
 
-/**
- * Download the logs' archive containing the notifications sent in a specific month
- * @param {getNotificationsMonthlyStatsLogsType} data
- */
-const getNotificationsMonthlyStatsLogs = async (
-  data: getNotificationsMonthlyStatsLogsType
-) => {
-  return await logExtractoraggregateApiClient
-    .getNotificationsMonthlyStatsLogs(data)
-    .then((result: any) => {
-      return result;
-    })
-    .catch((error: any) => {
-      throw error;
-    });
-};
+const getDownloadUrl = async (data: string) => {
+  return await logExtractoraggregateApiClient.getDownloadUrl(data)
+  .then((result: any) => {
+    return result;
+  })
+  .catch((error: any) => {
+    throw error;
+  });
+
+}
 
 /**
  * Extract all log paths by given a specific traceId
@@ -153,11 +148,11 @@ const getAggregates = async (data: getAggregateParams) => {
     .then((result) => {
       const items = result.data.items.map(
         (agg) =>
-          ({
-            ...agg,
-            createdAt: formatDate(agg.createdAt, true),
-            lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
-          } as AggregateSummary)
+        ({
+          ...agg,
+          createdAt: formatDate(agg.createdAt, true),
+          lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
+        } as AggregateSummary)
       );
 
       return {
@@ -193,6 +188,44 @@ const createAggregate = async (data: createAggregateType) => {
     .then((result) => {
       return result.data;
     })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+/**
+ * Create an aggregation
+ */
+const searchPa = async (data: searchPaType) => {
+  return await aggregateApiClient
+    .searchPa(data)
+    .then((result) => result.data)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+/**
+ * Create an 
+ */
+const searchApiKey = async (data: string) => {
+  return await aggregateApiClient
+    .searchApiKey(data)
+    .then((result) => {
+      let items = result.data.items;
+      result.data.items = items.map((vk) => ({...vk, groups: Array.isArray(vk.groups) && vk.groups.length > 0 ? vk.groups.join(", ") : ""}));
+      
+      return result.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+const modifyPdnd = async (data: updatePdndRequest) => {
+  return await aggregateApiClient
+    .modifyPdnd(data)
+    .then((result) => result.data)
     .catch((error) => {
       throw error;
     });
@@ -302,7 +335,6 @@ const apiRequests = {
   getPersonTaxId,
   getPersonsLogs /*getOperatorsLogs,*/,
   getNotificationsInfoLogs,
-  getNotificationsMonthlyStatsLogs,
   getLogsProcesses,
   getStatus,
   getEvents,
@@ -317,6 +349,10 @@ const apiRequests = {
   getUsagePlans,
   addPa,
   getAssociablePaList,
+  searchPa,
+  searchApiKey,
+  modifyPdnd,
+  getDownloadUrl
 };
 
 export default apiRequests;

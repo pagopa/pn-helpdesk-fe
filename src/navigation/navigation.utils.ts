@@ -31,5 +31,10 @@ export const allNavigationItems: { title: string; link: string; permissions?: Ar
     title: "Trasferimento di PA",
     link: routes.TRANSFER_PA,
     permissions: [Permission.API_KEY_WRITE]
+  },
+  {
+    title:"Gestione Autorizzazioni ApiKey",
+    link: routes.AUTH_APIKEY,
+    permissions: [Permission.API_KEY_WRITE] 
   }
 ];

@@ -1,7 +1,7 @@
 import React from "react";
 import * as reactRedux from "../../../redux/hook";
 import * as router from "react-router";
-import {act, fireEvent, render, screen} from "@testing-library/react";
+import {fireEvent, render, screen} from "@testing-library/react";
 import {StepDeliveriesDrivers} from "../StepDeliveriesDrivers";
 
 describe('StepDeliveriesDriversTest', function () {
@@ -50,18 +50,18 @@ describe('StepDeliveriesDriversTest', function () {
     const btnBack = screen.getByTestId("btn-back-on-drivers")
     expect(btnBack).toBeInTheDocument()
     fireEvent.click(btnBack);
-    await act(async () => {
-      await expect(mockDispatchFn).toBeCalledWith({
-        payload: undefined,
-        type: "deliveriesDriverSlice/resetDetailDriver"
-      })
-      await expect(mockDispatchFn).toBeCalledWith({
-        payload: {
-          ...driverEmptyState.pagination,
-          force: true
-        },
-        type: "deliveriesDriverSlice/changeFilterDrivers"
-      })
+
+    await expect(mockDispatchFn).toBeCalledWith({
+      payload: undefined,
+      type: "deliveriesDriverSlice/resetDetailDriver"
+    })
+
+    await expect(mockDispatchFn).toBeCalledWith({
+      payload: {
+        ...driverEmptyState.pagination,
+        force: true
+      },
+      type: "deliveriesDriverSlice/changeFilterDrivers"
     })
 
 
@@ -89,23 +89,24 @@ describe('StepDeliveriesDriversTest', function () {
     expect(btnBack).toBeInTheDocument()
 
     fireEvent.click(btnAdd);
-    await act(async () => {
-      await expect(mockDispatchFn).toBeCalledWith({
-        payload: {},
-        type: "deliveriesDriverSlice/setDetailDriver"
-      })
+
+    await expect(mockDispatchFn).toBeCalledWith({
+      payload: {},
+      type: "deliveriesDriverSlice/setDetailDriver"
     })
 
   });
 
   it('whenAllDriversClickNextButton', async function () {
-
     const driversStore = {
       ...driverEmptyState,
       detail: undefined
     }
+
     delete driversStore.detail
+
     changeStore({...tenderFormWithUpload, fromUpload: false}, driversStore)
+
     render(<StepDeliveriesDrivers/>)
 
     const btnNext = screen.getByTestId("btn-next")
@@ -114,21 +115,15 @@ describe('StepDeliveriesDriversTest', function () {
     expect(btnBack).toBeInTheDocument()
 
     fireEvent.click(btnNext);
-    await act(async () => {
-      await expect(mockDispatchFn).toBeCalledWith({
-        payload: undefined,
-        type: "formTenderSlice/goFinalStep"
-      })
-
+    await expect(mockDispatchFn).toBeCalledWith({
+      payload: undefined,
+      type: "formTenderSlice/goFinalStep"
     })
 
     fireEvent.click(btnBack);
-    await act(async () => {
-      await expect(mockDispatchFn).toBeCalledWith({
-        payload: undefined,
-        type: "formTenderSlice/goFSUStep"
-      })
-
+    await expect(mockDispatchFn).toBeCalledWith({
+      payload: undefined,
+      type: "formTenderSlice/goFSUStep"
     })
 
   });

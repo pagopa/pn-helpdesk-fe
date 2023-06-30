@@ -24,14 +24,9 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
  * Items for the Tipo Estrazione and their coresponding fields
  */
 let MenuItems: { [key: string]: Array<string> } = {
-  "Ottieni EncCF": ["ticketNumber", "taxId", "recipientType"],
+  "Ottieni EncCF": ["ticketNumber", "taxId", "piva","recipientType"],
   "Ottieni CF": ["personId"],
   "Ottieni notifica": ["ticketNumber", "iun"],
-  "Ottieni notifiche di una PA": [
-    "ticketNumber",
-    "publicAuthorityName",
-    "monthInterval",
-  ],
   // use case 9 dissabled for now
   // "Ottieni log completi + organizzazione": ["ticketNumber", "taxId", "Time interval"],
   "Ottieni log completi": ["ticketNumber", "taxId", "iun", "personId"],
@@ -105,6 +100,10 @@ type FieldsProps = {
   /**
    * size of the field in percents
    */
+  Size?: 'small' | 'medium';
+  /**
+   * size 
+  */
   size?: number;
   /**
    * some additional input props for text fields
@@ -183,6 +182,29 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
       },
       maxLength: {
         value: 16,
+        message: errorMessages.INCORRECT,
+      },
+      required: errorMessages.REQUIRED,
+    },
+    required: false,
+  },
+  "Partita Iva": {
+    name: "piva",
+    componentType: "textfield",
+    label: "Partita Iva",
+    hidden: true,
+    inputProps: { maxLength: 11, style: { textTransform: "uppercase" } },
+    rules: {
+      pattern: {
+        value: regex.TAX_ID_PATTERN,
+        message: errorMessages.INCORRECT,
+      },
+      minLength: {
+        value: 11,
+        message: errorMessages.INCORRECT,
+      },
+      maxLength: {
+        value: 11,
         message: errorMessages.INCORRECT,
       },
       required: errorMessages.REQUIRED,
@@ -465,6 +487,14 @@ let FieldsProperties: { [key: string]: FieldsProps } = {
         message: errorMessages.MIN_LENGTH(3),
       },
     },
+  },
+  "Nome ListaPa": {
+    name: "paName",
+    componentType: "textfield",
+    label: "Nome PA",
+    hidden: false,
+    Size: 'small',
+    size: 10
   },
   "Nome Aggregazione": {
     name: "name",

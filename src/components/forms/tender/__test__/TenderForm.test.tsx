@@ -1,5 +1,4 @@
-
-import {act, fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import * as reactRedux from "../../../../redux/hook";
 import * as paperChannelApi from "../../../../api/paperChannelApi";
 import {reducer} from "../../../../mocks/mockReducer";
@@ -42,9 +41,7 @@ describe("TenderFormTest", () => {
     expect(btnSave).toBeInTheDocument();
     fireEvent.click(btnSave);
 
-    await act(async () => {
-      await expect(createTenderMockFn).toBeCalledTimes(0)
-    })
+    await expect(createTenderMockFn).toBeCalledTimes(0)
 
   });
 
@@ -54,16 +51,15 @@ describe("TenderFormTest", () => {
     </LocalizationProvider>
     ))
     // description field, startDate field, endDateField
-    const [inputDescription, startDate, endDate] = screen.getAllByRole("textbox");
+    const [inputDescription, , ] = screen.getAllByRole("textbox");
     expect(inputDescription).toBeInTheDocument();
     fireEvent.input(inputDescription, {
       target: {
         value: "ABCD"
       }
     })
-    await act(async () => {
-      await expect(inputDescription.getAttribute("value")).toEqual("ABCD");
-    })
+
+    await expect(inputDescription.getAttribute("value")).toEqual("ABCD");
 
     const btnSave = screen.getByTestId("btn-save-tender");
     expect(btnSave).toBeInTheDocument();
@@ -98,9 +94,9 @@ describe("TenderFormTest", () => {
         value: "ABCD"
       }
     })
-    await act(async () => {
-      await expect(inputDescription.getAttribute("value")).toEqual("ABCD");
-    })
+
+    await expect(inputDescription.getAttribute("value")).toEqual("ABCD");
+
 
     const btnSave = screen.getByTestId("btn-save-tender");
     expect(btnSave).toBeInTheDocument();

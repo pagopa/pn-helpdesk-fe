@@ -12,6 +12,7 @@ enum ResponseType {
   password = "Password",
   taxId = "Codice Fiscale",
   internalId = "Codice Univoco",
+  downloadLink= "Download"
 }
 
 /**
@@ -45,10 +46,21 @@ const ResponseData = () => {
                   Object.keys(response)[0] as keyof typeof ResponseType
                 ]
               }
-              : {Object.values(response)[0]}
+              : {Object.values(response)[0]} 
             </>
           </Typography>
         </Grid>
+        {Object.values(response)[1] as keyof typeof ResponseType &&
+        <Grid item container>
+          <Grid item >
+            <Typography align="center" color="text.primary">
+              <>
+            <a target="_blank" href={Object.values(response)[1] as keyof typeof ResponseType}>Download</a>
+              </>
+            </Typography>
+          </Grid>
+        </Grid>
+        }
       </Grid>
     </Grid>
   ) : null;

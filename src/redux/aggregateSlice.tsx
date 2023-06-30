@@ -20,13 +20,13 @@ export interface AggregateState {
     }
 }
 
-const initialState : AggregateState = {
-    aggregates : [],
-    filters : {
-        name : ""
+const initialState: AggregateState = {
+    aggregates: [],
+    filters: {
+        name: ""
     },
-    pagination : {
-        limit : 10,
+    pagination: {
+        limit: 10,
         page: 0,
         total: 0,
         pagesKey: []
@@ -38,9 +38,9 @@ export const aggregateSlice = createSlice({
     initialState,
     reducers: {
         resetState: () => initialState,
-        setPagination: (state, action: PayloadAction<{page: number; limit: number}>) => {
+        setPagination: (state, action: PayloadAction<{ page: number; limit: number }>) => {
             //Reset pagination
-            if(action.payload.limit !== state.pagination.limit) {
+            if (action.payload.limit !== state.pagination.limit) {
                 state.pagination.pagesKey = [];
                 state.pagination.page = 0;
             }
@@ -57,6 +57,7 @@ export const aggregateSlice = createSlice({
         setAggregates: (state, action: PayloadAction<getAggregatesResponse>) => {
             state.aggregates = action.payload.items;
             state.pagination.total = action.payload.total;
+
 
             //Add keys in pagesKey if not already stored.
             const { lastEvaluatedId, lastEvaluatedName } = action.payload;
@@ -79,4 +80,3 @@ export const aggregatesSelector = (state: RootState) => state.aggregate.aggregat
 export const { setPagination, setFilters, resetState, setAggregates } = aggregateSlice.actions
 
 export default aggregateSlice.reducer;
-  

@@ -16,23 +16,23 @@ import {
 } from "../../formFields/FormFields";
 import apiRequests from "../../../api/apiRequests";
 import {
-  getLogsProcessesType,
-  getNotificationsInfoLogsType,
-  getNotificationsMonthlyStatsLogsType,
-  getPersonsLogsType,
   getPersonIdType,
   getPersonTaxIdType,
-  getSessionLogsType,
 } from "../../../api/apiRequestTypes";
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import * as responseActions from "../../../redux/responseSlice";
 import * as spinnerActions from "../../../redux/spinnerSlice";
-import { useDispatch } from "react-redux";
-import { base64StringToBlob } from "blob-util";
+import { useDispatch, useSelector } from "react-redux";
 import SearchIcon from "@mui/icons-material/Search";
 import ResponseData from "../../responseData/ResponseData";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { format, subMonths } from "date-fns";
+import streamSaver from 'streamsaver';
+import { v4 as uuid } from "uuid";
+import { getPresignedUrl } from "../../../redux/uploading/actions";
+import { responseData } from "../../../redux/responseSlice";
+import { infoMessages } from "../../../helpers/messagesConstants";
+
 
 /**
  * default values of the form fields
@@ -69,7 +69,15 @@ const defaultFormValues: { [key: string]: any } = {
  * Generating the app form using the form fields
  * @component
  */
+
+var password : string|null;
 const SearchForm = () => {
+
+  const href = document.location.href;
+  streamSaver.mitm = href.substring(0, href.indexOf(document.location.pathname))+'/mitm.html';
+
+
+
   /**
    * selected value of Tipo Estrazione select menu
    */
@@ -162,6 +170,22 @@ const SearchForm = () => {
   useEffect(() => {
     let neededFields: string[] = [];
     disableRicerca();
+    const values = getValues();
+    if (selectedValue ==='Ottieni EncCF'){
+      if (fields && fields.find(f=>f.name==='piva')){
+        const piva = fields.find(f=>f.name==='piva');
+        if (piva) {
+          piva.hidden=(values["recipientType"]==='PF');
+        }
+      }
+      if (fields && fields.find(f=>f.name==='taxId')){
+        const taxId = fields.find(f=>f.name==='taxId');
+        if (taxId) {
+          taxId.hidden=(values["recipientType"]==='PG');
+        }
+      }
+      
+    }
     if (
       Object.keys(dirtyFields).sort().join("") ===
       [...prevDirtyFields].sort().join("")
@@ -256,8 +280,138 @@ const SearchForm = () => {
     resetStore();
     dispatch(spinnerActions.updateSpinnerOpened(true));
     const payload = createPayload(data);
-    createRequest(payload);
+    if (selectedValue === "Ottieni EncCF" || selectedValue === "Ottieni CF"){
+      createRequest(payload);
+    }else{
+      downloadZip(JSON.stringify(payload));
+    }
   };
+
+  const createRequest = (payload: any) => {
+    let request = undefined;
+    switch (selectedValue) {
+      case "Ottieni EncCF":
+        request = apiRequests.getPersonId(payload as getPersonIdType);
+        break;
+      case "Ottieni CF":
+        request = apiRequests.getPersonTaxId(payload as getPersonTaxIdType);
+        break;
+      default:
+        break;
+    }
+    if (request) {
+      request
+        .then((res) => {
+          updateSnackbar(res);
+          if ( res.data.data) {
+            let response =
+                selectedValue === "Ottieni CF"
+                  ? { taxId: res.data.data }
+                  : { internalId: res.data.data };
+            updateResponse(response);
+          }
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+        })
+        .catch((error) => {
+          updateSnackbar({data:{error}, status:500});
+
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+        });
+    }
+  };
+
+  const getUrl= (): string => {
+    switch (selectedValue) {
+      // case "Ottieni EncCF":
+      //   return '/persons/v1/person-id';
+      //   break;
+      // case "Ottieni CF":
+      //   return '/persons/v1/tax-id';
+      //   break;
+      case "Ottieni notifica":
+        return '/logs/v1/notifications/info';
+      case "Ottieni notifiche di una PA":
+        return '/logs/v1/notifications/monthly';
+      case "Get process logs":
+        return '/logs/v1/processes';
+      case "Ottieni log completi":
+        return '/logs/v1/persons';
+      case "Ottieni log di processo":
+        return '/logs/v1/processes';
+      case "Ottieni log di sessione":
+        return '/logs/v1/sessions';
+      default:
+        return '';
+    }
+  }
+
+  const downloadZip=(payload: any): any => {
+
+    const url = process.env.REACT_APP_API_ENDPOINT! + getUrl();
+    
+    dispatch(spinnerActions.updateSpinnerOpened(true));
+    const token = sessionStorage.getItem("token");
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            "x-pagopa-pn-uid": uuid(),
+            "x-pagopa-pn-cx-type": "BO",
+        },
+        body: payload
+    })
+    .then(res => {
+      if (res.status !== 200 ){
+        let msg = res.status === 204 ? 'Nessun dato disponibile' :'Si è verificato un errore durante l\'estrazione';
+        updateSnackbar({data:{message:msg}, status:500});
+
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+        return;
+      }
+
+      res.json().then(data=>{
+      let fileName = data?.message;
+      password = res.headers.get('password');
+
+      updateResponse({password: password});
+      polling(fileName);
+     
+      })
+    }).catch(err=>{
+      updateSnackbar({data:{message:'Si è verificato un errore durante l\'estrazione'}, status:500});
+
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+    });
+
+  };
+
+  var timerId:any;
+
+  const polling = (data:any): any => {
+
+    if (!data || data==='') return;
+
+    if (timerId) clearTimeout(timerId);
+
+    apiRequests.getDownloadUrl(data).then(ret=>{
+      if (ret.data.message === 'notready'){
+        timerId=setTimeout(()=>polling(data) , 5000);
+      }else{
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+        updateResponse({password: password,downloadLink: ret.data.message});
+        updateSnackbar({data:{message: infoMessages.OK_RESPONSE}})
+      }
+    }).catch(err=>{
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      updateSnackbar({data:{error:'Error preparing download'}, status:500});
+
+    })
+
+    return;
+  }
+
 
   /**
    * Formatting the data ready to be sent
@@ -290,91 +444,20 @@ const SearchForm = () => {
     ) {
       payload.deanonimization = payload.hasOwnProperty("taxId");
     }
-
-    // use case 6
-    if (selectedValue === "Ottieni notifiche di una PA") {
-      payload.referenceMonth = payload["monthInterval"][0];
-      payload.endMonth = payload["monthInterval"][1];
-      delete payload["monthInterval"];
-    }
     return payload;
   };
 
-  /**
-   * Create request depending on the use case
-   * @param payload the request paylod
-   */
-  const createRequest = (payload: any) => {
-    let request = undefined;
-    switch (selectedValue) {
-      case "Ottieni EncCF":
-        request = apiRequests.getPersonId(payload as getPersonIdType);
-        break;
-      case "Ottieni CF":
-        request = apiRequests.getPersonTaxId(payload as getPersonTaxIdType);
-        break;
-      case "Ottieni notifica":
-        request = apiRequests.getNotificationsInfoLogs(
-          payload as getNotificationsInfoLogsType
-        );
-        break;
-      case "Ottieni notifiche di una PA":
-        request = apiRequests.getNotificationsMonthlyStatsLogs(
-          payload as getNotificationsMonthlyStatsLogsType
-        );
-        break;
-      case "Get process logs":
-        request = apiRequests.getLogsProcesses(payload as getLogsProcessesType);
-        break;
-      case "Ottieni log completi":
-        request = apiRequests.getPersonsLogs(payload as getPersonsLogsType);
-        break;
-      case "Ottieni log di processo":
-        request = apiRequests.getLogsProcesses(payload as getLogsProcessesType);
-        break;
-      case "Ottieni log di sessione":
-        request = apiRequests.getSessionLogs(payload as getSessionLogsType);
-        break;
-      default:
-        break;
-    }
-    if (request) {
-      request
-        .then((res) => {
-          updateSnackbar(res);
-          if ((res.data.password && res.data.zip) || res.data.data) {
-            let response = null;
-            if (res.data.password) {
-              response = { password: res.data.password };
-            } else {
-              response =
-                selectedValue === "Ottieni CF"
-                  ? { taxId: res.data.data }
-                  : { internalId: res.data.data };
-            }
-            updateResponse(response);
-
-            res.data.zip && downloadZip(res.data.zip);
-          }
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-        })
-        .catch((error) => {
-          updateSnackbar(error.response);
-
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-        });
-    }
-  };
 
   /**
    * update the snackbar component depneding on the response
    * @param response
    */
-  const updateSnackbar = (response: any) => {
+  const updateSnackbar = (response: any, duration?: number) => {
     const message = response.data?.detail ?? response.data.message;
     message && dispatch(snackbarActions.updateMessage(message));
     dispatch(snackbarActions.updateSnackbacrOpened(true));
     dispatch(snackbarActions.updateStatusCode(response.status));
+    if (duration) dispatch(snackbarActions.updateAutoHideDuration(duration));
   };
 
   /**
@@ -393,18 +476,6 @@ const SearchForm = () => {
     dispatch(snackbarActions.resetState());
   };
 
-  /**
-   * downloading zip file
-   * @param zip file in base64
-   */
-  const downloadZip = (zip: string) => {
-    let file = base64StringToBlob(zip, "application/zip");
-    let fileURL = URL.createObjectURL(file);
-    let fileLink = document.createElement("a");
-    fileLink.href = fileURL;
-    fileLink.download = getValues("ticketNumber");
-    fileLink.click();
-  };
 
   /**
    * check if every necessaty field is filled
@@ -452,8 +523,11 @@ const SearchForm = () => {
           >
             <Grid container rowSpacing={2}>
               <Grid item width={1}>
+                
                 <form
-                  onSubmit={handleSubmit((data) => onSubmit(data))}
+                  onSubmit={
+                    handleSubmit((data) => onSubmit(data))
+                  }
                   style={{ width: "100%" }}
                 >
                   <Grid item container>

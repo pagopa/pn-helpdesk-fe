@@ -47,16 +47,7 @@ type getNotificationsInfoLogsType = {
 };
 
 /**
- * @typedef {Object} getNotificationsMonthlyStatsLogsType
- */
-type getNotificationsMonthlyStatsLogsType = {
-  ticketNumber: string;
-  publicAuthorityName: number;
-  referenceMonth: string;
-};
-
-/**
- * @typedef {Object} getNotificationsMonthlyStatsLogsType
+ * @typedef {Object} getLogsProcessesType
  */
 type getLogsProcessesType = {
   traceId: string;
@@ -100,7 +91,6 @@ type createAggregateType = {
   description: string;
   usagePlanId: string;
 };
-
 /**
  * @typedef {Object} modifyAggregateType
  */
@@ -150,6 +140,66 @@ type getAggregatesResponse = {
   lastEvaluatedId: string;
   lastEvaluatedName: string;
   total: number;
+};
+
+/**
+ * @typedef {Object} searchPaType
+ */
+type searchPaType = {
+  limit?: number;
+  lastEvaluatedId?: string;
+  lastEvaluatedName?: string;
+  paName?: string;
+};
+/**
+ * @typedef {Object} searchApikeyResponse
+ */
+type searchApikeyResponse = {
+  items: Array<virtualKey>;
+  total: number;
+};
+
+/**
+ * @typedef {Object} virtualKey
+ */
+type virtualKey = {
+  id: string;
+  name: string;
+  groups: Array<string> | string;
+  status: string;
+  pdnd: boolean;
+};
+
+/**
+ * @typedef {Object} searchPaResponse
+ */
+type searchPaResponse = {
+  items: Array<Pa>;
+  lastEvaluatedId: string;
+  lastEvaluatedName: string;
+  total: number;
+};
+
+/**
+ * @typedef {Object} updatePdndRequest
+ */
+type updatePdndRequest = {
+  items: Array<KeyType>;
+};
+
+/**
+ * @typedef {Object} KeyType
+ */
+type KeyType = {
+  id: string;
+  pdnd: boolean;
+};
+
+/**
+ * @typedef {Object} changePdndResponse
+ */
+type changePdndResponse = {
+  unprocessedKey: Array<string>;
 };
 
 /**
@@ -238,7 +288,6 @@ export type {
   getPersonsLogsType,
   getOperatorsLogsType,
   getNotificationsInfoLogsType,
-  getNotificationsMonthlyStatsLogsType,
   getLogsProcessesType,
   getEventsType,
   getSessionLogsType,
@@ -257,4 +306,11 @@ export type {
   getAggregateDetailsType,
   aggregateId,
   ErrorResponse,
+  searchPaResponse,
+  searchPaType,
+  searchApikeyResponse,
+  KeyType,
+  changePdndResponse,
+  updatePdndRequest,
+  virtualKey,
 };

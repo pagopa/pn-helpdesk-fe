@@ -72,12 +72,20 @@ export type Page<T> = {
   content: Array<T>
 }
 
+export enum TenderStatusEnum {
+  CREATED = "CREATED",
+  VALIDATED = "VALIDATED",
+  IN_PROGRESS = "IN_PROGRESS",
+  ENDED = "ENDED"
+}
+
+
 export type Tender = {
   code?:string
   name: string,
   startDate: string,
   endDate: string,
-  status: "CREATED" | "VALIDATED" | "IN_PROGRESS" | "ENDED"
+  status: TenderStatusEnum
 }
 
 export type DeliveryDriver = {

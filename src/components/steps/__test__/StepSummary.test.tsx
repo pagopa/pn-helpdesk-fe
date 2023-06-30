@@ -1,11 +1,6 @@
-
-
-
-
-
 import * as reactRedux from "../../../redux/hook";
 import React from "react";
-import {act, fireEvent, render, screen} from "@testing-library/react";
+import {fireEvent, render, screen} from "@testing-library/react";
 import * as router from "react-router";
 import {StepSummary} from "../StepSummary";
 
@@ -53,14 +48,12 @@ describe("StepFSU test", () => {
   it('whenNotHaveATenderCode', async function () {
     render(<StepSummary />)
 
-    await act(async() => {
-      await expect(mockDispatchFn).toBeCalledTimes(1)
-      expect(mockDispatchFn).toBeCalledWith({
-        payload: {
-          key: 0
-        },
-        type: "formTenderSlice/changeKey"
-      })
+    await expect(mockDispatchFn).toBeCalledTimes(1)
+    expect(mockDispatchFn).toBeCalledWith({
+      payload: {
+        key: 0
+      },
+      type: "formTenderSlice/changeKey"
     })
 
   });
@@ -84,9 +77,8 @@ describe("StepFSU test", () => {
     expect(dataInfo).toBeInTheDocument()
     expect(driversTable).toBeInTheDocument()
 
-    await act(async() => {
-      await expect(mockDispatchFn).toBeCalledTimes(0)
-    })
+    await expect(mockDispatchFn).toBeCalledTimes(0)
+
   });
 
   it('whenBackStep', async function () {
@@ -107,22 +99,20 @@ describe("StepFSU test", () => {
     expect(buttonSave).toBeEnabled()
 
     fireEvent.click(buttonBack)
-    await act(async() => {
-      await expect(mockDispatchFn).toBeCalledWith({
-        payload: undefined,
-        type: "formTenderSlice/goTenderDriversStep"
-      })
+
+    await expect(mockDispatchFn).toBeCalledWith({
+      payload: undefined,
+      type: "formTenderSlice/goTenderDriversStep"
     })
 
     fireEvent.click(buttonSave)
-    await act(async() => {
-      await expect(mockDispatchFn).toBeCalledWith({
-        payload: undefined,
-        type: "formTenderSlice/clearFormState"
-      })
-      expect(mockNavigateFn).toBeCalledTimes(1)
+
+    await expect(mockDispatchFn).toBeCalledWith({
+      payload: undefined,
+      type: "formTenderSlice/clearFormState"
     })
-  });
+    expect(mockNavigateFn).toBeCalledTimes(1)
+  })
 
 })
 
