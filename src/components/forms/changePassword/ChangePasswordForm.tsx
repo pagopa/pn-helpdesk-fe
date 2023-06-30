@@ -15,7 +15,7 @@ import {
   errorMessages,
   infoMessages,
 } from "../../../helpers/messagesConstants";
-import { changePassword } from "../../../Authentication/auth";
+import { useAuth } from "../../../Authentication/auth";
 import HelpIcon from "@mui/icons-material/Help";
 import Tooltip from "@mui/material/Tooltip";
 import { useDispatch } from "react-redux";
@@ -35,6 +35,8 @@ const defaultFormValues: { [key: string]: string } = {
  * @component
  */
 const ChangePasswordForm = ({ user }: any) => {
+  const { changePassword } = useAuth();
+
   /**
    * form fields
    */

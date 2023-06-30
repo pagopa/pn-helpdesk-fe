@@ -9,13 +9,19 @@ import { reducer } from "../../../mocks/mockReducer";
 import { rest } from "msw";
 import { server } from "../../../mocks/server";
 import userEvent from "@testing-library/user-event";
+import * as auth from "../../../Authentication/auth";
+import React from "react";
 
 describe("MonitorPage", () => {
   afterEach(cleanup);
 
+  beforeEach(() => {
+    jest.spyOn(React, "useEffect").mockImplementation(() => jest.fn());
+  });
+
   it("render component with running BE", async () => {
     await act(async () => {
-      reducer(<MonitorPage email="" />);
+      reducer(<MonitorPage />);
     });
     expect(
       screen.getByRole("heading", {
@@ -26,7 +32,7 @@ describe("MonitorPage", () => {
 
   it("render data grid with 4 columns and 4 rows", async () => {
     await act(async () => {
-      reducer(<MonitorPage email="" />);
+      reducer(<MonitorPage />);
     });
 
     const columns = await screen.findAllByRole("columnheader");
@@ -37,7 +43,7 @@ describe("MonitorPage", () => {
 
   it("render functionalities", async () => {
     await act(async () => {
-      reducer(<MonitorPage email="" />);
+      reducer(<MonitorPage />);
     });
 
     const notificationVisualization = await screen.findByText(
@@ -58,7 +64,7 @@ describe("MonitorPage", () => {
     );
 
     await act(async () => {
-      reducer(<MonitorPage email="" />);
+      reducer(<MonitorPage />);
     });
 
     expect(
@@ -77,7 +83,7 @@ describe("MonitorPage", () => {
 
   it("click button to create an event KO", async () => {
     await act(async () => {
-      reducer(<MonitorPage email="" />);
+      reducer(<MonitorPage />);
     });
 
     const buttons = screen.queryAllByRole("menuitem");
@@ -118,7 +124,7 @@ describe("MonitorPage", () => {
     );
 
     await act(async () => {
-      reducer(<MonitorPage email="" />);
+      reducer(<MonitorPage />);
     });
 
     const buttons = screen.queryAllByRole("menuitem");

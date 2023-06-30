@@ -164,7 +164,7 @@ describe("SearchForm", () => {
     await act(() => user.click(button));
   });
 
-  it("change Tipo estrazione to Ottieni notifiche di una PA and make request", async () => {
+  it("change Tipo estrazione to Ottieni log di sessione", async () => {
     const selectMenu = screen.getByRole("button", {
       name: "Ottieni EncCF",
     });
@@ -172,28 +172,39 @@ describe("SearchForm", () => {
 
     const user = userEvent.setup();
     await act(() => user.click(selectMenu));
-    const ottieniLogCompleti = await screen.findByRole("option", {
-      name: "Ottieni notifiche di una PA",
+    const OttieniLogDiSessione = await screen.findByRole("option", {
+      name: "Ottieni log di sessione",
     });
-    expect(ottieniLogCompleti).toBeInTheDocument();
+    expect(OttieniLogDiSessione).toBeInTheDocument();
 
-    await act(() => user.click(ottieniLogCompleti));
-    expect(selectMenu.textContent).toEqual("Ottieni notifiche di una PA");
+    await act(() => user.click(OttieniLogDiSessione));
+    expect(selectMenu.textContent).toEqual("Ottieni log di sessione");
 
     const ticketNumber = await screen.findByRole("textbox", {
       name: "Numero Ticket",
     });
-    const nomePa = await screen.findByRole("textbox", {
-      name: "Nome PA",
+    expect(ticketNumber).toBeInTheDocument();
+
+    const jti = await screen.findByRole("textbox", {
+      name: "Identificativo di sessione (jti)",
     });
+    expect(jti).toBeInTheDocument();
+
+    const checkbox = await screen.findByRole("checkbox");
+    expect(checkbox).toBeInTheDocument();
+
+    const datePickers = await screen.findAllByRole("textbox", {
+      name: /Choose date/i,
+    });
+    expect(datePickers).toHaveLength(2);
 
     await act(async () => {
       await user.clear(ticketNumber);
       await user.type(ticketNumber, "abc");
     });
     await act(async () => {
-      await user.clear(nomePa);
-      await user.type(nomePa, "icn");
+      await user.clear(jti);
+      await user.type(jti, "kj5l-77-abc");
     });
     const button = await screen.findByRole("button", {
       name: "Ricerca",

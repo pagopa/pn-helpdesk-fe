@@ -8,7 +8,7 @@ import { ConfirmationProvider } from '../../../../components/confirmationDialog/
 import apiRequests from '../../../../api/apiRequests';
 import { aggregate, usage_plan_list } from '../../../../api/mock_agg_response';
 import { renderWithProviders } from "../../../../mocks/mockReducer";
-import * as routes from '../../../../navigation/routes';
+import * as routes from '../../../../navigation/router.const';
 import * as router from 'react-router'
 const navigate = jest.fn();
 
@@ -32,14 +32,14 @@ describe("AggregateForm CREATE", () => {
     })
 
     it("renders", async () => {
-        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)
+        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} isUserWriter={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)
         expect(screen.getByRole("textbox", {name : "Nome Aggregazione"}));
         expect(screen.getByRole("textbox", {name : "Descrizione Aggregazione"}));
         expect(screen.getByTestId("select-usagePlanName"));
     })
 
     it("Updates Rate and Burst inputs on change of usage plan", async () => {
-        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)
+        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} isUserWriter={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)
         const select_usageplan_wrapper = await screen.findByTestId("select-usagePlanName");
         expect(select_usageplan_wrapper).toBeInTheDocument();
         const usageplan_input = select_usageplan_wrapper.querySelector("input");
@@ -52,7 +52,7 @@ describe("AggregateForm CREATE", () => {
     })
 
     it("Create aggregate", async () => {
-        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
+        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={true} isUserWriter={true} aggregate={undefined} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
         const aggregate_name_input = screen.getByRole("textbox", {name : "Nome Aggregazione"});
         const aggregate_desc_input = screen.getByRole("textbox", {name : "Descrizione Aggregazione"});
         const select_usageplan_wrapper = screen.getByTestId("select-usagePlanName");
@@ -104,8 +104,8 @@ describe("AggregateForm MODIFY", () => {
 
     const mockAggregate = aggregate;
 
-    it("renders with input value defined", async () => { 
-        await act(() => { renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)});
+    it("renders with input value defined for user with write permission", async () => { 
+        await act(() => { renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} isUserWriter={true} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)});
         const aggregate_name_input = screen.getByRole("textbox", {name : "Nome Aggregazione"});
         const aggregate_desc_input = screen.getByRole("textbox", {name : "Descrizione Aggregazione"});
         const select_usageplan_wrapper = screen.getByTestId("select-usagePlanName");
@@ -114,10 +114,40 @@ describe("AggregateForm MODIFY", () => {
         await waitFor(() => expect(aggregate_desc_input).toHaveValue(String(mockAggregate.description)));
         expect(usageplan_input).toHaveValue(String(mockAggregate.usagePlan.name));
         expect(aggregate_name_input).toHaveValue(String(mockAggregate.name));
+
+        expect(aggregate_name_input).not.toBeDisabled();
+        expect(aggregate_desc_input).not.toBeDisabled();
+        expect(usageplan_input).not.toBeDisabled();
+
+        const edit_button = screen.getByRole("button", { name: "Salva"});
+        const delete_button = screen.getByRole("button", { name: "Elimina"});
+        expect(edit_button).toBeInTheDocument();
+        expect(delete_button).toBeInTheDocument();
+    })
+
+    it("renders with input value defined for user with read permission", async () => { 
+        await act(() => { renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} isUserWriter={false} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>)});
+        const aggregate_name_input = screen.getByRole("textbox", {name : "Nome Aggregazione"});
+        const aggregate_desc_input = screen.getByRole("textbox", {name : "Descrizione Aggregazione"});
+        const select_usageplan_wrapper = screen.getByTestId("select-usagePlanName");
+        const usageplan_input = select_usageplan_wrapper.querySelector("input");
+
+        await waitFor(() => expect(aggregate_desc_input).toHaveValue(String(mockAggregate.description)));
+        expect(usageplan_input).toHaveValue(String(mockAggregate.usagePlan.name));
+        expect(aggregate_name_input).toHaveValue(String(mockAggregate.name));
+
+        expect(aggregate_name_input).toBeDisabled();
+        expect(aggregate_desc_input).toBeDisabled();
+        expect(usageplan_input).toBeDisabled();
+
+        const edit_button = screen.queryByRole("button", { name: "Salva"});
+        const delete_button = screen.queryByRole("button", { name: "Elimina"});
+        expect(edit_button).not.toBeInTheDocument();
+        expect(delete_button).not.toBeInTheDocument();
     })
 
     it("click modifica button", async () => { 
-        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
+        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} isUserWriter={true} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
         const edit_button = screen.getByRole("button", { name: "Salva"});
         await waitFor(() => expect(edit_button).not.toBeDisabled());
         await act(() => {fireEvent.click(edit_button);});
@@ -130,7 +160,7 @@ describe("AggregateForm MODIFY", () => {
     })
 
     it("click delete button", async () => { 
-        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
+        renderWithProviders(<ConfirmationProvider><AggregateForm isCreate={false} isUserWriter={true} aggregate={mockAggregate} usagePlans={usage_plan_list.items} /></ConfirmationProvider>);
         const delete_button = screen.getByRole("button", { name: "Elimina"});
         await waitFor(() => expect(delete_button).not.toBeDisabled());
         await act(() => {fireEvent.click(delete_button)});
@@ -139,6 +169,6 @@ describe("AggregateForm MODIFY", () => {
         const confirmButton = await screen.findByRole("button", {name : "Conferma"});
 
         await act(() => {fireEvent.click(confirmButton)});
-        await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.AGGREGATES));
+        await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.AGGREGATES_LIST));
     })
 })

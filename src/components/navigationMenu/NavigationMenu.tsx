@@ -8,33 +8,16 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Toolbar,
+  Toolbar
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import * as routes from '../../navigation/routes';
+
+import { useNavigationItems } from "../../hooks/useNavigationItems";
 
 const NavigationMenu = () => {
   const [open, setOpen] = useState(false);
+  const { availableItems } = useNavigationItems();
 
-  const listItems: { title: string; link: string }[] = [
-    {
-      title: "Ricerca ed estrazione dati",
-      link: "/search",
-    },
-    {
-      title: "Monitoraggio Piattaforma Notifiche",
-      link: "/monitoring",
-    },
-    {
-      title: "Gestione Aggregazioni ApiKey",
-      link: routes.AGGREGATES
-    },
-    {
-      title: "Trasferimento di PA",
-      link: routes.TRANSFER_PA
-    }
-  ];
-  
   const toggleDrawer =
     (status: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -66,7 +49,7 @@ const NavigationMenu = () => {
         <Divider />
 
         <List>
-          {listItems.map((item, index) => (
+          {availableItems.map((item) => (
             <Link
               key={item.title}
               to={item.link}

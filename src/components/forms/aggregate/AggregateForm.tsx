@@ -9,7 +9,7 @@ import * as snackbarActions from "../../../redux/snackbarSlice";
 import * as spinnerActions from "../../../redux/spinnerSlice";
 import apiRequests from "../../../api/apiRequests";
 import { createAggregateType, getAggregateResponse, UsagePlan } from "../../../api/apiRequestTypes";
-import * as routes from '../../../navigation/routes';
+import * as routes from '../../../navigation/router.const';
 
 type FormType = {
     [k: string]: any
@@ -24,18 +24,18 @@ const defaultFormValues: FormType = {
     burst: 0
 }
 
-type Props = { isCreate: boolean, aggregate: getAggregateResponse | undefined, usagePlans: Array<UsagePlan> };
+type Props = { isCreate: boolean, isUserWriter: boolean, aggregate: getAggregateResponse | undefined, usagePlans: Array<UsagePlan> };
 
-const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
+const AggregateForm = ({aggregate, isCreate, isUserWriter, usagePlans}: Props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const confirmDialog = useConfirmDialog();
     const fields = [
-        FieldsProperties["Nome Aggregazione"], 
-        FieldsProperties["Descrizione Aggregazione"], 
-        {...FieldsProperties["Usage Plan"], selectItems: usagePlans.map((u) => u.name)},
-        FieldsProperties["Rate"],
-        FieldsProperties["Burst"]
+        {...FieldsProperties["Nome Aggregazione"], disabled: !isUserWriter}, 
+        {...FieldsProperties["Descrizione Aggregazione"], disabled: !isUserWriter}, 
+        {...FieldsProperties["Usage Plan"], selectItems: usagePlans.map((u) => u.name), disabled: !isUserWriter},
+        {...FieldsProperties["Rate"], disabled: !isUserWriter},
+        {...FieldsProperties["Burst"], disabled: !isUserWriter}
     ];
 
     const { control, watch, formState: { errors, isValid }, reset, clearErrors, setValue } = useForm({
@@ -136,7 +136,7 @@ const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
                     dispatch(snackbarActions.updateSnackbacrOpened(true));
                     dispatch(snackbarActions.updateStatusCode("200"));
                     dispatch(snackbarActions.updateMessage(`Aggregato eliminato con successo`));
-                    navigate(routes.AGGREGATES);
+                    navigate(routes.AGGREGATES_LIST);
                 })
                 .catch(err => {
                     dispatch(snackbarActions.updateSnackbacrOpened(true));
@@ -209,7 +209,7 @@ const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
                             fields.map(field => {
                                 return (
                                     !field.hidden &&
-                                    <Grid item key={field.name + "Item"} width={field.size}>
+                                    <Grid item key={field.name + "Item"} xs={12} lg={field.size ? field.size : 3} xl={field.size ? field.size : 3}>
                                         <Controller
                                             control={control}
                                             name={field.name}
@@ -243,22 +243,24 @@ const AggregateForm = ({aggregate, isCreate, usagePlans}: Props) => {
                     
                 </Grid>
             </form>
-            <Grid item container spacing={2}>
-                {isCreate ? (
-                    <Grid item>
-                        {CreateButton}
-                    </Grid>
-                ) : (
-                    <>
+            {isUserWriter && 
+                <Grid item container spacing={2}>
+                    {isCreate ? (
                         <Grid item>
-                            {UpdateButton}
+                            {CreateButton}
                         </Grid>
-                        <Grid item>
-                            {DeleteButton}
-                        </Grid>
-                    </>
-                )}
-            </Grid>
+                    ) : (
+                        <>
+                            <Grid item>
+                                {UpdateButton}
+                            </Grid>
+                            <Grid item>
+                                {DeleteButton}
+                            </Grid>
+                        </>
+                    )}
+                </Grid>
+            }
         </>
         
     )

@@ -14,24 +14,65 @@ import {
 import { format } from "date-fns";
 import { getEventsType } from "../../api/apiRequestTypes";
 import * as snackbarActions from "../../redux/snackbarSlice";
+import { DateTimePicker } from "@mui/lab";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Grid,
+  TextField,
+  FormHelperText,
+  DialogActions,
+  Button,
+} from "@mui/material";
+import { useHasPermissions } from "../../hooks/useHasPermissions";
+import { Permission } from "../../model/user-permission";
 
 /**
  * Monitor page
  * @component
  */
-const MonitorPage = ({ email }: any) => {
+const MonitorPage = () => {
   const dispatch = useDispatch();
 
   const [rows, setRows] = useState<any[]>([]);
 
   const [backEndStatus, setBackEndStatus] = useState<boolean>(true);
 
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
+
+  const [modalEventDate, setModalEventDate] = useState(new Date());
+
+  const [modalPayload, setModalPaylod] = useState({});
+
+  const [error, setError] = useState("");
+
+  const isUserWriter = useHasPermissions([Permission.LOG_DOWNTIME_WRITE]);
+
+  useEffect(() => {
+    if (!modalStatus) {
+      setModalEventDate(new Date());
+      setError("");
+    }
+  }, [modalStatus]);
+
+  const handleChange = (value: any) => {
+    if (value) {
+      setError("");
+    }
+    setModalEventDate(value);
+  };
+
   const updateSnackbar = useCallback(
     (response: any) => {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(response.status));
-      response.data.message &&
-        dispatch(snackbarActions.updateMessage(response.data.message));
+      (response.data.detail || response.data.message) &&
+      dispatch(
+        snackbarActions.updateMessage(
+          response.data.detail || response.message
+        )
+      );
     },
     [dispatch]
   );
@@ -39,8 +80,9 @@ const MonitorPage = ({ email }: any) => {
   const getEvents = useCallback(() => {
     apiRequests
       .getStatus()
-      .then(res => {
+      .then((res) => {
         setBackEndStatus(true);
+        (res.detail || res.data.message) && updateSnackbar(res);
         let rows: any[] = [];
         if (res && res.data) {
           if (res.data.functionalities) {
@@ -48,7 +90,8 @@ const MonitorPage = ({ email }: any) => {
               let incident = res.data.openIncidents.filter(
                 (element: any) => element.functionality === item
               );
-              let date = incident.length === 0 ? "" : incident[0].startDate;
+              let date =
+              incident.length === 0 ? "" : new Date(incident[0].startDate);
               let row = {
                 id: res.data.functionalities.indexOf(item) + 1,
                 functionality: functionalitiesNames[item],
@@ -100,19 +143,35 @@ const MonitorPage = ({ email }: any) => {
     };
   }, [dispatch, getEvents]);
 
-  const events = (params: any) => {
-    apiRequests
-      .getEvents(params as getEventsType)
-      .then((res: any) => {
-        dispatch(spinnerActions.updateSpinnerOpened(true));
-        getEvents();
-        dispatch(spinnerActions.updateSpinnerOpened(false));
-        updateSnackbar(res);
-      })
-      .catch((error: any) => {
-        dispatch(spinnerActions.updateSpinnerOpened(false));
-        updateSnackbar(error.response);
-      });
+  const events = () => {
+    if (!modalEventDate) {
+      setError("Inserire un valore");
+    } else {
+      const params = [
+        {
+          ...modalPayload,
+          timestamp: format(
+            new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
+            "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
+          ),
+        },
+      ];
+      apiRequests
+        .getEvents(params as getEventsType)
+        .then((res: any) => {
+          dispatch(spinnerActions.updateSpinnerOpened(true));
+          getEvents();
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+          updateSnackbar(res);
+        })
+        .catch((error: any) => {
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+          updateSnackbar(error.response);
+        })
+        .finally(() => {
+          setModalStatus(false);
+        });
+    }
   };
 
   const columns = [
@@ -165,43 +224,35 @@ const MonitorPage = ({ email }: any) => {
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      hide: !backEndStatus,
+      hide: !backEndStatus && !isUserWriter,
       getActions: (params: any) => {
         return params.row.state
           ? [
               <GridActionsCellItem
+                key={"Inserire KO"}
                 label="Inserire KO"
                 onClick={() => {
-                  const payload = [
-                    {
-                      status: "KO",
-                      timestamp: new Date(
-                        new Date().toUTCString()
-                      ).toISOString(),
-                      functionality: Array(params.row.functionalityName),
-                      sourceType: "OPERATOR",
-                    },
-                  ];
-                  events(payload);
+                  setModalPaylod({
+                    status: "KO",
+                    functionality: Array(params.row.functionalityName),
+                    sourceType: "OPERATOR",
+                  });
+                  setModalStatus(true);
                 }}
                 showInMenu
               />,
             ]
           : [
               <GridActionsCellItem
+                key="Inserire OK"
                 label="Inserire OK"
                 onClick={() => {
-                  const payload = [
-                    {
-                      status: "OK",
-                      timestamp: new Date(
-                        new Date().toUTCString()
-                      ).toISOString(),
-                      functionality: Array(params.row.functionalityName),
-                      sourceType: "OPERATOR",
-                    },
-                  ];
-                  events(payload);
+                  setModalPaylod({
+                    status: "OK",
+                    functionality: Array(params.row.functionalityName),
+                    sourceType: "OPERATOR",
+                  });
+                  setModalStatus(true);
                 }}
                 showInMenu
               />,
@@ -211,8 +262,48 @@ const MonitorPage = ({ email }: any) => {
   ];
 
   return (
-    <MainLayout email={email}>
+    <MainLayout>
       <DataGridComponent columns={columns} rows={rows} />
+      <Dialog
+        open={modalStatus}
+        onClose={() => setModalStatus(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Nuovo evento</DialogTitle>
+        <DialogContent>
+          <Grid container columnSpacing={2} sx={{ pt: 2 }}>
+            <Grid item>
+              <DateTimePicker
+                disableFuture
+                maxDateTime={new Date()}
+                label="Data e ora evento"
+                value={modalEventDate}
+                onChange={(e) => handleChange(e)}
+                renderInput={(params) => (
+                  <TextField
+                    onKeyDown={(e) => e.preventDefault()}
+                    {...params}
+                    error={error ? true : false}
+                  />
+                )}
+              />
+            </Grid>
+          </Grid>
+          <FormHelperText error>{error ? error : " "}</FormHelperText>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: "space-between" }}>
+          <Button
+            onClick={() => setModalStatus(false)}
+            sx={{ padding: "0 18px" }}
+          >
+            Annulla
+          </Button>
+          <Button autoFocus onClick={events}>
+            Inserisci
+          </Button>
+        </DialogActions>
+      </Dialog>
     </MainLayout>
   );
 };

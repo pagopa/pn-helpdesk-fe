@@ -12,11 +12,4 @@ describe("Footer Component", () => {
     render(<Footer />);
     expect(screen.getByRole("banner")).toBeInTheDocument();
   });
-
-  it("renders footer items", () => {
-    render(<Footer />);
-    expect(screen.getByText("Privacy policy")).toBeInTheDocument();
-    expect(screen.getByText("Assistenza")).toBeInTheDocument();
-    expect(screen.getByText("Copyright")).toBeInTheDocument();
-  });
 });

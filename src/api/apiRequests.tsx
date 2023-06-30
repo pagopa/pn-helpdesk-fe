@@ -1,18 +1,19 @@
-// import { aggregateApiClient } from "./aggregateApiClient";
 import { formatDate } from "../helpers/formatter.utility";
 import {
   getLogsProcessesType,
   getNotificationsInfoLogsType,
-  getNotificationsMonthlyStatsLogsType,
   getPersonIdType,
   getPersonTaxIdType,
   getPersonsLogsType,
   getEventsType,
-  getAggregateParams, 
-  modifyAggregateType, 
-  createAggregateType, 
-  AggregateSummary, 
-  Pa
+  getSessionLogsType,
+  getAggregateParams,
+  modifyAggregateType,
+  createAggregateType,
+  AggregateSummary,
+  Pa,
+  searchPaType,
+  updatePdndRequest
 } from "./apiRequestTypes";
 import { http as logExtractoraggregateApiClient } from "./logExtractorAxiosClient";
 import { http as aggregateApiClient } from "./aggregateAxiosClient";
@@ -22,14 +23,15 @@ import { http as aggregateApiClient } from "./aggregateAxiosClient";
  * @param {getPersonIdType} data
  */
 const getPersonId = async (payload: getPersonIdType) => {
-    return await logExtractoraggregateApiClient.getPersonId(payload)
-        .then((result) => {
-            return result
-        })
-        .catch((error: any) => {
-            throw error;
-        })
-}
+  return await logExtractoraggregateApiClient
+    .getPersonId(payload)
+    .then((result) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
  * Return the person's fiscal code depending on the input received
@@ -63,20 +65,6 @@ const getPersonsLogs = async (data: getPersonsLogsType) => {
 };
 
 /**
- * Download the logs' archive related to a person activities and its operators' ones
- * @param {getOperatorsLogsType} data
- */
-/*const getOperatorsLogs = async (data: getOperatorsLogsType) => {
-    return await aggregateApiClient.getOperatorsLogs(data)
-        .then((result: any) => {
-            return result;
-        })
-        .catch((error: any) => {
-            throw error;
-        })  
-}*/
-
-/**
  * Download the logs' archive containing the full info of a notification
  * @param {getNotificationsInfoLogsType} data
  */
@@ -91,28 +79,22 @@ const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
     });
 };
 
-/**
- * Download the logs' archive containing the notifications sent in a specific month
- * @param {getNotificationsMonthlyStatsLogsType} data
- */
-const getNotificationsMonthlyStatsLogs = async (
-  data: getNotificationsMonthlyStatsLogsType
-) => {
-  return await logExtractoraggregateApiClient
-    .getNotificationsMonthlyStatsLogs(data)
-    .then((result: any) => {
-      return result;
-    })
-    .catch((error: any) => {
-      throw error;
-    });
-};
+const getDownloadUrl = async (data: string) => {
+  return await logExtractoraggregateApiClient.getDownloadUrl(data)
+  .then((result: any) => {
+    return result;
+  })
+  .catch((error: any) => {
+    throw error;
+  });
+
+}
 
 /**
  * Extract all log paths by given a specific traceId
  */
 const getLogsProcesses = async (data: getLogsProcessesType) => {
-    return await logExtractoraggregateApiClient
+  return await logExtractoraggregateApiClient
     .getLogsProcesses(data)
     .then((result: any) => {
       return result;
@@ -147,169 +129,230 @@ const getEvents = async (data: getEventsType) => {
     });
 };
 
+const getSessionLogs = async (data: getSessionLogsType) => {
+  return await logExtractoraggregateApiClient
+    .getSessionLogs(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 /**
-* Get a list of all the aggregates
-*/
+ * Get a list of all the aggregates
+ */
 const getAggregates = async (data: getAggregateParams) => {
-    return await aggregateApiClient.getAggregates(data)
-        .then((result) => {
-            const items = result.data.items.map(
-                (agg) => ({
-                    ...agg, 
-                    createdAt: formatDate(agg.createdAt, true), 
-                    lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``
-                } as AggregateSummary) 
-            )
+  return await aggregateApiClient
+    .getAggregates(data)
+    .then((result) => {
+      const items = result.data.items.map(
+        (agg) =>
+        ({
+          ...agg,
+          createdAt: formatDate(agg.createdAt, true),
+          lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
+        } as AggregateSummary)
+      );
 
-            return {
-                ...result.data,
-                items
-            };
-        })
-        .catch((error: any) => {
-            throw error;
-        })
-}
+      return {
+        ...result.data,
+        items,
+      };
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
-* Get the details of an aggregation
-*/
+ * Get the details of an aggregation
+ */
 const getAggregateDetails = (id: string) => {
-    return aggregateApiClient.getAggregateDetails(id)
-        .then((result) => {
-            return result.data;
-        })
-        .catch((error: any) => {
-            throw error;
-        })
-}
+  return aggregateApiClient
+    .getAggregateDetails(id)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
-* Create an aggregation
-*/
+ * Create an aggregation
+ */
 const createAggregate = async (data: createAggregateType) => {
-    return await aggregateApiClient.createAggregate(data)
-        .then((result) => {
-            return result.data;
-        })
-        .catch((error) => {
-            throw error;
-        })
-}
+  return await aggregateApiClient
+    .createAggregate(data)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
 
 /**
-* Modify an aggregation
-*/
+ * Create an aggregation
+ */
+const searchPa = async (data: searchPaType) => {
+  return await aggregateApiClient
+    .searchPa(data)
+    .then((result) => result.data)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+/**
+ * Create an 
+ */
+const searchApiKey = async (data: string) => {
+  return await aggregateApiClient
+    .searchApiKey(data)
+    .then((result) => {
+      let items = result.data.items;
+      result.data.items = items.map((vk) => ({...vk, groups: Array.isArray(vk.groups) && vk.groups.length > 0 ? vk.groups.join(", ") : ""}));
+      
+      return result.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
+
+const modifyPdnd = async (data: updatePdndRequest) => {
+  return await aggregateApiClient
+    .modifyPdnd(data)
+    .then((result) => result.data)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+/**
+ * Modify an aggregation
+ */
 const modifyAggregate = async (data: modifyAggregateType, id: string) => {
-    return await aggregateApiClient.modifyAggregate(data, id)
-        .then((result) => {
-            return result.data;
-        })
-        .catch((error) => {
-            throw error;
-        })
-}
+  return await aggregateApiClient
+    .modifyAggregate(data, id)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
 
 /**
-* Delete an aggregation
-*/
+ * Delete an aggregation
+ */
 const deleteAggregate = async (id: string) => {
-    return await aggregateApiClient.deleteAggregate(id)
-        .then((result) => {
-            return result.data;
-        })
-        .catch((error) => {
-            throw error;
-        })
-}
+  return await aggregateApiClient
+    .deleteAggregate(id)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
 
- /**
+/**
  * Get associated PAs given an aggregation id
  */
-  const getAssociatedPaList = (id: string) => {
-    return aggregateApiClient.getAssociatedPaList(id)
-        .then((result) => {
-            return result.data;
-        })
-        .catch((error: any) => {
-            throw error;
-        })
-}
+const getAssociatedPaList = (id: string) => {
+  return aggregateApiClient
+    .getAssociatedPaList(id)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
  * Move PAs to another aggregation
  */
 const movePa = async (id: string, data: Array<Pa>) => {
-    return await aggregateApiClient.movePa(id, data)
-     .then((result) => {
-         return result.data;
-     })
-     .catch((error: any) => {
-         throw error;
-     }) 
-}
+  return await aggregateApiClient
+    .movePa(id, data)
+    .then((result) => {
+      return result.data;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 const getAssociablePaList = (name?: string) => {
-    return aggregateApiClient.getAssociablePaList(name)
-        .then((result) => {
-            const items = result.data.items.map(
-                (pa) => ({...pa, selected: false}) 
-            )
-            return {
-                ...result.data,
-                items
-            };
-        })
-        .catch((error: any) => {
-            throw error;
-        }) 
-}
+  return aggregateApiClient
+    .getAssociablePaList(name)
+    .then((result) => {
+      const items = result.data.items.map((pa) => ({ ...pa, selected: false }));
+      return {
+        ...result.data,
+        items,
+      };
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 const addPa = async (id: string, paSelectedList: Array<Pa>) => {
-    //Remove selected attribute from pa objects
-    let paList = paSelectedList.map((pa) => ({id: pa.id, name: pa.name}));
+  //Remove selected attribute from pa objects
+  let paList = paSelectedList.map((pa) => ({ id: pa.id, name: pa.name }));
 
-    return await aggregateApiClient.addPa(id, paList)
-        .then((result: any) => {
-            return result.data;
-        })
-        .catch((error: any) => {
-            throw error;
-        }) 
-}
+  return await aggregateApiClient
+    .addPa(id, paList)
+    .then((result: any) => {
+      return result.data;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
-* Get the list of usage plans
-*/
+ * Get the list of usage plans
+ */
 const getUsagePlans = async () => {
-    return await aggregateApiClient.getUsagePlans()
-        .then((result: any) => {
-            return result.data;
-        })
-        .catch((error: any) => {
-            throw error;
-        })
-}
+  return await aggregateApiClient
+    .getUsagePlans()
+    .then((result: any) => {
+      return result.data;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 const apiRequests = {
   getPersonId,
   getPersonTaxId,
   getPersonsLogs /*getOperatorsLogs,*/,
   getNotificationsInfoLogs,
-  getNotificationsMonthlyStatsLogs,
   getLogsProcesses,
   getStatus,
   getEvents,
-  getAssociatedPaList, 
-  movePa, 
-  getAggregates, 
-  modifyAggregate, 
-  createAggregate, 
-  getAggregateDetails, 
-  deleteAggregate, 
+  getSessionLogs,
+  getAssociatedPaList,
+  movePa,
+  getAggregates,
+  modifyAggregate,
+  createAggregate,
+  getAggregateDetails,
+  deleteAggregate,
   getUsagePlans,
-  addPa, 
-  getAssociablePaList
+  addPa,
+  getAssociablePaList,
+  searchPa,
+  searchApiKey,
+  modifyPdnd,
+  getDownloadUrl
 };
 
 export default apiRequests;

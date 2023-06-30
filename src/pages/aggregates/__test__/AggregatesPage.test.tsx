@@ -1,9 +1,10 @@
-import { fireEvent, RenderResult, waitFor, screen } from '@testing-library/react';
+import { fireEvent, RenderResult, screen } from '@testing-library/react';
 import AggregatesPage from '../AggregatesPage';
-import { renderWithProviders } from "../../../mocks/mockReducer";
-import * as routes from '../../../navigation/routes';
+import { renderWithProviders, renderWithProvidersAndPermissions } from "../../../mocks/mockReducer";
+import * as routes from '../../../navigation/router.const';
 import * as router from 'react-router'
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
+import { Permission } from '../../../model/user-permission';
 
 const navigate = jest.fn();
 
@@ -22,13 +23,13 @@ describe("AggregatesPage test", () => {
     })
 
     it("click nuova aggregazione", () => {
-        result = renderWithProviders(<ConfirmationProvider><AggregatesPage /></ConfirmationProvider>);
+        result = renderWithProvidersAndPermissions(<ConfirmationProvider><AggregatesPage /></ConfirmationProvider>, [Permission.API_KEY_WRITE]);
 
         const nuovaAggregazioneButton = screen.getByRole("button", {name : "Nuova aggregazione"});
         expect(nuovaAggregazioneButton).toBeInTheDocument();
         fireEvent.click(nuovaAggregazioneButton);
 
-        expect(navigate).toBeCalledWith(routes.AGGREGATE);
+        expect(navigate).toBeCalledWith(routes.CREATE_AGGREGATE);
 
     })
 })

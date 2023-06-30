@@ -16,7 +16,6 @@ const props = {
       "Ottieni EncCF",
       "Ottieni CF",
       "Ottieni notifica",
-      "Ottieni notifiche di una PA",
       "Ottieni log completi",
       "Ottieni log di processo",
     ],

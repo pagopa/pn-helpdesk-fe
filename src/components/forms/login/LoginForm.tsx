@@ -10,13 +10,14 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { FieldsProperties, FormField } from "../../formFields/FormFields";
-import { login } from "../../../Authentication/auth";
-import * as snackbarActions from "../../../redux/snackbarSlice";
 import { useDispatch } from "react-redux";
-import * as spinnerActions from "../../../redux/spinnerSlice";
+import { useNavigate } from "react-router-dom";
 import { MonogramPagoPACompany } from "@pagopa/mui-italia";
+
+import { FieldsProperties, FormField } from "../../formFields/FormFields";
+import { useAuth } from "../../../Authentication/auth";
+import * as snackbarActions from "../../../redux/snackbarSlice";
+import * as spinnerActions from "../../../redux/spinnerSlice";
 
 /**
  * default values of the form fields
@@ -30,7 +31,9 @@ const defaultFormValues: { [key: string]: string } = {
  * Generating the login form using the form fields
  * @component
  */
-const LoginForm = ({ setUser, setEmail }: any) => {
+const LoginForm = ({ setUser }: any) => {
+  const { login } = useAuth();
+
   /**
    * form fields
    */
@@ -71,7 +74,6 @@ const LoginForm = ({ setUser, setEmail }: any) => {
   /* istanbul ignore next */
   const onSubmit = async (data: { [x: string]: string }) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
-    setEmail(data.email);
     await login({ email: data.email, password: data.password })
       .then((user: { [key: string]: any }) => {
         if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
@@ -79,7 +81,7 @@ const LoginForm = ({ setUser, setEmail }: any) => {
           setUser(user);
         } else {
           dispatch(spinnerActions.updateSpinnerOpened(false));
-          navigate("/search");
+          navigate("/");
         }
       })
       .catch((error: any) => {
