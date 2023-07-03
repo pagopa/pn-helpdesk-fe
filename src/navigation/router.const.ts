@@ -15,6 +15,9 @@ export const DETAIL_USAGE_ESTIMATE_ROUTE = "/usage-estimates/:paId/reference/:re
 export const MONITOR_ROUTE = "/monitoring";
 export const SEARCH_ROUTE = "/search";
 
+export const GET_DETAIL_USAGE_ESTIMATE_ROUTE = (paId:string, referenceMonth: string) => `${SEARCH_USAGE_ESTIMATES_ROUTE}/${paId}/reference/${referenceMonth}`;
+
+
 export const LOGIN_ROUTE = "/login";
 export const AUTH_APIKEY = "/auth-apikey";
 

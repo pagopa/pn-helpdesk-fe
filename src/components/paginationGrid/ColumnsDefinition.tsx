@@ -9,10 +9,9 @@ import {ButtonsActionCostTable} from "../buttonsGroup/ButtonsActionCostTable";
 import {CostDTO} from "../../api/paperChannel";
 import {ButtonsActionDriverTable, ButtonShowCosts} from "../buttonsGroup/ButtonsActionDriverTable";
 import {TenderStatusChip} from "../deliveriesDrivers/TenderStatusChip";
-import {Tender} from "../../model";
+import {EstimateStatusEnum, Tender} from "../../model";
 import {EstimateStatusChip} from "../usageEstimates/EstimateStatus";
 import {Button} from "@mui/material";
-
 
 const columnsTender: GridColDef[] = [
   {
@@ -266,21 +265,6 @@ const columnsEstimates: GridColDef[] = [
     },
   },
   {
-    field: "lastModifiedDate",
-    headerName: "Data ultima modifica",
-    type: "date",
-    width: 200,
-    flex: 1,
-    minWidth: 100,
-    sortable: false,
-    disableColumnMenu: true,
-    renderCell: (params: any) => {
-      return params.row.lastModifiedDate
-        ? format(new Date(params.row.lastModifiedDate), "dd-MM-yyyy HH:mm")
-        : "";
-    },
-  },
-  {
     field: "status",
     headerName: "Stato",
     type: "string",
@@ -294,8 +278,8 @@ const columnsEstimates: GridColDef[] = [
     },
   },
   {
-    field: "actions",
-    headerName: "Azioni",
+    field: "sendedToPDND",
+    headerName: "Inviato a PDND",
     type: "string",
     width: 400,
     flex: 1,
@@ -303,7 +287,7 @@ const columnsEstimates: GridColDef[] = [
     sortable: false,
     disableColumnMenu: true,
     renderCell: (params: any) => {
-      return <Button>Click</Button>
+      return (params.row.status === EstimateStatusEnum.VALIDATED) && <CheckIcon/>
     },
   },
 ]

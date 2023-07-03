@@ -158,7 +158,7 @@ export const usageEstimationsPA: RowDataInfo[] = [
       <Typography variant="body2"
                   textAlign={"end"}
                   sx={{fontWeight: "bold"}}>
-        {data?.totalDigitalNotif}
+        { (data?.totalDigitalNotif) ? data.totalDigitalNotif : "-"}
       </Typography>
     )
   },
@@ -170,7 +170,7 @@ export const usageEstimationsPA: RowDataInfo[] = [
       <Typography variant="body2"
                   textAlign={"end"}
                   sx={{fontWeight: "bold"}}>
-        {data?.totalAnalogNotif}
+        {(data?.totalAnalogNotif) ? data.totalAnalogNotif : "-"}
       </Typography>
     )
   },
@@ -182,7 +182,7 @@ export const usageEstimationsPA: RowDataInfo[] = [
       <Typography variant="body2"
                   textAlign={"end"}
                   sx={{fontWeight: "bold"}}>
-        {data?.total890Notif}
+        {(data.total890Notif) ? data.total890Notif : "-"}
       </Typography>
     )
   },
@@ -196,13 +196,17 @@ export const usageEstimationsPA: RowDataInfo[] = [
     id: "totalNotifToWork",
     label: "Totale notifiche stimate",
     type: "ROW",
+    labelWeight:"bold",
     render: (data) => (
       <Typography variant="subtitle1"
                   textAlign={"end"}
                   sx={{fontWeight: "bold"}}>
-        (data.total890Notif && data.totalAnalogNotif && data.totalDigitalNotif) ?
-        data.total890Notif + data.totalAnalogNotif + data.totalDigitalNotif
-        : "-"
+        {
+          (data.total890Notif && data.totalAnalogNotif && data.totalDigitalNotif) ?
+              data.total890Notif + data.totalAnalogNotif + data.totalDigitalNotif
+              :
+              "-"
+        }
       </Typography>
     )
   },
@@ -214,7 +218,7 @@ export const usageEstimationsPA: RowDataInfo[] = [
       <Typography variant="body2"
                   textAlign={"end"}
                   sx={{fontWeight: "bold"}}>
-        {data?.totalDigitalNotif}
+        { (data.totalDigitalNotif) ? data.totalDigitalNotif : "-"}
       </Typography>
     )
   },
@@ -226,7 +230,7 @@ export const usageEstimationsPA: RowDataInfo[] = [
       <Typography variant="body2"
                   textAlign={"end"}
                   sx={{fontWeight: "bold"}}>
-        {data?.totalAnalogNotif + data?.total890Notif}
+        { (data?.totalAnalogNotif && data?.total890Notif) ? data.totalAnalogNotif + data.total890Notif : "-" }
       </Typography>
     )
   }

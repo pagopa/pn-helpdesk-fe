@@ -38,6 +38,7 @@ export interface PaInfo {
 }
 
 export interface EstimateHistory {
+  paId: string;
   referenceMonth: string;
   lastModifiedDate: string;
   deadlineDate: string;

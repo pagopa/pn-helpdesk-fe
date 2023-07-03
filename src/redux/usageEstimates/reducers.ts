@@ -1,4 +1,4 @@
-import {EstimateDetailResponse, EstimatesPageableRequest, EstimatesPageableResponse, FilterRequest} from "../../model";
+import {EstimateDetailResponse, EstimatesPageableRequest, EstimatesPageableResponse} from "../../model";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {getAllEstimate, getDetailEstimate} from "./actions";
 
