@@ -20,6 +20,42 @@ export interface EstimateDetailResponse extends EstimatePeriod {
   paInfo: PaInfo
 }
 
+export interface ReportPageableRequest {
+  paId: string | undefined,
+  tot: number,
+  page: number,
+  status ?: StatusReportEnum
+}
+
+export interface ReportPageableResponse extends PageableResponse<ReportEstimate> {
+
+}
+
+export enum StatusReportEnum {
+  DEANONIMIZING = "DEANONIMIZING",
+  RAW = "RAW",
+  ENQUEUED = "ENQUEUED",
+  READY = "READY",
+  ERROR = "ERROR",
+}
+
+export interface ReportEstimate {
+  paId: string;
+  reportKey: string;
+  reportZipKey: string;
+  url: string;
+  referenceMonth: string;
+  lastModifiedDate: string;
+  errorMessage ?: string;
+  generationDate: string;
+  part: string;
+}
+
+export interface PaResponse {
+  id: string;
+  name: string
+}
+
 export interface Estimate {
   totalDigitalNotif: number;
   totalAnalogNotif: number;

@@ -23,7 +23,6 @@ export const getAllEstimate = createAsyncThunk<
     try {
       return await UsageEstimatesAPI.getAllEstimate(filter);
     } catch (e){
-      thunkAPI.dispatch(spinnerActions.updateSpinnerOpened(false));
       thunkAPI.dispatch(snackbarActions.updateSnackbacrOpened(true));
       thunkAPI.dispatch(snackbarActions.updateStatusCode(400));
       thunkAPI.dispatch(snackbarActions.updateMessage("Errore durante il recupero delle stime"));

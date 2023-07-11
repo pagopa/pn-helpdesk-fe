@@ -11,7 +11,9 @@ import {ButtonsActionDriverTable, ButtonShowCosts} from "../buttonsGroup/Buttons
 import {TenderStatusChip} from "../deliveriesDrivers/TenderStatusChip";
 import {EstimateStatusEnum, Tender} from "../../model";
 import {EstimateStatusChip} from "../usageEstimates/EstimateStatus";
+import {ReportStatusChip} from "../usageEstimates/ReportStatus";
 import {Button} from "@mui/material";
+import {ButtonLogReport} from "../usageEstimates/ButtonLogReport";
 
 const columnsTender: GridColDef[] = [
   {
@@ -292,6 +294,59 @@ const columnsEstimates: GridColDef[] = [
   },
 ]
 
+const columnsReport: GridColDef[] = [
+  {
+    field: "referenceMonth",
+    headerName: "Mese di riferimento",
+    width: 200,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+  },
+  {
+    field: "generationDate",
+    headerName: "Data generazione",
+    type: "date",
+    width: 200,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return params.row.generationDate
+        ? format(new Date(params.row.generationDate), "dd-MM-yyyy HH:mm")
+        : "";
+    },
+  },
+  {
+    field: "status",
+    headerName: "Stato",
+    type: "string",
+    width: 400,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return <ReportStatusChip data={params.row.status}/>
+    },
+  },
+  {
+    field: "errorMessage",
+    headerName: "Log",
+    type: "string",
+    width: 100,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return params.row.errorMessage && <ButtonLogReport report={params.row}/>
+    },
+  },
+]
+
 
 const getColumn = (type:ModelType) => {
     switch (type) {
@@ -307,6 +362,8 @@ const getColumn = (type:ModelType) => {
         return columnsCost(true);
       case ModelType.USAGE_ESTIMATES:
         return columnsEstimates;
+      case ModelType.REPORTS_ESTIMATE:
+        return columnsReport;
       default:
         return emptyColumn
     }

@@ -9,6 +9,7 @@ import uploadingDownloadingSlice from "./uploading/reducers";
 import deliveriesDriverSlice from "./deliveriesDrivers/reducers";
 import costSlice from "./costs/reducers";
 import usageEstimateSlice from "./usageEstimates/reducers";
+import reportEstimateSlice from "./report/reducers";
 
 
 export const store = configureStore({
@@ -23,6 +24,7 @@ export const store = configureStore({
     costs: costSlice.reducer,
     aggregate: aggregateReducer,
     usageEstimate: usageEstimateSlice.reducer,
+    reportEstimate: reportEstimateSlice.reducer,
   },
 });
 

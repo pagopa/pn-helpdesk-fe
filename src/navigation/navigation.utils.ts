@@ -23,6 +23,11 @@ export const allNavigationItems: { title: string; link: string; permissions?: Ar
     permissions: [Permission.TENDER_READ]
   },
   {
+    title: "Report",
+    link: routes.REPORT_PA_ROUTE,
+    permissions: [Permission.TENDER_READ]
+  },
+  {
     title: "Gestione Aggregazioni ApiKey",
     link: routes.AGGREGATES_LIST,
     permissions: [Permission.API_KEY_READ]

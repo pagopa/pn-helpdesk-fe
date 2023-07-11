@@ -3,7 +3,7 @@ import TenderPage from "../pages/tender/TenderPage";
 import { TenderDetailPage } from "../pages/tender/TenderDetailPage";
 import { FormTenderPage } from "../pages/createTender/FormTenderPage";
 import {
-  CREATE_TENDER_ROUTE, DETAIL_USAGE_ESTIMATE_ROUTE,
+  CREATE_TENDER_ROUTE, DETAIL_USAGE_ESTIMATE_ROUTE, REPORT_PA_ROUTE,
   SEARCH_USAGE_ESTIMATES_ROUTE,
   TENDER_DETAIL_ROUTE,
   TENDERS_TABLE_ROUTE
@@ -23,6 +23,7 @@ import {useCurrentUser} from "../hooks/useCurrentUser";
 import {SearchUsageEstimationsPage} from "../pages/usageEstimates/SearchUsageEstimationsPage";
 import {DetailUsageEstimationPage} from "../pages/usageEstimates/DetailUsageEstimationPage";
 import AuthApikeyPage from "../pages/authApikey/AuthApikeyPage";
+import {SearchEstimatesReportPage} from "../pages/estimateReport/SearchEstimatesReportPage";
 
 
 /**
@@ -125,6 +126,14 @@ function Router() {
                     <TenderDetailPage />
                 </PrivateRoute>
             }
+        />
+        <Route
+          path={REPORT_PA_ROUTE}
+          element={
+            <PrivateRoute roles={[Permission.TENDER_READ]}>
+              <SearchEstimatesReportPage />
+            </PrivateRoute>
+          }
         />
         <Route
             path={SEARCH_USAGE_ESTIMATES_ROUTE}

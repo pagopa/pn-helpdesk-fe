@@ -1,28 +1,26 @@
 import MainLayout from "../mainLayout/MainLayout";
 import {Box, Card, Container, Grid, Typography} from "@mui/material";
 import React from "react";
-import {EstimatesTable} from "../../components/usageEstimates/EstimatesTable";
+import {ReportEstimatesTable} from "../../components/usageEstimates/ReportEstimatesTable";
 import FilterTable from "../../components/forms/filterTable/FilterTable";
-import {setFilters} from "../../redux/aggregateSlice";
-import {FieldsEstimatesFilter} from "../../components/formFields/FormFields";
+import {FieldsReportEstimateFilter} from "../../components/formFields/FormFields";
 
 
-export function SearchUsageEstimationsPage({email=""}){
-
+export function SearchEstimatesReportPage(){
 
   const handleFiltersSubmit = (filters: any) => {
     console.log(filters);
   }
 
-  const fields = [FieldsEstimatesFilter["Pa Autocomplete"]];
+  const fields = [FieldsReportEstimateFilter["Pa Autocomplete"], FieldsReportEstimateFilter["Stato report"]];
 
-  return <MainLayout email={email}>
+  return <MainLayout email={"email"}>
     <Container>
       <Grid container direction="row" rowSpacing={3}>
         <Grid item container>
           <Box>
             <Typography variant="h4" color="text.primary">
-              Volumi delle notifiche
+              Dashboard deanonimizzazione consuntivi
             </Typography>
           </Box>
         </Grid>
@@ -37,7 +35,7 @@ export function SearchUsageEstimationsPage({email=""}){
             }}
           >
             <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} />
-            <EstimatesTable/>
+            <ReportEstimatesTable />
           </Card>
         </Grid>
 

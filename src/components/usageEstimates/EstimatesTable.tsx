@@ -8,7 +8,6 @@ import {changeFilterEstimates} from "../../redux/usageEstimates/reducers";
 import {useNavigate} from "react-router-dom";
 import {GET_DETAIL_USAGE_ESTIMATE_ROUTE} from "../../navigation/router.const";
 
-
 export function EstimatesTable(){
   const usageEstimate = useAppSelector(state => state.usageEstimate);
   const dispatch = useAppDispatch();
@@ -48,7 +47,7 @@ export function EstimatesTable(){
                                           total: usageEstimate.historyEstimate.history.totalElements
                                         } as Page<EstimateHistory> : {} as Page<EstimateHistory> }
                                          type={ModelType.USAGE_ESTIMATES}
-                                         loading={false}
+                                         loading={usageEstimate.loading}
                                          onClickItem={handleOnClickItem}
                                          rowId={row => row.referenceMonth}
                                          onPageChange={handleOnPageChange}

@@ -10,6 +10,8 @@ export const TENDERS_TABLE_ROUTE = "/tender";
 export const TENDER_DETAIL_ROUTE = `${TENDERS_TABLE_ROUTE}/details`;
 export const CREATE_TENDER_ROUTE = `${TENDERS_TABLE_ROUTE}/create`;
 
+export const REPORT_PA_ROUTE = "/reports"
+
 export const SEARCH_USAGE_ESTIMATES_ROUTE = "/usage-estimates";
 export const DETAIL_USAGE_ESTIMATE_ROUTE = "/usage-estimates/:paId/reference/:referenceMonth";
 export const MONITOR_ROUTE = "/monitoring";

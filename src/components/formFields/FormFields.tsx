@@ -20,6 +20,8 @@ import SelectCustomField, {
 } from "../selectField/SelectCustomField";
 import NumberFieldComponent from "../textField/NumberFieldComponent";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import {PAAutocompleteField} from "../PAAutocompleteField/PAAutocompleteField";
+import {StatusReportEnum} from "../../model";
 /**
  * Items for the Tipo Estrazione and their coresponding fields
  */
@@ -138,6 +140,35 @@ type FieldsProps = {
    */
   disabled?: boolean;
 };
+
+
+let FieldsEstimatesFilter: {[key: string]: FieldsProps} = {
+  "Pa Autocomplete": {
+    name: "Pa Autocomplete",
+    componentType: "paAutocomplete",
+    label: "Ricerca PA",
+    hidden: false,
+    size: 1
+  }
+}
+
+let FieldsReportEstimateFilter: { [key: string]: FieldsProps } = {
+  "Pa Autocomplete": {
+    name: "Pa Autocomplete",
+    componentType: "paAutocomplete",
+    label: "Ricerca PA",
+    hidden: false,
+    size: 1
+  },
+  "Stato report": {
+    name: "Stato Report",
+    componentType: "select",
+    label: "Stato Report",
+    hidden: false,
+    selectItems: Object.keys(StatusReportEnum),
+    size: 3,
+  },
+}
 
 /**
  * array containing all fields of the app and their neccessary properties
@@ -648,6 +679,15 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
           value={value}
         />
       )}
+      {componentType === "paAutocomplete" && (
+        <PAAutocompleteField
+          field={field}
+          required={field.required!}
+          onChange={onChange}
+          error={error}
+          value={value}
+        />
+      )}
       {componentType === "numberField" && (
         <NumberFieldComponent
           error={error}
@@ -661,5 +701,5 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
   );
 };
 
-export { MenuItems, FormField, FieldsProperties };
+export { MenuItems, FormField, FieldsProperties, FieldsEstimatesFilter, FieldsReportEstimateFilter};
 export type { FieldsProps };
