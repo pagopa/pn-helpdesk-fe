@@ -3,15 +3,26 @@ import {Box, Card, Container, Grid, Typography} from "@mui/material";
 import React from "react";
 import {EstimatesTable} from "../../components/usageEstimates/EstimatesTable";
 import FilterTable from "../../components/forms/filterTable/FilterTable";
-import {setFilters} from "../../redux/aggregateSlice";
 import {FieldsEstimatesFilter} from "../../components/formFields/FormFields";
+import {useAppDispatch, useAppSelector} from "../../redux/hook";
+import {EstimatesPageableRequest} from "../../model";
+import {changeFilterEstimates} from "../../redux/usageEstimates/reducers";
 
 
 export function SearchUsageEstimationsPage({email=""}){
-
+  const filters = useAppSelector(state => state.usageEstimate.pagination);
+  const dispatch = useAppDispatch();
 
   const handleFiltersSubmit = (filters: any) => {
     console.log(filters);
+    if (filters?.paSelected?.id) {
+      const filter: EstimatesPageableRequest = {
+        paId: filters.paSelected.id,
+        page: 1,
+        tot: 10
+      }
+      dispatch(changeFilterEstimates(filter));
+    }
   }
 
   const fields = [FieldsEstimatesFilter["Pa Autocomplete"]];
@@ -37,7 +48,13 @@ export function SearchUsageEstimationsPage({email=""}){
             }}
           >
             <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} />
-            <EstimatesTable/>
+            {
+              (filters.paId) && <EstimatesTable/>
+            }
+            {
+              (!(filters.paId)) && <Typography>Selezionare una PaId</Typography>
+            }
+
           </Card>
         </Grid>
 

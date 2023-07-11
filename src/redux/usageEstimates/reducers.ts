@@ -20,7 +20,7 @@ const initialState: UsageEstimatesState = {
   pagination: {
     page: 1,
     tot: 5,
-    paId: "cc1c6a8e-5967-42c6-9d83-bfb12ba1665a"
+    paId: undefined
   },
   loading: false,
   error: undefined

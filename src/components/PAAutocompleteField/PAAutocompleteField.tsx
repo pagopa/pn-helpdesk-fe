@@ -45,7 +45,8 @@ export function PAAutocompleteField(props:Props){
     data-testid={"pa-autocomplete"}
     options={publicAdministrations}
     fullWidth={true}
-    limitTags={3}
+    isOptionEqualToValue={(option, value) => option.id === value.id }
+    autoHighlight
     onInputChange={(event, newInputValue) => {
       // console.log(event, newInputValue)
       setInputText(newInputValue);

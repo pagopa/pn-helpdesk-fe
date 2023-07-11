@@ -144,7 +144,7 @@ type FieldsProps = {
 
 let FieldsEstimatesFilter: {[key: string]: FieldsProps} = {
   "Pa Autocomplete": {
-    name: "Pa Autocomplete",
+    name: "paSelected",
     componentType: "paAutocomplete",
     label: "Ricerca PA",
     hidden: false,
@@ -154,14 +154,14 @@ let FieldsEstimatesFilter: {[key: string]: FieldsProps} = {
 
 let FieldsReportEstimateFilter: { [key: string]: FieldsProps } = {
   "Pa Autocomplete": {
-    name: "Pa Autocomplete",
+    name: "paSelected",
     componentType: "paAutocomplete",
     label: "Ricerca PA",
     hidden: false,
     size: 1
   },
   "Stato report": {
-    name: "Stato Report",
+    name: "statusSelected",
     componentType: "select",
     label: "Stato Report",
     hidden: false,

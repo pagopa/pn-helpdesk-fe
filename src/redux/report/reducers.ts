@@ -15,7 +15,7 @@ const initialState: ReportEstimateState = {
   pagination: {
     page: 1,
     tot: 10,
-    paId: "cc1c6a8e-5967-42c6-9d83-bfb12ba1665a",
+    paId: undefined,
     status: undefined
   }
 }

@@ -4,12 +4,28 @@ import React from "react";
 import {ReportEstimatesTable} from "../../components/usageEstimates/ReportEstimatesTable";
 import FilterTable from "../../components/forms/filterTable/FilterTable";
 import {FieldsReportEstimateFilter} from "../../components/formFields/FormFields";
+import {useAppDispatch, useAppSelector} from "../../redux/hook";
+import {ReportPageableRequest} from "../../model";
+import {changeFilterReport, resetReportState} from "../../redux/report/reducers";
 
 
 export function SearchEstimatesReportPage(){
+  const filters = useAppSelector(state => state.reportEstimate.pagination);
+  const dispatch = useAppDispatch();
 
   const handleFiltersSubmit = (filters: any) => {
     console.log(filters);
+    if(filters?.paSelected?.id){
+      const filter:ReportPageableRequest = {
+        page: 1,
+        tot: 10,
+        paId: filters.paSelected.id,
+        status: filters?.statusSelected
+      }
+      dispatch(changeFilterReport(filter));
+    } else {
+      dispatch(resetReportState());
+    }
   }
 
   const fields = [FieldsReportEstimateFilter["Pa Autocomplete"], FieldsReportEstimateFilter["Stato report"]];
@@ -35,7 +51,12 @@ export function SearchEstimatesReportPage(){
             }}
           >
             <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} />
-            <ReportEstimatesTable />
+            {
+              (filters.paId) && <ReportEstimatesTable/>
+            }
+            {
+              (!(filters.paId)) && <Typography>Selezionare una PaId</Typography>
+            }
           </Card>
         </Grid>
 
