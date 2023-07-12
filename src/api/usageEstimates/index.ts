@@ -9,7 +9,7 @@ import {createAxiosInstance} from "../axiosInstanceCreator";
 
 
 const pathEstimates = {
-  GET_ALL: (paId: string, page:number, size:number) => `/pn-usage-estimates-bo/estimates?paId=${paId}&page=${page}&tot=${size}`,
+  GET_ALL: (paId: string, page:number, size:number) => `/pn-usage-estimates-bo/estimates?paId=${paId}&page=${page}&size=${size}`,
   DETAIL: (paId:string, referenceMonth:string) => `/pn-usage-estimates-bo/estimate/${paId}/detail/${referenceMonth}`,
   AUTOCOMPLETE_PA: (paName:string) => `/ext-registry/pa/v1/activated-on-pn?paNameFilter=${paName}`,
   GET_ALL_REPORTS: (paId: string, page: number, size: number, statusReport ?:StatusReportEnum) => {

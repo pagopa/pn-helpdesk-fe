@@ -42,7 +42,7 @@ export enum StatusReportEnum {
 export interface ReportEstimate {
   paId: string;
   reportKey: string;
-  reportZipKey: string;
+  reportZipKey: string | undefined;
   url: string;
   referenceMonth: string;
   lastModifiedDate: string;

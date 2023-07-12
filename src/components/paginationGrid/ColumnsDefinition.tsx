@@ -9,11 +9,12 @@ import {ButtonsActionCostTable} from "../buttonsGroup/ButtonsActionCostTable";
 import {CostDTO} from "../../api/paperChannel";
 import {ButtonsActionDriverTable, ButtonShowCosts} from "../buttonsGroup/ButtonsActionDriverTable";
 import {TenderStatusChip} from "../deliveriesDrivers/TenderStatusChip";
-import {EstimateStatusEnum, Tender} from "../../model";
+import {EstimateStatusEnum, StatusReportEnum, Tender} from "../../model";
 import {EstimateStatusChip} from "../usageEstimates/EstimateStatus";
 import {ReportStatusChip} from "../usageEstimates/ReportStatus";
-import {Button} from "@mui/material";
 import {ButtonLogReport} from "../usageEstimates/ButtonLogReport";
+import {ButtonScheduleReport} from "../usageEstimates/ButtonScheduleReport";
+import {ButtonDownloadReport} from "../usageEstimates/ButtonDownloadReport";
 
 const columnsTender: GridColDef[] = [
   {
@@ -320,6 +321,18 @@ const columnsReport: GridColDef[] = [
     },
   },
   {
+    field: "reportKey",
+    headerName: "Report sorgente",
+    width: 100,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return <ButtonDownloadReport report={params.row} type={"SOURCE"}/>
+    },
+  },
+  {
     field: "status",
     headerName: "Stato",
     type: "string",
@@ -333,6 +346,18 @@ const columnsReport: GridColDef[] = [
     },
   },
   {
+    field: "reportZipKey",
+    headerName: "File deanonimizzato",
+    width: 100,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return <ButtonDownloadReport report={params.row} type={"TARGET"}/>
+    },
+  },
+  {
     field: "errorMessage",
     headerName: "Log",
     type: "string",
@@ -343,6 +368,19 @@ const columnsReport: GridColDef[] = [
     disableColumnMenu: true,
     renderCell: (params: any) => {
       return params.row.errorMessage && <ButtonLogReport report={params.row}/>
+    },
+  },
+  {
+    field: "actions",
+    headerName: "Azioni",
+    type: "string",
+    width: 100,
+    flex: 1,
+    minWidth: 100,
+    sortable: false,
+    disableColumnMenu: true,
+    renderCell: (params: any) => {
+      return params.row.status === StatusReportEnum.ERROR && <ButtonScheduleReport report={params.row}/>
     },
   },
 ]

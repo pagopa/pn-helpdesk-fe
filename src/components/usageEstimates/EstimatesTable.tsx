@@ -2,7 +2,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { ModelType, PaginationDataGrid } from "../paginationGrid";
 import { EstimateHistory, EstimatesPageableRequest, Page} from "../../model";
 import React, { useCallback, useEffect } from "react";
-import { changeFilterDrivers } from "../../redux/deliveriesDrivers/reducers";
 import {getAllEstimate} from "../../redux/usageEstimates/actions";
 import {changeFilterEstimates} from "../../redux/usageEstimates/reducers";
 import {useNavigate} from "react-router-dom";
@@ -32,7 +31,7 @@ export function EstimatesTable(){
   }
 
   const handleOnPageSizeChange = (size:number) => {
-    dispatch(changeFilterDrivers({...usageEstimate.pagination, page:1, tot:size}))
+    dispatch(changeFilterEstimates({...usageEstimate.pagination, page:1, tot:size} as EstimatesPageableRequest))
   }
 
   const handleOnClickItem = (row: EstimateHistory) => {
