@@ -8,7 +8,7 @@ import useConfirmDialog from "../../confirmationDialog/useConfirmDialog";
 import * as snackbarActions from "../../../redux/snackbarSlice";
 import * as spinnerActions from "../../../redux/spinnerSlice";
 import apiRequests from "../../../api/apiRequests";
-import { createAggregateType, getAggregateResponse, UsagePlan } from "../../../api/apiRequestTypes";
+import { ErrorResponse, createAggregateType, getAggregateResponse, UsagePlan } from "../../../api/apiRequestTypes";
 import * as routes from '../../../navigation/router.const';
 
 type FormType = {
@@ -141,7 +141,12 @@ const AggregateForm = ({aggregate, isCreate, isUserWriter, usagePlans}: Props) =
                 .catch(err => {
                     dispatch(snackbarActions.updateSnackbacrOpened(true));
                     dispatch(snackbarActions.updateStatusCode("400"));
-                    dispatch(snackbarActions.updateMessage(`Non è stato possibile eliminare l'aggregato`));
+                    if (err.response && err.response.data) {
+                        let error = err.response.data as ErrorResponse;
+                        dispatch(snackbarActions.updateMessage(error.detail))
+                    }else{
+                        dispatch(snackbarActions.updateMessage(`Non è stato possibile eliminare l'aggregato`))
+                    }
                 })
                 .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
         }
