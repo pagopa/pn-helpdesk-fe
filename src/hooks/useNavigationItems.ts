@@ -1,5 +1,5 @@
-import { useCurrentUser } from "./useCurrentUser";
-import { allNavigationItems } from "../navigation/navigation.utils";
+import { allNavigationItems } from '../navigation/navigation.utils';
+import { useCurrentUser } from './useCurrentUser';
 
 export function useNavigationItems() {
   const { currentUser } = useCurrentUser();
@@ -8,10 +8,10 @@ export function useNavigationItems() {
   const availableItems = allNavigationItems.filter((item) =>
     item.permissions?.every((requiredPermission) =>
       currentUserPermissions?.includes(requiredPermission)
-    ));
-
+    )
+  );
 
   return {
-    availableItems
-  }
+    availableItems,
+  };
 }

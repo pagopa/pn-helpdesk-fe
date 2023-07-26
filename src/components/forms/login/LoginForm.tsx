@@ -1,30 +1,21 @@
-import {
-  Grid,
-  Button,
-  Box,
-  Card,
-  FormHelperText,
-  Link,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { MonogramPagoPACompany } from "@pagopa/mui-italia";
+import { Grid, Button, Box, Card, FormHelperText, Link, Tooltip, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { MonogramPagoPACompany } from '@pagopa/mui-italia';
 
-import { FieldsProperties, FormField } from "../../formFields/FormFields";
-import { useAuth } from "../../../Authentication/auth";
-import * as snackbarActions from "../../../redux/snackbarSlice";
-import * as spinnerActions from "../../../redux/spinnerSlice";
+import { FieldsProperties, FormField } from '../../formFields/FormFields';
+import { useAuth } from '../../../Authentication/auth';
+import * as snackbarActions from '../../../redux/snackbarSlice';
+import * as spinnerActions from '../../../redux/spinnerSlice';
 
 /**
  * default values of the form fields
  */
 const defaultFormValues: { [key: string]: string } = {
-  email: "",
-  password: "",
+  email: '',
+  password: '',
 };
 
 /**
@@ -37,7 +28,7 @@ const LoginForm = ({ setUser }: any) => {
   /**
    * form fields
    */
-  const fields = ["email", "password"];
+  const fields = ['email', 'password'];
 
   /**
    * dispatch redux actions
@@ -58,8 +49,8 @@ const LoginForm = ({ setUser }: any) => {
     formState: { errors },
   } = useForm({
     defaultValues: defaultFormValues,
-    mode: "onSubmit",
-    reValidateMode: "onSubmit",
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
   });
 
   /**
@@ -76,18 +67,18 @@ const LoginForm = ({ setUser }: any) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
     await login({ email: data.email, password: data.password })
       .then((user: { [key: string]: any }) => {
-        if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
+        if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
           dispatch(spinnerActions.updateSpinnerOpened(false));
           setUser(user);
         } else {
           dispatch(spinnerActions.updateSpinnerOpened(false));
-          navigate("/");
+          navigate('/');
         }
       })
-      .catch((error: any) => {
+      .catch(() => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
         dispatch(snackbarActions.updateSnackbacrOpened(true));
-        dispatch(snackbarActions.updateStatusCode("400"));
+        dispatch(snackbarActions.updateStatusCode('400'));
       });
   };
 
@@ -98,15 +89,15 @@ const LoginForm = ({ setUser }: any) => {
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
-      sx={{ backgroundColor: "primary.main" }}
+      sx={{ backgroundColor: 'primary.main' }}
     >
       <Card
         elevation={24}
         sx={{
           width: 1 / 2,
-          padding: "5%",
-          boxShadow: "0px 3px 3px -2px ",
-          backgroundColor: "background.paper",
+          padding: '5%',
+          boxShadow: '0px 3px 3px -2px ',
+          backgroundColor: 'background.paper',
         }}
       >
         <Grid container direction="column" rowSpacing={2}>
@@ -123,11 +114,7 @@ const LoginForm = ({ setUser }: any) => {
                     control={control}
                     name={field}
                     rules={FieldsProperties[field].rules}
-                    render={({
-                      field: { onChange, onBlur, value, name, ref },
-                      fieldState: { invalid, isTouched, isDirty, error },
-                      formState,
-                    }) => (
+                    render={({ field: { onChange, value }, fieldState: { error } }) => (
                       <>
                         <FormField
                           error={error}
@@ -137,12 +124,12 @@ const LoginForm = ({ setUser }: any) => {
                           value={value}
                         />
                         <FormHelperText error>
-                          {errors[field] ? errors[field].message : " "}
+                          {errors[field] ? errors[field].message : ' '}
                         </FormHelperText>
                       </>
                     )}
                   />
-                  {field === "password" && (
+                  {field === 'password' && (
                     <Grid item container justifyContent="flex-end">
                       <Tooltip
                         onClose={() => setTooltipOpen(false)}
@@ -150,10 +137,7 @@ const LoginForm = ({ setUser }: any) => {
                         placement="bottom"
                         title="In caso di smarrimento della password contattare l'amministratore di sistema per richiedere il reset"
                       >
-                        <Link
-                          sx={{ cursor: "pointer" }}
-                          onClick={() => setTooltipOpen(true)}
-                        >
+                        <Link sx={{ cursor: 'pointer' }} onClick={() => setTooltipOpen(true)}>
                           Password dimenticata?
                         </Link>
                       </Tooltip>
@@ -165,15 +149,15 @@ const LoginForm = ({ setUser }: any) => {
               <Grid item>
                 <Button
                   sx={{
-                    backgroundColor: "primary.main",
-                    "&:hover": { backgroundColor: "primary.dark" },
+                    backgroundColor: 'primary.main',
+                    '&:hover': { backgroundColor: 'primary.dark' },
                   }}
                   fullWidth
                   size="large"
                   type="submit"
                   variant="outlined"
                 >
-                  <Typography sx={{ color: "white" }}>LOGIN</Typography>
+                  <Typography sx={{ color: 'white' }}>LOGIN</Typography>
                 </Button>
               </Grid>
             </Grid>

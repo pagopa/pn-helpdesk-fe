@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "./store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from './store';
 
 export interface SpinnerState {
   opened: boolean;
@@ -10,15 +10,13 @@ const initialState: SpinnerState = {
 };
 
 export const spinnerSlice = createSlice({
-  name: "spinner",
+  name: 'spinner',
   initialState,
   reducers: {
-    updateSpinnerOpened: (state, action: PayloadAction<boolean>) => {
-      return { ...state, opened: action.payload };
-    },
+    updateSpinnerOpened: (state, action: PayloadAction<boolean>) => ({ ...state, opened: action.payload }),
   },
   extraReducers: (builder) => {
-    builder.addCase("snackbar/resetState", () => initialState);
+    builder.addCase('snackbar/resetState', () => initialState);
   },
 });
 

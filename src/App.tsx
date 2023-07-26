@@ -7,7 +7,7 @@ import { ConfirmationProvider } from './components/confirmationDialog/Confirmati
 import SnackbarComponent from './components/snackbar/SnackbarComponent';
 import { useCurrentUser } from './hooks/useCurrentUser';
 import Router from './navigation/Router';
-import { opened } from "./redux/spinnerSlice";
+import { opened } from './redux/spinnerSlice';
 
 function App() {
   const openedSpinner = useSelector(opened);
@@ -21,7 +21,7 @@ function App() {
    * If the webapp is reloaded, then the user won't pass through the login.
    * While the tokens are in session storage, the user data *including permissions*.
    * must be reloaded from Cognito.
-   * 
+   *
    * Hence this effect is run on app loading.
    * - If there is a logged user, then getUserData returns a UserData object.
    *   In this case, we set the user data including the permissions.
@@ -29,10 +29,10 @@ function App() {
    * - Otherwise, getUserData returns null, and therefore there is nothing to set.
    *   As the initial set of permissions is empty, the navigation will be redirected to the login page.
    *   This is the behavior of PrivateRoute for any situation in which the user has not the required permissions.
-   * 
+   *
    * In order to avoid navigating to the login before the existence of a logged user is checked,
    * we define the hasCheckedUser state, and we set it to true *after* the verification has been performed.
-   * 
+   *
    * Cfr. PN-4348.
    */
   useEffect(() => {
@@ -43,6 +43,8 @@ function App() {
       }
       setHasCheckedUser(true);
     };
+    // disable eslint in next line because is correct to use async/await in useEffect
+    // eslint-disable-next-line
     setUserIfLoggedIn();
   }, [setCurrentUser, getUserData]);
 
@@ -51,20 +53,22 @@ function App() {
     <div>
       <BrowserRouter>
         <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={openedSpinner}
-                dataid-test="spinner"
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={openedSpinner}
+          dataid-test="spinner"
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <ConfirmationProvider>
           <Router />
         </ConfirmationProvider>
-        
+
         <SnackbarComponent />
       </BrowserRouter>
     </div>
-  ) : <div/>;
+  ) : (
+    <div />
+  );
 }
 
 export default App;

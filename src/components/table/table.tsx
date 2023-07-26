@@ -55,14 +55,16 @@ function CustomTable<ColumnId extends string>({
       `
   );
 
-  const emptyRow = <TableRow>
-    <TableCell colSpan={columns.length || 1}>Non ci sono elementi da visualizzare</TableCell>
-  </TableRow>
+  const emptyRow = (
+    <TableRow>
+      <TableCell colSpan={columns.length || 1}>Non ci sono elementi da visualizzare</TableCell>
+    </TableRow>
+  );
 
   return (
     <Root>
       <TableContainer sx={{ marginBottom: '10px' }}>
-        <Table stickyHeader aria-label='Tabella di item'>
+        <Table stickyHeader aria-label="Tabella di item">
           <TableHead>
             <TableRow>
               {columns.map((column) => (
@@ -98,24 +100,25 @@ function CustomTable<ColumnId extends string>({
           </TableHead>
           <TableBody sx={{ backgroundColor: 'background.paper' }}>
             {rows.length > 0
-              ?
-              rows.map((row) => (
-                <TableRow key={row.id}>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      sx={{ width: column.width, borderBottom: 'none', cursor: column.onClick ? 'pointer' : 'auto' }}
-                      align={column.align}
-                      onClick={() => column.onClick && column.onClick(row, column)}
-                    >
-                      {column.getCellLabel(row[column.id], row)}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-              :
-              emptyRow
-            }
+              ? rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        sx={{
+                          width: column.width,
+                          borderBottom: 'none',
+                          cursor: column.onClick ? 'pointer' : 'auto',
+                        }}
+                        align={column.align}
+                        onClick={() => column.onClick && column.onClick(row, column)}
+                      >
+                        {column.getCellLabel(row[column.id], row)}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              : emptyRow}
           </TableBody>
         </Table>
       </TableContainer>

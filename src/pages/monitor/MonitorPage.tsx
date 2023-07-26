@@ -1,20 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
-import DataGridComponent from "../../components/dataGrid/DataGridComponent";
-import MainLayout from "../mainLayout/MainLayout";
-import apiRequests from "../../api/apiRequests";
-import { useDispatch } from "react-redux";
-import * as spinnerActions from "../../redux/spinnerSlice";
-import { GridActionsCellItem } from "@mui/x-data-grid";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
-import {
-  errorMessages,
-  functionalitiesNames,
-} from "../../helpers/messagesConstants";
-import { format } from "date-fns";
-import { getEventsType } from "../../api/apiRequestTypes";
-import * as snackbarActions from "../../redux/snackbarSlice";
-import { DateTimePicker } from "@mui/lab";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { GridActionsCellItem } from '@mui/x-data-grid';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { format } from 'date-fns';
+import { DateTimePicker } from '@mui/lab';
 import {
   Dialog,
   DialogTitle,
@@ -24,9 +14,16 @@ import {
   FormHelperText,
   DialogActions,
   Button,
-} from "@mui/material";
-import { useHasPermissions } from "../../hooks/useHasPermissions";
-import { Permission } from "../../model/user-permission";
+} from '@mui/material';
+import DataGridComponent from '../../components/dataGrid/DataGridComponent';
+import MainLayout from '../mainLayout/MainLayout';
+import apiRequests from '../../api/apiRequests';
+import * as spinnerActions from '../../redux/spinnerSlice';
+import { errorMessages, functionalitiesNames } from '../../helpers/messagesConstants';
+import { getEventsType } from '../../api/apiRequestTypes';
+import * as snackbarActions from '../../redux/snackbarSlice';
+import { useHasPermissions } from '../../hooks/useHasPermissions';
+import { Permission } from '../../model/user-permission';
 
 /**
  * Monitor page
@@ -35,7 +32,7 @@ import { Permission } from "../../model/user-permission";
 const MonitorPage = () => {
   const dispatch = useDispatch();
 
-  const [rows, setRows] = useState<any[]>([]);
+  const [rows, setRows] = useState<Array<any>>([]);
 
   const [backEndStatus, setBackEndStatus] = useState<boolean>(true);
 
@@ -45,20 +42,20 @@ const MonitorPage = () => {
 
   const [modalPayload, setModalPaylod] = useState({});
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   const isUserWriter = useHasPermissions([Permission.LOG_DOWNTIME_WRITE]);
 
   useEffect(() => {
     if (!modalStatus) {
       setModalEventDate(new Date());
-      setError("");
+      setError('');
     }
   }, [modalStatus]);
 
   const handleChange = (value: any) => {
     if (value) {
-      setError("");
+      setError('');
     }
     setModalEventDate(value);
   };
@@ -68,11 +65,7 @@ const MonitorPage = () => {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(response.status));
       (response.data.detail || response.data.message) &&
-      dispatch(
-        snackbarActions.updateMessage(
-          response.data.detail || response.message
-        )
-      );
+        dispatch(snackbarActions.updateMessage(response.data.detail || response.message));
     },
     [dispatch]
   );
@@ -83,41 +76,38 @@ const MonitorPage = () => {
       .then((res) => {
         setBackEndStatus(true);
         (res.detail || res.data.message) && updateSnackbar(res);
-        let rows: any[] = [];
-        if (res && res.data) {
-          if (res.data.functionalities) {
-            res.data.functionalities.forEach((item: string) => {
-              let incident = res.data.openIncidents.filter(
-                (element: any) => element.functionality === item
-              );
-              let date =
-              incident.length === 0 ? "" : new Date(incident[0].startDate);
-              let row = {
-                id: res.data.functionalities.indexOf(item) + 1,
-                functionality: functionalitiesNames[item],
-                data: date,
-                state: incident.length === 0,
-                functionalityName: item,
-              };
-              rows.push(row);
-            });
-            setRows(rows);
-          }
+        const rows: Array<any> = [];
+        if (res && res.data && res.data.functionalities) {
+          res.data.functionalities.forEach((item: string) => {
+            const incident = res.data.openIncidents.filter(
+              (element: any) => element.functionality === item
+            );
+            const date = incident.length === 0 ? '' : new Date(incident[0].startDate);
+            const row = {
+              id: Number(res.data.functionalities.indexOf(item)) + 1,
+              functionality: functionalitiesNames[item],
+              data: date,
+              state: incident.length === 0,
+              functionalityName: item,
+            };
+            rows.push(row);
+          });
+          setRows(rows);
         }
       })
       .catch(() => {
         setBackEndStatus(false);
-        let functionality: string[] = [
-          "NOTIFICATION_CREATE",
-          "NOTIFICATION_VISUALIZATION",
-          "NOTIFICATION_WORKFLOW",
+        const functionality: Array<string> = [
+          'NOTIFICATION_CREATE',
+          'NOTIFICATION_VISUALIZATION',
+          'NOTIFICATION_WORKFLOW',
         ];
-        let rows: any[] = [];
+        const rows: Array<any> = [];
         functionality.forEach((item: string) => {
-          let row = {
+          const row = {
             id: functionality.indexOf(item) + 1,
             functionality: functionalitiesNames[item],
-            data: "",
+            data: '',
           };
           rows.push(row);
         });
@@ -145,7 +135,7 @@ const MonitorPage = () => {
 
   const events = () => {
     if (!modalEventDate) {
-      setError("Inserire un valore");
+      setError('Inserire un valore');
     } else {
       const params = [
         {
@@ -176,8 +166,8 @@ const MonitorPage = () => {
 
   const columns = [
     {
-      field: "functionality",
-      headerName: "Funzionalità",
+      field: 'functionality',
+      headerName: 'Funzionalità',
       width: 200,
       flex: 1,
       minWidth: 100,
@@ -185,57 +175,53 @@ const MonitorPage = () => {
       disableColumnMenu: true,
     },
     {
-      field: "state",
-      headerName: "Stato",
-      type: "actions",
+      field: 'state',
+      headerName: 'Stato',
+      type: 'actions',
       width: 400,
-      renderCell: (params: any) => {
-        return params.row.state ? (
+      renderCell: (params: any) =>
+        params.row.state ? (
           <CheckCircleIcon color="success" />
         ) : (
-          <CancelIcon color={backEndStatus ? "error" : "disabled"} />
-        );
-      },
+          <CancelIcon color={backEndStatus ? 'error' : 'disabled'} />
+        ),
       flex: 1,
       minWidth: 100,
     },
     {
-      field: "data",
-      headerName: "Data di creazione",
-      type: "date",
+      field: 'data',
+      headerName: 'Data di creazione',
+      type: 'date',
       width: 400,
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
       hide: !backEndStatus,
-      renderCell: (params: any) => {
-        return params.row.data
-          ? format(new Date(params.row.data), "dd-MM-yyyy HH:mm")
-          : "";
-      },
+      renderCell: (params: any) =>
+        params.row.data ? format(new Date(params.row.data), 'dd-MM-yyyy HH:mm') : '',
     },
     {
-      field: "actions",
-      headerName: "Cambio Stato",
+      field: 'actions',
+      headerName: 'Cambio Stato',
       width: 200,
-      type: "actions",
+      type: 'actions',
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
       hide: !backEndStatus && !isUserWriter,
-      getActions: (params: any) => {
-        return params.row.state
+      getActions: (params: any) =>
+        params.row.state
           ? [
               <GridActionsCellItem
-                key={"Inserire KO"}
+                key={'Inserire KO'}
                 label="Inserire KO"
                 onClick={() => {
                   setModalPaylod({
-                    status: "KO",
+                    status: 'KO',
                     functionality: Array(params.row.functionalityName),
-                    sourceType: "OPERATOR",
+                    sourceType: 'OPERATOR',
                   });
                   setModalStatus(true);
                 }}
@@ -248,16 +234,15 @@ const MonitorPage = () => {
                 label="Inserire OK"
                 onClick={() => {
                   setModalPaylod({
-                    status: "OK",
+                    status: 'OK',
                     functionality: Array(params.row.functionalityName),
-                    sourceType: "OPERATOR",
+                    sourceType: 'OPERATOR',
                   });
                   setModalStatus(true);
                 }}
                 showInMenu
               />,
-            ];
-      },
+            ],
     },
   ];
 
@@ -290,13 +275,10 @@ const MonitorPage = () => {
               />
             </Grid>
           </Grid>
-          <FormHelperText error>{error ? error : " "}</FormHelperText>
+          <FormHelperText error>{error ? error : ' '}</FormHelperText>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "space-between" }}>
-          <Button
-            onClick={() => setModalStatus(false)}
-            sx={{ padding: "0 18px" }}
-          >
+        <DialogActions sx={{ justifyContent: 'space-between' }}>
+          <Button onClick={() => setModalStatus(false)} sx={{ padding: '0 18px' }}>
             Annulla
           </Button>
           <Button autoFocus onClick={events}>

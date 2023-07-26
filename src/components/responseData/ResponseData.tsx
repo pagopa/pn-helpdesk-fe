@@ -1,6 +1,6 @@
-import { Divider, Grid, Typography } from "@mui/material";
-import { opened, responseData } from "../../redux/responseSlice";
-import { useSelector } from "react-redux";
+import { Divider, Grid, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { opened, responseData } from '../../redux/responseSlice';
 
 /**
  * connecting the response type with specific message
@@ -9,10 +9,10 @@ import { useSelector } from "react-redux";
  * @type {string}
  */
 enum ResponseType {
-  password = "Password",
-  taxId = "Codice Fiscale",
-  internalId = "Codice Univoco",
-  downloadLink= "Download"
+  password = 'Password',
+  taxId = 'Codice Fiscale',
+  internalId = 'Codice Univoco',
+  downloadLink = 'Download',
 }
 
 /**
@@ -41,26 +41,24 @@ const ResponseData = () => {
         <Grid item>
           <Typography align="center" color="text.primary">
             <>
-              {
-                ResponseType[
-                  Object.keys(response)[0] as keyof typeof ResponseType
-                ]
-              }
-              : {Object.values(response)[0]} 
+              {ResponseType[Object.keys(response)[0] as keyof typeof ResponseType]}:{' '}
+              {Object.values(response)[0]}
             </>
           </Typography>
         </Grid>
-        {Object.values(response)[1] as keyof typeof ResponseType &&
-        <Grid item container>
-          <Grid item >
-            <Typography align="center" color="text.primary">
-              <>
-            <a target="_blank" href={Object.values(response)[1] as keyof typeof ResponseType}>Download</a>
-              </>
-            </Typography>
+        {(Object.values(response)[1] as keyof typeof ResponseType) && (
+          <Grid item container>
+            <Grid item>
+              <Typography align="center" color="text.primary">
+                <>
+                  <a target="_blank" href={Object.values(response)[1] as keyof typeof ResponseType} rel="noreferrer">
+                    Download
+                  </a>
+                </>
+              </Typography>
+            </Grid>
           </Grid>
-        </Grid>
-        }
+        )}
       </Grid>
     </Grid>
   ) : null;

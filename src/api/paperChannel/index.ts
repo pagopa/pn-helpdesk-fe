@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * API Paper Channel
- * # Interface definition for Paper Channel 
+ * # Interface definition for Paper Channel
  *
  * The version of the OpenAPI document: 1.0.0
  * Contact: support@pagopa.com
@@ -12,7 +12,5 @@
  * Do not edit the class manually.
  */
 
-
-export * from "./api";
-export * from "./configuration";
-
+export * from './api';
+export * from './configuration';

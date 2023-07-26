@@ -1,22 +1,21 @@
-import {Navigate, Outlet, Route, Routes} from "react-router-dom";
-import TenderPage from "../pages/tender/TenderPage";
-import { TenderDetailPage } from "../pages/tender/TenderDetailPage";
-import { FormTenderPage } from "../pages/createTender/FormTenderPage";
-import { CREATE_TENDER_ROUTE, TENDER_DETAIL_ROUTE, TENDERS_TABLE_ROUTE } from "./router.const";
-import MonitorPage from "../pages/monitor/MonitorPage";
-import LoginPage from "../pages/login/LoginPage";
-import SearchPage from "../pages/search/SearchPage";
-import PrivateRoute from "./PrivateRoute";
-import AggregatesPage from "../pages/aggregates/AggregatesPage";
-import AggregateDetailPage from "../pages/aggregates/AggregateDetailPage";
-import AssociationPage from "../pages/paAssociation/PaAssociationPage";
-import PaTransferListPage from "../pages/paTransfer/PaTransferListPage";
-import * as routes from "./router.const";
-import { Permission } from "../model/user-permission";
-import HomePage from "../pages/home/HomePage";
-import {useCurrentUser} from "../hooks/useCurrentUser";
-import AuthApikeyPage from "../pages/authApikey/AuthApikeyPage";
-
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import TenderPage from '../pages/tender/TenderPage';
+import { TenderDetailPage } from '../pages/tender/TenderDetailPage';
+import { FormTenderPage } from '../pages/createTender/FormTenderPage';
+import MonitorPage from '../pages/monitor/MonitorPage';
+import LoginPage from '../pages/login/LoginPage';
+import SearchPage from '../pages/search/SearchPage';
+import AggregatesPage from '../pages/aggregates/AggregatesPage';
+import AggregateDetailPage from '../pages/aggregates/AggregateDetailPage';
+import AssociationPage from '../pages/paAssociation/PaAssociationPage';
+import PaTransferListPage from '../pages/paTransfer/PaTransferListPage';
+import { Permission } from '../model/user-permission';
+import HomePage from '../pages/home/HomePage';
+import { useCurrentUser } from '../hooks/useCurrentUser';
+import AuthApikeyPage from '../pages/authApikey/AuthApikeyPage';
+import * as routes from './router.const';
+import PrivateRoute from './PrivateRoute';
+import { CREATE_TENDER_ROUTE, TENDER_DETAIL_ROUTE, TENDERS_TABLE_ROUTE } from './router.const';
 
 /**
  * Create the routing of the page
@@ -27,9 +26,9 @@ function Router() {
   return (
     <Routes>
       <Route path={routes.LOGIN_ROUTE} element={<LoginPage />} />
-      <Route path={"/"} element={currentUser ? <Outlet /> : <Navigate to={routes.LOGIN_ROUTE} />} >
-        <Route key={"default"} path={"/"} element={<HomePage />} />
-        <Route path="*" element={<Navigate replace to={"/"} />} />
+      <Route path={'/'} element={currentUser ? <Outlet /> : <Navigate to={routes.LOGIN_ROUTE} />}>
+        <Route key={'default'} path={'/'} element={<HomePage />} />
+        <Route path="*" element={<Navigate replace to={'/'} />} />
         <Route
           path={routes.SEARCH_ROUTE}
           element={
@@ -47,15 +46,21 @@ function Router() {
           }
         />
         <Route path={CREATE_TENDER_ROUTE}>
-          <Route path=":tenderCode" element={
-            <PrivateRoute roles={[Permission.TENDER_WRITE]}>
-              <FormTenderPage />
-            </PrivateRoute>}
+          <Route
+            path=":tenderCode"
+            element={
+              <PrivateRoute roles={[Permission.TENDER_WRITE]}>
+                <FormTenderPage />
+              </PrivateRoute>
+            }
           />
-          <Route path="" element={
-            <PrivateRoute roles={[Permission.TENDER_WRITE]}>
-              <FormTenderPage />
-            </PrivateRoute>}
+          <Route
+            path=""
+            element={
+              <PrivateRoute roles={[Permission.TENDER_WRITE]}>
+                <FormTenderPage />
+              </PrivateRoute>
+            }
           />
         </Route>
         <Route
@@ -66,7 +71,7 @@ function Router() {
             </PrivateRoute>
           }
         />
-        {/* Pagina di Elenco Aggregati*/}
+        {/* Pagina di Elenco Aggregati */}
         <Route
           path={routes.AGGREGATES_LIST}
           element={
@@ -75,7 +80,7 @@ function Router() {
             </PrivateRoute>
           }
         />
-        {/* Pagina di Modifica/Dettaglio aggregato*/}
+        {/* Pagina di Modifica/Dettaglio aggregato */}
         <Route
           path={routes.UPDATE_AGGREGATE}
           element={
@@ -84,7 +89,7 @@ function Router() {
             </PrivateRoute>
           }
         />
-        {/* Pagina di Creazione Aggregato*/}
+        {/* Pagina di Creazione Aggregato */}
         <Route
           path={routes.CREATE_AGGREGATE}
           element={
@@ -93,7 +98,7 @@ function Router() {
             </PrivateRoute>
           }
         />
-        {/* Pagina di Associazione PA all'aggregato*/}
+        {/* Pagina di Associazione PA all'aggregato */}
         <Route
           path={routes.ADD_PA}
           element={
@@ -102,7 +107,7 @@ function Router() {
             </PrivateRoute>
           }
         />
-        {/* Pagina di Trasferimento PA tra aggregati*/}
+        {/* Pagina di Trasferimento PA tra aggregati */}
         <Route
           path={routes.TRANSFER_PA}
           element={
@@ -112,31 +117,31 @@ function Router() {
           }
         />
         <Route
-            path={TENDER_DETAIL_ROUTE}
-            element={
-                <PrivateRoute roles={[Permission.TENDER_READ]}>
-                    <TenderDetailPage />
-                </PrivateRoute>
-            }
-        />
-      </Route>
-        {/* Pagina di Gestione Autorizzazioni ApiKey*/}
-        <Route
-          path={routes.AUTH_APIKEY}
+          path={TENDER_DETAIL_ROUTE}
           element={
-            <PrivateRoute roles={[Permission.API_KEY_WRITE]}>
-              <AuthApikeyPage />
+            <PrivateRoute roles={[Permission.TENDER_READ]}>
+              <TenderDetailPage />
             </PrivateRoute>
           }
         />
-        <Route
-            path={TENDER_DETAIL_ROUTE}
-            element={
-                <PrivateRoute roles={[Permission.TENDER_READ]}>
-                    <TenderDetailPage />
-                </PrivateRoute>
-            }
-        />
+      </Route>
+      {/* Pagina di Gestione Autorizzazioni ApiKey */}
+      <Route
+        path={routes.AUTH_APIKEY}
+        element={
+          <PrivateRoute roles={[Permission.API_KEY_WRITE]}>
+            <AuthApikeyPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path={TENDER_DETAIL_ROUTE}
+        element={
+          <PrivateRoute roles={[Permission.TENDER_READ]}>
+            <TenderDetailPage />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }

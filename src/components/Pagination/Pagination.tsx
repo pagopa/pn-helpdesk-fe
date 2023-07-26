@@ -1,5 +1,13 @@
 import { ChangeEvent, useState } from 'react';
-import { Button, Grid, Menu, MenuItem, Pagination as MuiPagination, PaginationItem, SxProps } from '@mui/material';
+import {
+  Button,
+  Grid,
+  Menu,
+  MenuItem,
+  Pagination as MuiPagination,
+  PaginationItem,
+  SxProps,
+} from '@mui/material';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
 
 import { PaginationData, A11yPaginationLabelsTypes } from './types';
@@ -22,6 +30,7 @@ const getA11yPaginationLabels = (
   page: number,
   selected: boolean
 ): string => {
+  // eslint-disable-next-line functional/no-let
   let ariaStr;
   switch (type) {
     case 'first':
@@ -52,7 +61,7 @@ export default function Pagination({
   onPageRequest,
   elementsPerPage = [5, 10, 20, 50, 100],
   pagesToShow,
-  sx
+  sx,
 }: Props) {
   const limit = paginationData.limit || elementsPerPage[0];
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
