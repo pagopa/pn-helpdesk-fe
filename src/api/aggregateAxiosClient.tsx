@@ -1,5 +1,5 @@
-import { AxiosInstance, AxiosResponse } from "axios";
-import { compileRoute } from "../helpers/api.utility";
+import { AxiosInstance, AxiosResponse } from 'axios';
+import { compileRoute } from '../helpers/api.utility';
 import {
   getAggregateParams,
   getAggregatesResponse,
@@ -17,8 +17,8 @@ import {
   searchApikeyResponse,
   changePdndResponse,
   updatePdndRequest,
-} from "./apiRequestTypes";
-import { createAxiosInstance } from "./axiosInstanceCreator";
+} from './apiRequestTypes';
+import { createAxiosInstance } from './axiosInstanceCreator';
 import {
   pa_list,
   usage_plan_list,
@@ -28,7 +28,7 @@ import {
   search_pa,
   api_key,
   modify_pdnd,
-} from "./mock_agg_response";
+} from './mock_agg_response';
 class Http {
   private instance: AxiosInstance | null = null;
 
@@ -38,47 +38,39 @@ class Http {
       : createAxiosInstance(process.env.REACT_APP_API_AGGREGATE_ENDPOINT!);
   }
 
-  getAggregates<T = getAggregatesResponse>(
-    payload: getAggregateParams
-  ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+  getAggregates<T = getAggregatesResponse>(payload: getAggregateParams): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock(aggregates_list);
     }
 
     return this.http.get(
       compileRoute({
-        path: "aggregate",
+        path: 'aggregate',
         query: payload,
       })
     );
   }
 
-  searchPa<T = searchPaResponse>(
-    payload: searchPaType
-  ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
-      return this._mock(
-        search_pa(payload.limit!, payload.lastEvaluatedId!, payload.paName)
-      );
+  searchPa<T = searchPaResponse>(payload: searchPaType): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
+      return this._mock(search_pa(payload.limit!, payload.lastEvaluatedId!, payload.paName));
     }
 
     return this.http.get(
       compileRoute({
-        path: "pa",
+        path: 'pa',
         query: payload,
       })
     );
   }
 
-  searchApiKey<T = searchApikeyResponse>(
-    paId: string
-  ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+  searchApiKey<T = searchApikeyResponse>(paId: string): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock(api_key);
     }
     return this.http.get(
       compileRoute({
-        path: "api-keys",
+        path: 'api-keys',
         query: {
           paId,
         },
@@ -86,30 +78,26 @@ class Http {
     );
   }
 
-  modifyPdnd<T = changePdndResponse>(
-    payload: updatePdndRequest
-  ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+  modifyPdnd<T = changePdndResponse>(payload: updatePdndRequest): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock(modify_pdnd);
     }
     return this.http.put(
       compileRoute({
-        path: "api-keys/interop",
+        path: 'api-keys/interop',
       }),
       payload
     );
   }
 
-  getAggregateDetails<T = getAggregateResponse>(
-    id: string
-  ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+  getAggregateDetails<T = getAggregateResponse>(id: string): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock();
     }
 
     return this.http.get(
       compileRoute({
-        path: "aggregate/:id",
+        path: 'aggregate/:id',
         params: {
           id: id,
         },
@@ -117,17 +105,15 @@ class Http {
     );
   }
 
-  createAggregate<T = aggregateId>(
-    payload: createAggregateType
-  ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
-      const id = "agg_2";
+  createAggregate<T = aggregateId>(payload: createAggregateType): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
+      const id = 'agg_2';
       return this._mock(id);
     }
 
     return this.http.post(
       compileRoute({
-        path: "aggregate",
+        path: 'aggregate',
       }),
       payload
     );
@@ -137,13 +123,13 @@ class Http {
     payload: modifyAggregateType,
     id: string
   ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock(id);
     }
 
     return this.http.put(
       compileRoute({
-        path: "aggregate/:id",
+        path: 'aggregate/:id',
         params: {
           id: id,
         },
@@ -153,13 +139,13 @@ class Http {
   }
 
   deleteAggregate<T = aggregateId>(id: string): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock(id);
     }
 
     return this.http.delete(
       compileRoute({
-        path: "aggregate/:id",
+        path: 'aggregate/:id',
         params: {
           id: id,
         },
@@ -167,16 +153,14 @@ class Http {
     );
   }
 
-  getAssociatedPaList<T = getAssociatedPaListResponse>(
-    id: string
-  ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+  getAssociatedPaList<T = getAssociatedPaListResponse>(id: string): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock(pa_list_associated);
     }
 
     return this.http.get(
       compileRoute({
-        path: "aggregate/:id/associated-pa",
+        path: 'aggregate/:id/associated-pa',
         params: {
           id: id,
         },
@@ -184,11 +168,8 @@ class Http {
     );
   }
 
-  movePa<T = addPaResponse>(
-    id: string,
-    data: Array<Pa>
-  ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+  movePa<T = addPaResponse>(id: string, data: Array<Pa>): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock(move_pa);
     }
 
@@ -196,7 +177,7 @@ class Http {
 
     return this.http.post(
       compileRoute({
-        path: "aggregate/:id/move-pa",
+        path: 'aggregate/:id/move-pa',
         params: {
           id: id,
         },
@@ -205,31 +186,26 @@ class Http {
     );
   }
 
-  getAssociablePaList<T = getAssociablePaListResponse>(
-    name?: string
-  ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+  getAssociablePaList<T = getAssociablePaListResponse>(name?: string): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock(pa_list);
     }
 
     return this.http.get(
       compileRoute({
-        path: "aggregate/associable-pa",
+        path: 'aggregate/associable-pa',
       })
     );
   }
 
-  addPa<T = addPaResponse>(
-    id: string,
-    selectedPaList: Array<Pa>
-  ): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+  addPa<T = addPaResponse>(id: string, selectedPaList: Array<Pa>): Promise<AxiosResponse<T>> {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock(move_pa);
     }
 
     return this.http.post(
       compileRoute({
-        path: "aggregate/:id/add-pa",
+        path: 'aggregate/:id/add-pa',
         params: {
           id: id,
         },
@@ -239,7 +215,7 @@ class Http {
   }
 
   getUsagePlans<T = getUsagePlansType>(): Promise<AxiosResponse<T>> {
-    if (process.env.REACT_APP_MOCK_API_AGGREGATE === "true") {
+    if (process.env.REACT_APP_MOCK_API_AGGREGATE === 'true') {
       return this._mock(usage_plan_list);
     }
 
@@ -252,7 +228,7 @@ class Http {
 
   _mock(mock?: any): Promise<AxiosResponse> {
     return new Promise((res) =>
-      res({ data: mock, status: 200, statusText: "200" } as AxiosResponse)
+      res({ data: mock, status: 200, statusText: '200' } as AxiosResponse)
     );
   }
 }

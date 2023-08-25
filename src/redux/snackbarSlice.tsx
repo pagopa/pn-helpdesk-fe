@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "./store";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from './store';
 
 export interface SnackbarState {
   opened: boolean;
@@ -11,18 +11,18 @@ export interface SnackbarState {
 const initialState: SnackbarState = {
   opened: false,
   statusCode: undefined,
-  message: "",
+  message: '',
   autoHideDuration: 5000,
 };
 /* istanbul ignore next */
 export const snackbarSlice = createSlice({
-  name: "snackbar",
+  name: 'snackbar',
   initialState,
   reducers: {
     resetState: () => initialState,
     updateSnackbacrOpened: (state, action: PayloadAction<boolean>) => {
       state.opened = action.payload;
-      //reset initial state after each closure
+      // reset initial state after each closure
       if (!action.payload) {
         state.message = initialState.message;
         state.statusCode = initialState.statusCode;
@@ -55,7 +55,6 @@ export const statusCode = (state: RootState) => state.snackbar.statusCode;
 
 export const message = (state: RootState) => state.snackbar.message;
 
-export const autoHideDuration = (state: RootState) =>
-  state.snackbar.autoHideDuration;
+export const autoHideDuration = (state: RootState) => state.snackbar.autoHideDuration;
 
 export default snackbarSlice.reducer;

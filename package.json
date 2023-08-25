@@ -54,7 +54,9 @@
     "test": "react-scripts test --watchAll=false",
     "test:coverage": "react-scripts test --watchAll=false --ci --coverage --testResultsProcessor=jest-sonar-reporter",
     "eject": "react-scripts eject",
-    "sonar": "node sonarqube-scanner.js"
+    "sonar": "node sonarqube-scanner.js",
+    "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
+    "format": "prettier \"./**/*.{ts,tsx}\" --write"
   },
   "eslintConfig": {
     "extends": [

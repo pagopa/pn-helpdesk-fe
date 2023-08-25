@@ -1,44 +1,41 @@
 /**
  * @jest-environment jsdom
  */
-import React, {useCallback, useState} from "react";
-import "regenerator-runtime/runtime";
+import React, { useCallback, useState } from 'react';
+import 'regenerator-runtime/runtime';
 
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
-import NavigationMenu from "../NavigationMenu";
-import { BrowserRouter as Router } from "react-router-dom";
-import { act } from "react-dom/test-utils";
-import userEvent from "@testing-library/user-event";
-import { Permission, UserData } from "../../../model/user-permission";
-import { UserContext } from "../../../contexts/UserContext";
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { act } from 'react-dom/test-utils';
+import userEvent from '@testing-library/user-event';
+import NavigationMenu from '../NavigationMenu';
+import { Permission, UserData } from '../../../model/user-permission';
+import { UserContext } from '../../../contexts/UserContext';
 
 const mockedUser = {
-  email: "test@test.com",
-  permissions: Object.values(Permission)
+  email: 'test@test.com',
+  permissions: Object.values(Permission),
 };
 
-const MockedUserContext = ({children}: {children: React.ReactNode}) => {
-  const [_, setCurrentUser] = useState<UserData | null>(null);
-  const currentUser = mockedUser;
+const MockedUserContext = ({ children }: { children: React.ReactNode }) => {
+  const [currentUser, setCurrentUser] = useState<UserData | null>(mockedUser);
 
   const clearCurrentUser = useCallback(() => setCurrentUser(null), [setCurrentUser]);
 
-  return <UserContext.Provider value={{currentUser, setCurrentUser, clearCurrentUser}}>
-    {children}
-  </UserContext.Provider>
-}
+  return (
+    <UserContext.Provider value={{ currentUser, setCurrentUser, clearCurrentUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
 
-describe("NavigationMenu Component", () => {
+describe('NavigationMenu Component', () => {
   beforeAll(() => {
-    Object.defineProperty(window, "matchMedia", {
+    Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: (query: string) => ({
         media: query,
-        matches: query === "(pointer: fine)",
+        matches: query === '(pointer: fine)',
         onchange: () => {},
         addEventListener: () => {},
         removeEventListener: () => {},
@@ -49,17 +46,17 @@ describe("NavigationMenu Component", () => {
     });
   });
 
-  it("renders icon of the menu", () => {
+  it('renders icon of the menu', () => {
     render(
       <Router>
         <NavigationMenu />
       </Router>
     );
-    const icon = screen.getByRole("button", { name: "menu" });
+    const icon = screen.getByRole('button', { name: 'menu' });
     expect(icon).toBeInTheDocument();
   });
 
-  it("click button and show menu component", async () => {
+  it('click button and show menu component', async () => {
     render(
       <MockedUserContext>
         <Router>
@@ -67,8 +64,8 @@ describe("NavigationMenu Component", () => {
         </Router>
       </MockedUserContext>
     );
-    const icon = screen.getByRole("button", {
-      name: "menu",
+    const icon = screen.getByRole('button', {
+      name: 'menu',
     });
     expect(icon).toBeInTheDocument();
 
@@ -78,16 +75,14 @@ describe("NavigationMenu Component", () => {
       await user.click(icon);
     });
 
-    const drawerButton = await screen.findByText(
-      "Monitoraggio Piattaforma Notifiche"
-    );
+    const drawerButton = await screen.findByText('Monitoraggio Piattaforma Notifiche');
     await act(async () => {
       await user.click(drawerButton);
     });
-    expect(global.window.location.pathname).toContain("/monitoring");
+    expect(global.window.location.pathname).toContain('/monitoring');
   });
 
-  it("simulate tab click", async () => {
+  it('simulate tab click', async () => {
     render(
       <MockedUserContext>
         <Router>
@@ -95,8 +90,8 @@ describe("NavigationMenu Component", () => {
         </Router>
       </MockedUserContext>
     );
-    const icon = screen.getByRole("button", {
-      name: "menu",
+    const icon = screen.getByRole('button', {
+      name: 'menu',
     });
     expect(icon).toBeInTheDocument();
 
@@ -106,17 +101,15 @@ describe("NavigationMenu Component", () => {
       await user.click(icon);
     });
 
-    const drawerButton = await screen.findByText(
-      "Monitoraggio Piattaforma Notifiche"
-    );
+    const drawerButton = await screen.findByText('Monitoraggio Piattaforma Notifiche');
     expect(drawerButton).toBeInTheDocument();
 
     await act(async () => {
-      await user.keyboard("[ShiftLeft]");
+      await user.keyboard('[ShiftLeft]');
     });
   });
 
-  it("simulate click escape", async () => {
+  it('simulate click escape', async () => {
     render(
       <MockedUserContext>
         <Router>
@@ -124,8 +117,8 @@ describe("NavigationMenu Component", () => {
         </Router>
       </MockedUserContext>
     );
-    const icon = screen.getByRole("button", {
-      name: "menu",
+    const icon = screen.getByRole('button', {
+      name: 'menu',
     });
     expect(icon).toBeInTheDocument();
 
@@ -135,16 +128,12 @@ describe("NavigationMenu Component", () => {
       await user.click(icon);
     });
 
-    const drawerButton = await screen.findByText(
-      "Monitoraggio Piattaforma Notifiche"
-    );
+    const drawerButton = await screen.findByText('Monitoraggio Piattaforma Notifiche');
     expect(drawerButton).toBeInTheDocument();
 
     await act(async () => {
-      await user.keyboard("{Escape}");
+      await user.keyboard('{Escape}');
     });
-    await waitForElementToBeRemoved(() =>
-      screen.queryByText("Monitoraggio Piattaforma Notifiche")
-    );
+    await waitForElementToBeRemoved(() => screen.queryByText('Monitoraggio Piattaforma Notifiche'));
   });
 });

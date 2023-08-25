@@ -38,7 +38,7 @@ function formatQueryParam(key: string, value: ParameterValue) {
  */
 export function compileRoute(route: Route) {
   let result = route.prefix ? `/${compilePrefix(route.prefix)}` : '';
-  if (Boolean(route.path)) {
+  if (route.path) {
     result += `/${route.path}`;
   }
   if (route.params) {

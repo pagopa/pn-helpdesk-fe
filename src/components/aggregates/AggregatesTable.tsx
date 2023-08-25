@@ -1,32 +1,35 @@
-import { useCallback, useEffect } from "react";
-import { Column, Item } from "../table/tableTypes";
-import ItemsTable from '../table/table';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { red } from "@mui/material/colors";
-import * as spinnerActions from "../../redux/spinnerSlice";
-import * as snackbarActions from "../../redux/snackbarSlice";
-import { useNavigate } from "react-router-dom";
-import { ErrorResponse, getAggregateParams } from "../../api/apiRequestTypes";
-import { useSelector, useDispatch } from 'react-redux';
-import { filtersSelector, paginationSelector, aggregatesSelector, setPagination, setAggregates, resetState, setFilters } from '../../redux/aggregateSlice';
-import { PaginationData } from "../Pagination/types";
-import apiRequests from '../../api/apiRequests';
-import CustomPagination from "../Pagination/Pagination";
-import { calculatePages } from "../../helpers/pagination.utility";
-import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
-import * as routes from '../../navigation/router.const';
-import { FieldsProperties } from "../formFields/FormFields";
-import FilterTable from "../forms/filterTable/FilterTable";
 import IconButton from '@mui/material/IconButton';
-import { useHasPermissions } from "../../hooks/useHasPermissions";
-import { Permission } from "../../model/user-permission";
+import { red } from '@mui/material/colors';
+import { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { ErrorResponse, getAggregateParams } from '../../api/apiRequestTypes';
+import apiRequests from '../../api/apiRequests';
+import { calculatePages } from '../../helpers/pagination.utility';
+import { useHasPermissions } from '../../hooks/useHasPermissions';
+import { Permission } from '../../model/user-permission';
+import * as routes from '../../navigation/router.const';
+import {
+  aggregatesSelector,
+  filtersSelector,
+  paginationSelector,
+  resetState,
+  setAggregates,
+  setFilters,
+  setPagination,
+} from '../../redux/aggregateSlice';
+import * as snackbarActions from '../../redux/snackbarSlice';
+import * as spinnerActions from '../../redux/spinnerSlice';
+import CustomPagination from '../Pagination/Pagination';
+import { PaginationData } from '../Pagination/types';
+import useConfirmDialog from '../confirmationDialog/useConfirmDialog';
+import { FieldsProperties } from '../formFields/FormFields';
+import FilterTable from '../forms/filterTable/FilterTable';
+import ItemsTable from '../table/table';
+import { Column, Item } from '../table/tableTypes';
 
-type AggregateColumn =
-  | 'id'
-  | 'name'
-  | 'usagePlan'
-  | 'createdAt'
-  | 'lastUpdate'
+type AggregateColumn = 'id' | 'name' | 'usagePlan' | 'createdAt' | 'lastUpdate';
 
 /**
  * AggregatesTable page
@@ -47,35 +50,40 @@ const AggregatesTable = () => {
 
   const fetchAggregates = useCallback(() => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
-    //take the lastEvaluated id and name from the pagesKey array using page as index.
-    const lastEvaluatedId = paginationData.page === 0 ? "" : paginationData.pagesKey[paginationData.page - 1].lastEvaluatedId;
-    const lastEvaluatedName = paginationData.page === 0 ? "" : paginationData.pagesKey[paginationData.page - 1].lastEvaluatedName;
-    let params: getAggregateParams = {
+    // take the lastEvaluated id and name from the pagesKey array using page as index.
+    const lastEvaluatedId =
+      paginationData.page === 0
+        ? ''
+        : paginationData.pagesKey[paginationData.page - 1].lastEvaluatedId;
+    const lastEvaluatedName =
+      paginationData.page === 0
+        ? ''
+        : paginationData.pagesKey[paginationData.page - 1].lastEvaluatedName;
+    const params: getAggregateParams = {
       name: filters.name,
       limit: paginationData.limit,
       lastEvaluatedId,
-      lastEvaluatedName
-    }
-    apiRequests.getAggregates(params)
-      .then(
-        res => {
-          dispatch(setAggregates(res));
-        }
-      ).catch(
-        err => {
-          dispatch(snackbarActions.updateSnackbacrOpened(true));
-          dispatch(snackbarActions.updateStatusCode("400"));
-          dispatch(snackbarActions.updateMessage("Non è stato possibile ottenere i dati richiesti"));
-          dispatch(resetState());
-        }
-      ).finally(() => { dispatch(spinnerActions.updateSpinnerOpened(false)) })
-  }, [filters.name, paginationData.page, paginationData.limit, dispatch, paginationData.pagesKey])
+      lastEvaluatedName,
+    };
+    apiRequests
+      .getAggregates(params)
+      .then((res) => {
+        dispatch(setAggregates(res));
+      })
+      .catch(() => {
+        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateStatusCode('400'));
+        dispatch(snackbarActions.updateMessage('Non è stato possibile ottenere i dati richiesti'));
+        dispatch(resetState());
+      })
+      .finally(() => {
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+      });
+  }, [filters.name, paginationData.page, paginationData.limit, dispatch, paginationData.pagesKey]);
 
-  useEffect(
-    () => {
-      fetchAggregates();
-    }, [fetchAggregates]
-  )
+  useEffect(() => {
+    fetchAggregates();
+  }, [fetchAggregates]);
 
   const handlePaginationChange = (paginationData: PaginationData) => {
     dispatch(setPagination({ limit: paginationData.limit, page: paginationData.page }));
@@ -83,37 +91,35 @@ const AggregatesTable = () => {
 
   const callDelete = (id: string) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
-    apiRequests.deleteAggregate(id)
-      .then(
-        res => {
-          dispatch(snackbarActions.updateStatusCode("200"));
-          dispatch(snackbarActions.updateSnackbacrOpened(true));
-          dispatch(snackbarActions.updateMessage("Aggregazione eliminata con successo"));
-          fetchAggregates();
+    apiRequests
+      .deleteAggregate(id)
+      .then(() => {
+        dispatch(snackbarActions.updateStatusCode('200'));
+        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateMessage('Aggregazione eliminata con successo'));
+        fetchAggregates();
+      })
+      .catch((err) => {
+        if (err.response && err.response.data) {
+          const error = err.response.data as ErrorResponse;
+          dispatch(snackbarActions.updateMessage(error.detail));
         }
-      )
-      .catch(
-        err => {
-          if (err.response && err.response.data) {
-            let error = err.response.data as ErrorResponse;
-            dispatch(snackbarActions.updateMessage(error.detail))
-          }
-          dispatch(snackbarActions.updateSnackbacrOpened(true));
-          dispatch(snackbarActions.updateStatusCode("400"));
-        }
-      )
-      .finally(
-        () => {
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-        }
-      )
-  }
+        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateStatusCode('400'));
+      })
+      .finally(() => {
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+      });
+  };
 
   const handleClickDelete = (id: string) => {
-    confirmDialog({ title: "Elimina aggregazione", message: "Sicuro di voler effettuare l'operazione?" })
+    confirmDialog({
+      title: 'Elimina aggregazione',
+      message: "Sicuro di voler effettuare l'operazione?",
+    })
       .then(() => callDelete(id))
-      .catch(() => { });
-  }
+      .catch(() => {});
+  };
 
   const pagesToShow: Array<number> = calculatePages(
     paginationData.limit,
@@ -173,15 +179,17 @@ const AggregatesTable = () => {
       id: 'id',
       label: '',
       width: '5%',
-      getCellLabel(value: string) {
-        return <IconButton aria-label="Cancella aggregato" sx={{ color: red[500] }}>
-          <DeleteIcon />
-        </IconButton>;
+      getCellLabel() {
+        return (
+          <IconButton aria-label="Cancella aggregato" sx={{ color: red[500] }}>
+            <DeleteIcon />
+          </IconButton>
+        );
       },
       onClick(row: Item) {
         handleClickDelete(row.id);
       },
-    }
+    },
   ];
 
   const USER_READER_COLUMNS: Array<Column<AggregateColumn>> = [
@@ -230,10 +238,10 @@ const AggregatesTable = () => {
       onClick(row: Item) {
         handleRowClick(row);
       },
-    }
+    },
   ];
-  const rows: Array<Item> = aggregates.map((n, i) => ({
-    ...n
+  const rows: Array<Item> = aggregates.map((n) => ({
+    ...n,
   }));
 
   function handleRowClick(row: Item) {
@@ -242,9 +250,9 @@ const AggregatesTable = () => {
 
   const handleFiltersSubmit = (filters: any) => {
     dispatch(setFilters(filters));
-  }
+  };
 
-  const fields = [FieldsProperties["Nome aggregazione"]];
+  const fields = [FieldsProperties['Nome aggregazione']];
   return (
     <>
       <FilterTable onFiltersSubmit={handleFiltersSubmit} fields={fields} />
@@ -253,24 +261,19 @@ const AggregatesTable = () => {
         paginationData={{
           limit: paginationData.limit,
           page: paginationData.page,
-          total: paginationData.total
+          total: paginationData.total,
         }}
         onPageRequest={handlePaginationChange}
         pagesToShow={pagesToShow}
-        sx={
-          {
-            padding: '0',
-            '& .items-per-page-selector button': {
-              paddingLeft: 0,
-              height: '24px',
-            }
-          }
-        }
+        sx={{
+          padding: '0',
+          '& .items-per-page-selector button': {
+            paddingLeft: 0,
+            height: '24px',
+          },
+        }}
       />
     </>
-
   );
 };
 export default AggregatesTable;
-
-

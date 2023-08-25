@@ -1,12 +1,11 @@
-import {DeliveryDriver, Tender} from "../../model";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { DeliveryDriver, Tender } from '../../model';
 
 interface SavingState {
-  loading: boolean,
-  uid ?: false,
-  retry ?: number
-  result: "HANDLE" | "PROGRESS" | "SAVED" | "ERROR"
+  loading: boolean;
+  uid?: false;
+  retry?: number;
+  result: 'HANDLE' | 'PROGRESS' | 'SAVED' | 'ERROR';
 }
 
 const initialState = {
@@ -16,39 +15,37 @@ const initialState = {
 
   formTender: {} as Tender,
 
-
   formFsu: {} as DeliveryDriver,
 
   saveWithFile: {
     loading: false,
-    result: "HANDLE"
-  } as SavingState
-}
-
+    result: 'HANDLE',
+  } as SavingState,
+};
 
 const formTenderSlice = createSlice({
   name: 'formTenderSlice',
   initialState,
-  reducers : {
+  reducers: {
     clearFormState: () => initialState,
     goUploadStep: (state) => {
-      if (state.formTender?.code ){
+      if (state.formTender?.code) {
         state.activeKey = 2;
-        state.fromUpload = true
+        state.fromUpload = true;
       }
     },
     goFSUStep: (state) => {
-      if (state.formTender?.code){
+      if (state.formTender?.code) {
         state.activeKey = 1;
-        state.fromUpload = false
+        state.fromUpload = false;
       }
     },
     goTenderDriversStep: (state) => {
-      if (state.formTender?.code && state.formFsu?.taxId){
+      if (state.formTender?.code && state.formFsu?.taxId) {
         state.activeKey = 2;
-        state.fromUpload = false
+        state.fromUpload = false;
       }
-      if (state.formTender?.code && state.fromUpload){
+      if (state.formTender?.code && state.fromUpload) {
         state.activeKey = 2;
         state.fromUpload = true;
       }
@@ -60,17 +57,27 @@ const formTenderSlice = createSlice({
       state.activeKey = action.payload.key;
     },
     backStep: (state) => {
-      state.activeKey = (state.activeKey > 0) ? state.activeKey-1 : 0
+      state.activeKey = state.activeKey > 0 ? state.activeKey - 1 : 0;
     },
-    addedTender:(state, action:PayloadAction<Tender>) => {
-      state.formTender = action.payload
+    addedTender: (state, action: PayloadAction<Tender>) => {
+      state.formTender = action.payload;
     },
-    addedFSU: (state, action:PayloadAction<DeliveryDriver>) => {
-      state.formFsu = action.payload
-    }
-  }
-})
+    addedFSU: (state, action: PayloadAction<DeliveryDriver>) => {
+      state.formFsu = action.payload;
+    },
+  },
+});
 
-export const {clearFormState, goUploadStep, goFSUStep, goTenderDriversStep, changeKey, backStep, addedTender, addedFSU, goFinalStep} = formTenderSlice.actions;
+export const {
+  clearFormState,
+  goUploadStep,
+  goFSUStep,
+  goTenderDriversStep,
+  changeKey,
+  backStep,
+  addedTender,
+  addedFSU,
+  goFinalStep,
+} = formTenderSlice.actions;
 
 export default formTenderSlice;
