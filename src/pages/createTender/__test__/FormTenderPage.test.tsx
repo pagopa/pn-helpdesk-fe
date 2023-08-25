@@ -43,7 +43,6 @@ describe('FormTenderPage test', () => {
   const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
   const useParamsSpy = jest.spyOn(router, 'useParams');
 
-  beforeEach(() => {});
   const mockingStore = (state: any) => {
     useSelectorMock.mockReturnValue(state);
     const mockStore = configureStore();

@@ -25,7 +25,6 @@ const tenderSlice = createSlice({
         force: state.pagination.force ? !state.pagination.force : true,
       };
       state.allData = initialState.allData;
-      console.log(state.pagination);
     },
     setLoadingTenders: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;

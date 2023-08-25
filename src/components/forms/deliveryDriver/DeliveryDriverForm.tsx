@@ -37,12 +37,12 @@ export function DeliveryDriverForm(props: PropsDeliveryBox) {
     reValidateMode: 'onSubmit',
   });
 
-  const onSubmit = async (data: { [x: string]: any }) => {
+  const onSubmit = (data: { [x: string]: any }) => {
     const driver = {
       ...data,
       fsu: props.fsu,
     } as DeliveryDriver;
-    await saveOrUpdate(driver);
+    void saveOrUpdate(driver);
   };
 
   const saveOrUpdate = async (driver: DeliveryDriver) => {

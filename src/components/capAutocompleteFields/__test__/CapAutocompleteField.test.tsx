@@ -43,7 +43,6 @@ describe('Cap Autocomplete Test', () => {
       expect(screen.queryByText('99999')).not.toBeInTheDocument();
       responseDTO.content.forEach((cap) => {
         expect(screen.getByText(cap.cap)).toBeInTheDocument();
-        return cap.cap;
       });
     });
   });

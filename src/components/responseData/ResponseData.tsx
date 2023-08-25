@@ -40,10 +40,9 @@ const ResponseData = () => {
       <Grid item container>
         <Grid item>
           <Typography align="center" color="text.primary">
-            <>
-              {ResponseType[Object.keys(response)[0] as keyof typeof ResponseType]}:{' '}
-              {Object.values(response)[0]}
-            </>
+            {`${ResponseType[Object.keys(response)[0] as keyof typeof ResponseType]}: ${
+              Object.values(response)[0]
+            }`}
           </Typography>
         </Grid>
         {(Object.values(response)[1] as keyof typeof ResponseType) && (
@@ -51,7 +50,11 @@ const ResponseData = () => {
             <Grid item>
               <Typography align="center" color="text.primary">
                 <>
-                  <a target="_blank" href={Object.values(response)[1] as keyof typeof ResponseType} rel="noreferrer">
+                  <a
+                    target="_blank"
+                    href={Object.values(response)[1] as keyof typeof ResponseType}
+                    rel="noreferrer"
+                  >
                     Download
                   </a>
                 </>

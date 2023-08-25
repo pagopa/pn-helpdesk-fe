@@ -23,13 +23,13 @@ export function UploadBox() {
     dispatch(resetStateUpload());
   };
 
-  const fetchData = async () => {
+  const fetchData = () => {
     if (
       file &&
       uploadState.upload.presignedUrl &&
       uploadState.upload.status === UPLOAD_STATUS_ENUM.RETRIEVED_PRESIGNED_URL
     ) {
-      await dispatch(
+      void dispatch(
         uploadFile({
           url: uploadState.upload.presignedUrl,
           file: file.file,
@@ -37,13 +37,12 @@ export function UploadBox() {
         })
       );
     } else if (file && uploadState.upload.status === UPLOAD_STATUS_ENUM.WAITING_FILE) {
-      await dispatch(getPresignedUrl({}));
+      void dispatch(getPresignedUrl({}));
     }
   };
 
   useEffect(() => {
-    // eslint-disable-next-line
-    fetchData();
+    void fetchData();
   }, [file, uploadState.upload]);
 
   const statusDescription = () => {

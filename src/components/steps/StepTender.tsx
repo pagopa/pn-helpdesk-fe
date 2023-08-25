@@ -25,8 +25,7 @@ export function StepTender() {
 
   useEffect(() => {
     if (tenderCode && !formTender?.code) {
-      // eslint-disable-next-line
-      retrieveDetail(tenderCode);
+      void retrieveDetail(tenderCode);
     }
   }, []);
 

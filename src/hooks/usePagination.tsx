@@ -43,11 +43,9 @@ const usePagination = <T = any,>({
 
   const getSlicedList = () => {
     const { page, limit } = paginationData;
-    let startIndex = 0;
-    let endIndex = 0;
     const delta = (page + 1) * limit;
-    startIndex = delta - limit < 0 ? 0 : delta - limit;
-    endIndex = delta > totalElements ? totalElements : delta;
+    const startIndex = delta - limit < 0 ? 0 : delta - limit;
+    const endIndex = delta > totalElements ? totalElements : delta;
     return list.slice(startIndex, endIndex);
   };
 

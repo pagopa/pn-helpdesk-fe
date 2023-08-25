@@ -26,7 +26,6 @@ export function StepDeliveriesDrivers() {
     return () => {
       dispatch(resetStateDrivers());
     };
-    // eslint-disable-next-line
   }, []);
 
   const handleBackOnDrivers = () => {

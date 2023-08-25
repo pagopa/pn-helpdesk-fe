@@ -330,8 +330,7 @@ const SearchForm = () => {
           return;
         }
 
-        // eslint-disable-next-line
-        res.json().then((data) => {
+        void res.json().then((data) => {
           const fileName = data?.message;
           password = res.headers.get('password');
 

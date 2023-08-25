@@ -5,6 +5,7 @@ import { reducer } from '../../../mocks/mockReducer';
 import PaTable from '../PaTable';
 
 describe('PaTable without selection', () => {
+  // eslint-disable-next-line functional/no-let
   let result: RenderResult | undefined;
   const mockedData = pa_list.items;
   beforeEach(() => {
@@ -23,6 +24,7 @@ describe('PaTable without selection', () => {
 });
 
 describe('PaTable with selection', () => {
+  // eslint-disable-next-line functional/no-let
   let result: RenderResult | undefined;
   const mockedData = pa_list.items;
   const mockHandleSelection = jest.fn();

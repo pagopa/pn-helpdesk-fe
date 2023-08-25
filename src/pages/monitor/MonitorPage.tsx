@@ -97,7 +97,7 @@ const MonitorPage = () => {
       })
       .catch(() => {
         setBackEndStatus(false);
-        const functionality: Array<string> = [
+        const functionality = [
           'NOTIFICATION_CREATE',
           'NOTIFICATION_VISUALIZATION',
           'NOTIFICATION_WORKFLOW',

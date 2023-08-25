@@ -86,7 +86,6 @@ describe('Costs Table Test', () => {
 
   it('whenCostAreNotRecovered', async () => {
     const local = { ...costsTable, costs: undefined };
-    delete local.costs;
 
     mockingStore(local);
 

@@ -37,8 +37,8 @@ export function TenderForm(props: TenderFormProps) {
     reValidateMode: 'onSubmit',
   });
 
-  const onSubmit = async (data: { [x: string]: any }) => {
-    await creationTender(tenderMap(data));
+  const onSubmit = (data: { [x: string]: any }) => {
+    void creationTender(tenderMap(data));
   };
 
   const creationTender = async (tender: Tender) => {

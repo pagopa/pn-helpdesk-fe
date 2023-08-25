@@ -15,9 +15,7 @@ const MainLayout = ({ children }: any) => {
   const { logout, refreshToken } = useAuth();
 
   useEffect(() => {
-    const idTokenInterval = setInterval(async () => {
-      refreshToken();
-    }, 3540000);
+    const idTokenInterval = setInterval(refreshToken, 3540000);
     // 300000 = 5 minutes
     // 3 540 000 = 59 minutes
     const refreshTokenInterval = setInterval(async () => {

@@ -15,8 +15,7 @@ export function TenderTable() {
       ...tenderState.pagination,
       force: true,
     } as FilterRequest;
-    // eslint-disable-next-line
-    dispatch(getTenders(filter));
+    void dispatch(getTenders(filter));
   }, [tenderState.pagination]);
 
   useEffect(() => {

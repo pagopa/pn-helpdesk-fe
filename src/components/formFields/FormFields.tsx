@@ -571,7 +571,7 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
         <SelectCustomField keySelected={value} field={field} onChange={onChange} />
       )}
       {componentType === 'radioButtons' && (
-        <RadioButtonsGroup value={value} field={field} onChange={onChange}></RadioButtonsGroup>
+        <RadioButtonsGroup value={value} field={field} onChange={onChange} />
       )}
       {componentType === 'checkbox' && (
         <FormControlLabel

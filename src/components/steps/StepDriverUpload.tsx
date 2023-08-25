@@ -14,14 +14,14 @@ export function StepDriverUpload(props: { tenderCode: string }) {
 
   const dispatch = useAppDispatch();
 
-  const notifyUploaded = async () => {
+  const notifyUploaded = () => {
     if (stateUpload.status !== UPLOAD_STATUS_ENUM.UPLOADED_FILE_S3 || !stateUpload.uid) {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(500));
       dispatch(snackbarActions.updateMessage('Error durante il caricamento del file'));
       return;
     }
-    await dispatch(notifyFileUpload({ tenderCode: props.tenderCode, uid: stateUpload.uid }));
+    void dispatch(notifyFileUpload({ tenderCode: props.tenderCode, uid: stateUpload.uid }));
   };
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export function StepDriverUpload(props: { tenderCode: string }) {
     // eslint-disable-next-line
   }, [stateUpload, dispatch]);
 
-  const retrieveAsync = async () => {
+  const retrieveAsync = () => {
     if (stateUpload?.uid && stateUpload?.retry) {
       setTimeout(
         () => dispatch(notifyFileUpload({ tenderCode: props.tenderCode, uid: stateUpload.uid })),

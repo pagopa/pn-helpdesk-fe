@@ -20,8 +20,7 @@ export function DownloadBox(props: DownloadBoxProps) {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line
-    retrieveAsync();
+    void retrieveAsync();
   }, [downloadState.download]);
 
   const retrieveAsync = async () => {
