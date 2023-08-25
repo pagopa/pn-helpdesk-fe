@@ -26,7 +26,6 @@ export function StepDriverUpload(props: { tenderCode: string }) {
 
   useEffect(() => {
     if (stateUpload.uid && stateUpload.status === UPLOAD_STATUS_ENUM.NOTIFY_IN_PROGRESS) {
-      // eslint-disable-next-line
       retrieveAsync();
     }
     if (

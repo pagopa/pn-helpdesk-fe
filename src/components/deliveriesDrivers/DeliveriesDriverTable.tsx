@@ -23,8 +23,7 @@ export function DeliveriesDriverTable(props: DeliveriesDriverTableProps) {
       tenderCode: props.tenderCode,
       fsu: props.onlyFsu,
     };
-    // eslint-disable-next-line
-    dispatch(getAllDrivers(filter));
+    void dispatch(getAllDrivers(filter));
   }, [driversStore.pagination]);
 
   useEffect(() => {
