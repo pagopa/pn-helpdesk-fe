@@ -1,26 +1,15 @@
-const setStorage = (name: string, value: string) => {
-  return new Promise((resolve, reject) => {
+const setStorage = (name: string, value: string) =>
+  new Promise((resolve) => {
     sessionStorage.setItem(name, value);
-    return resolve("OK");
+    return resolve('OK');
   });
-};
 
-const deleteStorage = (name: string) => {
-  return new Promise((resolve, reject) => {
-    return resolve(sessionStorage.removeItem(name));
-  });
-};
+const deleteStorage = (name: string) =>
+  new Promise((resolve) => resolve(sessionStorage.removeItem(name)));
 
-const resetStorage = () => {
-  return new Promise((resolve, reject) => {
-    return resolve(sessionStorage.clear());
-  });
-};
+const resetStorage = () => new Promise((resolve) => resolve(sessionStorage.clear()));
 
-const getStorage = (item: string) => {
-  return new Promise((resolve, reject) => {
-    return resolve(sessionStorage.getItem(item));
-  });
-};
+const getStorage = (item: string) =>
+  new Promise((resolve) => resolve(sessionStorage.getItem(item)));
 
 export { setStorage, deleteStorage, resetStorage, getStorage };

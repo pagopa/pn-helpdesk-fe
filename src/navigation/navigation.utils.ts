@@ -1,35 +1,39 @@
-import { Permission } from "../model/user-permission";
-import * as routes from "./router.const";
+import { Permission } from '../model/user-permission';
+import * as routes from './router.const';
 
-export const allNavigationItems: { title: string; link: string; permissions?: Array<Permission> }[] = [
+export const allNavigationItems: Array<{
+  title: string;
+  link: string;
+  permissions?: Array<Permission>;
+}> = [
   {
-    title: "Ricerca ed estrazione dati",
+    title: 'Ricerca ed estrazione dati',
     link: routes.SEARCH_ROUTE,
-    permissions: [Permission.LOG_EXTRACT_READ]
+    permissions: [Permission.LOG_EXTRACT_READ],
   },
   {
-    title: "Monitoraggio Piattaforma Notifiche",
+    title: 'Monitoraggio Piattaforma Notifiche',
     link: routes.MONITOR_ROUTE,
-    permissions: [Permission.LOG_DOWNTIME_READ]
+    permissions: [Permission.LOG_DOWNTIME_READ],
   },
   {
-    title: "Gestione gare",
+    title: 'Gestione gare',
     link: routes.TENDERS_TABLE_ROUTE,
-    permissions: [Permission.TENDER_READ]
+    permissions: [Permission.TENDER_READ],
   },
   {
-    title: "Gestione Aggregazioni ApiKey",
+    title: 'Gestione Aggregazioni ApiKey',
     link: routes.AGGREGATES_LIST,
-    permissions: [Permission.API_KEY_READ]
+    permissions: [Permission.API_KEY_READ],
   },
   {
-    title: "Trasferimento di PA",
+    title: 'Trasferimento di PA',
     link: routes.TRANSFER_PA,
-    permissions: [Permission.API_KEY_WRITE]
+    permissions: [Permission.API_KEY_WRITE],
   },
   {
-    title:"Gestione Autorizzazioni ApiKey",
+    title: 'Gestione Autorizzazioni ApiKey',
     link: routes.AUTH_APIKEY,
-    permissions: [Permission.API_KEY_WRITE] 
-  }
+    permissions: [Permission.API_KEY_WRITE],
+  },
 ];

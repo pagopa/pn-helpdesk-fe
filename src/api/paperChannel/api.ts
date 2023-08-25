@@ -2,7 +2,7 @@
 /* eslint-disable */
 /**
  * API Paper Channel
- * # Interface definition for Paper Channel 
+ * # Interface definition for Paper Channel
  *
  * The version of the OpenAPI document: 1.0.0
  * Contact: support@pagopa.com
@@ -12,1632 +12,1980 @@
  * Do not edit the class manually.
  */
 
-
 import type { Configuration } from './configuration';
 import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import {
+  DUMMY_BASE_URL,
+  assertParamExists,
+  setApiKeyToObject,
+  setBasicAuthToObject,
+  setBearerAuthToObject,
+  setOAuthToObject,
+  setSearchParams,
+  serializeDataIfNeeded,
+  toPathString,
+  createRequestFunction,
+} from './common';
 import type { RequestArgs } from './base';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base';
 
 /**
- * 
+ *
  * @export
  * @interface BaseResponse
  */
 export interface BaseResponse {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof BaseResponse
-     */
-    'result'?: boolean;
-    /**
-     * Return code. * 0 -> OK  * 1 -> Other error * 2 -> Other error * 99 -> KO 
-     * @type {number}
-     * @memberof BaseResponse
-     */
-    'code'?: BaseResponseCodeEnum;
+  /**
+   *
+   * @type {boolean}
+   * @memberof BaseResponse
+   */
+  result?: boolean;
+  /**
+   * Return code. * 0 -> OK  * 1 -> Other error * 2 -> Other error * 99 -> KO
+   * @type {number}
+   * @memberof BaseResponse
+   */
+  code?: BaseResponseCodeEnum;
 }
 
 export const BaseResponseCodeEnum = {
-    NUMBER_0: 0,
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_99: 99
+  NUMBER_0: 0,
+  NUMBER_1: 1,
+  NUMBER_2: 2,
+  NUMBER_3: 3,
+  NUMBER_99: 99,
 } as const;
 
 export type BaseResponseCodeEnum = typeof BaseResponseCodeEnum[keyof typeof BaseResponseCodeEnum];
 
 /**
- * 
+ *
  * @export
  * @interface CapDto
  */
 export interface CapDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof CapDto
-     */
-    'cap': string;
+  /**
+   *
+   * @type {string}
+   * @memberof CapDto
+   */
+  cap: string;
 }
 /**
- * 
+ *
  * @export
  * @interface CapResponseDto
  */
 export interface CapResponseDto {
-    /**
-     * 
-     * @type {Array<CapDto>}
-     * @memberof CapResponseDto
-     */
-    'content': Array<CapDto>;
+  /**
+   *
+   * @type {Array<CapDto>}
+   * @memberof CapResponseDto
+   */
+  content: Array<CapDto>;
 }
 /**
- * 
+ *
  * @export
  * @interface CostDTO
  */
 export interface CostDTO {
-    /**
-     * 
-     * @type {string}
-     * @memberof CostDTO
-     */
-    'uid'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CostDTO
-     */
-    'tenderCode'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CostDTO
-     */
-    'driverCode'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof CostDTO
-     */
-    'price': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CostDTO
-     */
-    'priceAdditional': number;
-    /**
-     * 
-     * @type {ProductTypeEnumDto}
-     * @memberof CostDTO
-     */
-    'productType': ProductTypeEnumDto;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof CostDTO
-     */
-    'cap'?: Array<string>;
-    /**
-     * 
-     * @type {InternationalZoneEnum}
-     * @memberof CostDTO
-     */
-    'zone'?: InternationalZoneEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof CostDTO
+   */
+  uid?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CostDTO
+   */
+  tenderCode?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof CostDTO
+   */
+  driverCode?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof CostDTO
+   */
+  price: number;
+  /**
+   *
+   * @type {number}
+   * @memberof CostDTO
+   */
+  priceAdditional: number;
+  /**
+   *
+   * @type {ProductTypeEnumDto}
+   * @memberof CostDTO
+   */
+  productType: ProductTypeEnumDto;
+  /**
+   *
+   * @type {Array<string>}
+   * @memberof CostDTO
+   */
+  cap?: Array<string>;
+  /**
+   *
+   * @type {InternationalZoneEnum}
+   * @memberof CostDTO
+   */
+  zone?: InternationalZoneEnum;
 }
 
-
 /**
- * 
+ *
  * @export
  * @interface DeliveryDriverDTO
  */
 export interface DeliveryDriverDTO {
-    /**
-     * 
-     * @type {string}
-     * @memberof DeliveryDriverDTO
-     */
-    'denomination'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DeliveryDriverDTO
-     */
-    'businessName': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DeliveryDriverDTO
-     */
-    'registeredOffice'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DeliveryDriverDTO
-     */
-    'pec'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DeliveryDriverDTO
-     */
-    'fiscalCode'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DeliveryDriverDTO
-     */
-    'taxId': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DeliveryDriverDTO
-     */
-    'phoneNumber'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof DeliveryDriverDTO
-     */
-    'uniqueCode'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DeliveryDriverDTO
-     */
-    'fsu': boolean;
+  /**
+   *
+   * @type {string}
+   * @memberof DeliveryDriverDTO
+   */
+  denomination?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DeliveryDriverDTO
+   */
+  businessName: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DeliveryDriverDTO
+   */
+  registeredOffice?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DeliveryDriverDTO
+   */
+  pec?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DeliveryDriverDTO
+   */
+  fiscalCode?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DeliveryDriverDTO
+   */
+  taxId: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DeliveryDriverDTO
+   */
+  phoneNumber?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof DeliveryDriverDTO
+   */
+  uniqueCode?: string;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DeliveryDriverDTO
+   */
+  fsu: boolean;
 }
 /**
- * 
+ *
  * @export
  * @interface DeliveryDriverResponseDTO
  */
 export interface DeliveryDriverResponseDTO {
-    /**
-     * 
-     * @type {DeliveryDriverDTO}
-     * @memberof DeliveryDriverResponseDTO
-     */
-    'driver': DeliveryDriverDTO;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof DeliveryDriverResponseDTO
-     */
-    'result'?: boolean;
-    /**
-     * Return code. * 0 -> OK  * 1 -> Other error * 2 -> Other error * 99 -> KO 
-     * @type {number}
-     * @memberof DeliveryDriverResponseDTO
-     */
-    'code'?: DeliveryDriverResponseDTOCodeEnum;
+  /**
+   *
+   * @type {DeliveryDriverDTO}
+   * @memberof DeliveryDriverResponseDTO
+   */
+  driver: DeliveryDriverDTO;
+  /**
+   *
+   * @type {boolean}
+   * @memberof DeliveryDriverResponseDTO
+   */
+  result?: boolean;
+  /**
+   * Return code. * 0 -> OK  * 1 -> Other error * 2 -> Other error * 99 -> KO
+   * @type {number}
+   * @memberof DeliveryDriverResponseDTO
+   */
+  code?: DeliveryDriverResponseDTOCodeEnum;
 }
 
 export const DeliveryDriverResponseDTOCodeEnum = {
-    NUMBER_0: 0,
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_99: 99
+  NUMBER_0: 0,
+  NUMBER_1: 1,
+  NUMBER_2: 2,
+  NUMBER_3: 3,
+  NUMBER_99: 99,
 } as const;
 
-export type DeliveryDriverResponseDTOCodeEnum = typeof DeliveryDriverResponseDTOCodeEnum[keyof typeof DeliveryDriverResponseDTOCodeEnum];
+export type DeliveryDriverResponseDTOCodeEnum =
+  typeof DeliveryDriverResponseDTOCodeEnum[keyof typeof DeliveryDriverResponseDTOCodeEnum];
 
 /**
- * 
+ *
  * @export
  * @interface FSUResponseDTO
  */
 export interface FSUResponseDTO {
-    /**
-     * 
-     * @type {DeliveryDriverDTO}
-     * @memberof FSUResponseDTO
-     */
-    'fsu'?: DeliveryDriverDTO;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof FSUResponseDTO
-     */
-    'result'?: boolean;
-    /**
-     * Return code. * 0 -> OK  * 1 -> Other error * 2 -> Other error * 99 -> KO 
-     * @type {number}
-     * @memberof FSUResponseDTO
-     */
-    'code'?: FSUResponseDTOCodeEnum;
+  /**
+   *
+   * @type {DeliveryDriverDTO}
+   * @memberof FSUResponseDTO
+   */
+  fsu?: DeliveryDriverDTO;
+  /**
+   *
+   * @type {boolean}
+   * @memberof FSUResponseDTO
+   */
+  result?: boolean;
+  /**
+   * Return code. * 0 -> OK  * 1 -> Other error * 2 -> Other error * 99 -> KO
+   * @type {number}
+   * @memberof FSUResponseDTO
+   */
+  code?: FSUResponseDTOCodeEnum;
 }
 
 export const FSUResponseDTOCodeEnum = {
-    NUMBER_0: 0,
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_99: 99
+  NUMBER_0: 0,
+  NUMBER_1: 1,
+  NUMBER_2: 2,
+  NUMBER_3: 3,
+  NUMBER_99: 99,
 } as const;
 
-export type FSUResponseDTOCodeEnum = typeof FSUResponseDTOCodeEnum[keyof typeof FSUResponseDTOCodeEnum];
+export type FSUResponseDTOCodeEnum =
+  typeof FSUResponseDTOCodeEnum[keyof typeof FSUResponseDTOCodeEnum];
 
 /**
- * 
+ *
  * @export
  * @interface InfoDownloadDTO
  */
 export interface InfoDownloadDTO {
-    /**
-     * 
-     * @type {string}
-     * @memberof InfoDownloadDTO
-     */
-    'data'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof InfoDownloadDTO
-     */
-    'retryAfter'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof InfoDownloadDTO
-     */
-    'uuid'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InfoDownloadDTO
-     */
-    'status'?: InfoDownloadDTOStatusEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof InfoDownloadDTO
+   */
+  data?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof InfoDownloadDTO
+   */
+  retryAfter?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof InfoDownloadDTO
+   */
+  uuid?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof InfoDownloadDTO
+   */
+  status?: InfoDownloadDTOStatusEnum;
 }
 
 export const InfoDownloadDTOStatusEnum = {
-    Uploading: 'UPLOADING',
-    Uploaded: 'UPLOADED'
+  Uploading: 'UPLOADING',
+  Uploaded: 'UPLOADED',
 } as const;
 
-export type InfoDownloadDTOStatusEnum = typeof InfoDownloadDTOStatusEnum[keyof typeof InfoDownloadDTOStatusEnum];
+export type InfoDownloadDTOStatusEnum =
+  typeof InfoDownloadDTOStatusEnum[keyof typeof InfoDownloadDTOStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @enum {string}
  */
 
 export const InternationalZoneEnum = {
-    _1: 'ZONE_1',
-    _2: 'ZONE_2',
-    _3: 'ZONE_3'
+  _1: 'ZONE_1',
+  _2: 'ZONE_2',
+  _3: 'ZONE_3',
 } as const;
 
-export type InternationalZoneEnum = typeof InternationalZoneEnum[keyof typeof InternationalZoneEnum];
-
+export type InternationalZoneEnum =
+  typeof InternationalZoneEnum[keyof typeof InternationalZoneEnum];
 
 /**
- * 
+ *
  * @export
  * @interface NotifyResponseDto
  */
 export interface NotifyResponseDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof NotifyResponseDto
-     */
-    'status': NotifyResponseDtoStatusEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof NotifyResponseDto
-     */
-    'uuid': string;
-    /**
-     * 
-     * @type {number}
-     * @memberof NotifyResponseDto
-     */
-    'retryAfter'?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof NotifyResponseDto
+   */
+  status: NotifyResponseDtoStatusEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof NotifyResponseDto
+   */
+  uuid: string;
+  /**
+   *
+   * @type {number}
+   * @memberof NotifyResponseDto
+   */
+  retryAfter?: number;
 }
 
 export const NotifyResponseDtoStatusEnum = {
-    InProgress: 'IN_PROGRESS',
-    Complete: 'COMPLETE',
-    Error: 'ERROR'
+  InProgress: 'IN_PROGRESS',
+  Complete: 'COMPLETE',
+  Error: 'ERROR',
 } as const;
 
-export type NotifyResponseDtoStatusEnum = typeof NotifyResponseDtoStatusEnum[keyof typeof NotifyResponseDtoStatusEnum];
+export type NotifyResponseDtoStatusEnum =
+  typeof NotifyResponseDtoStatusEnum[keyof typeof NotifyResponseDtoStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface NotifyUploadRequestDto
  */
 export interface NotifyUploadRequestDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof NotifyUploadRequestDto
-     */
-    'uuid'?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof NotifyUploadRequestDto
+   */
+  uuid?: string;
 }
 /**
- * 
+ *
  * @export
  * @interface Page
  */
 export interface Page {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Page
-     */
-    'empty'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Page
-     */
-    'first'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Page
-     */
-    'last'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof Page
-     */
-    'number': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Page
-     */
-    'numberOfElements': number;
-    /**
-     * 
-     * @type {Pageable}
-     * @memberof Page
-     */
-    'pageable'?: Pageable;
-    /**
-     * 
-     * @type {number}
-     * @memberof Page
-     */
-    'size': number;
-    /**
-     * 
-     * @type {Sort}
-     * @memberof Page
-     */
-    'sort'?: Sort;
-    /**
-     * 
-     * @type {number}
-     * @memberof Page
-     */
-    'totalElements': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Page
-     */
-    'totalPages': number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Page
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Page
+   */
+  first?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Page
+   */
+  last?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof Page
+   */
+  number: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Page
+   */
+  numberOfElements: number;
+  /**
+   *
+   * @type {Pageable}
+   * @memberof Page
+   */
+  pageable?: Pageable;
+  /**
+   *
+   * @type {number}
+   * @memberof Page
+   */
+  size: number;
+  /**
+   *
+   * @type {Sort}
+   * @memberof Page
+   */
+  sort?: Sort;
+  /**
+   *
+   * @type {number}
+   * @memberof Page
+   */
+  totalElements: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Page
+   */
+  totalPages: number;
 }
 /**
- * 
+ *
  * @export
  * @interface Pageable
  */
 export interface Pageable {
-    /**
-     * 
-     * @type {number}
-     * @memberof Pageable
-     */
-    'offset'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Pageable
-     */
-    'pageNumber'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Pageable
-     */
-    'pageSize'?: number;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Pageable
-     */
-    'paged'?: boolean;
-    /**
-     * 
-     * @type {Sort}
-     * @memberof Pageable
-     */
-    'sort'?: Sort;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Pageable
-     */
-    'unpaged'?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof Pageable
+   */
+  offset?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Pageable
+   */
+  pageNumber?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof Pageable
+   */
+  pageSize?: number;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Pageable
+   */
+  paged?: boolean;
+  /**
+   *
+   * @type {Sort}
+   * @memberof Pageable
+   */
+  sort?: Sort;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Pageable
+   */
+  unpaged?: boolean;
 }
 /**
- * 
+ *
  * @export
  * @interface PageableCostResponseDto
  */
 export interface PageableCostResponseDto {
-    /**
-     * 
-     * @type {Array<CostDTO>}
-     * @memberof PageableCostResponseDto
-     */
-    'content': Array<CostDTO>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageableCostResponseDto
-     */
-    'empty'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageableCostResponseDto
-     */
-    'first'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageableCostResponseDto
-     */
-    'last'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableCostResponseDto
-     */
-    'number': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableCostResponseDto
-     */
-    'numberOfElements': number;
-    /**
-     * 
-     * @type {Pageable}
-     * @memberof PageableCostResponseDto
-     */
-    'pageable'?: Pageable;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableCostResponseDto
-     */
-    'size': number;
-    /**
-     * 
-     * @type {Sort}
-     * @memberof PageableCostResponseDto
-     */
-    'sort'?: Sort;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableCostResponseDto
-     */
-    'totalElements': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableCostResponseDto
-     */
-    'totalPages': number;
+  /**
+   *
+   * @type {Array<CostDTO>}
+   * @memberof PageableCostResponseDto
+   */
+  content: Array<CostDTO>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageableCostResponseDto
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageableCostResponseDto
+   */
+  first?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageableCostResponseDto
+   */
+  last?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableCostResponseDto
+   */
+  number: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableCostResponseDto
+   */
+  numberOfElements: number;
+  /**
+   *
+   * @type {Pageable}
+   * @memberof PageableCostResponseDto
+   */
+  pageable?: Pageable;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableCostResponseDto
+   */
+  size: number;
+  /**
+   *
+   * @type {Sort}
+   * @memberof PageableCostResponseDto
+   */
+  sort?: Sort;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableCostResponseDto
+   */
+  totalElements: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableCostResponseDto
+   */
+  totalPages: number;
 }
 /**
- * 
+ *
  * @export
  * @interface PageableDeliveryDriverResponseDto
  */
 export interface PageableDeliveryDriverResponseDto {
-    /**
-     * 
-     * @type {Array<DeliveryDriverDTO>}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'content'?: Array<DeliveryDriverDTO>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'empty'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'first'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'last'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'number': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'numberOfElements': number;
-    /**
-     * 
-     * @type {Pageable}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'pageable'?: Pageable;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'size': number;
-    /**
-     * 
-     * @type {Sort}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'sort'?: Sort;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'totalElements': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableDeliveryDriverResponseDto
-     */
-    'totalPages': number;
+  /**
+   *
+   * @type {Array<DeliveryDriverDTO>}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  content?: Array<DeliveryDriverDTO>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  first?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  last?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  number: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  numberOfElements: number;
+  /**
+   *
+   * @type {Pageable}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  pageable?: Pageable;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  size: number;
+  /**
+   *
+   * @type {Sort}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  sort?: Sort;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  totalElements: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableDeliveryDriverResponseDto
+   */
+  totalPages: number;
 }
 /**
- * 
+ *
  * @export
  * @interface PageableTenderResponseDto
  */
 export interface PageableTenderResponseDto {
-    /**
-     * 
-     * @type {Array<TenderDTO>}
-     * @memberof PageableTenderResponseDto
-     */
-    'content': Array<TenderDTO>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageableTenderResponseDto
-     */
-    'empty'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageableTenderResponseDto
-     */
-    'first'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageableTenderResponseDto
-     */
-    'last'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableTenderResponseDto
-     */
-    'number': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableTenderResponseDto
-     */
-    'numberOfElements': number;
-    /**
-     * 
-     * @type {Pageable}
-     * @memberof PageableTenderResponseDto
-     */
-    'pageable'?: Pageable;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableTenderResponseDto
-     */
-    'size': number;
-    /**
-     * 
-     * @type {Sort}
-     * @memberof PageableTenderResponseDto
-     */
-    'sort'?: Sort;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableTenderResponseDto
-     */
-    'totalElements': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableTenderResponseDto
-     */
-    'totalPages': number;
+  /**
+   *
+   * @type {Array<TenderDTO>}
+   * @memberof PageableTenderResponseDto
+   */
+  content: Array<TenderDTO>;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageableTenderResponseDto
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageableTenderResponseDto
+   */
+  first?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof PageableTenderResponseDto
+   */
+  last?: boolean;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableTenderResponseDto
+   */
+  number: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableTenderResponseDto
+   */
+  numberOfElements: number;
+  /**
+   *
+   * @type {Pageable}
+   * @memberof PageableTenderResponseDto
+   */
+  pageable?: Pageable;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableTenderResponseDto
+   */
+  size: number;
+  /**
+   *
+   * @type {Sort}
+   * @memberof PageableTenderResponseDto
+   */
+  sort?: Sort;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableTenderResponseDto
+   */
+  totalElements: number;
+  /**
+   *
+   * @type {number}
+   * @memberof PageableTenderResponseDto
+   */
+  totalPages: number;
 }
 /**
- * 
+ *
  * @export
  * @interface PresignedUrlResponseDto
  */
 export interface PresignedUrlResponseDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof PresignedUrlResponseDto
-     */
-    'presignedUrl'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PresignedUrlResponseDto
-     */
-    'uuid'?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof PresignedUrlResponseDto
+   */
+  presignedUrl?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof PresignedUrlResponseDto
+   */
+  uuid?: string;
 }
 /**
- * 
+ *
  * @export
  * @enum {string}
  */
 
 export const ProductTypeEnumDto = {
-    Ar: 'AR',
-    _890: '890',
-    Rs: 'RS'
+  Ar: 'AR',
+  _890: '890',
+  Rs: 'RS',
 } as const;
 
 export type ProductTypeEnumDto = typeof ProductTypeEnumDto[keyof typeof ProductTypeEnumDto];
 
-
 /**
- * 
+ *
  * @export
  * @interface Sort
  */
 export interface Sort {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Sort
-     */
-    'empty'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Sort
-     */
-    'sorted'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Sort
-     */
-    'unsorted'?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Sort
+   */
+  empty?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Sort
+   */
+  sorted?: boolean;
+  /**
+   *
+   * @type {boolean}
+   * @memberof Sort
+   */
+  unsorted?: boolean;
 }
 /**
- * 
+ *
  * @export
  * @interface Status
  */
 export interface Status {
-    /**
-     * 
-     * @type {string}
-     * @memberof Status
-     */
-    'statusCode'?: StatusStatusCodeEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof Status
+   */
+  statusCode?: StatusStatusCodeEnum;
 }
 
 export const StatusStatusCodeEnum = {
-    Created: 'CREATED',
-    Validated: 'VALIDATED'
+  Created: 'CREATED',
+  Validated: 'VALIDATED',
 } as const;
 
 export type StatusStatusCodeEnum = typeof StatusStatusCodeEnum[keyof typeof StatusStatusCodeEnum];
 
 /**
- * 
+ *
  * @export
  * @interface TenderCreateRequestDTO
  */
 export interface TenderCreateRequestDTO {
-    /**
-     * 
-     * @type {string}
-     * @memberof TenderCreateRequestDTO
-     */
-    'code'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TenderCreateRequestDTO
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TenderCreateRequestDTO
-     */
-    'startDate': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TenderCreateRequestDTO
-     */
-    'endDate': string;
+  /**
+   *
+   * @type {string}
+   * @memberof TenderCreateRequestDTO
+   */
+  code?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TenderCreateRequestDTO
+   */
+  name: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TenderCreateRequestDTO
+   */
+  startDate: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TenderCreateRequestDTO
+   */
+  endDate: string;
 }
 /**
- * 
+ *
  * @export
  * @interface TenderCreateResponseDTO
  */
 export interface TenderCreateResponseDTO {
-    /**
-     * 
-     * @type {TenderDTO}
-     * @memberof TenderCreateResponseDTO
-     */
-    'tender': TenderDTO;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TenderCreateResponseDTO
-     */
-    'result'?: boolean;
-    /**
-     * Return code. * 0 -> OK  * 1 -> Other error * 2 -> Other error * 99 -> KO 
-     * @type {number}
-     * @memberof TenderCreateResponseDTO
-     */
-    'code'?: TenderCreateResponseDTOCodeEnum;
+  /**
+   *
+   * @type {TenderDTO}
+   * @memberof TenderCreateResponseDTO
+   */
+  tender: TenderDTO;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TenderCreateResponseDTO
+   */
+  result?: boolean;
+  /**
+   * Return code. * 0 -> OK  * 1 -> Other error * 2 -> Other error * 99 -> KO
+   * @type {number}
+   * @memberof TenderCreateResponseDTO
+   */
+  code?: TenderCreateResponseDTOCodeEnum;
 }
 
 export const TenderCreateResponseDTOCodeEnum = {
-    NUMBER_0: 0,
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_99: 99
+  NUMBER_0: 0,
+  NUMBER_1: 1,
+  NUMBER_2: 2,
+  NUMBER_3: 3,
+  NUMBER_99: 99,
 } as const;
 
-export type TenderCreateResponseDTOCodeEnum = typeof TenderCreateResponseDTOCodeEnum[keyof typeof TenderCreateResponseDTOCodeEnum];
+export type TenderCreateResponseDTOCodeEnum =
+  typeof TenderCreateResponseDTOCodeEnum[keyof typeof TenderCreateResponseDTOCodeEnum];
 
 /**
- * 
+ *
  * @export
  * @interface TenderDTO
  */
 export interface TenderDTO {
-    /**
-     * 
-     * @type {string}
-     * @memberof TenderDTO
-     */
-    'code': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TenderDTO
-     */
-    'name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TenderDTO
-     */
-    'startDate': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TenderDTO
-     */
-    'endDate': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TenderDTO
-     */
-    'status': TenderDTOStatusEnum;
+  /**
+   *
+   * @type {string}
+   * @memberof TenderDTO
+   */
+  code: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TenderDTO
+   */
+  name: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TenderDTO
+   */
+  startDate: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TenderDTO
+   */
+  endDate: string;
+  /**
+   *
+   * @type {string}
+   * @memberof TenderDTO
+   */
+  status: TenderDTOStatusEnum;
 }
 
 export const TenderDTOStatusEnum = {
-    Created: 'CREATED',
-    Validated: 'VALIDATED',
-    InProgress: 'IN_PROGRESS',
-    Ended: 'ENDED'
+  Created: 'CREATED',
+  Validated: 'VALIDATED',
+  InProgress: 'IN_PROGRESS',
+  Ended: 'ENDED',
 } as const;
 
 export type TenderDTOStatusEnum = typeof TenderDTOStatusEnum[keyof typeof TenderDTOStatusEnum];
 
 /**
- * 
+ *
  * @export
  * @interface TenderDetailResponseDTO
  */
 export interface TenderDetailResponseDTO {
-    /**
-     * 
-     * @type {TenderDTO}
-     * @memberof TenderDetailResponseDTO
-     */
-    'tender': TenderDTO;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof TenderDetailResponseDTO
-     */
-    'result'?: boolean;
-    /**
-     * Return code. * 0 -> OK  * 1 -> Other error * 2 -> Other error * 99 -> KO 
-     * @type {number}
-     * @memberof TenderDetailResponseDTO
-     */
-    'code'?: TenderDetailResponseDTOCodeEnum;
+  /**
+   *
+   * @type {TenderDTO}
+   * @memberof TenderDetailResponseDTO
+   */
+  tender: TenderDTO;
+  /**
+   *
+   * @type {boolean}
+   * @memberof TenderDetailResponseDTO
+   */
+  result?: boolean;
+  /**
+   * Return code. * 0 -> OK  * 1 -> Other error * 2 -> Other error * 99 -> KO
+   * @type {number}
+   * @memberof TenderDetailResponseDTO
+   */
+  code?: TenderDetailResponseDTOCodeEnum;
 }
 
 export const TenderDetailResponseDTOCodeEnum = {
-    NUMBER_0: 0,
-    NUMBER_1: 1,
-    NUMBER_2: 2,
-    NUMBER_3: 3,
-    NUMBER_99: 99
+  NUMBER_0: 0,
+  NUMBER_1: 1,
+  NUMBER_2: 2,
+  NUMBER_3: 3,
+  NUMBER_99: 99,
 } as const;
 
-export type TenderDetailResponseDTOCodeEnum = typeof TenderDetailResponseDTOCodeEnum[keyof typeof TenderDetailResponseDTOCodeEnum];
+export type TenderDetailResponseDTOCodeEnum =
+  typeof TenderDetailResponseDTOCodeEnum[keyof typeof TenderDetailResponseDTOCodeEnum];
 
+const prepareRequest = async (
+  path: string,
+  method: string,
+  configuration?: Configuration,
+  options: AxiosRequestConfig = {},
+  body?: any,
+  queryParam: any = {}
+): Promise<RequestArgs> => {
+  const localVarUrlObj = new URL(path, DUMMY_BASE_URL);
+  let baseOptions;
+  if (configuration) {
+    baseOptions = configuration.baseOptions;
+  }
 
-const prepareRequest = async (path:string, method:string, configuration?: Configuration, options: AxiosRequestConfig = {}, body?:any, queryParam: any = {})
-  : Promise<RequestArgs> => {
-    const localVarUrlObj = new URL(path, DUMMY_BASE_URL);
-    let baseOptions;
-    if (configuration) {
-        baseOptions = configuration.baseOptions;
-    }
+  const localVarRequestOptions = { method: method, ...baseOptions, ...options };
+  const localVarHeaderParameter = {} as any;
+  const localVarQueryParameter = queryParam;
+  await setApiKeyToObject(localVarHeaderParameter, 'x-api-key', configuration);
 
-    const localVarRequestOptions = { method: method, ...baseOptions, ...options};
-    const localVarHeaderParameter = {} as any;
-    const localVarQueryParameter =  queryParam;
-    await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
+  setSearchParams(localVarUrlObj, localVarQueryParameter);
+  let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+  if (body) localVarHeaderParameter['Content-Type'] = 'application/json';
+  localVarRequestOptions.headers = {
+    ...localVarHeaderParameter,
+    ...headersFromBaseOptions,
+    ...options.headers,
+  };
 
+  if (body) {
+    localVarRequestOptions.data = serializeDataIfNeeded(
+      body,
+      localVarRequestOptions,
+      configuration
+    );
+  }
 
-    setSearchParams(localVarUrlObj, localVarQueryParameter);
-    let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-    if (body) localVarHeaderParameter['Content-Type'] = 'application/json';
-    localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-    if (body){
-        localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration);
-    }
-
-    return {
-        url: toPathString(localVarUrlObj),
-        options: localVarRequestOptions,
-    };
-}
+  return {
+    url: toPathString(localVarUrlObj),
+    options: localVarRequestOptions,
+  };
+};
 
 /**
  * DeliveryDriverApi - axios parameter creator
  * @export
  */
 export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * API che consente di ottenere la presigned url necessaria al caricamento del file
-         * @summary Genera la preseigned url
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        addTenderFromFile: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/paper-channel-bo/v1/delivery-tender/file-upload`;
-            return prepareRequest(localVarPath, 'GET', configuration, options);
-        },
-        /**
-         * API che consente di aggiungere o modificare i dettagli di un costo legato al deliveryDriver
-         * @summary Inserimento o modifica di un costo legato al deliveryDriver.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {CostDTO} [costDTO] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUpdateCost: async (tenderCode: string, deliveryDriverId: string, costDTO?: CostDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
-            assertParamExists('createUpdateCost', 'tenderCode', tenderCode)
-            // verify required parameter 'deliveryDriverId' is not null or undefined
-            assertParamExists('createUpdateCost', 'deliveryDriverId', deliveryDriverId)
-            const localVarPath = `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}/cost`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
-                .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)));
-            return prepareRequest(localVarPath, 'POST', configuration, options, costDTO);
-        },
-        /**
-         * API che consente di aggiungere o modificare i dettagli di un recapitista
-         * @summary Inserimento o modifica Recapitista.
-         * @param {string} tenderCode 
-         * @param {DeliveryDriverDTO} [deliveryDriverDTO] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUpdateDriver: async (tenderCode: string, deliveryDriverDTO?: DeliveryDriverDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
-            assertParamExists('createUpdateDriver', 'tenderCode', tenderCode)
-            const localVarPath = `/paper-channel-bo/v1/delivery-driver/{tenderCode}`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            return prepareRequest(localVarPath, 'POST', configuration, options, deliveryDriverDTO);
-        },
-        /**
-         * API che consente di aggiungere o modificare i dettagli di una gara
-         * @summary Inserimento o modifica Gara.
-         * @param {TenderCreateRequestDTO} [tenderCreateRequestDTO] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUpdateTender: async (tenderCreateRequestDTO?: TenderCreateRequestDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/paper-channel-bo/v1/tender`;
-            return prepareRequest(localVarPath, 'POST', configuration, options, tenderCreateRequestDTO);
-        },
-        /**
-         * API che consente di eliminare i dettagli di un costo legato al deliveryDriver.
-         * @summary Eliminazione di un costo legato al deliveryDriver.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {string} uuid 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteCost: async (tenderCode: string, deliveryDriverId: string, uuid: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
-            assertParamExists('deleteCost', 'tenderCode', tenderCode)
-            // verify required parameter 'deliveryDriverId' is not null or undefined
-            assertParamExists('deleteCost', 'deliveryDriverId', deliveryDriverId)
-            // verify required parameter 'uuid' is not null or undefined
-            assertParamExists('deleteCost', 'uuid', uuid)
-            const localVarPath = `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}/cost/{uuid}`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
-                .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)))
-                .replace(`{${"uuid"}}`, encodeURIComponent(String(uuid)));
-            return prepareRequest(localVarPath, 'DELETE', configuration, options);
-        },
-        /**
-         * API che consente di eliminare i dettagli di un recapitista.
-         * @summary Eliminazione recapitista.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteDriver: async (tenderCode: string, deliveryDriverId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
-            assertParamExists('deleteDriver', 'tenderCode', tenderCode)
-            // verify required parameter 'deliveryDriverId' is not null or undefined
-            assertParamExists('deleteDriver', 'deliveryDriverId', deliveryDriverId)
-            const localVarPath = `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
-                .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)));
-           return prepareRequest(localVarPath, 'DELETE', configuration, options);
-        },
-        /**
-         * API che consente di eliminare i dettagli di una gara.
-         * @summary Eliminazione gara.
-         * @param {string} tenderCode 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteTender: async (tenderCode: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
-            assertParamExists('deleteTender', 'tenderCode', tenderCode)
-            const localVarPath = `/paper-channel-bo/v1/tender/{tenderCode}`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            return prepareRequest(localVarPath, 'DELETE', configuration, options);
-        },
-        /**
-         * API che consente il download dell\'elenco delle gare d\'appalto.
-         * @summary Download Gare
-         * @param {string} [tenderCode] 
-         * @param {string} [uuid] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        downloadTenderFile: async (tenderCode?: string, uuid?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/paper-channel-bo/v1/delivery-tender/file-download`;
-            const localVarQueryParameter = {} as any;
-            if (tenderCode !== undefined) {
-                localVarQueryParameter['tenderCode'] = tenderCode;
-            }
-            if (uuid !== undefined) {
-                localVarQueryParameter['uuid'] = uuid;
-            }
-            return prepareRequest(localVarPath, 'GET', configuration, options, undefined, localVarQueryParameter);
-        },
-        /**
-         * API che consente di recuperare e paginare tutti i costi di un recapitista che partecipa ad una specifica gara
-         * @summary Recupero dei costi di una recapitista e di una specifica gara
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-         * @param {number} [size] Numero di elementi per pagina.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllCostOfDriverAndTender: async (tenderCode: string, deliveryDriverId: string, page?: number, size?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            assertParamExists('getAllCostOfDriverAndTender', 'tenderCode', tenderCode)
-            assertParamExists('getAllCostOfDriverAndTender', 'deliveryDriverId', deliveryDriverId)
-            const localVarPath = `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}/get-cost`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
-                .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)));
+  return {
+    /**
+     * API che consente di ottenere la presigned url necessaria al caricamento del file
+     * @summary Genera la preseigned url
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    addTenderFromFile: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      const localVarPath = `/paper-channel-bo/v1/delivery-tender/file-upload`;
+      return prepareRequest(localVarPath, 'GET', configuration, options);
+    },
+    /**
+     * API che consente di aggiungere o modificare i dettagli di un costo legato al deliveryDriver
+     * @summary Inserimento o modifica di un costo legato al deliveryDriver.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {CostDTO} [costDTO]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUpdateCost: async (
+      tenderCode: string,
+      deliveryDriverId: string,
+      costDTO?: CostDTO,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'tenderCode' is not null or undefined
+      assertParamExists('createUpdateCost', 'tenderCode', tenderCode);
+      // verify required parameter 'deliveryDriverId' is not null or undefined
+      assertParamExists('createUpdateCost', 'deliveryDriverId', deliveryDriverId);
+      const localVarPath =
+        `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}/cost`
+          .replace(`{${'tenderCode'}}`, encodeURIComponent(String(tenderCode)))
+          .replace(`{${'deliveryDriverId'}}`, encodeURIComponent(String(deliveryDriverId)));
+      return prepareRequest(localVarPath, 'POST', configuration, options, costDTO);
+    },
+    /**
+     * API che consente di aggiungere o modificare i dettagli di un recapitista
+     * @summary Inserimento o modifica Recapitista.
+     * @param {string} tenderCode
+     * @param {DeliveryDriverDTO} [deliveryDriverDTO]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUpdateDriver: async (
+      tenderCode: string,
+      deliveryDriverDTO?: DeliveryDriverDTO,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'tenderCode' is not null or undefined
+      assertParamExists('createUpdateDriver', 'tenderCode', tenderCode);
+      const localVarPath = `/paper-channel-bo/v1/delivery-driver/{tenderCode}`.replace(
+        `{${'tenderCode'}}`,
+        encodeURIComponent(String(tenderCode))
+      );
+      return prepareRequest(localVarPath, 'POST', configuration, options, deliveryDriverDTO);
+    },
+    /**
+     * API che consente di aggiungere o modificare i dettagli di una gara
+     * @summary Inserimento o modifica Gara.
+     * @param {TenderCreateRequestDTO} [tenderCreateRequestDTO]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUpdateTender: async (
+      tenderCreateRequestDTO?: TenderCreateRequestDTO,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/paper-channel-bo/v1/tender`;
+      return prepareRequest(localVarPath, 'POST', configuration, options, tenderCreateRequestDTO);
+    },
+    /**
+     * API che consente di eliminare i dettagli di un costo legato al deliveryDriver.
+     * @summary Eliminazione di un costo legato al deliveryDriver.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {string} uuid
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteCost: async (
+      tenderCode: string,
+      deliveryDriverId: string,
+      uuid: string,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'tenderCode' is not null or undefined
+      assertParamExists('deleteCost', 'tenderCode', tenderCode);
+      // verify required parameter 'deliveryDriverId' is not null or undefined
+      assertParamExists('deleteCost', 'deliveryDriverId', deliveryDriverId);
+      // verify required parameter 'uuid' is not null or undefined
+      assertParamExists('deleteCost', 'uuid', uuid);
+      const localVarPath =
+        `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}/cost/{uuid}`
+          .replace(`{${'tenderCode'}}`, encodeURIComponent(String(tenderCode)))
+          .replace(`{${'deliveryDriverId'}}`, encodeURIComponent(String(deliveryDriverId)))
+          .replace(`{${'uuid'}}`, encodeURIComponent(String(uuid)));
+      return prepareRequest(localVarPath, 'DELETE', configuration, options);
+    },
+    /**
+     * API che consente di eliminare i dettagli di un recapitista.
+     * @summary Eliminazione recapitista.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteDriver: async (
+      tenderCode: string,
+      deliveryDriverId: string,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'tenderCode' is not null or undefined
+      assertParamExists('deleteDriver', 'tenderCode', tenderCode);
+      // verify required parameter 'deliveryDriverId' is not null or undefined
+      assertParamExists('deleteDriver', 'deliveryDriverId', deliveryDriverId);
+      const localVarPath = `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}`
+        .replace(`{${'tenderCode'}}`, encodeURIComponent(String(tenderCode)))
+        .replace(`{${'deliveryDriverId'}}`, encodeURIComponent(String(deliveryDriverId)));
+      return prepareRequest(localVarPath, 'DELETE', configuration, options);
+    },
+    /**
+     * API che consente di eliminare i dettagli di una gara.
+     * @summary Eliminazione gara.
+     * @param {string} tenderCode
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteTender: async (
+      tenderCode: string,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'tenderCode' is not null or undefined
+      assertParamExists('deleteTender', 'tenderCode', tenderCode);
+      const localVarPath = `/paper-channel-bo/v1/tender/{tenderCode}`.replace(
+        `{${'tenderCode'}}`,
+        encodeURIComponent(String(tenderCode))
+      );
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      return prepareRequest(localVarPath, 'DELETE', configuration, options);
+    },
+    /**
+     * API che consente il download dell\'elenco delle gare d\'appalto.
+     * @summary Download Gare
+     * @param {string} [tenderCode]
+     * @param {string} [uuid]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    downloadTenderFile: async (
+      tenderCode?: string,
+      uuid?: string,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/paper-channel-bo/v1/delivery-tender/file-download`;
+      const localVarQueryParameter = {} as any;
+      if (tenderCode !== undefined) {
+        localVarQueryParameter['tenderCode'] = tenderCode;
+      }
+      if (uuid !== undefined) {
+        localVarQueryParameter['uuid'] = uuid;
+      }
+      return prepareRequest(
+        localVarPath,
+        'GET',
+        configuration,
+        options,
+        undefined,
+        localVarQueryParameter
+      );
+    },
+    /**
+     * API che consente di recuperare e paginare tutti i costi di un recapitista che partecipa ad una specifica gara
+     * @summary Recupero dei costi di una recapitista e di una specifica gara
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+     * @param {number} [size] Numero di elementi per pagina.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAllCostOfDriverAndTender: async (
+      tenderCode: string,
+      deliveryDriverId: string,
+      page?: number,
+      size?: number,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      assertParamExists('getAllCostOfDriverAndTender', 'tenderCode', tenderCode);
+      assertParamExists('getAllCostOfDriverAndTender', 'deliveryDriverId', deliveryDriverId);
+      const localVarPath =
+        `/paper-channel-bo/v1/{tenderCode}/delivery-driver/{deliveryDriverId}/get-cost`
+          .replace(`{${'tenderCode'}}`, encodeURIComponent(String(tenderCode)))
+          .replace(`{${'deliveryDriverId'}}`, encodeURIComponent(String(deliveryDriverId)));
 
-            const localVarQueryParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page;
+      }
 
-            if (size !== undefined) {
-                localVarQueryParameter['size'] = size;
-            }
-            return prepareRequest(localVarPath, 'GET', configuration, options, undefined, localVarQueryParameter);
-        },
-        /**
-         * API che consente il recupero dei dettagli di un FSU
-         * @summary Recupero del FSU di una gara
-         * @param {string} tenderCode 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getDetailFSU: async (tenderCode: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            assertParamExists('getDetailFSU', 'tenderCode', tenderCode)
-            const localVarPath = `/paper-channel-bo/v1/deliveries-drivers/{tenderCode}/fsu`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            return prepareRequest(localVarPath, 'GET', configuration, options);
-        },
-        /**
-         * API che consente il recupero dei dettagli di uno specifico recapitista
-         * @summary Recupero di un recapitista.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getDriverDetails: async (tenderCode: string, deliveryDriverId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            assertParamExists('getDriverDetails', 'tenderCode', tenderCode)
-            assertParamExists('getDriverDetails', 'deliveryDriverId', deliveryDriverId)
-            const localVarPath = `/paper-channel-bo/v1/deliveries-drivers/{tenderCode}/detail/{deliveryDriverId}`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)))
-                .replace(`{${"deliveryDriverId"}}`, encodeURIComponent(String(deliveryDriverId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            return prepareRequest(localVarPath, 'GET', configuration, options);
-        },
-        /**
-         * API che consente il recupero dei dettagli di una gara
-         * @summary Recupero della gara.
-         * @param {string} tenderCode 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getTenderDetails: async (tenderCode: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
-            assertParamExists('getTenderDetails', 'tenderCode', tenderCode)
-            const localVarPath = `/paper-channel-bo/v1/tenders/{tenderCode}`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            return prepareRequest(localVarPath, 'GET', configuration, options);
-        },
-        /**
-         * API che consente di notificare l\'avvenuto caricamento del file e avvio del flusso di salvataggio
-         * @summary Notifica di avvenuto caricamento file.
-         * @param {string} tenderCode 
-         * @param {NotifyUploadRequestDto} [notifyUploadRequestDto] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        notifyUpload: async (tenderCode: string, notifyUploadRequestDto?: NotifyUploadRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
-            assertParamExists('notifyUpload', 'tenderCode', tenderCode)
-            const localVarPath = `/paper-channel-bo/v1/delivery-tender/{tenderCode}/notify-upload`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
-            return prepareRequest(localVarPath, 'POST', configuration, options, notifyUploadRequestDto);
-        },
-        /**
-         * API che consente il recupero di tutti i recapitisti di una gara
-         * @summary Elenco dei recapitisti di una gara
-         * @param {string} tenderCode 
-         * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-         * @param {number} [size] Numero di elementi per pagina.
-         * @param {boolean} [fsu] Risultati filtrati in base al valore di FSU
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        takeDeliveriesDrivers: async (tenderCode: string, page?: number, size?: number, fsu?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
-            assertParamExists('takeDeliveriesDrivers', 'tenderCode', tenderCode)
-            const localVarPath = `/paper-channel-bo/v1/deliveries-drivers/{tenderCode}`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
+      if (size !== undefined) {
+        localVarQueryParameter['size'] = size;
+      }
+      return prepareRequest(
+        localVarPath,
+        'GET',
+        configuration,
+        options,
+        undefined,
+        localVarQueryParameter
+      );
+    },
+    /**
+     * API che consente il recupero dei dettagli di un FSU
+     * @summary Recupero del FSU di una gara
+     * @param {string} tenderCode
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getDetailFSU: async (
+      tenderCode: string,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      assertParamExists('getDetailFSU', 'tenderCode', tenderCode);
+      const localVarPath = `/paper-channel-bo/v1/deliveries-drivers/{tenderCode}/fsu`.replace(
+        `{${'tenderCode'}}`,
+        encodeURIComponent(String(tenderCode))
+      );
+      return prepareRequest(localVarPath, 'GET', configuration, options);
+    },
+    /**
+     * API che consente il recupero dei dettagli di uno specifico recapitista
+     * @summary Recupero di un recapitista.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getDriverDetails: async (
+      tenderCode: string,
+      deliveryDriverId: string,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      assertParamExists('getDriverDetails', 'tenderCode', tenderCode);
+      assertParamExists('getDriverDetails', 'deliveryDriverId', deliveryDriverId);
+      const localVarPath =
+        `/paper-channel-bo/v1/deliveries-drivers/{tenderCode}/detail/{deliveryDriverId}`
+          .replace(`{${'tenderCode'}}`, encodeURIComponent(String(tenderCode)))
+          .replace(`{${'deliveryDriverId'}}`, encodeURIComponent(String(deliveryDriverId)));
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      return prepareRequest(localVarPath, 'GET', configuration, options);
+    },
+    /**
+     * API che consente il recupero dei dettagli di una gara
+     * @summary Recupero della gara.
+     * @param {string} tenderCode
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getTenderDetails: async (
+      tenderCode: string,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'tenderCode' is not null or undefined
+      assertParamExists('getTenderDetails', 'tenderCode', tenderCode);
+      const localVarPath = `/paper-channel-bo/v1/tenders/{tenderCode}`.replace(
+        `{${'tenderCode'}}`,
+        encodeURIComponent(String(tenderCode))
+      );
+      return prepareRequest(localVarPath, 'GET', configuration, options);
+    },
+    /**
+     * API che consente di notificare l\'avvenuto caricamento del file e avvio del flusso di salvataggio
+     * @summary Notifica di avvenuto caricamento file.
+     * @param {string} tenderCode
+     * @param {NotifyUploadRequestDto} [notifyUploadRequestDto]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    notifyUpload: async (
+      tenderCode: string,
+      notifyUploadRequestDto?: NotifyUploadRequestDto,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'tenderCode' is not null or undefined
+      assertParamExists('notifyUpload', 'tenderCode', tenderCode);
+      const localVarPath =
+        `/paper-channel-bo/v1/delivery-tender/{tenderCode}/notify-upload`.replace(
+          `{${'tenderCode'}}`,
+          encodeURIComponent(String(tenderCode))
+        );
+      return prepareRequest(localVarPath, 'POST', configuration, options, notifyUploadRequestDto);
+    },
+    /**
+     * API che consente il recupero di tutti i recapitisti di una gara
+     * @summary Elenco dei recapitisti di una gara
+     * @param {string} tenderCode
+     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+     * @param {number} [size] Numero di elementi per pagina.
+     * @param {boolean} [fsu] Risultati filtrati in base al valore di FSU
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    takeDeliveriesDrivers: async (
+      tenderCode: string,
+      page?: number,
+      size?: number,
+      fsu?: boolean,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'tenderCode' is not null or undefined
+      assertParamExists('takeDeliveriesDrivers', 'tenderCode', tenderCode);
+      const localVarPath = `/paper-channel-bo/v1/deliveries-drivers/{tenderCode}`.replace(
+        `{${'tenderCode'}}`,
+        encodeURIComponent(String(tenderCode))
+      );
 
-            const localVarQueryParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page;
+      }
 
-            if (size !== undefined) {
-                localVarQueryParameter['size'] = size;
-            }
+      if (size !== undefined) {
+        localVarQueryParameter['size'] = size;
+      }
 
-            if (fsu !== undefined) {
-                localVarQueryParameter['fsu'] = fsu;
-            }
-            return prepareRequest(localVarPath, 'GET', configuration, options, undefined, localVarQueryParameter);
-        },
-        /**
-         * API che consente il recupero di tutte le gare
-         * @summary Elenco gare d\'appalto.
-         * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-         * @param {number} [size] Numero di elementi per pagina.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        takeTender: async (page?: number, size?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/paper-channel-bo/v1/tenders`;
-            const localVarQueryParameter = {} as any;
+      if (fsu !== undefined) {
+        localVarQueryParameter['fsu'] = fsu;
+      }
+      return prepareRequest(
+        localVarPath,
+        'GET',
+        configuration,
+        options,
+        undefined,
+        localVarQueryParameter
+      );
+    },
+    /**
+     * API che consente il recupero di tutte le gare
+     * @summary Elenco gare d\'appalto.
+     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+     * @param {number} [size] Numero di elementi per pagina.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    takeTender: async (
+      page?: number,
+      size?: number,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      const localVarPath = `/paper-channel-bo/v1/tenders`;
+      const localVarQueryParameter = {} as any;
 
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
+      if (page !== undefined) {
+        localVarQueryParameter['page'] = page;
+      }
 
-            if (size !== undefined) {
-                localVarQueryParameter['size'] = size;
-            }
-            return prepareRequest(localVarPath, 'GET', configuration, options, undefined, localVarQueryParameter);
-        },
-        /**
-         * API che consente di aggiornare lo stato della gara
-         * @summary Aggiorna stato Gara.
-         * @param {string} tenderCode 
-         * @param {Status} [status] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateStatusTender: async (tenderCode: string, status?: Status, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'tenderCode' is not null or undefined
-            assertParamExists('updateStatusTender', 'tenderCode', tenderCode)
-            const localVarPath = `/paper-channel-bo/v1/tender/{tenderCode}`
-                .replace(`{${"tenderCode"}}`, encodeURIComponent(String(tenderCode)));
+      if (size !== undefined) {
+        localVarQueryParameter['size'] = size;
+      }
+      return prepareRequest(
+        localVarPath,
+        'GET',
+        configuration,
+        options,
+        undefined,
+        localVarQueryParameter
+      );
+    },
+    /**
+     * API che consente di aggiornare lo stato della gara
+     * @summary Aggiorna stato Gara.
+     * @param {string} tenderCode
+     * @param {Status} [status]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateStatusTender: async (
+      tenderCode: string,
+      status?: Status,
+      options: AxiosRequestConfig = {}
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'tenderCode' is not null or undefined
+      assertParamExists('updateStatusTender', 'tenderCode', tenderCode);
+      const localVarPath = `/paper-channel-bo/v1/tender/{tenderCode}`.replace(
+        `{${'tenderCode'}}`,
+        encodeURIComponent(String(tenderCode))
+      );
 
-            return prepareRequest(localVarPath, 'PUT', configuration, options, status);
-        },
-    }
+      return prepareRequest(localVarPath, 'PUT', configuration, options, status);
+    },
+  };
 };
 
 /**
  * DeliveryDriverApi - functional programming interface
  * @export
  */
-export const DeliveryDriverApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = DeliveryDriverApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * API che consente di ottenere la presigned url necessaria al caricamento del file
-         * @summary Genera la preseigned url
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async addTenderFromFile(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PresignedUrlResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addTenderFromFile(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente di aggiungere o modificare i dettagli di un costo legato al deliveryDriver
-         * @summary Inserimento o modifica di un costo legato al deliveryDriver.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {CostDTO} [costDTO] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createUpdateCost(tenderCode: string, deliveryDriverId: string, costDTO?: CostDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createUpdateCost(tenderCode, deliveryDriverId, costDTO, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente di aggiungere o modificare i dettagli di un recapitista
-         * @summary Inserimento o modifica Recapitista.
-         * @param {string} tenderCode 
-         * @param {DeliveryDriverDTO} [deliveryDriverDTO] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createUpdateDriver(tenderCode: string, deliveryDriverDTO?: DeliveryDriverDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createUpdateDriver(tenderCode, deliveryDriverDTO, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente di aggiungere o modificare i dettagli di una gara
-         * @summary Inserimento o modifica Gara.
-         * @param {TenderCreateRequestDTO} [tenderCreateRequestDTO] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createUpdateTender(tenderCreateRequestDTO?: TenderCreateRequestDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TenderCreateResponseDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createUpdateTender(tenderCreateRequestDTO, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente di eliminare i dettagli di un costo legato al deliveryDriver.
-         * @summary Eliminazione di un costo legato al deliveryDriver.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {string} uuid 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async deleteCost(tenderCode: string, deliveryDriverId: string, uuid: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteCost(tenderCode, deliveryDriverId, uuid, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente di eliminare i dettagli di un recapitista.
-         * @summary Eliminazione recapitista.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async deleteDriver(tenderCode: string, deliveryDriverId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteDriver(tenderCode, deliveryDriverId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente di eliminare i dettagli di una gara.
-         * @summary Eliminazione gara.
-         * @param {string} tenderCode 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async deleteTender(tenderCode: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteTender(tenderCode, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente il download dell\'elenco delle gare d\'appalto.
-         * @summary Download Gare
-         * @param {string} [tenderCode] 
-         * @param {string} [uuid] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async downloadTenderFile(tenderCode?: string, uuid?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InfoDownloadDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.downloadTenderFile(tenderCode, uuid, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente di recuperare e paginare tutti i costi di un recapitista che partecipa ad una specifica gara
-         * @summary Recupero dei costi di una recapitista e di una specifica gara
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-         * @param {number} [size] Numero di elementi per pagina.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getAllCostOfDriverAndTender(tenderCode: string, deliveryDriverId: string, page?: number, size?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageableCostResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllCostOfDriverAndTender(tenderCode, deliveryDriverId, page, size, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente il recupero dei dettagli di un FSU
-         * @summary Recupero del FSU di una gara
-         * @param {string} tenderCode 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getDetailFSU(tenderCode: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FSUResponseDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getDetailFSU(tenderCode, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente il recupero dei dettagli di uno specifico recapitista
-         * @summary Recupero di un recapitista.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getDriverDetails(tenderCode: string, deliveryDriverId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeliveryDriverResponseDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getDriverDetails(tenderCode, deliveryDriverId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente il recupero dei dettagli di una gara
-         * @summary Recupero della gara.
-         * @param {string} tenderCode 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getTenderDetails(tenderCode: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TenderDetailResponseDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getTenderDetails(tenderCode, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente di notificare l\'avvenuto caricamento del file e avvio del flusso di salvataggio
-         * @summary Notifica di avvenuto caricamento file.
-         * @param {string} tenderCode 
-         * @param {NotifyUploadRequestDto} [notifyUploadRequestDto] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async notifyUpload(tenderCode: string, notifyUploadRequestDto?: NotifyUploadRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NotifyResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.notifyUpload(tenderCode, notifyUploadRequestDto, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente il recupero di tutti i recapitisti di una gara
-         * @summary Elenco dei recapitisti di una gara
-         * @param {string} tenderCode 
-         * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-         * @param {number} [size] Numero di elementi per pagina.
-         * @param {boolean} [fsu] Risultati filtrati in base al valore di FSU
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async takeDeliveriesDrivers(tenderCode: string, page?: number, size?: number, fsu?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageableDeliveryDriverResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.takeDeliveriesDrivers(tenderCode, page, size, fsu, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente il recupero di tutte le gare
-         * @summary Elenco gare d\'appalto.
-         * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-         * @param {number} [size] Numero di elementi per pagina.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async takeTender(page?: number, size?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageableTenderResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.takeTender(page, size, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * API che consente di aggiornare lo stato della gara
-         * @summary Aggiorna stato Gara.
-         * @param {string} tenderCode 
-         * @param {Status} [status] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateStatusTender(tenderCode: string, status?: Status, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TenderCreateResponseDTO>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateStatusTender(tenderCode, status, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
+export const DeliveryDriverApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = DeliveryDriverApiAxiosParamCreator(configuration);
+  return {
+    /**
+     * API che consente di ottenere la presigned url necessaria al caricamento del file
+     * @summary Genera la preseigned url
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async addTenderFromFile(
+      options?: AxiosRequestConfig
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PresignedUrlResponseDto>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.addTenderFromFile(options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente di aggiungere o modificare i dettagli di un costo legato al deliveryDriver
+     * @summary Inserimento o modifica di un costo legato al deliveryDriver.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {CostDTO} [costDTO]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async createUpdateCost(
+      tenderCode: string,
+      deliveryDriverId: string,
+      costDTO?: CostDTO,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.createUpdateCost(
+        tenderCode,
+        deliveryDriverId,
+        costDTO,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente di aggiungere o modificare i dettagli di un recapitista
+     * @summary Inserimento o modifica Recapitista.
+     * @param {string} tenderCode
+     * @param {DeliveryDriverDTO} [deliveryDriverDTO]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async createUpdateDriver(
+      tenderCode: string,
+      deliveryDriverDTO?: DeliveryDriverDTO,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.createUpdateDriver(
+        tenderCode,
+        deliveryDriverDTO,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente di aggiungere o modificare i dettagli di una gara
+     * @summary Inserimento o modifica Gara.
+     * @param {TenderCreateRequestDTO} [tenderCreateRequestDTO]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async createUpdateTender(
+      tenderCreateRequestDTO?: TenderCreateRequestDTO,
+      options?: AxiosRequestConfig
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<TenderCreateResponseDTO>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.createUpdateTender(
+        tenderCreateRequestDTO,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente di eliminare i dettagli di un costo legato al deliveryDriver.
+     * @summary Eliminazione di un costo legato al deliveryDriver.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {string} uuid
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async deleteCost(
+      tenderCode: string,
+      deliveryDriverId: string,
+      uuid: string,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deleteCost(
+        tenderCode,
+        deliveryDriverId,
+        uuid,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente di eliminare i dettagli di un recapitista.
+     * @summary Eliminazione recapitista.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async deleteDriver(
+      tenderCode: string,
+      deliveryDriverId: string,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deleteDriver(
+        tenderCode,
+        deliveryDriverId,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente di eliminare i dettagli di una gara.
+     * @summary Eliminazione gara.
+     * @param {string} tenderCode
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async deleteTender(
+      tenderCode: string,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.deleteTender(tenderCode, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente il download dell\'elenco delle gare d\'appalto.
+     * @summary Download Gare
+     * @param {string} [tenderCode]
+     * @param {string} [uuid]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async downloadTenderFile(
+      tenderCode?: string,
+      uuid?: string,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InfoDownloadDTO>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.downloadTenderFile(
+        tenderCode,
+        uuid,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente di recuperare e paginare tutti i costi di un recapitista che partecipa ad una specifica gara
+     * @summary Recupero dei costi di una recapitista e di una specifica gara
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+     * @param {number} [size] Numero di elementi per pagina.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getAllCostOfDriverAndTender(
+      tenderCode: string,
+      deliveryDriverId: string,
+      page?: number,
+      size?: number,
+      options?: AxiosRequestConfig
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageableCostResponseDto>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getAllCostOfDriverAndTender(
+        tenderCode,
+        deliveryDriverId,
+        page,
+        size,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente il recupero dei dettagli di un FSU
+     * @summary Recupero del FSU di una gara
+     * @param {string} tenderCode
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getDetailFSU(
+      tenderCode: string,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FSUResponseDTO>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getDetailFSU(tenderCode, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente il recupero dei dettagli di uno specifico recapitista
+     * @summary Recupero di un recapitista.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getDriverDetails(
+      tenderCode: string,
+      deliveryDriverId: string,
+      options?: AxiosRequestConfig
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeliveryDriverResponseDTO>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getDriverDetails(
+        tenderCode,
+        deliveryDriverId,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente il recupero dei dettagli di una gara
+     * @summary Recupero della gara.
+     * @param {string} tenderCode
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getTenderDetails(
+      tenderCode: string,
+      options?: AxiosRequestConfig
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<TenderDetailResponseDTO>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getTenderDetails(
+        tenderCode,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente di notificare l\'avvenuto caricamento del file e avvio del flusso di salvataggio
+     * @summary Notifica di avvenuto caricamento file.
+     * @param {string} tenderCode
+     * @param {NotifyUploadRequestDto} [notifyUploadRequestDto]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async notifyUpload(
+      tenderCode: string,
+      notifyUploadRequestDto?: NotifyUploadRequestDto,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NotifyResponseDto>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.notifyUpload(
+        tenderCode,
+        notifyUploadRequestDto,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente il recupero di tutti i recapitisti di una gara
+     * @summary Elenco dei recapitisti di una gara
+     * @param {string} tenderCode
+     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+     * @param {number} [size] Numero di elementi per pagina.
+     * @param {boolean} [fsu] Risultati filtrati in base al valore di FSU
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async takeDeliveriesDrivers(
+      tenderCode: string,
+      page?: number,
+      size?: number,
+      fsu?: boolean,
+      options?: AxiosRequestConfig
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageableDeliveryDriverResponseDto>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.takeDeliveriesDrivers(
+        tenderCode,
+        page,
+        size,
+        fsu,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente il recupero di tutte le gare
+     * @summary Elenco gare d\'appalto.
+     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+     * @param {number} [size] Numero di elementi per pagina.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async takeTender(
+      page?: number,
+      size?: number,
+      options?: AxiosRequestConfig
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageableTenderResponseDto>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.takeTender(page, size, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+    /**
+     * API che consente di aggiornare lo stato della gara
+     * @summary Aggiorna stato Gara.
+     * @param {string} tenderCode
+     * @param {Status} [status]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async updateStatusTender(
+      tenderCode: string,
+      status?: Status,
+      options?: AxiosRequestConfig
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<TenderCreateResponseDTO>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.updateStatusTender(
+        tenderCode,
+        status,
+        options
+      );
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+  };
 };
 
 /**
  * DeliveryDriverApi - factory interface
  * @export
  */
-export const DeliveryDriverApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = DeliveryDriverApiFp(configuration)
-    return {
-        /**
-         * API che consente di ottenere la presigned url necessaria al caricamento del file
-         * @summary Genera la preseigned url
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        addTenderFromFile(options?: any): AxiosPromise<PresignedUrlResponseDto> {
-            return localVarFp.addTenderFromFile(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente di aggiungere o modificare i dettagli di un costo legato al deliveryDriver
-         * @summary Inserimento o modifica di un costo legato al deliveryDriver.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {CostDTO} [costDTO] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUpdateCost(tenderCode: string, deliveryDriverId: string, costDTO?: CostDTO, options?: any): AxiosPromise<void> {
-            return localVarFp.createUpdateCost(tenderCode, deliveryDriverId, costDTO, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente di aggiungere o modificare i dettagli di un recapitista
-         * @summary Inserimento o modifica Recapitista.
-         * @param {string} tenderCode 
-         * @param {DeliveryDriverDTO} [deliveryDriverDTO] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUpdateDriver(tenderCode: string, deliveryDriverDTO?: DeliveryDriverDTO, options?: any): AxiosPromise<void> {
-            return localVarFp.createUpdateDriver(tenderCode, deliveryDriverDTO, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente di aggiungere o modificare i dettagli di una gara
-         * @summary Inserimento o modifica Gara.
-         * @param {TenderCreateRequestDTO} [tenderCreateRequestDTO] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createUpdateTender(tenderCreateRequestDTO?: TenderCreateRequestDTO, options?: any): AxiosPromise<TenderCreateResponseDTO> {
-            return localVarFp.createUpdateTender(tenderCreateRequestDTO, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente di eliminare i dettagli di un costo legato al deliveryDriver.
-         * @summary Eliminazione di un costo legato al deliveryDriver.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {string} uuid 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteCost(tenderCode: string, deliveryDriverId: string, uuid: string, options?: any): AxiosPromise<void> {
-            return localVarFp.deleteCost(tenderCode, deliveryDriverId, uuid, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente di eliminare i dettagli di un recapitista.
-         * @summary Eliminazione recapitista.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteDriver(tenderCode: string, deliveryDriverId: string, options?: any): AxiosPromise<void> {
-            return localVarFp.deleteDriver(tenderCode, deliveryDriverId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente di eliminare i dettagli di una gara.
-         * @summary Eliminazione gara.
-         * @param {string} tenderCode 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        deleteTender(tenderCode: string, options?: any): AxiosPromise<void> {
-            return localVarFp.deleteTender(tenderCode, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente il download dell\'elenco delle gare d\'appalto.
-         * @summary Download Gare
-         * @param {string} [tenderCode] 
-         * @param {string} [uuid] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        downloadTenderFile(tenderCode?: string, uuid?: string, options?: any): AxiosPromise<InfoDownloadDTO> {
-            return localVarFp.downloadTenderFile(tenderCode, uuid, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente di recuperare e paginare tutti i costi di un recapitista che partecipa ad una specifica gara
-         * @summary Recupero dei costi di una recapitista e di una specifica gara
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-         * @param {number} [size] Numero di elementi per pagina.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllCostOfDriverAndTender(tenderCode: string, deliveryDriverId: string, page?: number, size?: number, options?: any): AxiosPromise<PageableCostResponseDto> {
-            return localVarFp.getAllCostOfDriverAndTender(tenderCode, deliveryDriverId, page, size, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente il recupero dei dettagli di un FSU
-         * @summary Recupero del FSU di una gara
-         * @param {string} tenderCode 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getDetailFSU(tenderCode: string, options?: any): AxiosPromise<FSUResponseDTO> {
-            return localVarFp.getDetailFSU(tenderCode, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente il recupero dei dettagli di uno specifico recapitista
-         * @summary Recupero di un recapitista.
-         * @param {string} tenderCode 
-         * @param {string} deliveryDriverId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getDriverDetails(tenderCode: string, deliveryDriverId: string, options?: any): AxiosPromise<DeliveryDriverResponseDTO> {
-            return localVarFp.getDriverDetails(tenderCode, deliveryDriverId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente il recupero dei dettagli di una gara
-         * @summary Recupero della gara.
-         * @param {string} tenderCode 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getTenderDetails(tenderCode: string, options?: any): AxiosPromise<TenderDetailResponseDTO> {
-            return localVarFp.getTenderDetails(tenderCode, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente di notificare l\'avvenuto caricamento del file e avvio del flusso di salvataggio
-         * @summary Notifica di avvenuto caricamento file.
-         * @param {string} tenderCode 
-         * @param {NotifyUploadRequestDto} [notifyUploadRequestDto] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        notifyUpload(tenderCode: string, notifyUploadRequestDto?: NotifyUploadRequestDto, options?: any): AxiosPromise<NotifyResponseDto> {
-            return localVarFp.notifyUpload(tenderCode, notifyUploadRequestDto, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente il recupero di tutti i recapitisti di una gara
-         * @summary Elenco dei recapitisti di una gara
-         * @param {string} tenderCode 
-         * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-         * @param {number} [size] Numero di elementi per pagina.
-         * @param {boolean} [fsu] Risultati filtrati in base al valore di FSU
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        takeDeliveriesDrivers(tenderCode: string, page?: number, size?: number, fsu?: boolean, options?: any): AxiosPromise<PageableDeliveryDriverResponseDto> {
-            return localVarFp.takeDeliveriesDrivers(tenderCode, page, size, fsu, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente il recupero di tutte le gare
-         * @summary Elenco gare d\'appalto.
-         * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-         * @param {number} [size] Numero di elementi per pagina.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        takeTender(page?: number, size?: number, options?: any): AxiosPromise<PageableTenderResponseDto> {
-            return localVarFp.takeTender(page, size, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * API che consente di aggiornare lo stato della gara
-         * @summary Aggiorna stato Gara.
-         * @param {string} tenderCode 
-         * @param {Status} [status] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateStatusTender(tenderCode: string, status?: Status, options?: any): AxiosPromise<TenderCreateResponseDTO> {
-            return localVarFp.updateStatusTender(tenderCode, status, options).then((request) => request(axios, basePath));
-        },
-    };
+export const DeliveryDriverApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance
+) {
+  const localVarFp = DeliveryDriverApiFp(configuration);
+  return {
+    /**
+     * API che consente di ottenere la presigned url necessaria al caricamento del file
+     * @summary Genera la preseigned url
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    addTenderFromFile(options?: any): AxiosPromise<PresignedUrlResponseDto> {
+      return localVarFp.addTenderFromFile(options).then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente di aggiungere o modificare i dettagli di un costo legato al deliveryDriver
+     * @summary Inserimento o modifica di un costo legato al deliveryDriver.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {CostDTO} [costDTO]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUpdateCost(
+      tenderCode: string,
+      deliveryDriverId: string,
+      costDTO?: CostDTO,
+      options?: any
+    ): AxiosPromise<void> {
+      return localVarFp
+        .createUpdateCost(tenderCode, deliveryDriverId, costDTO, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente di aggiungere o modificare i dettagli di un recapitista
+     * @summary Inserimento o modifica Recapitista.
+     * @param {string} tenderCode
+     * @param {DeliveryDriverDTO} [deliveryDriverDTO]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUpdateDriver(
+      tenderCode: string,
+      deliveryDriverDTO?: DeliveryDriverDTO,
+      options?: any
+    ): AxiosPromise<void> {
+      return localVarFp
+        .createUpdateDriver(tenderCode, deliveryDriverDTO, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente di aggiungere o modificare i dettagli di una gara
+     * @summary Inserimento o modifica Gara.
+     * @param {TenderCreateRequestDTO} [tenderCreateRequestDTO]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createUpdateTender(
+      tenderCreateRequestDTO?: TenderCreateRequestDTO,
+      options?: any
+    ): AxiosPromise<TenderCreateResponseDTO> {
+      return localVarFp
+        .createUpdateTender(tenderCreateRequestDTO, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente di eliminare i dettagli di un costo legato al deliveryDriver.
+     * @summary Eliminazione di un costo legato al deliveryDriver.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {string} uuid
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteCost(
+      tenderCode: string,
+      deliveryDriverId: string,
+      uuid: string,
+      options?: any
+    ): AxiosPromise<void> {
+      return localVarFp
+        .deleteCost(tenderCode, deliveryDriverId, uuid, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente di eliminare i dettagli di un recapitista.
+     * @summary Eliminazione recapitista.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteDriver(tenderCode: string, deliveryDriverId: string, options?: any): AxiosPromise<void> {
+      return localVarFp
+        .deleteDriver(tenderCode, deliveryDriverId, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente di eliminare i dettagli di una gara.
+     * @summary Eliminazione gara.
+     * @param {string} tenderCode
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteTender(tenderCode: string, options?: any): AxiosPromise<void> {
+      return localVarFp
+        .deleteTender(tenderCode, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente il download dell\'elenco delle gare d\'appalto.
+     * @summary Download Gare
+     * @param {string} [tenderCode]
+     * @param {string} [uuid]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    downloadTenderFile(
+      tenderCode?: string,
+      uuid?: string,
+      options?: any
+    ): AxiosPromise<InfoDownloadDTO> {
+      return localVarFp
+        .downloadTenderFile(tenderCode, uuid, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente di recuperare e paginare tutti i costi di un recapitista che partecipa ad una specifica gara
+     * @summary Recupero dei costi di una recapitista e di una specifica gara
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+     * @param {number} [size] Numero di elementi per pagina.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAllCostOfDriverAndTender(
+      tenderCode: string,
+      deliveryDriverId: string,
+      page?: number,
+      size?: number,
+      options?: any
+    ): AxiosPromise<PageableCostResponseDto> {
+      return localVarFp
+        .getAllCostOfDriverAndTender(tenderCode, deliveryDriverId, page, size, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente il recupero dei dettagli di un FSU
+     * @summary Recupero del FSU di una gara
+     * @param {string} tenderCode
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getDetailFSU(tenderCode: string, options?: any): AxiosPromise<FSUResponseDTO> {
+      return localVarFp
+        .getDetailFSU(tenderCode, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente il recupero dei dettagli di uno specifico recapitista
+     * @summary Recupero di un recapitista.
+     * @param {string} tenderCode
+     * @param {string} deliveryDriverId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getDriverDetails(
+      tenderCode: string,
+      deliveryDriverId: string,
+      options?: any
+    ): AxiosPromise<DeliveryDriverResponseDTO> {
+      return localVarFp
+        .getDriverDetails(tenderCode, deliveryDriverId, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente il recupero dei dettagli di una gara
+     * @summary Recupero della gara.
+     * @param {string} tenderCode
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getTenderDetails(tenderCode: string, options?: any): AxiosPromise<TenderDetailResponseDTO> {
+      return localVarFp
+        .getTenderDetails(tenderCode, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente di notificare l\'avvenuto caricamento del file e avvio del flusso di salvataggio
+     * @summary Notifica di avvenuto caricamento file.
+     * @param {string} tenderCode
+     * @param {NotifyUploadRequestDto} [notifyUploadRequestDto]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    notifyUpload(
+      tenderCode: string,
+      notifyUploadRequestDto?: NotifyUploadRequestDto,
+      options?: any
+    ): AxiosPromise<NotifyResponseDto> {
+      return localVarFp
+        .notifyUpload(tenderCode, notifyUploadRequestDto, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente il recupero di tutti i recapitisti di una gara
+     * @summary Elenco dei recapitisti di una gara
+     * @param {string} tenderCode
+     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+     * @param {number} [size] Numero di elementi per pagina.
+     * @param {boolean} [fsu] Risultati filtrati in base al valore di FSU
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    takeDeliveriesDrivers(
+      tenderCode: string,
+      page?: number,
+      size?: number,
+      fsu?: boolean,
+      options?: any
+    ): AxiosPromise<PageableDeliveryDriverResponseDto> {
+      return localVarFp
+        .takeDeliveriesDrivers(tenderCode, page, size, fsu, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente il recupero di tutte le gare
+     * @summary Elenco gare d\'appalto.
+     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+     * @param {number} [size] Numero di elementi per pagina.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    takeTender(
+      page?: number,
+      size?: number,
+      options?: any
+    ): AxiosPromise<PageableTenderResponseDto> {
+      return localVarFp.takeTender(page, size, options).then((request) => request(axios, basePath));
+    },
+    /**
+     * API che consente di aggiornare lo stato della gara
+     * @summary Aggiorna stato Gara.
+     * @param {string} tenderCode
+     * @param {Status} [status]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateStatusTender(
+      tenderCode: string,
+      status?: Status,
+      options?: any
+    ): AxiosPromise<TenderCreateResponseDTO> {
+      return localVarFp
+        .updateStatusTender(tenderCode, status, options)
+        .then((request) => request(axios, basePath));
+    },
+  };
 };
 
 /**
@@ -1647,295 +1995,371 @@ export const DeliveryDriverApiFactory = function (configuration?: Configuration,
  * @extends {BaseAPI}
  */
 export class DeliveryDriverApi extends BaseAPI {
-    /**
-     * API che consente di ottenere la presigned url necessaria al caricamento del file
-     * @summary Genera la preseigned url
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public addTenderFromFile(options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).addTenderFromFile(options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente di ottenere la presigned url necessaria al caricamento del file
+   * @summary Genera la preseigned url
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public addTenderFromFile(options?: AxiosRequestConfig) {
+    return DeliveryDriverApiFp(this.configuration)
+      .addTenderFromFile(options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente di aggiungere o modificare i dettagli di un costo legato al deliveryDriver
-     * @summary Inserimento o modifica di un costo legato al deliveryDriver.
-     * @param {string} tenderCode 
-     * @param {string} deliveryDriverId 
-     * @param {CostDTO} [costDTO] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public createUpdateCost(tenderCode: string, deliveryDriverId: string, costDTO?: CostDTO, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).createUpdateCost(tenderCode, deliveryDriverId, costDTO, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente di aggiungere o modificare i dettagli di un costo legato al deliveryDriver
+   * @summary Inserimento o modifica di un costo legato al deliveryDriver.
+   * @param {string} tenderCode
+   * @param {string} deliveryDriverId
+   * @param {CostDTO} [costDTO]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public createUpdateCost(
+    tenderCode: string,
+    deliveryDriverId: string,
+    costDTO?: CostDTO,
+    options?: AxiosRequestConfig
+  ) {
+    return DeliveryDriverApiFp(this.configuration)
+      .createUpdateCost(tenderCode, deliveryDriverId, costDTO, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente di aggiungere o modificare i dettagli di un recapitista
-     * @summary Inserimento o modifica Recapitista.
-     * @param {string} tenderCode 
-     * @param {DeliveryDriverDTO} [deliveryDriverDTO] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public createUpdateDriver(tenderCode: string, deliveryDriverDTO?: DeliveryDriverDTO, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).createUpdateDriver(tenderCode, deliveryDriverDTO, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente di aggiungere o modificare i dettagli di un recapitista
+   * @summary Inserimento o modifica Recapitista.
+   * @param {string} tenderCode
+   * @param {DeliveryDriverDTO} [deliveryDriverDTO]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public createUpdateDriver(
+    tenderCode: string,
+    deliveryDriverDTO?: DeliveryDriverDTO,
+    options?: AxiosRequestConfig
+  ) {
+    return DeliveryDriverApiFp(this.configuration)
+      .createUpdateDriver(tenderCode, deliveryDriverDTO, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente di aggiungere o modificare i dettagli di una gara
-     * @summary Inserimento o modifica Gara.
-     * @param {TenderCreateRequestDTO} [tenderCreateRequestDTO] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public createUpdateTender(tenderCreateRequestDTO?: TenderCreateRequestDTO, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).createUpdateTender(tenderCreateRequestDTO, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente di aggiungere o modificare i dettagli di una gara
+   * @summary Inserimento o modifica Gara.
+   * @param {TenderCreateRequestDTO} [tenderCreateRequestDTO]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public createUpdateTender(
+    tenderCreateRequestDTO?: TenderCreateRequestDTO,
+    options?: AxiosRequestConfig
+  ) {
+    return DeliveryDriverApiFp(this.configuration)
+      .createUpdateTender(tenderCreateRequestDTO, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente di eliminare i dettagli di un costo legato al deliveryDriver.
-     * @summary Eliminazione di un costo legato al deliveryDriver.
-     * @param {string} tenderCode 
-     * @param {string} deliveryDriverId 
-     * @param {string} uuid 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public deleteCost(tenderCode: string, deliveryDriverId: string, uuid: string, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).deleteCost(tenderCode, deliveryDriverId, uuid, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente di eliminare i dettagli di un costo legato al deliveryDriver.
+   * @summary Eliminazione di un costo legato al deliveryDriver.
+   * @param {string} tenderCode
+   * @param {string} deliveryDriverId
+   * @param {string} uuid
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public deleteCost(
+    tenderCode: string,
+    deliveryDriverId: string,
+    uuid: string,
+    options?: AxiosRequestConfig
+  ) {
+    return DeliveryDriverApiFp(this.configuration)
+      .deleteCost(tenderCode, deliveryDriverId, uuid, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente di eliminare i dettagli di un recapitista.
-     * @summary Eliminazione recapitista.
-     * @param {string} tenderCode 
-     * @param {string} deliveryDriverId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public deleteDriver(tenderCode: string, deliveryDriverId: string, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).deleteDriver(tenderCode, deliveryDriverId, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente di eliminare i dettagli di un recapitista.
+   * @summary Eliminazione recapitista.
+   * @param {string} tenderCode
+   * @param {string} deliveryDriverId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public deleteDriver(tenderCode: string, deliveryDriverId: string, options?: AxiosRequestConfig) {
+    return DeliveryDriverApiFp(this.configuration)
+      .deleteDriver(tenderCode, deliveryDriverId, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente di eliminare i dettagli di una gara.
-     * @summary Eliminazione gara.
-     * @param {string} tenderCode 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public deleteTender(tenderCode: string, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).deleteTender(tenderCode, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente di eliminare i dettagli di una gara.
+   * @summary Eliminazione gara.
+   * @param {string} tenderCode
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public deleteTender(tenderCode: string, options?: AxiosRequestConfig) {
+    return DeliveryDriverApiFp(this.configuration)
+      .deleteTender(tenderCode, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente il download dell\'elenco delle gare d\'appalto.
-     * @summary Download Gare
-     * @param {string} [tenderCode] 
-     * @param {string} [uuid] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public downloadTenderFile(tenderCode?: string, uuid?: string, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).downloadTenderFile(tenderCode, uuid, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente il download dell\'elenco delle gare d\'appalto.
+   * @summary Download Gare
+   * @param {string} [tenderCode]
+   * @param {string} [uuid]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public downloadTenderFile(tenderCode?: string, uuid?: string, options?: AxiosRequestConfig) {
+    return DeliveryDriverApiFp(this.configuration)
+      .downloadTenderFile(tenderCode, uuid, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente di recuperare e paginare tutti i costi di un recapitista che partecipa ad una specifica gara
-     * @summary Recupero dei costi di una recapitista e di una specifica gara
-     * @param {string} tenderCode 
-     * @param {string} deliveryDriverId 
-     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-     * @param {number} [size] Numero di elementi per pagina.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public getAllCostOfDriverAndTender(tenderCode: string, deliveryDriverId: string, page?: number, size?: number, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).getAllCostOfDriverAndTender(tenderCode, deliveryDriverId, page, size, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente di recuperare e paginare tutti i costi di un recapitista che partecipa ad una specifica gara
+   * @summary Recupero dei costi di una recapitista e di una specifica gara
+   * @param {string} tenderCode
+   * @param {string} deliveryDriverId
+   * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+   * @param {number} [size] Numero di elementi per pagina.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public getAllCostOfDriverAndTender(
+    tenderCode: string,
+    deliveryDriverId: string,
+    page?: number,
+    size?: number,
+    options?: AxiosRequestConfig
+  ) {
+    return DeliveryDriverApiFp(this.configuration)
+      .getAllCostOfDriverAndTender(tenderCode, deliveryDriverId, page, size, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente il recupero dei dettagli di un FSU
-     * @summary Recupero del FSU di una gara
-     * @param {string} tenderCode 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public getDetailFSU(tenderCode: string, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).getDetailFSU(tenderCode, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente il recupero dei dettagli di un FSU
+   * @summary Recupero del FSU di una gara
+   * @param {string} tenderCode
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public getDetailFSU(tenderCode: string, options?: AxiosRequestConfig) {
+    return DeliveryDriverApiFp(this.configuration)
+      .getDetailFSU(tenderCode, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente il recupero dei dettagli di uno specifico recapitista
-     * @summary Recupero di un recapitista.
-     * @param {string} tenderCode 
-     * @param {string} deliveryDriverId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public getDriverDetails(tenderCode: string, deliveryDriverId: string, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).getDriverDetails(tenderCode, deliveryDriverId, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente il recupero dei dettagli di uno specifico recapitista
+   * @summary Recupero di un recapitista.
+   * @param {string} tenderCode
+   * @param {string} deliveryDriverId
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public getDriverDetails(
+    tenderCode: string,
+    deliveryDriverId: string,
+    options?: AxiosRequestConfig
+  ) {
+    return DeliveryDriverApiFp(this.configuration)
+      .getDriverDetails(tenderCode, deliveryDriverId, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente il recupero dei dettagli di una gara
-     * @summary Recupero della gara.
-     * @param {string} tenderCode 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public getTenderDetails(tenderCode: string, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).getTenderDetails(tenderCode, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente il recupero dei dettagli di una gara
+   * @summary Recupero della gara.
+   * @param {string} tenderCode
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public getTenderDetails(tenderCode: string, options?: AxiosRequestConfig) {
+    return DeliveryDriverApiFp(this.configuration)
+      .getTenderDetails(tenderCode, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente di notificare l\'avvenuto caricamento del file e avvio del flusso di salvataggio
-     * @summary Notifica di avvenuto caricamento file.
-     * @param {string} tenderCode 
-     * @param {NotifyUploadRequestDto} [notifyUploadRequestDto] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public notifyUpload(tenderCode: string, notifyUploadRequestDto?: NotifyUploadRequestDto, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).notifyUpload(tenderCode, notifyUploadRequestDto, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente di notificare l\'avvenuto caricamento del file e avvio del flusso di salvataggio
+   * @summary Notifica di avvenuto caricamento file.
+   * @param {string} tenderCode
+   * @param {NotifyUploadRequestDto} [notifyUploadRequestDto]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public notifyUpload(
+    tenderCode: string,
+    notifyUploadRequestDto?: NotifyUploadRequestDto,
+    options?: AxiosRequestConfig
+  ) {
+    return DeliveryDriverApiFp(this.configuration)
+      .notifyUpload(tenderCode, notifyUploadRequestDto, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente il recupero di tutti i recapitisti di una gara
-     * @summary Elenco dei recapitisti di una gara
-     * @param {string} tenderCode 
-     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-     * @param {number} [size] Numero di elementi per pagina.
-     * @param {boolean} [fsu] Risultati filtrati in base al valore di FSU
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public takeDeliveriesDrivers(tenderCode: string, page?: number, size?: number, fsu?: boolean, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).takeDeliveriesDrivers(tenderCode, page, size, fsu, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente il recupero di tutti i recapitisti di una gara
+   * @summary Elenco dei recapitisti di una gara
+   * @param {string} tenderCode
+   * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+   * @param {number} [size] Numero di elementi per pagina.
+   * @param {boolean} [fsu] Risultati filtrati in base al valore di FSU
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public takeDeliveriesDrivers(
+    tenderCode: string,
+    page?: number,
+    size?: number,
+    fsu?: boolean,
+    options?: AxiosRequestConfig
+  ) {
+    return DeliveryDriverApiFp(this.configuration)
+      .takeDeliveriesDrivers(tenderCode, page, size, fsu, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente il recupero di tutte le gare
-     * @summary Elenco gare d\'appalto.
-     * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
-     * @param {number} [size] Numero di elementi per pagina.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public takeTender(page?: number, size?: number, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).takeTender(page, size, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente il recupero di tutte le gare
+   * @summary Elenco gare d\'appalto.
+   * @param {number} [page] Risultati di pagina che si vuole ottenere (0..N)
+   * @param {number} [size] Numero di elementi per pagina.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public takeTender(page?: number, size?: number, options?: AxiosRequestConfig) {
+    return DeliveryDriverApiFp(this.configuration)
+      .takeTender(page, size, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 
-    /**
-     * API che consente di aggiornare lo stato della gara
-     * @summary Aggiorna stato Gara.
-     * @param {string} tenderCode 
-     * @param {Status} [status] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DeliveryDriverApi
-     */
-    public updateStatusTender(tenderCode: string, status?: Status, options?: AxiosRequestConfig) {
-        return DeliveryDriverApiFp(this.configuration).updateStatusTender(tenderCode, status, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente di aggiornare lo stato della gara
+   * @summary Aggiorna stato Gara.
+   * @param {string} tenderCode
+   * @param {Status} [status]
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof DeliveryDriverApi
+   */
+  public updateStatusTender(tenderCode: string, status?: Status, options?: AxiosRequestConfig) {
+    return DeliveryDriverApiFp(this.configuration)
+      .updateStatusTender(tenderCode, status, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 }
-
 
 /**
  * HealthCheckApi - axios parameter creator
  * @export
  */
 export const HealthCheckApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * Ritorna lo status di salute dell\'API.
-         * @summary Info health.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        takeHealth: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/status`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
+  return {
+    /**
+     * Ritorna lo status di salute dell\'API.
+     * @summary Info health.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    takeHealth: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      const localVarPath = `/status`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
+      // authentication ApiKeyAuth required
+      await setApiKeyToObject(localVarHeaderParameter, 'x-api-key', configuration);
 
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
 
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+  };
 };
 
 /**
  * HealthCheckApi - functional programming interface
  * @export
  */
-export const HealthCheckApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = HealthCheckApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * Ritorna lo status di salute dell\'API.
-         * @summary Info health.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async takeHealth(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.takeHealth(options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
+export const HealthCheckApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = HealthCheckApiAxiosParamCreator(configuration);
+  return {
+    /**
+     * Ritorna lo status di salute dell\'API.
+     * @summary Info health.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async takeHealth(
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.takeHealth(options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+  };
 };
 
 /**
  * HealthCheckApi - factory interface
  * @export
  */
-export const HealthCheckApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = HealthCheckApiFp(configuration)
-    return {
-        /**
-         * Ritorna lo status di salute dell\'API.
-         * @summary Info health.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        takeHealth(options?: any): AxiosPromise<void> {
-            return localVarFp.takeHealth(options).then((request) => request(axios, basePath));
-        },
-    };
+export const HealthCheckApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance
+) {
+  const localVarFp = HealthCheckApiFp(configuration);
+  return {
+    /**
+     * Ritorna lo status di salute dell\'API.
+     * @summary Info health.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    takeHealth(options?: any): AxiosPromise<void> {
+      return localVarFp.takeHealth(options).then((request) => request(axios, basePath));
+    },
+  };
 };
 
 /**
@@ -1945,105 +2369,115 @@ export const HealthCheckApiFactory = function (configuration?: Configuration, ba
  * @extends {BaseAPI}
  */
 export class HealthCheckApi extends BaseAPI {
-    /**
-     * Ritorna lo status di salute dell\'API.
-     * @summary Info health.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof HealthCheckApi
-     */
-    public takeHealth(options?: AxiosRequestConfig) {
-        return HealthCheckApiFp(this.configuration).takeHealth(options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * Ritorna lo status di salute dell\'API.
+   * @summary Info health.
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof HealthCheckApi
+   */
+  public takeHealth(options?: AxiosRequestConfig) {
+    return HealthCheckApiFp(this.configuration)
+      .takeHealth(options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 }
-
 
 /**
  * SelectListApi - axios parameter creator
  * @export
  */
 export const SelectListApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * API che consente il recupero di tutti i cap
-         * @summary Elenco di tutti i cap.
-         * @param {string} [value] Cap
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllCap: async (value?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/paper-channel-bo/v1/cap`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
+  return {
+    /**
+     * API che consente il recupero di tutti i cap
+     * @summary Elenco di tutti i cap.
+     * @param {string} [value] Cap
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAllCap: async (value?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+      const localVarPath = `/paper-channel-bo/v1/cap`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
+      const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
 
-            // authentication ApiKeyAuth required
-            await setApiKeyToObject(localVarHeaderParameter, "x-api-key", configuration)
+      // authentication ApiKeyAuth required
+      await setApiKeyToObject(localVarHeaderParameter, 'x-api-key', configuration);
 
-            if (value !== undefined) {
-                localVarQueryParameter['value'] = value;
-            }
+      if (value !== undefined) {
+        localVarQueryParameter['value'] = value;
+      }
 
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
 
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+  };
 };
 
 /**
  * SelectListApi - functional programming interface
  * @export
  */
-export const SelectListApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = SelectListApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * API che consente il recupero di tutti i cap
-         * @summary Elenco di tutti i cap.
-         * @param {string} [value] Cap
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getAllCap(value?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CapResponseDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllCap(value, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
+export const SelectListApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = SelectListApiAxiosParamCreator(configuration);
+  return {
+    /**
+     * API che consente il recupero di tutti i cap
+     * @summary Elenco di tutti i cap.
+     * @param {string} [value] Cap
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async getAllCap(
+      value?: string,
+      options?: AxiosRequestConfig
+    ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CapResponseDto>> {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.getAllCap(value, options);
+      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+    },
+  };
 };
 
 /**
  * SelectListApi - factory interface
  * @export
  */
-export const SelectListApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = SelectListApiFp(configuration)
-    return {
-        /**
-         * API che consente il recupero di tutti i cap
-         * @summary Elenco di tutti i cap.
-         * @param {string} [value] Cap
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAllCap(value?: string, options?: any): AxiosPromise<CapResponseDto> {
-            return localVarFp.getAllCap(value, options).then((request) => request(axios, basePath));
-        },
-    };
+export const SelectListApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance
+) {
+  const localVarFp = SelectListApiFp(configuration);
+  return {
+    /**
+     * API che consente il recupero di tutti i cap
+     * @summary Elenco di tutti i cap.
+     * @param {string} [value] Cap
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAllCap(value?: string, options?: any): AxiosPromise<CapResponseDto> {
+      return localVarFp.getAllCap(value, options).then((request) => request(axios, basePath));
+    },
+  };
 };
 
 /**
@@ -2053,17 +2487,17 @@ export const SelectListApiFactory = function (configuration?: Configuration, bas
  * @extends {BaseAPI}
  */
 export class SelectListApi extends BaseAPI {
-    /**
-     * API che consente il recupero di tutti i cap
-     * @summary Elenco di tutti i cap.
-     * @param {string} [value] Cap
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof SelectListApi
-     */
-    public getAllCap(value?: string, options?: AxiosRequestConfig) {
-        return SelectListApiFp(this.configuration).getAllCap(value, options).then((request) => request(this.axios, this.basePath));
-    }
+  /**
+   * API che consente il recupero di tutti i cap
+   * @summary Elenco di tutti i cap.
+   * @param {string} [value] Cap
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof SelectListApi
+   */
+  public getAllCap(value?: string, options?: AxiosRequestConfig) {
+    return SelectListApiFp(this.configuration)
+      .getAllCap(value, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
 }
-
-

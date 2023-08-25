@@ -1,10 +1,5 @@
-import {
-  FormControlLabel,
-  FormControl,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-import { FieldsProps } from "../formFields/FormFields";
+import { FormControlLabel, FormControl, Radio, RadioGroup } from '@mui/material';
+import { FieldsProps } from '../formFields/FormFields';
 
 /**
  * @typedef {Object} Props
@@ -34,11 +29,7 @@ const RadioButtonsGroup = (props: Props) => {
 
   return (
     <FormControl>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        value={props.value}
-        name={name}
-      >
+      <RadioGroup aria-labelledby="demo-radio-buttons-group-label" value={props.value} name={name}>
         {options!.map((option) => (
           <FormControlLabel
             key={option.option}

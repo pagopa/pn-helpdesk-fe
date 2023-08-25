@@ -1,17 +1,26 @@
-import { FieldsProps } from "../../formFields/FormFields";
-import {regex} from "../../../helpers/validations";
-import {errorMessages} from "../../../helpers/messagesConstants";
+import { FieldsProps } from '../../formFields/FormFields';
+import { regex } from '../../../helpers/validations';
+import { errorMessages } from '../../../helpers/messagesConstants';
 
-const fields = ["taxId", "businessName", "denomination", "registeredOffice", "fiscalCode", "pec", "phoneNumber", "uniqueCode"] as const;
+const fields = [
+  'taxId',
+  'businessName',
+  'denomination',
+  'registeredOffice',
+  'fiscalCode',
+  'pec',
+  'phoneNumber',
+  'uniqueCode',
+] as const;
 export type FieldTypesDriver = typeof fields[number];
 
 export type FieldsDriver = Record<FieldTypesDriver, FieldsProps>;
 
 export const fieldsDriver: FieldsDriver = {
   taxId: {
-    name: "taxId",
-    componentType: "textfield",
-    label: "Partita Iva",
+    name: 'taxId',
+    componentType: 'textfield',
+    label: 'Partita Iva',
     hidden: false,
     inputProps: { maxLength: 11 },
     size: 0.5,
@@ -33,9 +42,9 @@ export const fieldsDriver: FieldsDriver = {
     required: true,
   },
   businessName: {
-    name: "businessName",
-    componentType: "textfield",
-    label: "Ragione Sociale",
+    name: 'businessName',
+    componentType: 'textfield',
+    label: 'Ragione Sociale',
     hidden: false,
     size: 0.5,
     rules: {
@@ -44,9 +53,9 @@ export const fieldsDriver: FieldsDriver = {
     required: true,
   },
   denomination: {
-    name: "denomination",
-    componentType: "textfield",
-    label: "Denominazione",
+    name: 'denomination',
+    componentType: 'textfield',
+    label: 'Denominazione',
     hidden: false,
     size: 0.5,
     rules: {
@@ -58,9 +67,9 @@ export const fieldsDriver: FieldsDriver = {
     required: false,
   },
   registeredOffice: {
-    name: "registeredOffice",
-    componentType: "textfield",
-    label: "Sede legale",
+    name: 'registeredOffice',
+    componentType: 'textfield',
+    label: 'Sede legale',
     hidden: false,
     size: 0.5,
     rules: {
@@ -72,12 +81,12 @@ export const fieldsDriver: FieldsDriver = {
     required: false,
   },
   fiscalCode: {
-    name: "fiscalCode",
-    componentType: "textfield",
-    label: "Codice Fiscale",
+    name: 'fiscalCode',
+    componentType: 'textfield',
+    label: 'Codice Fiscale',
     hidden: false,
     size: 0.5,
-    inputProps: { maxLength: 16, style: { textTransform: "uppercase" } },
+    inputProps: { maxLength: 16, style: { textTransform: 'uppercase' } },
     rules: {
       pattern: {
         value: regex.FISCAL_CODE_PATTERN,
@@ -95,9 +104,9 @@ export const fieldsDriver: FieldsDriver = {
     required: false,
   },
   pec: {
-    name: "pec",
-    componentType: "textfield",
-    label: "Pec",
+    name: 'pec',
+    componentType: 'textfield',
+    label: 'Pec',
     hidden: false,
     size: 0.5,
     inputProps: { maxLength: 100 },
@@ -118,9 +127,9 @@ export const fieldsDriver: FieldsDriver = {
     required: false,
   },
   phoneNumber: {
-    name: "phoneNumber",
-    componentType: "textfield",
-    label: "Numero telefonico",
+    name: 'phoneNumber',
+    componentType: 'textfield',
+    label: 'Numero telefonico',
     hidden: false,
     size: 0.5,
     inputProps: { maxLength: 30 },
@@ -141,12 +150,12 @@ export const fieldsDriver: FieldsDriver = {
     required: false,
   },
   uniqueCode: {
-    name: "uniqueCode",
-    componentType: "textfield",
-    label: "Codice univoco",
+    name: 'uniqueCode',
+    componentType: 'textfield',
+    label: 'Codice univoco',
     hidden: false,
     size: 0.5,
-    inputProps: {minLength:6, maxLength: 7 },
+    inputProps: { minLength: 6, maxLength: 7 },
     rules: {
       pattern: {
         value: regex.UNIQUE_CODE_PATTERN,
@@ -163,4 +172,4 @@ export const fieldsDriver: FieldsDriver = {
     },
     required: false,
   },
-}
+};
