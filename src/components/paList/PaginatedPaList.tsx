@@ -7,11 +7,11 @@ type Props = {
 };
 
 const PaginatedPaList = ({ items }: Props) => (
-    <>
-      <PaginatedComponent<Pa> list={items} defaultLimit={5} displayedPage={2}>
-        {(slicedList) => <PaList items={slicedList} />}
-      </PaginatedComponent>
-    </>
-  );
+  <>
+    <PaginatedComponent<Pa> list={items} defaultLimit={5} displayedPage={2}>
+      {(slicedList) => <PaList items={slicedList} />}
+    </PaginatedComponent>
+  </>
+);
 
 export default PaginatedPaList;

@@ -7,9 +7,9 @@ import MainLayout from '../mainLayout/MainLayout';
  * @component
  */
 const SearchPage = () => (
-    <MainLayout>
-      <SearchForm />
-    </MainLayout>
-  );
+  <MainLayout>
+    <SearchForm />
+  </MainLayout>
+);
 
 export default SearchPage;

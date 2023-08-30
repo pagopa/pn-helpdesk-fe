@@ -57,6 +57,10 @@ const ResponseData = () => {
                   >
                     Download
                   </a>
+                  <small>
+                    <span>&nbsp;</span>I files zip sono protetti da password e posso essere aperti
+                    con un tool che supporti encryption AES, come 7Zip
+                  </small>
                 </>
               </Typography>
             </Grid>

@@ -13,7 +13,10 @@ export const spinnerSlice = createSlice({
   name: 'spinner',
   initialState,
   reducers: {
-    updateSpinnerOpened: (state, action: PayloadAction<boolean>) => ({ ...state, opened: action.payload }),
+    updateSpinnerOpened: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      opened: action.payload,
+    }),
   },
   extraReducers: (builder) => {
     builder.addCase('snackbar/resetState', () => initialState);

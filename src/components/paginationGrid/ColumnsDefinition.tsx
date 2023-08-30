@@ -33,7 +33,8 @@ const columnsTender: Array<GridColDef> = [
     minWidth: 100,
     sortable: false,
     disableColumnMenu: true,
-    renderCell: (params: any) => params.row.startDate ? format(new Date(params.row.startDate), 'dd-MM-yyyy HH:mm') : '',
+    renderCell: (params: any) =>
+      params.row.startDate ? format(new Date(params.row.startDate), 'dd-MM-yyyy HH:mm') : '',
   },
   {
     field: 'endDate',
@@ -44,7 +45,8 @@ const columnsTender: Array<GridColDef> = [
     minWidth: 100,
     sortable: false,
     disableColumnMenu: true,
-    renderCell: (params: any) => params.row.endDate ? format(new Date(params.row.endDate), 'dd-MM-yyyy HH:mm') : '',
+    renderCell: (params: any) =>
+      params.row.endDate ? format(new Date(params.row.endDate), 'dd-MM-yyyy HH:mm') : '',
   },
   {
     field: 'status',
@@ -110,7 +112,7 @@ const columnsDeliveryDriver: (withActions: boolean) => Array<GridColDef> = (with
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params: any) => params.row.fsu ? <CheckIcon /> : <ClearIcon />,
+      renderCell: (params: any) => (params.row.fsu ? <CheckIcon /> : <ClearIcon />),
     },
     {
       field: 'cap/zone',
@@ -170,8 +172,12 @@ const columnsCost: (withActions: boolean) => Array<GridColDef> = (withActions) =
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params: any) => {
-        if (params.row?.internationalProductType) {return params.row.internationalProductType;}
-        if (params.row?.nationalProductType) {return params.row.nationalProductType;}
+        if (params.row?.internationalProductType) {
+          return params.row.internationalProductType;
+        }
+        if (params.row?.nationalProductType) {
+          return params.row.nationalProductType;
+        }
         return null;
       },
     },

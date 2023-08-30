@@ -19,7 +19,8 @@ const AssociablePaTable = ({ paList, handleSelection }: Props) => {
   }, []);
 
   const paListFiltered = useMemo(() => {
-    const filterPredicate = (pa: Pa) => pa.name.toUpperCase().indexOf(filters.name.toUpperCase()) !== -1;
+    const filterPredicate = (pa: Pa) =>
+      pa.name.toUpperCase().indexOf(filters.name.toUpperCase()) !== -1;
 
     return filters.name ? paList.filter(filterPredicate) : paList;
   }, [filters.name, paList]);
