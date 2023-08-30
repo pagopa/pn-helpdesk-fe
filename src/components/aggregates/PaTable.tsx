@@ -43,11 +43,11 @@ type PaTableHeadProps = {
   onSelect?: (pa: Pa, selected: boolean) => void;
 };
 const PaTableHead = ({ onSelect }: PaTableHeadProps) => (
-    <TableRow data-testid="paTable-head">
-      {onSelect && <TableCell width={'10%'}></TableCell>}
-      <TableCell width={onSelect ? '90%' : '100%'}>Nome PA</TableCell>
-    </TableRow>
-  );
+  <TableRow data-testid="paTable-head">
+    {onSelect && <TableCell width={'10%'}></TableCell>}
+    <TableCell width={onSelect ? '90%' : '100%'}>Nome PA</TableCell>
+  </TableRow>
+);
 
 type PaTableProps = {
   paList: Array<Pa>;

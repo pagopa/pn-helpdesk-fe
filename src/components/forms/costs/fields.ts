@@ -104,10 +104,12 @@ export const fieldsCosts: { [key: string]: FieldsProps } = {
     rules: {
       validate: {
         validateCaps: (caps: Array<string>) => {
-          if (!caps) {return errorMessages.CAPS_INVALID;}
+          if (!caps) {
+            return errorMessages.CAPS_INVALID;
+          }
           const error = caps.filter((cap) => {
             const regexp = new RegExp(regex.CAP);
-              const test = regexp.test(cap);
+            const test = regexp.test(cap);
             return !test;
           });
           return error.length === 0 || errorMessages.CAPS_INVALID;

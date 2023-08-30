@@ -8,21 +8,21 @@ type Props = {
 };
 
 const PaListWithSelection = ({ items, onClick, selectedPa }: Props) => (
-    <PaList
-      items={items}
-      itemComponent={(pa: Pa) => (
-        <ListItemButton
-          style={{ backgroundColor: 'white' }}
-          onClick={() => onClick(pa)}
-          key={`list-${pa.id}`}
-          data-testid="paList-item"
-          selected={selectedPa === pa.id}
-        >
-          <ListItemText primary={pa.name} />
-        </ListItemButton>
-      )}
-      showEmptyMessage
-    />
-  );
+  <PaList
+    items={items}
+    itemComponent={(pa: Pa) => (
+      <ListItemButton
+        style={{ backgroundColor: 'white' }}
+        onClick={() => onClick(pa)}
+        key={`list-${pa.id}`}
+        data-testid="paList-item"
+        selected={selectedPa === pa.id}
+      >
+        <ListItemText primary={pa.name} />
+      </ListItemButton>
+    )}
+    showEmptyMessage
+  />
+);
 
 export default PaListWithSelection;

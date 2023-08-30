@@ -21,21 +21,23 @@ const StyledLink = styled(Link)(({ theme }) => ({
   },
 }));
 
-const BreadcrumbsLink = ({ linkLabel, linkRoute }: BreadcrumbsLinkProps) => <StyledLink to={linkRoute}>{linkLabel}</StyledLink>;
+const BreadcrumbsLink = ({ linkLabel, linkRoute }: BreadcrumbsLinkProps) => (
+  <StyledLink to={linkRoute}>{linkLabel}</StyledLink>
+);
 
 const CustomBreadcrumbs = ({ links, currentLocationLabel }: BreadcrumbsProps) => (
-    <Stack
-      direction={{ xs: 'column', sm: 'row' }}
-      alignItems={{ xs: 'start', sm: 'center' }}
-      justifyContent="start"
-      spacing={3}
-    >
-      <Breadcrumbs aria-label="breadcrumb">
-        {links.map((link) => (
-          <BreadcrumbsLink key={link.linkRoute} {...link} />
-        ))}
-        <Typography color="text.primary">{currentLocationLabel}</Typography>
-      </Breadcrumbs>
-    </Stack>
-  );
+  <Stack
+    direction={{ xs: 'column', sm: 'row' }}
+    alignItems={{ xs: 'start', sm: 'center' }}
+    justifyContent="start"
+    spacing={3}
+  >
+    <Breadcrumbs aria-label="breadcrumb">
+      {links.map((link) => (
+        <BreadcrumbsLink key={link.linkRoute} {...link} />
+      ))}
+      <Typography color="text.primary">{currentLocationLabel}</Typography>
+    </Breadcrumbs>
+  </Stack>
+);
 export default CustomBreadcrumbs;
