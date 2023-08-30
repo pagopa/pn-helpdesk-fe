@@ -1,12 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Column, Item } from "../table/tableTypes";
-import ItemsTable from "../table/table";
-import * as spinnerActions from "../../redux/spinnerSlice";
-import * as snackbarActions from "../../redux/snackbarSlice";
-import { KeyType, virtualKey } from "../../api/apiRequestTypes";
-import { useDispatch } from "react-redux";
-import apiRequests from "../../api/apiRequests";
-import useConfirmDialog from "../confirmationDialog/useConfirmDialog";
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Alert,
   Box,
@@ -16,10 +9,17 @@ import {
   Grid,
   Typography,
   Checkbox,
-} from "@mui/material";
-import PaginatedComponent from "../paginatedComponent/PaginatedComponent";
+} from '@mui/material';
+import { Column, Item } from '../table/tableTypes';
+import ItemsTable from '../table/table';
+import * as spinnerActions from '../../redux/spinnerSlice';
+import * as snackbarActions from '../../redux/snackbarSlice';
+import { KeyType, virtualKey } from '../../api/apiRequestTypes';
+import apiRequests from '../../api/apiRequests';
+import useConfirmDialog from '../confirmationDialog/useConfirmDialog';
+import PaginatedComponent from '../paginatedComponent/PaginatedComponent';
 
-type VirtualKeyColumn = "name" | "groups" | "status" | "pdnd";
+type VirtualKeyColumn = 'name' | 'groups' | 'status' | 'pdnd';
 
 type Props = {
   id: string;
@@ -34,8 +34,7 @@ const VirtualKeyTable = ({ id }: Props) => {
   const [isFetching, setFetching] = useState<boolean>(false);
   const [needRefresh, setNeedRefresh] = useState<boolean>(false);
 
-  const allSelected =
-    virtualkeyList.length > 0 ? virtualkeyList.every((vk) => vk.pdnd) : false;
+  const allSelected = virtualkeyList.length > 0 ? virtualkeyList.every((vk) => vk.pdnd) : false;
 
   const confirmDialog = useConfirmDialog();
 
@@ -44,7 +43,7 @@ const VirtualKeyTable = ({ id }: Props) => {
   useEffect(() => {
     let didCancel = false;
 
-    if (id !== "") {
+    if (id !== '') {
       setFetching(true);
       apiRequests
         .searchApiKey(id)
@@ -54,13 +53,11 @@ const VirtualKeyTable = ({ id }: Props) => {
             setUpdatedList([]);
           }
         })
-        .catch((err) => {
+        .catch(() => {
           if (!didCancel) {
-            reduxDispatch(snackbarActions.updateStatusCode("400"));
+            reduxDispatch(snackbarActions.updateStatusCode('400'));
             reduxDispatch(
-              snackbarActions.updateMessage(
-                "Non è stato possibile ottenere le Virtual Keys"
-              )
+              snackbarActions.updateMessage('Non è stato possibile ottenere le Virtual Keys')
             );
             reduxDispatch(snackbarActions.updateSnackbacrOpened(true));
           }
@@ -77,20 +74,16 @@ const VirtualKeyTable = ({ id }: Props) => {
   }, [id, needRefresh, reduxDispatch]);
 
   const handleChange = (vk: virtualKey) => {
-    //Update virtualKeyList
-    let virtualKeyIndex = virtualkeyList.findIndex(
-      (element) => element.id === vk.id
-    );
-    let copy = [...virtualkeyList];
-    let foundElement = copy[virtualKeyIndex];
+    // Update virtualKeyList
+    const virtualKeyIndex = virtualkeyList.findIndex((element) => element.id === vk.id);
+    const copy = [...virtualkeyList];
+    const foundElement = copy[virtualKeyIndex];
     foundElement.pdnd = !foundElement.pdnd;
     setVirtualKeyList(copy);
 
-    //Update SelectedKeys
-    let selectedKeyIndex = updatedList.findIndex(
-      (element) => element.id === vk.id
-    );
-    let copySelectedKeyList = [...updatedList];
+    // Update SelectedKeys
+    const selectedKeyIndex = updatedList.findIndex((element) => element.id === vk.id);
+    const copySelectedKeyList = [...updatedList];
     if (selectedKeyIndex === -1) {
       const { id, pdnd } = vk;
       copySelectedKeyList.push({ id, pdnd: !pdnd });
@@ -100,60 +93,50 @@ const VirtualKeyTable = ({ id }: Props) => {
     setUpdatedList(copySelectedKeyList);
   };
 
-  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let newSelect = allSelected ? false : true;
-    let elementToExcludeFromUpdatedList = new Map<string, string>();
+  const handleSelectAll = () => {
+    const newSelect = allSelected ? false : true;
+    const elementToExcludeFromUpdatedList = new Map<string, string>();
     updatedList
       .filter((vk) => vk.pdnd !== newSelect)
-      .forEach((vk, index) =>
-        elementToExcludeFromUpdatedList.set(vk.id, vk.id)
-      );
-    let elementToKeepFromUpdatedList = updatedList.filter(
-      (vk) => vk.pdnd === newSelect
-    );
-    let elementToChangeFromVirtualKeyList = virtualkeyList
-      .filter(
-        (vk) =>
-          !elementToExcludeFromUpdatedList.get(vk.id) && vk.pdnd !== newSelect
-      )
+      .forEach((vk) => elementToExcludeFromUpdatedList.set(vk.id, vk.id));
+    const elementToKeepFromUpdatedList = updatedList.filter((vk) => vk.pdnd === newSelect);
+    const elementToChangeFromVirtualKeyList = virtualkeyList
+      .filter((vk) => !elementToExcludeFromUpdatedList.get(vk.id) && vk.pdnd !== newSelect)
       .map((vk) => ({ id: vk.id, pdnd: newSelect }));
 
-    setUpdatedList([
-      ...elementToKeepFromUpdatedList,
-      ...elementToChangeFromVirtualKeyList,
-    ]);
+    setUpdatedList([...elementToKeepFromUpdatedList, ...elementToChangeFromVirtualKeyList]);
     setVirtualKeyList(virtualkeyList.map((vk) => ({ ...vk, pdnd: newSelect })));
   };
 
   const COLUMNS: Array<Column<VirtualKeyColumn>> = [
     {
-      id: "name",
-      label: "Nome",
-      width: "20%",
+      id: 'name',
+      label: 'Nome',
+      width: '20%',
       getCellLabel(value: string) {
         return value;
       },
     },
     {
-      id: "groups",
-      label: "Gruppi",
-      width: "20%",
+      id: 'groups',
+      label: 'Gruppi',
+      width: '20%',
       sortable: false,
       getCellLabel(value: string) {
         return value;
       },
     },
     {
-      id: "status",
-      label: "Stato",
-      width: "20%",
+      id: 'status',
+      label: 'Stato',
+      width: '20%',
       sortable: false,
       getCellLabel(value: string) {
         return value;
       },
     },
     {
-      id: "pdnd",
+      id: 'pdnd',
       label: (
         <FormControlLabel
           sx={{ marginLeft: 0.019 }}
@@ -165,15 +148,11 @@ const VirtualKeyTable = ({ id }: Props) => {
               data-testid={`vkTable-col-checkbox`}
             />
           }
-          label={
-            <Typography sx={{ fontWeight: 600 }}>
-              Flag Interoperabilita'
-            </Typography>
-          }
+          label={<Typography sx={{ fontWeight: 600 }}>Flag Interoperabilità</Typography>}
           labelPlacement="end"
         />
       ),
-      width: "20%",
+      width: '20%',
       getCellLabel(value: boolean, row: virtualKey) {
         return (
           <Checkbox
@@ -181,25 +160,23 @@ const VirtualKeyTable = ({ id }: Props) => {
             onChange={() => {
               handleChange(row);
             }}
-            inputProps={{ "aria-label": "controlled" }}
+            inputProps={{ 'aria-label': 'controlled' }}
             data-testid={`vkTable-row-checkbox-${row.id}`}
           />
         );
       },
     },
   ];
-  const rows: Array<Item> = virtualkeyList.map((n, i) => ({
+  const rows: Array<Item> = virtualkeyList.map((n) => ({
     ...n,
   }));
 
-  if (id === "") {
+  if (id === '') {
     return (
-      <Box
-        sx={{ display: "flex", marginTop: "110px", justifyContent: "center" }}
-      >
+      <Box sx={{ display: 'flex', marginTop: '110px', justifyContent: 'center' }}>
         <Alert severity="info">
-          Seleziona un elemento dalla sezione "Seleziona una PA" per
-          visualizzare le corrispettive Virtual keys
+          {`Seleziona un elemento dalla sezione "Seleziona una PA" per visualizzare le corrispettive
+          Virtual keys`}
         </Alert>
       </Box>
     );
@@ -207,10 +184,8 @@ const VirtualKeyTable = ({ id }: Props) => {
 
   if (isFetching) {
     return (
-      <Box
-        sx={{ display: "flex", marginTop: "110px", justifyContent: "center" }}
-      >
-        <CircularProgress color="inherit" />{" "}
+      <Box sx={{ display: 'flex', marginTop: '110px', justifyContent: 'center' }}>
+        <CircularProgress color="inherit" />{' '}
         <Typography variant="body1">Caricamento in corso...</Typography>
       </Box>
     );
@@ -222,27 +197,22 @@ const VirtualKeyTable = ({ id }: Props) => {
       .modifyPdnd({ items: updatedList })
       .then((res) => {
         if (res.unprocessedKey && res.unprocessedKey.length > 0) {
-          let unprocessedKey = res.unprocessedKey.join(",");
+          const unprocessedKey = res.unprocessedKey.join(',');
           reduxDispatch(snackbarActions.updateSnackbacrOpened(true));
-          reduxDispatch(snackbarActions.updateStatusCode("202"));
+          reduxDispatch(snackbarActions.updateStatusCode('202'));
           reduxDispatch(
             snackbarActions.updateMessage(
-              "Le seguenti Virtual Keys non sono state modificate con successo: " +
-                unprocessedKey
+              'Le seguenti Virtual Keys non sono state modificate con successo: ' + unprocessedKey
             )
           );
         }
 
         setNeedRefresh((refresh) => !refresh);
       })
-      .catch((err) => {
+      .catch(() => {
         reduxDispatch(snackbarActions.updateSnackbacrOpened(true));
-        reduxDispatch(snackbarActions.updateStatusCode("400"));
-        reduxDispatch(
-          snackbarActions.updateMessage(
-            "Problemi con la modifica delle Virtual Keys"
-          )
-        );
+        reduxDispatch(snackbarActions.updateStatusCode('400'));
+        reduxDispatch(snackbarActions.updateMessage('Problemi con la modifica delle Virtual Keys'));
       })
       .finally(() => {
         reduxDispatch(spinnerActions.updateSpinnerOpened(false));
@@ -251,14 +221,14 @@ const VirtualKeyTable = ({ id }: Props) => {
 
   const handleClickUpdate = () => {
     confirmDialog({
-      title: " Applica modifiche",
-      message: "Sei sicuro di voler confermare le modifiche?",
+      title: ' Applica modifiche',
+      message: 'Sei sicuro di voler confermare le modifiche?',
       extraContent: (
         <Box sx={{ marginTop: 2 }}>
           <Alert severity="warning">
-            {" "}
-            Attenzione: le modifiche non sono istantanee e potrebbero richiedere
-            qualche minuto per essere applicate.{" "}
+            {' '}
+            Attenzione: le modifiche non sono istantanee e potrebbero richiedere qualche minuto per
+            essere applicate.{' '}
           </Alert>
         </Box>
       ),
@@ -274,7 +244,7 @@ const VirtualKeyTable = ({ id }: Props) => {
       </PaginatedComponent>
 
       <Box paddingTop={3}>
-        <Grid direction={"row-reverse"} container marginTop={0.1}>
+        <Grid direction={'row-reverse'} container marginTop={0.1}>
           <Button
             variant="outlined"
             type="submit"

@@ -1,5 +1,5 @@
-import {FieldsProps} from "../formFields/FormFields";
-import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { FieldsProps } from '../formFields/FormFields';
 
 type Props = {
   /**
@@ -17,24 +17,24 @@ type Props = {
 };
 
 export interface OptionCustom {
-  key: string,
-  label: string
+  key: string;
+  label: string;
 }
 
-export default function SelectCustomField(props: Props){
+export default function SelectCustomField(props: Props) {
   const { field, keySelected, onChange } = props;
 
   return (
-    <FormControl sx={{ minWidth: 250, width: (field.size) ? "100%" : 250 }}>
+    <FormControl sx={{ minWidth: 250, width: field.size ? '100%' : 250 }}>
       <InputLabel id={field.label}>{field.label}</InputLabel>
       <Select
         labelId={field.label}
         id={field.label}
-        data-testid={field.name+"-select-custom"}
+        data-testid={field.name + '-select-custom'}
         label={field.label}
         onChange={onChange}
-        defaultValue={keySelected ?? ""}
-        value={keySelected ?? ""}
+        defaultValue={keySelected ?? ''}
+        value={keySelected ?? ''}
       >
         {field.optionItems?.map((item) => (
           <MenuItem key={item.key} value={item.key}>

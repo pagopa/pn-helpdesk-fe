@@ -1,22 +1,19 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import { act, render, RenderOptions } from "@testing-library/react";
-import { Provider } from "react-redux";
-import configureMockStore from "redux-mock-store";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { it } from "date-fns/locale";
-import { DeliveryDriver, FilterRequest, Page, UPLOAD_STATUS_ENUM } from "../model";
-import { DeliveryDriverDTO, TenderDTO } from "../api/paperChannel";
-import { RootState, store as realStore } from "../../src/redux/store";
-import { EnhancedStore, PreloadedState } from "@reduxjs/toolkit";
-import { PropsWithChildren } from "react";
-import { Permission, UserData } from "../model/user-permission";
-import { UserContext } from "../contexts/UserContext";
+import { BrowserRouter as Router } from 'react-router-dom';
+import { render, RenderOptions } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { it } from 'date-fns/locale';
+import { EnhancedStore, PreloadedState } from '@reduxjs/toolkit';
+import { PropsWithChildren } from 'react';
+import { DeliveryDriver, FilterRequest, Page, UPLOAD_STATUS_ENUM } from '../model';
+import { DeliveryDriverDTO, TenderDTO } from '../api/paperChannel';
+import { RootState, store as realStore } from '../../src/redux/store';
+import { Permission, UserData } from '../model/user-permission';
+import { UserContext } from '../contexts/UserContext';
 
-function reducer(
-  ui: any,
-  { preloadedState, store, ...renderOptions }: any = {}
-) {
+function reducer(ui: any, { ...renderOptions }: any = {}) {
   function Wrapper({ children }: any) {
     const mockStore = configureMockStore([]);
     const store = mockStore({
@@ -27,7 +24,7 @@ function reducer(
       snackbar: {
         opened: false,
         statusCode: undefined,
-        message: "",
+        message: '',
         autoHideDuration: 2000,
       },
       spinner: {
@@ -35,13 +32,13 @@ function reducer(
       },
       uploadAndDownload: {
         download: {
-          loading: false
+          loading: false,
         },
         upload: {
           loading: false,
           error: undefined,
-          status: UPLOAD_STATUS_ENUM.WAITING_FILE
-        }
+          status: UPLOAD_STATUS_ENUM.WAITING_FILE,
+        },
       },
       tenderForm: {
         tenderCode: undefined,
@@ -55,13 +52,13 @@ function reducer(
         pagination: {
           page: 1,
           tot: 10,
-          force: false
-        }
+          force: false,
+        },
       },
       aggregate: {
         aggregates: [],
         filters: {
-          name: "",
+          name: '',
         },
         pagination: {
           limit: 10,
@@ -74,7 +71,7 @@ function reducer(
         limit: 10,
         page: 0,
         total: 0,
-        pagesKey: []
+        pagesKey: [],
       },
       deliveries: {
         loading: false,
@@ -83,9 +80,8 @@ function reducer(
         pagination: {
           page: 1,
           tot: 10,
-        } as FilterRequest
-      }
-
+        } as FilterRequest,
+      },
     });
     return (
       <LocalizationProvider locale={it} dateAdapter={AdapterDateFns}>
@@ -98,7 +94,7 @@ function reducer(
   return render(ui, { wrapper: Wrapper, ...renderOptions });
 }
 
-interface ExtendedRenderOptions extends Omit<RenderOptions, "queries"> {
+interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: PreloadedState<RootState>;
   store?: EnhancedStore;
 }
@@ -106,13 +102,12 @@ interface ExtendedRenderOptions extends Omit<RenderOptions, "queries"> {
 export function renderWithProviders(
   ui: React.ReactElement,
   {
-    preloadedState,
     // Automatically create a store instance if no store was passed in
     store = realStore,
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
-  function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+  function Wrapper({ children }: PropsWithChildren<any>): JSX.Element {
     return (
       <Provider store={store}>
         <Router>{children}</Router>
@@ -126,29 +121,28 @@ export function renderWithProvidersAndPermissions(
   ui: React.ReactElement,
   permissions: Array<Permission> = [],
   {
-    preloadedState,
     // Automatically create a store instance if no store was passed in
     store = realStore,
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
-    let currentUser : UserData = {
-      email: "test@test.com",
-      permissions
-    }  
-    let setCurrentUser = () => {};
-    let clearCurrentUser = () => {};
+  const currentUser: UserData = {
+    email: 'test@test.com',
+    permissions,
+  };
+  const setCurrentUser = () => {};
+  const clearCurrentUser = () => {};
 
-    function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
-      return (
-        <Provider store={store}>
-          <UserContext.Provider value={{currentUser, setCurrentUser, clearCurrentUser}}>
-            <Router>{children}</Router>
-          </UserContext.Provider>
-        </Provider>
-      );
-    }
-    return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+  function Wrapper({ children }: PropsWithChildren<any>): JSX.Element {
+    return (
+      <Provider store={store}>
+        <UserContext.Provider value={{ currentUser, setCurrentUser, clearCurrentUser }}>
+          <Router>{children}</Router>
+        </UserContext.Provider>
+      </Provider>
+    );
+  }
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }
 
 export { reducer };

@@ -1,15 +1,22 @@
-import { act, render } from "@testing-library/react";
-import { useEffect } from "react";
-import { Permission, UserData } from "../../model/user-permission";
-import { useAuth } from "../auth";
+import { act, render } from '@testing-library/react';
+import { useEffect } from 'react';
+import { Permission, UserData } from '../../model/user-permission';
+import { useAuth } from '../auth';
 
-jest.mock("aws-amplify", () => ({
-  ...jest.requireActual("aws-amplify"),
-  Auth: {currentAuthenticatedUser: () => Promise.resolve({ attributes: {
-    email: 'toto@not.a.mail.it', 'custom:backoffice_tags': 'log-extract-read,api-key-write,non-existent-tag'
-  }})},
+jest.mock('aws-amplify', () => ({
+  ...jest.requireActual('aws-amplify'),
+  Auth: {
+    currentAuthenticatedUser: () =>
+      Promise.resolve({
+        attributes: {
+          email: 'toto@not.a.mail.it',
+          'custom:backoffice_tags': 'log-extract-read,api-key-write,non-existent-tag',
+        },
+      }),
+  },
 }));
 
+// eslint-disable-next-line functional/no-let
 let mockParsedUserData: UserData | null = null;
 
 function FakeApp() {
@@ -19,10 +26,15 @@ function FakeApp() {
     const fetchUserData = async () => {
       mockParsedUserData = await getUserData();
     };
+    // eslint-disable-next-line
     fetchUserData();
   }, [getUserData]);
 
-  return mockParsedUserData ? <div data-testid="email">{mockParsedUserData.email || "no mail"}</div> : <div data-testid="waiting" />;
+  return mockParsedUserData ? (
+    <div data-testid="email">{mockParsedUserData.email || 'no mail'}</div>
+  ) : (
+    <div data-testid="waiting" />
+  );
 }
 
 describe('auth hook', () => {
@@ -33,5 +45,5 @@ describe('auth hook', () => {
     expect(mockParsedUserData?.permissions).toContain(Permission.API_KEY_WRITE);
     expect(mockParsedUserData?.permissions).toContain(Permission.LOG_EXTRACT_READ);
     expect(mockParsedUserData?.email).toEqual('toto@not.a.mail.it');
- });
+  });
 });

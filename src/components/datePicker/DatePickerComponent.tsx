@@ -1,9 +1,9 @@
-import TextField from "@mui/material/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { FieldsProps } from "../formFields/FormFields";
-import { format } from "date-fns";
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { format } from 'date-fns';
+import { FieldsProps } from '../formFields/FormFields';
 
 /**
  * @typedef {Object} Props
@@ -39,14 +39,14 @@ const DatePickerComponent = (props: Props) => {
    * @param e the selected date
    */
   const handleChange = (e: any) => {
-    e =
-      field.name !== "referenceMonth"
+    const value =
+      field.name !== 'referenceMonth'
         ? format(e, field.format!)
         : format(
             new Date(new Date(new Date(e).setUTCDate(1)).setHours(0, 0, 0, 0)),
             "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
           );
-    props.onChange(e);
+    props.onChange(value);
   };
 
   return (
@@ -60,13 +60,9 @@ const DatePickerComponent = (props: Props) => {
         disableFuture
         onClose={props.onBlur}
         inputFormat={field.format}
-        mask={"__-__-____"}
+        mask={'__-__-____'}
         renderInput={(params) => (
-          <TextField
-            {...params}
-            onBlur={props.onBlur}
-            required={field.required}
-          />
+          <TextField {...params} onBlur={props.onBlur} required={field.required} />
         )}
       />
     </LocalizationProvider>

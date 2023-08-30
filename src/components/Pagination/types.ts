@@ -4,4 +4,4 @@ export type PaginationData = {
   total: number;
 };
 
-export type A11yPaginationLabelsTypes = "next" | "previous" | "page" | "first" | "last";
+export type A11yPaginationLabelsTypes = 'next' | 'previous' | 'page' | 'first' | 'last';

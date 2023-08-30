@@ -7,10 +7,9 @@ export const regex = {
   TAX_ID_PATTERN: /^[0-9]{11}$/i,
   PHONE_NUMBER_PATTERN: /^[+(\s.\-\d)]{5,30}$/i,
   PASSWORD:
-    //eslint-disable-next-line
+    // eslint-disable-next-line
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )[\w!@#$%^&()+."\-\?{}`~[\]*=|;:'<>,\/\\]{16,}$/,
-  EMAIL:
-    /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,15}$/,
+  EMAIL: /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,15}$/,
   IUN: /^([A-Za-z]{4})-([A-Za-z]{4})-([A-Za-z]{4})-(\d{6})-([A-Za-z]{1})-(\d{1})$/,
   JTI: /^[\w-]+$/,
   AMOUNT: /^\d,\d{1,2}$/,

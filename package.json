@@ -1,6 +1,6 @@
 {
   "name": "pn-helpdesk-fe",
-  "version": "0.1.0",
+  "version": "2.0.1",
   "private": true,
   "proxy": "http://localhost:8080/log-extractor",
   "dependencies": {
@@ -54,7 +54,9 @@
     "test": "react-scripts test --watchAll=false",
     "test:coverage": "react-scripts test --watchAll=false --ci --coverage --testResultsProcessor=jest-sonar-reporter",
     "eject": "react-scripts eject",
-    "sonar": "node sonarqube-scanner.js"
+    "sonar": "node sonarqube-scanner.js",
+    "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
+    "format": "prettier \"./**/*.{ts,tsx}\" --write"
   },
   "eslintConfig": {
     "extends": [

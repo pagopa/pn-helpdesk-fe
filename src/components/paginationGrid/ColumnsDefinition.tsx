@@ -1,21 +1,23 @@
-import {ModelType} from "./index";
-import {format} from "date-fns";
-import React from "react";
-import {GridColDef} from "@mui/x-data-grid";
+import { format } from 'date-fns';
+import React from 'react';
+import { GridColDef } from '@mui/x-data-grid';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-import {ButtonsActionTenderTable} from "../buttonsGroup/ButtonsActionTenderTable";
-import {ButtonsActionCostTable} from "../buttonsGroup/ButtonsActionCostTable";
-import {CostDTO} from "../../api/paperChannel";
-import {ButtonsActionDriverTable, ButtonShowCosts} from "../buttonsGroup/ButtonsActionDriverTable";
-import {TenderStatusChip} from "../deliveriesDrivers/TenderStatusChip";
-import {Tender} from "../../model";
+import { ButtonsActionTenderTable } from '../buttonsGroup/ButtonsActionTenderTable';
+import { ButtonsActionCostTable } from '../buttonsGroup/ButtonsActionCostTable';
+import { CostDTO } from '../../api/paperChannel';
+import {
+  ButtonsActionDriverTable,
+  ButtonShowCosts,
+} from '../buttonsGroup/ButtonsActionDriverTable';
+import { TenderStatusChip } from '../deliveriesDrivers/TenderStatusChip';
+import { Tender } from '../../model';
+import { ModelType } from './index';
 
-
-const columnsTender: GridColDef[] = [
+const columnsTender: Array<GridColDef> = [
   {
-    field: "name",
-    headerName: "Identificativo",
+    field: 'name',
+    headerName: 'Identificativo',
     width: 200,
     flex: 1,
     minWidth: 100,
@@ -23,69 +25,57 @@ const columnsTender: GridColDef[] = [
     disableColumnMenu: true,
   },
   {
-    field: "startDate",
-    headerName: "Data inizio",
-    type: "date",
+    field: 'startDate',
+    headerName: 'Data inizio',
+    type: 'date',
     width: 400,
     flex: 1,
     minWidth: 100,
     sortable: false,
     disableColumnMenu: true,
-    renderCell: (params: any) => {
-      return params.row.startDate
-        ? format(new Date(params.row.startDate), "dd-MM-yyyy HH:mm")
-        : "";
-    },
+    renderCell: (params: any) => params.row.startDate ? format(new Date(params.row.startDate), 'dd-MM-yyyy HH:mm') : '',
   },
   {
-    field: "endDate",
-    headerName: "Data fine",
-    type: "date",
+    field: 'endDate',
+    headerName: 'Data fine',
+    type: 'date',
     width: 400,
     flex: 1,
     minWidth: 100,
     sortable: false,
     disableColumnMenu: true,
-    renderCell: (params: any) => {
-      return params.row.endDate
-        ? format(new Date(params.row.endDate), "dd-MM-yyyy HH:mm")
-        : "";
-    },
+    renderCell: (params: any) => params.row.endDate ? format(new Date(params.row.endDate), 'dd-MM-yyyy HH:mm') : '',
   },
   {
-    field: "status",
-    headerName: "Stato",
-    type: "string",
+    field: 'status',
+    headerName: 'Stato',
+    type: 'string',
     width: 400,
     flex: 1,
     minWidth: 100,
     sortable: false,
     disableColumnMenu: true,
-    renderCell: (params: any) => {
-      return <TenderStatusChip data={params.row as Tender}/>
-    },
+    renderCell: (params: any) => <TenderStatusChip data={params.row as Tender} />,
   },
   {
-    field: "actions",
-    headerName: "Azioni",
-    type: "string",
+    field: 'actions',
+    headerName: 'Azioni',
+    type: 'string',
     width: 400,
     flex: 1,
     minWidth: 100,
     sortable: false,
     disableColumnMenu: true,
-    renderCell: (params: any) => {
-      return <ButtonsActionTenderTable value={params.row}/>
-    },
+    renderCell: (params: any) => <ButtonsActionTenderTable value={params.row} />,
   },
-]
+];
 
-const columnsDeliveryDriver: (withActions:boolean) => GridColDef[] = (withActions) => {
+const columnsDeliveryDriver: (withActions: boolean) => Array<GridColDef> = (withActions) => {
   const columns = [
     {
-      field: "uniqueCode",
-      headerName: "Codice Univoco",
-      type: "string",
+      field: 'uniqueCode',
+      headerName: 'Codice Univoco',
+      type: 'string',
       width: 400,
       flex: 1,
       minWidth: 100,
@@ -93,8 +83,8 @@ const columnsDeliveryDriver: (withActions:boolean) => GridColDef[] = (withAction
       disableColumnMenu: true,
     },
     {
-      field: "businessName",
-      headerName: "Ragione sociale",
+      field: 'businessName',
+      headerName: 'Ragione sociale',
       width: 200,
       flex: 1,
       minWidth: 100,
@@ -102,9 +92,9 @@ const columnsDeliveryDriver: (withActions:boolean) => GridColDef[] = (withAction
       disableColumnMenu: true,
     },
     {
-      field: "taxId",
-      headerName: "Partita iva",
-      type: "string",
+      field: 'taxId',
+      headerName: 'Partita iva',
+      type: 'string',
       width: 400,
       flex: 1,
       minWidth: 100,
@@ -112,150 +102,131 @@ const columnsDeliveryDriver: (withActions:boolean) => GridColDef[] = (withAction
       disableColumnMenu: true,
     },
     {
-      field: "fsu",
-      headerName: "FSU",
-      type: "string",
+      field: 'fsu',
+      headerName: 'FSU',
+      type: 'string',
       width: 400,
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params: any) => {
-        return (params.row.fsu) ? <CheckIcon/> : <ClearIcon/>
-      },
+      renderCell: (params: any) => params.row.fsu ? <CheckIcon /> : <ClearIcon />,
     },
     {
-      field: "cap/zone",
-      headerName: "CAP/ZONE",
-      type: "string",
+      field: 'cap/zone',
+      headerName: 'CAP/ZONE',
+      type: 'string',
       width: 400,
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params: any) => {
-        return <ButtonShowCosts value={params.row}/>
-      },
+      renderCell: (params: any) => <ButtonShowCosts value={params.row} />,
     },
     {
-      field: "action",
-      headerName: "Azioni",
-      type: "string",
+      field: 'action',
+      headerName: 'Azioni',
+      type: 'string',
       width: 100,
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params: any) => {
-        return <ButtonsActionDriverTable value={params.row}/>
-      },
+      renderCell: (params: any) => <ButtonsActionDriverTable value={params.row} />,
     },
-
-  ]
+  ];
   if (!withActions) {
-    columns.pop()
+    columns.pop();
   }
-  return columns
-}
+  return columns;
+};
 
+const emptyColumn: Array<GridColDef> = [];
 
-
-const emptyColumn: GridColDef[]= []
-
-const columnsCost : (withActions:boolean) =>  GridColDef[] = (withActions) => {
-  const columns:GridColDef[]= [
+const columnsCost: (withActions: boolean) => Array<GridColDef> = (withActions) => {
+  const columns: Array<GridColDef> = [
     {
-      field: "type",
-      headerName: "Cap/Zona",
+      field: 'type',
+      headerName: 'Cap/Zona',
       width: 200,
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params: any) => {
-        if ( params.row?.cap){
-          return params.row.cap?.join(",");
-        }else{
-          return params.row.zone
+        if (params.row?.cap) {
+          return params.row.cap?.join(',');
+        } else {
+          return params.row.zone;
         }
-      }
+      },
     },
     {
-      field: "productType",
-      headerName: "Prodotto",
+      field: 'productType',
+      headerName: 'Prodotto',
       width: 400,
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params: any) => {
-        if (params.row?.internationalProductType) return params.row.internationalProductType
-        if (params.row?.nationalProductType) return params.row.nationalProductType
-        return null
+        if (params.row?.internationalProductType) {return params.row.internationalProductType;}
+        if (params.row?.nationalProductType) {return params.row.nationalProductType;}
+        return null;
       },
     },
     {
-      field: "price",
-      headerName: "Costo",
+      field: 'price',
+      headerName: 'Costo',
       width: 400,
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params: any) => {
-        return params.row?.price
-      },
+      renderCell: (params: any) => params.row?.price,
     },
     {
-      field: "priceAdditional",
-      headerName: "Costo aggiuntivo",
+      field: 'priceAdditional',
+      headerName: 'Costo aggiuntivo',
       width: 400,
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params: any) => {
-        return params.row?.priceAdditional
-      },
+      renderCell: (params: any) => params.row?.priceAdditional,
     },
     {
-      field: "actions",
-      headerName: "Azioni",
+      field: 'actions',
+      headerName: 'Azioni',
       width: 400,
       flex: 1,
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (params: any) => {
-        return <ButtonsActionCostTable value={params.row as CostDTO} />
-      },
+      renderCell: (params: any) => <ButtonsActionCostTable value={params.row as CostDTO} />,
     },
-  ]
+  ];
   if (!withActions) {
-    columns.pop()
+    columns.pop();
   }
-  return columns
-}
+  return columns;
+};
 
+const getColumn = (type: ModelType) => {
+  switch (type) {
+    case ModelType.TENDER:
+      return columnsTender;
+    case ModelType.DELIVERY_DRIVER:
+      return columnsDeliveryDriver(false);
+    case ModelType.DELIVERY_DRIVER_WITH_ACTIONS:
+      return columnsDeliveryDriver(true);
+    case ModelType.COST:
+      return columnsCost(false);
+    case ModelType.COST_WITH_ACTIONS:
+      return columnsCost(true);
+    default:
+      return emptyColumn;
+  }
+};
 
-
-const getColumn = (type:ModelType) => {
-    switch (type) {
-      case ModelType.TENDER:
-        return columnsTender;
-      case ModelType.DELIVERY_DRIVER:
-        return columnsDeliveryDriver(false);
-      case ModelType.DELIVERY_DRIVER_WITH_ACTIONS:
-        return columnsDeliveryDriver(true);
-      case ModelType.COST:
-        return columnsCost(false);
-      case ModelType.COST_WITH_ACTIONS:
-        return columnsCost(true);
-      default:
-        return emptyColumn
-    }
-}
-
-export {
-  getColumn
-}
+export { getColumn };

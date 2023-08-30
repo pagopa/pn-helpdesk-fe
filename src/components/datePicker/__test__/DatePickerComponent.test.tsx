@@ -1,31 +1,31 @@
 /**
  * @jest-environment jsdom
  */
-import React from "react";
-import "regenerator-runtime/runtime";
-import { fireEvent, screen } from "@testing-library/react";
-import { FieldsProps } from "../../formFields/FormFields";
-import DatePickerComponent from "../DatePickerComponent";
-import { reducer } from "../../../mocks/mockReducer";
+import React from 'react';
+import 'regenerator-runtime/runtime';
+import { fireEvent, screen } from '@testing-library/react';
+import { FieldsProps } from '../../formFields/FormFields';
+import DatePickerComponent from '../DatePickerComponent';
+import { reducer } from '../../../mocks/mockReducer';
 
 const field: FieldsProps = {
-  name: "referenceMonth",
-  componentType: "datePicker",
-  label: "Mese",
+  name: 'referenceMonth',
+  componentType: 'datePicker',
+  label: 'Mese',
   hidden: false,
-  view: ["month", "year"],
-  type: "month",
-  format: "yyyy-MM",
+  view: ['month', 'year'],
+  type: 'month',
+  format: 'yyyy-MM',
   required: false,
 };
 
-describe("DatePickerComponent", () => {
+describe('DatePickerComponent', () => {
   beforeAll(() => {
-    Object.defineProperty(window, "matchMedia", {
+    Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: (query: string) => ({
         media: query,
-        matches: query === "(pointer: fine)",
+        matches: query === '(pointer: fine)',
         onchange: () => {},
         addEventListener: () => {},
         removeEventListener: () => {},
@@ -36,42 +36,37 @@ describe("DatePickerComponent", () => {
     });
   });
 
-  it("renders date picker component with value", () => {
+  it('renders date picker component with value', () => {
     reducer(
-      <DatePickerComponent
-        field={field}
-        value="2022-11"
-        onChange={jest.fn()}
-        onBlur={jest.fn()}
-      />
+      <DatePickerComponent field={field} value="2022-11" onChange={jest.fn()} onBlur={jest.fn()} />
     );
-    const input = screen.getByRole("textbox", {
-      name: "Mese",
+    const input = screen.getByRole('textbox', {
+      name: 'Mese',
     });
     expect(input).toBeInTheDocument();
-    expect(input).toHaveValue("2022-11");
+    expect(input).toHaveValue('2022-11');
   });
 
-  it("test changing value", async () => {
+  it('test changing value', async () => {
     const handleChange = jest.fn();
     const handleBlur = jest.fn();
 
     reducer(
       <DatePickerComponent
         field={field}
-        value={"2022-09"}
+        value={'2022-09'}
         onChange={handleChange}
         onBlur={handleBlur}
       />
     );
-    const input = await screen.findByRole("textbox", {
-      name: "Mese",
+    const input = await screen.findByRole('textbox', {
+      name: 'Mese',
     });
 
     fireEvent.change(input, {
-      target: { value: "2022-11" },
+      target: { value: '2022-11' },
     });
-    expect(input).toHaveValue("2022-11");
+    expect(input).toHaveValue('2022-11');
     expect(handleChange).toHaveBeenCalled();
   });
 });
