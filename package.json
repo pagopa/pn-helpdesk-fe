@@ -1,6 +1,6 @@
 {
-  "name": "pn-logextractor-fe",
-  "version": "2.0.0",
+  "name": "pn-helpdesk-fe",
+  "version": "2.0.1",
   "private": true,
   "proxy": "http://localhost:8080/log-extractor",
   "dependencies": {
