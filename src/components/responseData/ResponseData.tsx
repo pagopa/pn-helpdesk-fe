@@ -40,21 +40,32 @@ const ResponseData = () => {
       <Grid item container>
         <Grid item>
           <Typography align="center" color="text.primary">
-            {`${ResponseType[Object.keys(response)[0] as keyof typeof ResponseType]}: ${Object.values(response)[0]
-              }`}
+            {`${ResponseType[Object.keys(response)[0] as keyof typeof ResponseType]}: ${
+              Object.values(response)[0]
+            }`}
           </Typography>
         </Grid>
-        {Object.values(response)[1] as keyof typeof ResponseType &&
+        {(Object.values(response)[1] as keyof typeof ResponseType) && (
           <Grid item container>
-            <Grid item >
+            <Grid item>
               <Typography align="center" color="text.primary">
                 <>
-                  <a target="_blank" href={Object.values(response)[1] as keyof typeof ResponseType} rel="noreferrer">Download</a>
-                  <small><span>&nbsp;</span>I files zip sono protetti da password e posso essere aperti con un tool che supporti encryption AES, come 7Zip</small>
+                  <a
+                    target="_blank"
+                    href={Object.values(response)[1] as keyof typeof ResponseType}
+                    rel="noreferrer"
+                  >
+                    Download
+                  </a>
+                  <small>
+                    <span>&nbsp;</span>I files zip sono protetti da password e posso essere aperti
+                    con un tool che supporti encryption AES, come 7Zip
+                  </small>
                 </>
               </Typography>
             </Grid>
-          </Grid>}
+          </Grid>
+        )}
       </Grid>
     </Grid>
   ) : null;

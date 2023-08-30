@@ -9,12 +9,12 @@ describe('PaginatedComponent with List', () => {
   const customLimit = 10;
 
   const List = ({ list }: { list: Array<string> }) => (
-      <ul data-testid="custom-list">
-        {list.map((el) => (
-          <li key={el}>{el}</li>
-        ))}
-      </ul>
-    );
+    <ul data-testid="custom-list">
+      {list.map((el) => (
+        <li key={el}>{el}</li>
+      ))}
+    </ul>
+  );
 
   beforeEach(() => {
     result = reducer(

@@ -30,10 +30,14 @@ export const ConfirmationProvider = ({ children, defaultOptions = {} }: Props) =
   const [resolveReject, setResolveReject] = useState<Array<any>>([]);
   const [resolve, reject] = resolveReject;
 
-  const confirm = useCallback((options = INITIAL_OPTIONS) => new Promise((resolve, reject) => {
-      setOptions(options);
-      setResolveReject([resolve, reject]);
-    }), []);
+  const confirm = useCallback(
+    (options = INITIAL_OPTIONS) =>
+      new Promise((resolve, reject) => {
+        setOptions(options);
+        setResolveReject([resolve, reject]);
+      }),
+    []
+  );
 
   const handleClose = useCallback(() => {
     setResolveReject([]);

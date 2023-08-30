@@ -7,10 +7,10 @@ type DefaultPaItemProps = {
   pa: Pa;
 };
 const DefaultPaItem = ({ pa }: DefaultPaItemProps) => (
-    <ListItem style={{ backgroundColor: 'white' }} data-testid="paList-item" divider={true}>
-      <ListItemText primary={pa.name} />
-    </ListItem>
-  );
+  <ListItem style={{ backgroundColor: 'white' }} data-testid="paList-item" divider={true}>
+    <ListItemText primary={pa.name} />
+  </ListItem>
+);
 
 type PaListProps = {
   items: Array<Pa>;
