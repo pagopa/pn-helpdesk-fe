@@ -313,15 +313,8 @@ const FieldsProperties: { [key: string]: FieldsProps } = {
           );
           return isBefore(endDate, maxDate) || errorMessages.ONE_MONTH_INTERVAL;
         },
-        checkDates: (dates: Array<any>) => {
-          const startDate = new Date(dates[0]);
-          const endDate = new Date(dates[1]);
-          return (
-            isBefore(startDate, endDate) ||
-            isSameDay(startDate, endDate) ||
-            errorMessages.DATES_ORDER
-          );
-        },
+        checkDates: (dates: Array<any>) => checkDt(dates)
+        
       },
     },
   },
@@ -367,15 +360,7 @@ const FieldsProperties: { [key: string]: FieldsProps } = {
             errorMessages.DATES_INTERVAL
           );
         },
-        checkDates: (dates: Array<any>) => {
-          const startDate = new Date(dates[0]);
-          const endDate = new Date(dates[1]);
-          return (
-            isBefore(startDate, endDate) ||
-            isSameDay(startDate, endDate) ||
-            errorMessages.DATES_ORDER
-          );
-        },
+        checkDates: (dates: Array<any>) => checkDt(dates)
       },
     },
   },
@@ -544,6 +529,16 @@ type Props = {
   value?: any;
   onBlur?: any;
   error?: any;
+};
+
+const checkDt = (dates: Array<any>) => {
+  const startDate = new Date(dates[0]);
+  const endDate = new Date(dates[1]);
+  return (
+    isBefore(startDate, endDate) ||
+    isSameDay(startDate, endDate) ||
+    errorMessages.DATES_ORDER
+  );
 };
 
 /**
