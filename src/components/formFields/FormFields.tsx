@@ -178,7 +178,7 @@ const FieldsProperties: { [key: string]: FieldsProps } = {
   'Partita Iva': {
     name: 'piva',
     componentType: 'textfield',
-    label: 'Partita Iva',
+    label: 'Codice Fiscale',
     hidden: true,
     inputProps: { maxLength: 11, style: { textTransform: 'uppercase' } },
     rules: {
