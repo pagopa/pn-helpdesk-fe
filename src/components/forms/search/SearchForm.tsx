@@ -151,12 +151,18 @@ const SearchForm = () => {
         const piva = fields.find((f) => f.name === 'piva');
         if (piva) {
           piva.hidden = values.recipientType === 'PF';
+          if (piva.hidden){
+            clearErrors('piva');
+          }
         }
       }
       if (fields && fields.find((f) => f.name === 'taxId')) {
         const taxId = fields.find((f) => f.name === 'taxId');
         if (taxId) {
           taxId.hidden = values.recipientType === 'PG';
+          if (taxId.hidden) {
+            clearErrors('taxId');
+          }
         }
       }
     }
