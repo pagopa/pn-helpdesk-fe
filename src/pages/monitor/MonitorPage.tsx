@@ -264,8 +264,8 @@ const MonitorPage = () => {
                 maxDateTime={new Date()}
                 label="Data e ora evento"
                 value={modalEventDate}
-                onChange={(e) => handleChange(e)}
-                renderInput={(params) => (
+                onChange={(e: React.ChangeEvent) => handleChange(e)}
+                renderInput={(params: any) => (
                   <TextField
                     onKeyDown={(e) => e.preventDefault()}
                     {...params}

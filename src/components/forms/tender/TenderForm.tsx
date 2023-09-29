@@ -106,7 +106,9 @@ export function TenderForm(props: TenderFormProps) {
                       value={value}
                     />
                     <FormHelperText error>
-                      {errors[field] ? errors[field].message : ' '}
+                      {errors[field] && (
+                        <FormHelperText error>{errors[field]?.message as string}</FormHelperText>
+                      )}
                     </FormHelperText>
                   </>
                 )}
