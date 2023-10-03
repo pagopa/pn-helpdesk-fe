@@ -105,9 +105,9 @@ export function TenderForm(props: TenderFormProps) {
                       onChange={onChange}
                       value={value}
                     />
-                    <FormHelperText error>
-                      {errors[field] ? errors[field].message : ' '}
-                    </FormHelperText>
+                    {errors[field] && (
+                      <FormHelperText error>{errors[field]?.message as string}</FormHelperText>
+                    )}
                   </>
                 )}
               />

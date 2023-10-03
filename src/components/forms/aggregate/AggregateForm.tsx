@@ -261,7 +261,7 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
                             }}
                           />
                           <FormHelperText error>
-                            {errors[field.name] ? errors[field.name].message : ' '}
+                            {errors[field.name] ? (errors[field.name]?.message as string) : ' '}
                           </FormHelperText>
                         </>
                       )}

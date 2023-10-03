@@ -56,7 +56,7 @@ const FilterTable = memo(({ fields, onFiltersSubmit, applyFilterText = 'Filtra' 
                   value={value}
                 />
                 <FormHelperText error>
-                  {errors[field.name] ? errors[field.name].message : ' '}
+                  {errors[field.name] ? (errors[field.name]?.message as string) : ' '}
                 </FormHelperText>
               </>
             )}
