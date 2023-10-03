@@ -124,7 +124,7 @@ const LoginForm = ({ setUser }: any) => {
                           value={value}
                         />
                         <FormHelperText error>
-                          {errors[field] ? errors[field].message : ' '}
+                          {errors[field] ? errors[field]?.message : ' '}
                         </FormHelperText>
                       </>
                     )}

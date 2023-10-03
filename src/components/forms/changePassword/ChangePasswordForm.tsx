@@ -153,7 +153,9 @@ const ChangePasswordForm = ({ user }: any) => {
                           value={value}
                         />
                         <FormHelperText error>
-                          {errors[currentField.name] ? errors[currentField.name].message : ' '}
+                          {errors[currentField.name]
+                            ? (errors[currentField.name]?.message as string)
+                            : ' '}
                         </FormHelperText>
                       </>
                     )}

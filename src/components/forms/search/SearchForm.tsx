@@ -151,7 +151,7 @@ const SearchForm = () => {
         const piva = fields.find((f) => f.name === 'piva');
         if (piva) {
           piva.hidden = values.recipientType === 'PF';
-          if (piva.hidden){
+          if (piva.hidden) {
             clearErrors('piva');
           }
         }
@@ -411,8 +411,10 @@ const SearchForm = () => {
     // for  use case 7 add deanonimization = false
     if (
       selectedValue === 'Ottieni log completi' &&
+      // eslint-disable-next-line no-prototype-builtins
       (payload.hasOwnProperty('taxId') || payload.hasOwnProperty('personId'))
     ) {
+      // eslint-disable-next-line no-prototype-builtins
       payload.deanonimization = payload.hasOwnProperty('taxId');
     }
     return payload;
@@ -525,9 +527,9 @@ const SearchForm = () => {
                                       }}
                                     />
                                     <FormHelperText error>
-                                      {errors[field.name] &&
+                                      {errors[field?.name] &&
                                       field.componentType !== 'dateRangePicker'
-                                        ? errors[field.name].message
+                                        ? (errors[field?.name]?.message as string)
                                         : ' '}
                                     </FormHelperText>
                                   </>
