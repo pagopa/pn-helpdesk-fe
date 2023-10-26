@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { format } from 'date-fns';
-import { DateTimePicker } from '@mui/lab';
+import { DateTimePicker } from '@mui/x-date-pickers';
 import {
   Dialog,
   DialogTitle,
@@ -264,7 +264,7 @@ const MonitorPage = () => {
                 maxDateTime={new Date()}
                 label="Data e ora evento"
                 value={modalEventDate}
-                onChange={(e: React.ChangeEvent) => handleChange(e)}
+                onChange={(date) => handleChange(date)}
                 renderInput={(params: any) => (
                   <TextField
                     onKeyDown={(e) => e.preventDefault()}
