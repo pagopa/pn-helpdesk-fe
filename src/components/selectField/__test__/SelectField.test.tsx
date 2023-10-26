@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import 'regenerator-runtime/runtime';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import SelectField from '../SelectField';
 
 const props = {
@@ -27,6 +27,10 @@ const props = {
 describe('SelectField Component', () => {
   it('renders component', () => {
     render(<SelectField field={props.field} value={props.value} onChange={props.onChange} />);
-    expect(screen.getByRole('button', { name: props.field.selectItems[0] })).toBeInTheDocument();
+    const selectField = screen.getByTestId(`select-${props.field.name}`);
+    expect(selectField).toBeInTheDocument();
+    fireEvent.click(selectField);
+    const selectItems = screen.getAllByRole('combobox');
+    expect(selectItems[0]).toBeInTheDocument();
   });
 });

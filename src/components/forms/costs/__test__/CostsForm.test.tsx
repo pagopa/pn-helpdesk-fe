@@ -62,7 +62,8 @@ describe('CostsForm Test', () => {
     const inputs = screen.queryAllByRole('textbox');
     expect(inputs.length).toEqual(0);
 
-    const [buttonSelect, buttonCancel, buttonSave] = screen.getAllByRole('button');
+    const [buttonCancel, buttonSave] = screen.getAllByTestId(/btn-/);
+    const buttonSelect = screen.getByRole('combobox');
     expect(buttonSelect).toBeInTheDocument();
     expect(buttonCancel).toBeInTheDocument();
     expect(buttonSave).toBeInTheDocument();

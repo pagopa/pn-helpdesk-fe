@@ -94,7 +94,7 @@ const DateRangePickerComponent = (props: Props) => {
   };
 
   return (
-    <Grid item container spacing={2}>
+    <Grid item container spacing={2} data-testid="data-range-picker">
       {dates.map((date, index) => (
         <Grid item key={date.label} xs={12} lg={6} sx={{ paddingRight: '0px!important' }}>
           <DatePicker

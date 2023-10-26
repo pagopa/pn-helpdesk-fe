@@ -122,7 +122,7 @@ export function CostsForm(props: CostFormProps) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props?.onCancel} variant="outlined">
+        <Button onClick={props?.onCancel} variant="outlined" data-testid={'btn-cancel-cost'}>
           Annulla
         </Button>
         <LoadingButton

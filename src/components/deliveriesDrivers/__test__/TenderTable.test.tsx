@@ -60,7 +60,7 @@ describe('TenderTableTest', () => {
   it('whenChangedPageSize', async () => {
     mockingStore({ ...tenderStore, allData: {} });
     reducer(<TenderTable />);
-    const buttons = screen.getAllByRole('button');
+    const buttons = screen.getAllByRole('combobox');
 
     fireEvent.mouseDown(buttons[0]);
 

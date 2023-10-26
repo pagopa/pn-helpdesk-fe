@@ -4,9 +4,8 @@
 import React, { useCallback, useState } from 'react';
 import 'regenerator-runtime/runtime';
 
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitForElementToBeRemoved, act } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import NavigationMenu from '../NavigationMenu';
 import { Permission, UserData } from '../../../model/user-permission';
