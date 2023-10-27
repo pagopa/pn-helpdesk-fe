@@ -59,7 +59,7 @@
     "sonar": "node sonarqube-scanner.js",
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
     "format": "prettier \"./**/*.{ts,tsx}\" --write",
-    "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +"
+    "clean": "node bin/cleanup.mjs"
   },
   "eslintConfig": {
     "extends": [
