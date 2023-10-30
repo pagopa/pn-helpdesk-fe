@@ -204,6 +204,7 @@ const MonitorPage = () => {
         params.row.data ? format(new Date(params.row.data), 'dd-MM-yyyy HH:mm') : '',
     },
     {
+      id:'menu',
       field: 'actions',
       headerName: 'Cambio Stato',
       width: 200,
