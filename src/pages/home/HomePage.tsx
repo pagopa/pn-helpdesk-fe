@@ -16,6 +16,7 @@ const HomePage = () => {
           {availableItems.map((item) => (
             <Grid key={item.title} item width="25%">
               <Card
+                id="cardComponent"
                 component={Paper}
                 elevation={8}
                 onClick={() => navigate(item.link)}
@@ -28,9 +29,9 @@ const HomePage = () => {
                   flexDirection="column"
                   justifyContent="space-between"
                 >
-                  <Typography variant="h5">{item.title}</Typography>
+                  <Typography variant="h5" id="cardTitle">{item.title}</Typography>
                   <Box alignSelf="flex-end">
-                    <ArrowForward color="primary" />
+                    <ArrowForward id="iconArrow" color="primary" />
                   </Box>
                 </Box>
               </Card>

@@ -175,6 +175,7 @@ const MonitorPage = () => {
       disableColumnMenu: true,
     },
     {
+      id:'stato',
       field: 'state',
       headerName: 'Stato',
       type: 'actions',
@@ -189,6 +190,7 @@ const MonitorPage = () => {
       minWidth: 100,
     },
     {
+      id:'dataCreazione',
       field: 'data',
       headerName: 'Data di creazione',
       type: 'date',
@@ -215,6 +217,7 @@ const MonitorPage = () => {
         params.row.state
           ? [
               <GridActionsCellItem
+                id="Inserire KO"
                 key={'Inserire KO'}
                 label="Inserire KO"
                 onClick={() => {
@@ -230,6 +233,7 @@ const MonitorPage = () => {
             ]
           : [
               <GridActionsCellItem
+                id="Inserire OK"
                 key="Inserire OK"
                 label="Inserire OK"
                 onClick={() => {
@@ -281,7 +285,7 @@ const MonitorPage = () => {
           <Button onClick={() => setModalStatus(false)} sx={{ padding: '0 18px' }}>
             Annulla
           </Button>
-          <Button autoFocus onClick={events}>
+          <Button autoFocus onClick={events} id="buttonInserisciDisservizio">
             Inserisci
           </Button>
         </DialogActions>
