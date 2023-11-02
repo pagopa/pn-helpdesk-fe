@@ -61,8 +61,12 @@ describe('CostsForm Test', () => {
     );
     const inputs = screen.queryAllByRole('textbox');
     expect(inputs.length).toEqual(0);
-
+    /**
+     * Save and Cancel buttons testid are 'btn-save-cost' and 'btn-cancel-cost'.
+     * So in order to get them i must use getAllByTestId with the prefix btn-.
+     */
     const [buttonCancel, buttonSave] = screen.getAllByTestId(/btn-/);
+    // combobox is the select and it is a mui component
     const buttonSelect = screen.getByRole('combobox');
     expect(buttonSelect).toBeInTheDocument();
     expect(buttonCancel).toBeInTheDocument();

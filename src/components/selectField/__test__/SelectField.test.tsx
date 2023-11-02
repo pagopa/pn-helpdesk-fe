@@ -27,8 +27,11 @@ const props = {
 describe('SelectField Component', () => {
   it('renders component', () => {
     render(<SelectField field={props.field} value={props.value} onChange={props.onChange} />);
+    // getting the first field that appears in the document with the testid
     const selectField = screen.getByTestId(`select-${props.field.name}`);
     expect(selectField).toBeInTheDocument();
+    // once i verified that the field is in the document i can click on it
+    // to open the select and check if the options are rendered
     fireEvent.click(selectField);
     const selectItems = screen.getAllByRole('combobox');
     expect(selectItems[0]).toBeInTheDocument();
