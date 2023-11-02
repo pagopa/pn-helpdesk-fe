@@ -218,8 +218,8 @@ const MonitorPage = () => {
         params.row.state
           ? [
               <GridActionsCellItem
-                id="Inserire KO"
-                key={'Inserire KO'}
+                id="KO-inser"
+                key='Inserire KO'
                 label="Inserire KO"
                 onClick={() => {
                   setModalPaylod({
@@ -234,7 +234,7 @@ const MonitorPage = () => {
             ]
           : [
               <GridActionsCellItem
-                id="Inserire OK"
+                id="OK-insert"
                 key="Inserire OK"
                 label="Inserire OK"
                 onClick={() => {
