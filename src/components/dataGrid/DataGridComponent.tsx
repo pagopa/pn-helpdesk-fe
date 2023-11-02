@@ -5,6 +5,7 @@ import { Box, Typography, Container, Grid, Card } from '@mui/material';
  * @typedef {Object} Columns
  */
 type Columns = {
+  id:string;
   field: string;
   headerName: string;
   width: number;

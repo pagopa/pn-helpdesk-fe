@@ -148,6 +148,7 @@ const LoginForm = ({ setUser }: any) => {
 
               <Grid item>
                 <Button
+                id="buttonLogin"
                   sx={{
                     backgroundColor: 'primary.main',
                     '&:hover': { backgroundColor: 'primary.dark' },
