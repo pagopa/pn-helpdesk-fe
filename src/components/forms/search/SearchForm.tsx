@@ -550,6 +550,7 @@ const SearchForm = () => {
                     >
                       <Grid item>
                         <Button
+                          id="resetFilter"
                           size="large"
                           fullWidth
                           variant="outlined"
@@ -570,6 +571,7 @@ const SearchForm = () => {
                       </Grid>
                       <Grid item>
                         <Button
+                        id="ricerca"
                           size="large"
                           fullWidth
                           type="submit"

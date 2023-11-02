@@ -29,7 +29,7 @@ const HomePage = () => {
                   flexDirection="column"
                   justifyContent="space-between"
                 >
-                  <Typography variant="h5" id="cardTitle">{item.title}</Typography>
+                  <Typography variant="h5" id={`cardTitle-${item.title}`}>{item.title}</Typography>
                   <Box alignSelf="flex-end">
                     <ArrowForward id="iconArrow" color="primary" />
                   </Box>
