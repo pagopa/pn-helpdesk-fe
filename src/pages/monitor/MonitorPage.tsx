@@ -175,6 +175,7 @@ const MonitorPage = () => {
       disableColumnMenu: true,
     },
     {
+      id:'stato',
       field: 'state',
       headerName: 'Stato',
       type: 'actions',
@@ -189,6 +190,7 @@ const MonitorPage = () => {
       minWidth: 100,
     },
     {
+      id:'dataCreazione',
       field: 'data',
       headerName: 'Data di creazione',
       type: 'date',
@@ -202,6 +204,7 @@ const MonitorPage = () => {
         params.row.data ? format(new Date(params.row.data), 'dd-MM-yyyy HH:mm') : '',
     },
     {
+      id:'menu',
       field: 'actions',
       headerName: 'Cambio Stato',
       width: 200,
@@ -215,7 +218,8 @@ const MonitorPage = () => {
         params.row.state
           ? [
               <GridActionsCellItem
-                key={'Inserire KO'}
+                id="KO-inser"
+                key='Inserire KO'
                 label="Inserire KO"
                 onClick={() => {
                   setModalPaylod({
@@ -230,6 +234,7 @@ const MonitorPage = () => {
             ]
           : [
               <GridActionsCellItem
+                id="OK-insert"
                 key="Inserire OK"
                 label="Inserire OK"
                 onClick={() => {
@@ -281,7 +286,7 @@ const MonitorPage = () => {
           <Button onClick={() => setModalStatus(false)} sx={{ padding: '0 18px' }}>
             Annulla
           </Button>
-          <Button autoFocus onClick={events}>
+          <Button autoFocus onClick={events} id="buttonInserisciDisservizio">
             Inserisci
           </Button>
         </DialogActions>
