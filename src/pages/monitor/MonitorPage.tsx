@@ -166,6 +166,7 @@ const MonitorPage = () => {
 
   const columns = [
     {
+      id: 'funzionalità',
       field: 'functionality',
       headerName: 'Funzionalità',
       width: 200,
@@ -175,7 +176,7 @@ const MonitorPage = () => {
       disableColumnMenu: true,
     },
     {
-      id:'stato',
+      id: 'stato',
       field: 'state',
       headerName: 'Stato',
       type: 'actions',
@@ -190,7 +191,7 @@ const MonitorPage = () => {
       minWidth: 100,
     },
     {
-      id:'dataCreazione',
+      id: 'dataCreazione',
       field: 'data',
       headerName: 'Data di creazione',
       type: 'date',
@@ -204,7 +205,7 @@ const MonitorPage = () => {
         params.row.data ? format(new Date(params.row.data), 'dd-MM-yyyy HH:mm') : '',
     },
     {
-      id:'menu',
+      id: 'menu',
       field: 'actions',
       headerName: 'Cambio Stato',
       width: 200,
@@ -219,7 +220,7 @@ const MonitorPage = () => {
           ? [
               <GridActionsCellItem
                 id="KO-inser"
-                key='Inserire KO'
+                key="Inserire KO"
                 label="Inserire KO"
                 onClick={() => {
                   setModalPaylod({
