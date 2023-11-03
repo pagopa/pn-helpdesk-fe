@@ -107,7 +107,13 @@ const Header = () => {
               <Grid item>
                 {/* <Typography align="right">{email}</Typography> */}
                 <Tooltip title={email} placement="bottom">
-                  <IconButton size="large" edge="start" color="inherit" aria-label="menu">
+                  <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    id="profile"
+                    aria-label="menu"
+                  >
                     <PermIdentityIcon sx={{ color: 'white' }} />
                   </IconButton>
                 </Tooltip>
@@ -124,6 +130,7 @@ const Header = () => {
                     size="large"
                     edge="start"
                     color="inherit"
+                    id="logout"
                     aria-label="menu"
                     onClick={handleOpenModal}
                     sx={{ ml: 0, pr: 0 }}
