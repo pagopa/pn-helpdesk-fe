@@ -60,7 +60,7 @@ export function CostsForm(props: CostFormProps) {
       zone: data.zone,
       cap: data.cap,
       productType:
-        data.type === 'NATIONAL' ? data!.nationalProductType : data!.internationalProductType,
+        data.type === 'NATIONAL' ? data?.nationalProductType : data?.internationalProductType,
     } as CostDTO;
 
     try {

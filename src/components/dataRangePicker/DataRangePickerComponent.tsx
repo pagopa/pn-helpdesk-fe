@@ -108,6 +108,7 @@ const DateRangePickerComponent = (props: Props) => {
             inputFormat={props.field.format || 'dd-MM-yyyy'}
             mask={'__-__-____'}
             maxDate={
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               props.field.name === 'monthInterval' ? new Date(props.field.maxDate!) : undefined
             }
             renderInput={(params) => (

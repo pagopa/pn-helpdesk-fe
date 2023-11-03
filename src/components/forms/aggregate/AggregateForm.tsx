@@ -129,6 +129,7 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
     };
     // returns id
     dispatch(spinnerActions.updateSpinnerOpened(true));
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const request = apiRequests.modifyAggregate(payload, aggregate!.id);
     if (request) {
       request
@@ -148,6 +149,7 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
 
   const handleDelete = () => {
     // DELETE /aggregate/{id}
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const payload = aggregate!.id;
     dispatch(spinnerActions.updateSpinnerOpened(false));
     const request = apiRequests.deleteAggregate(payload);

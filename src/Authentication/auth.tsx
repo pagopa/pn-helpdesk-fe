@@ -96,10 +96,13 @@ export function useAuth() {
     Auth.currentAuthenticatedUser()
       .then((user: CognitoUser) => {
         const refreshToken = user.getSignInUserSession()?.getRefreshToken();
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         user.refreshSession(refreshToken!, async () => {
           const token = user.getSignInUserSession()?.getIdToken().getJwtToken();
           const accessToken = user.getSignInUserSession()?.getAccessToken().getJwtToken();
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           await setStorage('token', token!);
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           await setStorage('accessToken', accessToken!);
         });
       })
