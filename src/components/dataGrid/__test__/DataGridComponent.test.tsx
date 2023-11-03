@@ -48,6 +48,7 @@ const columns = [
     minWidth: 100,
     sortable: false,
     disableColumnMenu: true,
+    id:'functionality'
   },
   {
     field: 'state',
@@ -58,6 +59,7 @@ const columns = [
       params.row.state ? <CheckCircleIcon color="success" /> : <CancelIcon color={'error'} />,
     flex: 1,
     minWidth: 100,
+    id:'state'
   },
   {
     field: 'data',
@@ -71,6 +73,7 @@ const columns = [
     hide: false,
     renderCell: (params: any) =>
       params.row.data ? format(new Date(params.row.data.substring(0, 16)), 'dd-MM-yyyy HH:mm') : '',
+    id:'data'
   },
   {
     field: 'actions',
@@ -86,6 +89,8 @@ const columns = [
       params.row.state
         ? [<GridActionsCellItem label="Inserire KO" showInMenu key={params.row.id} />]
         : [<GridActionsCellItem label="Inserire OK" showInMenu key={params.row.id} />],
+    id:'actions'
+
   },
 ];
 
