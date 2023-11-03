@@ -36,7 +36,12 @@ const NavigationMenu = () => {
 
   return (
     <div>
-      <IconButton sx={{ color: 'white', paddingLeft: 0 }} aria-label="menu" onClick={handleClick}>
+      <IconButton
+        sx={{ color: 'white', paddingLeft: 0 }}
+        aria-label="menu"
+        id="menu"
+        onClick={handleClick}
+      >
         <MenuIcon />
       </IconButton>
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
