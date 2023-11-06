@@ -14,6 +14,7 @@ import {
   FormHelperText,
   DialogActions,
   Button,
+  Typography,
 } from '@mui/material';
 import DataGridComponent from '../../components/dataGrid/DataGridComponent';
 import MainLayout from '../mainLayout/MainLayout';
@@ -174,6 +175,16 @@ const MonitorPage = () => {
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
+      renderCell: (param: any) => {
+        useEffect(() => {
+          console.log('param :>> ', param);
+        }, []);
+        return (
+          <Typography id={`${param.row.functionality}-${param.id}`}>
+            {param.functionality}
+          </Typography>
+        );
+      },
     },
     {
       id: 'stato',
@@ -181,11 +192,11 @@ const MonitorPage = () => {
       headerName: 'Stato',
       type: 'actions',
       width: 400,
-      renderCell: (params: any) =>
-        params.row.state ? (
-          <CheckCircleIcon color="success" />
+      renderCell: (param: any) =>
+        param.row.state ? (
+          <CheckCircleIcon id={`state-${param.id}`} color="success" />
         ) : (
-          <CancelIcon color={backEndStatus ? 'error' : 'disabled'} />
+          <CancelIcon id={`state-${param.id}`} color={backEndStatus ? 'error' : 'disabled'} />
         ),
       flex: 1,
       minWidth: 100,
@@ -201,8 +212,14 @@ const MonitorPage = () => {
       sortable: false,
       disableColumnMenu: true,
       hide: !backEndStatus,
-      renderCell: (params: any) =>
-        params.row.data ? format(new Date(params.row.data), 'dd-MM-yyyy HH:mm') : '',
+      renderCell: (param: any) =>
+        param.row.data ? (
+          <Typography id={`${param.row.data}-${param.id}`}>
+            {format(new Date(param.row.data), 'dd-MM-yyyy HH:mm')}
+          </Typography>
+        ) : (
+          <Typography id={`empty-${param.id}`}>{''}</Typography>
+        ),
     },
     {
       id: 'menu',
