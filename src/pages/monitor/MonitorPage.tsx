@@ -175,16 +175,9 @@ const MonitorPage = () => {
       minWidth: 100,
       sortable: false,
       disableColumnMenu: true,
-      renderCell: (param: any) => {
-        useEffect(() => {
-          console.log('param :>> ', param);
-        }, []);
-        return (
-          <Typography id={`${param.row.functionality}-${param.id}`}>
-            {param.functionality}
-          </Typography>
-        );
-      },
+      renderCell: (param: any) => (
+        <Typography id={`${param.row.functionality}-${param.id}`}>{param.functionality}</Typography>
+      ),
     },
     {
       id: 'stato',
