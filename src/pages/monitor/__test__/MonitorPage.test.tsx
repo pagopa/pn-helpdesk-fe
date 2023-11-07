@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { act, cleanup, screen } from '@testing-library/react';
+import { act, cleanup, screen, waitFor } from '@testing-library/react';
 import 'regenerator-runtime/runtime';
 import { rest } from 'msw';
 import userEvent from '@testing-library/user-event';
@@ -11,12 +11,23 @@ import MonitorPage from '../MonitorPage';
 import { reducer } from '../../../mocks/mockReducer';
 import { server } from '../../../mocks/server';
 
+jest.mock('../../../api/apiRequests', () => ({
+  getStatus: () => Promise.resolve({
+    data: {
+      functionalities: ['NOTIFICATION_CREATE', 'NOTIFICATION_VISUALIZATION', 'NOTIFICATION_WORKFLOW'],
+      openIncidents: [
+        { functionality: 'NOTIFICATION_CREATE', startDate: 1698777502000 },
+      ],
+    }
+  }),
+}));
+
 describe('MonitorPage', () => {
   afterEach(cleanup);
 
-  beforeEach(() => {
-    jest.spyOn(React, 'useEffect').mockImplementation(() => jest.fn());
-  });
+  // beforeEach(() => {
+  //   jest.spyOn(React, 'useEffect').mockImplementation(() => jest.fn());
+  // });
 
   it('render component with running BE', async () => {
     await act(async () => {
@@ -34,10 +45,13 @@ describe('MonitorPage', () => {
       reducer(<MonitorPage />);
     });
 
-    const columns = await screen.findAllByRole('columnheader');
-    expect(columns).toHaveLength(4);
-    const rows = await screen.findAllByRole('row');
-    expect(rows).toHaveLength(4);
+    await waitFor(async () => {
+      const columns = await screen.findAllByRole('columnheader');
+      expect(columns).toHaveLength(4);
+      const rows = await screen.findAllByRole('row');
+      expect(rows).toHaveLength(4);
+    });
+
   });
 
   it('render functionalities', async () => {

@@ -66,7 +66,7 @@ describe('CostsForm Test', () => {
      * So in order to get them i must use getAllByTestId with the prefix btn-.
      */
     const [buttonCancel, buttonSave] = screen.getAllByTestId(/btn-/);
-    // combobox is the select and it is a mui component
+    // combobox is (an inner component inside) the select, is part of a mui component
     const buttonSelect = screen.getByRole('combobox');
     expect(buttonSelect).toBeInTheDocument();
     expect(buttonCancel).toBeInTheDocument();
