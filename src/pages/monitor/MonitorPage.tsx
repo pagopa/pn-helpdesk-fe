@@ -229,7 +229,7 @@ const MonitorPage = () => {
         params.row.state
           ? [
               <GridActionsCellItem
-                id="KO-inser"
+                id="KO-insert"
                 key="Inserire KO"
                 label="Inserire KO"
                 onClick={() => {
