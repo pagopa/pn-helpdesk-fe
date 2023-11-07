@@ -157,10 +157,10 @@ const Header = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'space-between' }}>
-          <Button onClick={handleCloseModal} sx={{ padding: '0 18px' }}>
+          <Button id="cancelLogout" onClick={handleCloseModal} sx={{ padding: '0 18px' }}>
             Annulla
           </Button>
-          <Button onClick={handleLogOut} autoFocus>
+          <Button id="doLogout" onClick={handleLogOut} autoFocus>
             Esci
           </Button>
         </DialogActions>
