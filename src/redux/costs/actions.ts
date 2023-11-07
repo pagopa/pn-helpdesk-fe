@@ -9,8 +9,8 @@ export const getCosts = createAsyncThunk<Page<CostDTO>, FilterRequest>(
   async (request: FilterRequest, thunkAPI) => {
     try {
       const response = await apiPaperChannel().getAllCostOfDriverAndTender(
-        request!.tenderCode as string,
-        request!.driverCode as string,
+        request.tenderCode as string,
+        request.driverCode as string,
         request.page,
         request.tot
       );

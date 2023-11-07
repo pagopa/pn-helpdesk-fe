@@ -84,7 +84,7 @@ function reducer(ui: any, { ...renderOptions }: any = {}) {
       },
     });
     return (
-      <LocalizationProvider locale={it} dateAdapter={AdapterDateFns}>
+      <LocalizationProvider adapterLocale={it} dateAdapter={AdapterDateFns}>
         <Provider store={store}>
           <Router>{children}</Router>
         </Provider>

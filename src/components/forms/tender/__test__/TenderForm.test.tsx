@@ -43,7 +43,7 @@ describe('TenderFormTest', () => {
 
   it('whenClickSaveOnRealDescription', async function () {
     render(
-      <LocalizationProvider locale={italianStyle.it} dateAdapter={AdapterDateFns}>
+      <LocalizationProvider adapterLocale={italianStyle.it} dateAdapter={AdapterDateFns}>
         <TenderForm />
       </LocalizationProvider>
     );
@@ -77,7 +77,7 @@ describe('TenderFormTest', () => {
   it('whenClickSaveOnError', async function () {
     createTenderSpy.mockRejectedValue(new Error('Error with creation'));
     render(
-      <LocalizationProvider locale={italianStyle.it} dateAdapter={AdapterDateFns}>
+      <LocalizationProvider adapterLocale={italianStyle.it} dateAdapter={AdapterDateFns}>
         <TenderForm />
       </LocalizationProvider>
     );

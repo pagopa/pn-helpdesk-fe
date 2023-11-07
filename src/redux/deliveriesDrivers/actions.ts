@@ -10,7 +10,7 @@ export const getAllDrivers = createAsyncThunk<Page<DeliveryDriver>, FilterReques
   async (filter: FilterRequest, thunkAPI) => {
     try {
       const response = await apiPaperChannel().takeDeliveriesDrivers(
-        filter!.tenderCode as string,
+        filter?.tenderCode as string,
         filter.page,
         filter.tot,
         filter?.fsu
@@ -21,12 +21,12 @@ export const getAllDrivers = createAsyncThunk<Page<DeliveryDriver>, FilterReques
         page: response.data.number ? response.data.number : 0,
         content: response.data.content
           ? response.data.content.map(
-              (item) =>
-                ({
-                  ...item,
-                  tenderCode: filter.tenderCode,
-                } as DeliveryDriver)
-            )
+            (item) =>
+            ({
+              ...item,
+              tenderCode: filter.tenderCode,
+            } as DeliveryDriver)
+          )
           : [],
       };
       return page;

@@ -104,9 +104,7 @@ describe('DeliveriesDriverTableTest', () => {
     changeStore({ ...driversStore, allData: {} });
     reducer(<DeliveriesDriverTable tenderCode={'12345'} onlyFsu={true} withActions={true} />);
 
-    const button = screen.getByRole('button', {
-      name: /10/i,
-    });
+    const button = screen.getByRole('combobox');
 
     fireEvent.mouseDown(button);
 

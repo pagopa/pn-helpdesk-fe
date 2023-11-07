@@ -41,6 +41,7 @@ const TextFieldComponent = (props: Props) => {
       InputProps={field.InputProps ? field.InputProps : {}}
       fullWidth
       type={field.type}
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       hidden={field.hidden!}
       value={props.value}
       id={field.label}

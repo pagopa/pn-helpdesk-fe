@@ -44,6 +44,7 @@ export function CostsTable(props: CostsTableProps) {
         data={costsStore?.costs ? costsStore?.costs : ({} as Page<CostDTO>)}
         type={!props.withActions ? ModelType.COST : ModelType.COST_WITH_ACTIONS}
         loading={false}
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         rowId={(row) => row!.uid}
         onPageChange={handleOnPageChange}
         onPageSizeChange={handleOnPageSizeChange}
