@@ -8,3 +8,4 @@ src/reportWebVitals.ts
 src/api/**
 src/index.tsx
 src/App.tsx
+bin/**

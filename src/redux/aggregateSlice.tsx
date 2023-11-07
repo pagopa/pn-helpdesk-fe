@@ -53,6 +53,7 @@ export const aggregateSlice = createSlice({
       state.pagination.page = action.payload.page;
     },
     setFilters: (state, action: PayloadAction<getAggregateParams>) => {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       state.filters.name = action.payload.name!;
       // reset pagination
       state.pagination.page = 0;

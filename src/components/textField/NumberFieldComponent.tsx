@@ -19,6 +19,7 @@ const NumberFieldComponent = (props: Props) => {
       required={field.required}
       fullWidth
       type={field.type}
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       hidden={field.hidden!}
       value={props.value}
       id={field.label}

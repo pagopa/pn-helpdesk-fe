@@ -41,7 +41,8 @@ const DatePickerComponent = (props: Props) => {
   const handleChange = (e: any) => {
     const value =
       field.name !== 'referenceMonth'
-        ? format(e, field.format!)
+        ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          format(e, field.format!)
         : format(
             new Date(new Date(new Date(e).setUTCDate(1)).setHours(0, 0, 0, 0)),
             "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"

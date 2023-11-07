@@ -6,15 +6,15 @@
   "dependencies": {
     "@aws-amplify/auth": "^4.5.4",
     "@babel/core": "^7.0.0",
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
-    "@mui/base": "5.0.0-alpha.101",
-    "@mui/icons-material": "^5.10.9",
-    "@mui/lab": "^5.0.0-alpha.81",
-    "@mui/material": "^5.10.9",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/base": "^5.0.0-alpha.101",
+    "@mui/icons-material": "^5.14.3",
+    "@mui/lab": "^5.0.0-alpha.140",
+    "@mui/material": "^5.14.5",
     "@mui/x-data-grid": "^5.17.8",
     "@mui/x-date-pickers": "5.0.13",
-    "@pagopa/mui-italia": "^0.9.10",
+    "@pagopa/mui-italia": "^1.0.2",
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -58,7 +58,8 @@
     "eject": "react-scripts eject",
     "sonar": "node sonarqube-scanner.js",
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
-    "format": "prettier \"./**/*.{ts,tsx}\" --write"
+    "format": "prettier \"./**/*.{ts,tsx}\" --write",
+    "clean": "node bin/cleanup.mjs"
   },
   "eslintConfig": {
     "extends": [
@@ -80,6 +81,7 @@
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.17.12",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@openapitools/openapi-generator-cli": "^2.6.0",
     "@pagopa/openapi-codegen-ts": "^12.1.2",
     "@types/react-test-renderer": "^18.0.0",

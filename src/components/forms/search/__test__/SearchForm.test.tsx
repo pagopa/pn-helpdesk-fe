@@ -109,9 +109,7 @@ describe('SearchForm', () => {
   });
 
   it('change Tipo estrazione', async () => {
-    const selectMenu = screen.getByRole('button', {
-      name: 'Ottieni EncCF',
-    });
+    const selectMenu = screen.getByRole('combobox');
     expect(selectMenu).toBeInTheDocument();
 
     const user = userEvent.setup();
@@ -126,9 +124,7 @@ describe('SearchForm', () => {
   });
 
   it('change Tipo estrazione to Ottieni log completi and make request', async () => {
-    const selectMenu = screen.getByRole('button', {
-      name: 'Ottieni EncCF',
-    });
+    const selectMenu = screen.getByRole('combobox');
     expect(selectMenu).toBeInTheDocument();
 
     const user = userEvent.setup();
@@ -163,9 +159,7 @@ describe('SearchForm', () => {
   });
 
   it('change Tipo estrazione to Ottieni log di sessione', async () => {
-    const selectMenu = screen.getByRole('button', {
-      name: 'Ottieni EncCF',
-    });
+    const selectMenu = screen.getByRole('combobox');
     expect(selectMenu).toBeInTheDocument();
 
     const user = userEvent.setup();
@@ -191,10 +185,8 @@ describe('SearchForm', () => {
     const checkbox = await screen.findByRole('checkbox');
     expect(checkbox).toBeInTheDocument();
 
-    const datePickers = await screen.findAllByRole('textbox', {
-      name: /Choose date/i,
-    });
-    expect(datePickers).toHaveLength(2);
+    const datePickers = await screen.findByTestId('data-range-picker');
+    expect(datePickers).toBeInTheDocument();
 
     await act(async () => {
       await user.clear(ticketNumber);

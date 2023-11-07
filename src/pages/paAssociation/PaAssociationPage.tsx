@@ -21,6 +21,7 @@ const PaAssociationPage = ({ email }: any) => {
     },
     {
       linkLabel: 'Dettaglio Aggregazione',
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       linkRoute: routes.GET_UPDATE_AGGREGATE_PATH(aggregate.id!),
     },
   ];

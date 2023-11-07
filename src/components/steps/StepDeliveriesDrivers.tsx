@@ -44,7 +44,7 @@ export function StepDeliveriesDrivers() {
       <Stack direction={'column'} spacing={2} width={'100%'}>
         <DriverAndCostForm
           fsu={false}
-          tenderCode={formState.formTender!.code as string}
+          tenderCode={formState.formTender.code as string}
           driverCode={driversStore.detail?.taxId}
         />
 

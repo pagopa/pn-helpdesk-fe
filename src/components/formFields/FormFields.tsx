@@ -313,8 +313,7 @@ const FieldsProperties: { [key: string]: FieldsProps } = {
           );
           return isBefore(endDate, maxDate) || errorMessages.ONE_MONTH_INTERVAL;
         },
-        checkDates: (dates: Array<any>) => checkDt(dates)
-        
+        checkDates: (dates: Array<any>) => checkDt(dates),
       },
     },
   },
@@ -360,7 +359,7 @@ const FieldsProperties: { [key: string]: FieldsProps } = {
             errorMessages.DATES_INTERVAL
           );
         },
-        checkDates: (dates: Array<any>) => checkDt(dates)
+        checkDates: (dates: Array<any>) => checkDt(dates),
       },
     },
   },
@@ -534,11 +533,7 @@ type Props = {
 const checkDt = (dates: Array<any>) => {
   const startDate = new Date(dates[0]);
   const endDate = new Date(dates[1]);
-  return (
-    isBefore(startDate, endDate) ||
-    isSameDay(startDate, endDate) ||
-    errorMessages.DATES_ORDER
-  );
+  return isBefore(startDate, endDate) || isSameDay(startDate, endDate) || errorMessages.DATES_ORDER;
 };
 
 /**
@@ -581,6 +576,7 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
         <DateRangePickerComponent
           field={field}
           onBlur={onBlur}
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           required={field.required!}
           onChange={onChange}
           intervalLimit={field.intervalLimit}
@@ -602,6 +598,7 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
       {componentType === 'capAutocomplete' && (
         <CapAutocompleteField
           field={field}
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           required={field.required!}
           onChange={onChange}
           error={error}
