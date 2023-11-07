@@ -114,7 +114,7 @@ export const notifyFileUpload = createAsyncThunk<NotifyFileResponse, NotifyFileR
       const modelRequest: NotifyUploadRequestDto = {
         uuid: request.uid,
       };
-      const response = await apiPaperChannel().notifyUpload(request?.tenderCode, modelRequest);
+      const response = await apiPaperChannel().notifyUpload(request.tenderCode, modelRequest);
       return {
         retry: response.data.retryAfter,
         uid: response.data.uuid,
