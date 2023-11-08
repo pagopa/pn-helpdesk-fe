@@ -12,7 +12,7 @@ phases:
   pre_build:
     on-failure: ABORT
     commands:
-      - echo launching yarn install in $SUB_PRJ_NAME...
+      - echo launching yarn install...
       - yarn install
       - echo Running tests.. && yarn test
   build:
