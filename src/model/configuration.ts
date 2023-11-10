@@ -2,10 +2,25 @@
 
 import { fetchConfiguration } from '../helpers/fetch.configuration.utility';
 
+interface AppConfigurationFromFile {
+  AWS_USER_POOLS_ID: string;
+  AWS_USER_POOLS_WEB_CLIENT_ID: string;
+  API_DOMAIN: string;
+  WEB_API_DOMAIN: string;
+}
+
+export interface AppConfiguration extends AppConfigurationFromFile {
+  AWS_PROJECT_REGION: string;
+  AWS_COGNITO_REGION: string;
+  API_ENDPOINT: string;
+  API_AGGREGATE_ENDPOINT: string;
+  API_PAPER_CHANNEL_ENDPOINT: string;
+}
+
 class ConfigurationError extends Error {}
 
 export class Configuration {
-  private static storedConfiguration: any = null;
+  private static storedConfiguration: AppConfigurationFromFile | null = null;
   private static configurationLoadingExecuted = false;
 
   static clear() {
@@ -17,7 +32,7 @@ export class Configuration {
    * Get current configuration of type <T> if loading has been already made, otherwise it throws a ConfigurationError
    * @returns Configuration of type T
    */
-  static get<T>(): T {
+  static get(): AppConfigurationFromFile {
     if (!this.configurationLoadingExecuted) {
       throw new ConfigurationError(
         'loadConfiguration must be called before any call to getConfiguration'
@@ -32,16 +47,16 @@ export class Configuration {
    * This method loads and validates a Configuration of type T
    * @param validator for T, you should provide your validator based on your config object
    */
-  static async load<T>(): Promise<void> {
+  static async load(): Promise<void> {
     if (this.configurationLoadingExecuted) {
       throw new ConfigurationError('Configuration should be loaded just once');
     }
     this.configurationLoadingExecuted = true;
-    const readValue: T = (await fetchConfiguration()) as T;
+    const readValue: AppConfigurationFromFile = await fetchConfiguration();
     this.storedConfiguration = readValue;
   }
 
-  static setForTest<T>(fakeConfiguration: T): void {
+  static setForTest(fakeConfiguration: AppConfigurationFromFile): void {
     this.configurationLoadingExecuted = true;
     this.storedConfiguration = fakeConfiguration;
   }

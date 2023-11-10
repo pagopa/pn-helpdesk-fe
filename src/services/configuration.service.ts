@@ -1,22 +1,7 @@
-import { Configuration } from '../model/configuration';
-
-interface AppConfigurationFromFile {
-  AWS_USER_POOLS_ID: string;
-  AWS_USER_POOLS_WEB_CLIENT_ID: string;
-  API_DOMAIN: string;
-  WEB_API_DOMAIN: string;
-}
-
-interface AppConfiguration extends AppConfigurationFromFile {
-  AWS_PROJECT_REGION: string;
-  AWS_COGNITO_REGION: string;
-  API_ENDPOINT: string;
-  API_AGGREGATE_ENDPOINT: string;
-  API_PAPER_CHANNEL_ENDPOINT: string;
-}
+import { AppConfiguration, Configuration } from '../model/configuration';
 
 export function getConfiguration(): AppConfiguration {
-  const configurationFromFile = Configuration.get<AppConfigurationFromFile>();
+  const configurationFromFile = Configuration.get();
   return {
     ...configurationFromFile,
     AWS_PROJECT_REGION: 'eu-south-1',
