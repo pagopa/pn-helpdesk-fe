@@ -1,6 +1,6 @@
 {
-  "AWS_USER_POOLS_ID": "${AWS_USER_POOLS_ID}",
-  "AWS_USER_POOLS_WEB_CLIENT_ID": "${AWS_USER_POOLS_WEB_CLIENT_ID}",
+  "AWS_USER_POOLS_ID": "eu-south-1_cnvKNZBFL",
+  "AWS_USER_POOLS_WEB_CLIENT_ID": "77j22r1r812dt3vo8d4s985ap4",
   "API_DOMAIN": "api.bo.dev.notifichedigitali.it",
   "WEB_API_DOMAIN": "webapi.dev.notifichedigitali.it"
 }
