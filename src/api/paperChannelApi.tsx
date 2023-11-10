@@ -1,4 +1,5 @@
 import { DeliveryDriver, Tender } from '../model';
+import { getConfiguration } from '../services/configuration.service';
 import {
   Configuration,
   CostDTO,
@@ -9,6 +10,7 @@ import {
 } from './paperChannel';
 
 const configuration = () => {
+  const { API_PAPER_CHANNEL_ENDPOINT } = getConfiguration();
   const conf = new Configuration();
   const token = sessionStorage.getItem('token');
   const accessToken = sessionStorage.getItem('accessToken');
@@ -18,7 +20,7 @@ const configuration = () => {
       Auth: accessToken,
     },
   };
-  conf.basePath = process.env.REACT_APP_API_PAPER_CHANNEL_ENDPOINT;
+  conf.basePath = API_PAPER_CHANNEL_ENDPOINT;
   return conf;
 };
 

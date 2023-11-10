@@ -9,14 +9,14 @@ import {
   getSessionLogsType,
 } from './apiRequestTypes';
 import { createAxiosInstance } from './axiosInstanceCreator';
+import { getConfiguration } from '../services/configuration.service';
 
 class Http {
   private instance: AxiosInstance | null = null;
 
   private get http(): AxiosInstance {
-    return this.instance != null
-      ? this.instance
-      : createAxiosInstance(process.env.REACT_APP_API_ENDPOINT!);
+    const { API_ENDPOINT } = getConfiguration();
+    return this.instance != null ? this.instance : createAxiosInstance(API_ENDPOINT);
   }
 
   getPersonTaxId<T = any, R = AxiosResponse<T>>(payload: getPersonTaxIdType): Promise<R> {
