@@ -37,7 +37,7 @@ export default function SelectCustomField(props: Props) {
         value={keySelected ?? ''}
       >
         {field.optionItems?.map((item) => (
-          <MenuItem key={item.key} value={item.key}>
+          <MenuItem id={item.label} key={item.key} value={item.key}>
             {item.label}
           </MenuItem>
         ))}
