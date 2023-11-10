@@ -572,7 +572,7 @@ const SearchForm = () => {
                       </Grid>
                       <Grid item>
                         <Button
-                        id="ricerca"
+                          id="ricerca"
                           size="large"
                           fullWidth
                           type="submit"
