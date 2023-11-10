@@ -13,6 +13,11 @@ test-report.xml
 # production
 /build
 
+# misc
+.DS_Store
+*.pem
+
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -38,7 +43,10 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 
+#env
 .env.production
+
+#openapi
 /openapitools.json
 /test-report.xml
 /src/api/paperChannel/.openapi-generator/
@@ -46,5 +54,6 @@ amplifytools.xcconfig
 /src/api/paperChannel/.npmignore
 /src/api/paperChannel/.openapi-generator-ignore
 /src/api/paperChannel/git_push.sh
+
 /.fleet
 /.fleet/
