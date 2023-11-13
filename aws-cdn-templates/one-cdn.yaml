@@ -303,7 +303,7 @@ Resources:
                   - !Sub " connect-src 'self' https://api-eu.mixpanel.com/track/  \
                     https://selfcare.pagopa.it/assets/ \
                     https://privacyportalde-cdn.onetrust.com/ \
-                    ${WebApiUrl}; \
+                    ${WebApiUrl} \
                     ${BoWebApiUrl}; \
                     style-src 'self' 'unsafe-inline' https://privacyportalde-cdn.onetrust.com/; \
                     worker-src 'self'; \
