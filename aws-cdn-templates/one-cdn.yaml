@@ -87,9 +87,12 @@ Conditions:
         - "true"
 
   # Condition combination to handle CDN alias array without NoValue
-  BothDNSNames: !And [!Condition CreateDNSname, !Condition CreateAlternateDNSname]
-  OnlyPrimaryDNSName: !And [!Condition CreateDNSname, !Not [!Condition CreateAlternateDNSname]]
-  OnlyAlternateDNSName: !And [!Not [!Condition CreateDNSname], !Condition CreateAlternateDNSname]
+  BothDNSNames:
+    !And [!Condition CreateDNSname, !Condition CreateAlternateDNSname]
+  OnlyPrimaryDNSName:
+    !And [!Condition CreateDNSname, !Not [!Condition CreateAlternateDNSname]]
+  OnlyAlternateDNSName:
+    !And [!Not [!Condition CreateDNSname], !Condition CreateAlternateDNSname]
 
   CreatePrimaryAliasRecord: !Not
     - !Equals
@@ -300,7 +303,7 @@ Resources:
               Fn::Join:
                 - " "
                 - - "default-src 'self';"
-                  - "object-src 'none';",
+                  - "object-src 'none';"
                   - !Sub " connect-src 'self' https://api-eu.mixpanel.com/track/  \
                     https://selfcare.pagopa.it/assets/ \
                     https://privacyportalde-cdn.onetrust.com/ \
