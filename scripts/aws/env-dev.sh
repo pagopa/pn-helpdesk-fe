@@ -1,1 +1,0 @@
-WEB_API_DOMAIN=webapi.dev.pn.pagopa.it

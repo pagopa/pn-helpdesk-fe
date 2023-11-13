@@ -245,28 +245,6 @@ Resources:
               - HEAD
             TargetOriginId: !Sub 'S3-${S3BucketForWebsiteContent}'
             ViewerProtocolPolicy: redirect-to-https
-            CachePolicyId: b2884449-e4de-46a7-ac36-70bc7f1ddd6d ## CachingOptimizedForUncompressedObjects - Default TTL: 86,400 seconds (24 hours) - https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html#managed-cache-policies-list
-            ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
-            PathPattern: /onetrust*
-          - AllowedMethods:
-              - GET
-              - HEAD
-            CachedMethods:
-              - GET
-              - HEAD
-            TargetOriginId: !Sub 'S3-${S3BucketForWebsiteContent}'
-            ViewerProtocolPolicy: redirect-to-https
-            CachePolicyId: !Ref WebsiteCDNCachingPolicyOneHour
-            ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
-            PathPattern: /locales*
-          - AllowedMethods:
-              - GET
-              - HEAD
-            CachedMethods:
-              - GET
-              - HEAD
-            TargetOriginId: !Sub 'S3-${S3BucketForWebsiteContent}'
-            ViewerProtocolPolicy: redirect-to-https
             CachePolicyId: !Ref WebsiteCDNCachingPolicyOneHour
             ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
             PathPattern: /icons*

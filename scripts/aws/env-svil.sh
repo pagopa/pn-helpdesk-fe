@@ -1,1 +1,0 @@
-WEB_API_DOMAIN=webapi.svil.pn.pagopa.it
