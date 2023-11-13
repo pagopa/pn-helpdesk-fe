@@ -2,47 +2,47 @@ AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
   Name:
-    Description: 'CDN Logical Name'
+    Description: "CDN Logical Name"
     Type: String
 
   WebDomain:
-    Description: 'Domain for webapp'
+    Description: "Domain for webapp"
     Type: String
 
   WebDomainReferenceToSite:
     Description: true if the website must be reachable using the WebDomain
     Type: String
-    Default: 'true'
+    Default: "true"
 
   HostedZoneId:
-    Description: 'Hosted Zone Id in which you want to add record'
+    Description: "Hosted Zone Id in which you want to add record"
     Type: String
 
   AlternateWebDomain:
-    Description: 'Alternate Domain name for the webapp'
+    Description: "Alternate Domain name for the webapp"
     Type: String
-    Default: ''
+    Default: ""
 
   AlternateWebDomainReferenceToSite:
     Description: true if the website must be reachable using the AlternateWebDomain
     Type: String
-    Default: 'true'
+    Default: "true"
 
   AlternateHostedZoneId:
     Description: Hosted Zone Id in which you want to add alternate DNS
     Type: String
-    Default: ''
+    Default: ""
 
   WebCertificateArn:
-    Description: 'ACM Web Certificate ARN'
+    Description: "ACM Web Certificate ARN"
     Type: String
 
   WebApiUrl:
-    Description: 'The Url of web API: useful for content-security-policy'
+    Description: "The Url of web API: useful for content-security-policy"
     Type: String
 
   BoWebApiUrl:
-    Description: 'The Url of bo web API: useful for content-security-policy'
+    Description: "The Url of bo web API: useful for content-security-policy"
     Type: String
 
   #  Do not remove, we are waiting for DPIA approval about WAF on us-east-1 region
@@ -63,17 +63,17 @@ Parameters:
 
   S3LogsBucket:
     Type: String
-    Default: '-'
+    Default: "-"
     Description: Access Log bucket name
 
 Conditions:
   # If domain is used in certificate, add this domain to CloudFront
   CreateDNSname: !Equals
     - !Ref WebDomainReferenceToSite
-    - 'true'
+    - "true"
 
   # If domain is used in certificate, add this domain to CloudFront
-  HasLogsBucket: !Not [!Equals [!Ref S3LogsBucket, '-']]
+  HasLogsBucket: !Not [!Equals [!Ref S3LogsBucket, "-"]]
 
   # If alternate domain is provided and is used in certificate, add this domain to CloudFront
   CreateAlternateDNSname:
@@ -81,10 +81,10 @@ Conditions:
       - Fn::Not:
           - Fn::Equals:
               - !Ref AlternateWebDomain
-              - ''
+              - ""
       - !Equals
         - !Ref AlternateWebDomainReferenceToSite
-        - 'true'
+        - "true"
 
   # Condition combination to handle CDN alias array without NoValue
   BothDNSNames: !And [!Condition CreateDNSname, !Condition CreateAlternateDNSname]
@@ -94,12 +94,12 @@ Conditions:
   CreatePrimaryAliasRecord: !Not
     - !Equals
       - !Ref HostedZoneId
-      - ''
+      - ""
 
   CreateAlternateAliasRecord: !Not
     - !Equals
       - !Ref AlternateHostedZoneId
-      - ''
+      - ""
 
 Resources:
   # - CloudFront User used for WebApp S3 Bucket access
@@ -107,7 +107,7 @@ Resources:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties:
       CloudFrontOriginAccessIdentityConfig:
-        Comment: !Sub 'CloudFront OAI for ${Name} WebApp'
+        Comment: !Sub "CloudFront OAI for ${Name} WebApp"
   # - WebApp S3 Bucket
   S3BucketForWebsiteContent:
     Type: AWS::S3::Bucket
@@ -122,14 +122,14 @@ Resources:
   S3BucketForWebsiteContentPolicy:
     Type: AWS::S3::BucketPolicy
     Properties:
-      Bucket: !Ref 'S3BucketForWebsiteContent'
+      Bucket: !Ref "S3BucketForWebsiteContent"
       PolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Action:
               - s3:GetObject
             Effect: Allow
-            Resource: !Sub '${S3BucketForWebsiteContent.Arn}/*'
+            Resource: !Sub "${S3BucketForWebsiteContent.Arn}/*"
             Principal:
               CanonicalUser:
                 Fn::GetAtt:
@@ -141,8 +141,8 @@ Resources:
     Type: AWS::CloudFront::CachePolicy
     Properties:
       CachePolicyConfig:
-        Name: !Sub '${Name}-WebsiteCDNCachingPolicy'
-        Comment: 'Keep cache for one minute.'
+        Name: !Sub "${Name}-WebsiteCDNCachingPolicy"
+        Comment: "Keep cache for one minute."
         DefaultTTL: 30
         MaxTTL: 60
         MinTTL: 10
@@ -161,8 +161,8 @@ Resources:
     Type: AWS::CloudFront::CachePolicy
     Properties:
       CachePolicyConfig:
-        Name: !Sub '${Name}-WebsiteCDNCachingPolicyOneHour'
-        Comment: 'Keep cache for one hour.'
+        Name: !Sub "${Name}-WebsiteCDNCachingPolicyOneHour"
+        Comment: "Keep cache for one hour."
         DefaultTTL: 3600 ## 1 hour
         MaxTTL: 3600
         MinTTL: 1
@@ -181,8 +181,8 @@ Resources:
     Type: AWS::CloudFront::CachePolicy
     Properties:
       CachePolicyConfig:
-        Name: !Sub '${Name}-WebsiteCDNCachingPolicyFiveMinutes'
-        Comment: 'Keep cache for five minutes.'
+        Name: !Sub "${Name}-WebsiteCDNCachingPolicyFiveMinutes"
+        Comment: "Keep cache for five minutes."
         DefaultTTL: 300
         MaxTTL: 300
         MinTTL: 1
@@ -213,7 +213,7 @@ Resources:
               - OnlyAlternateDNSName
               - - !Ref AlternateWebDomain
               - !Ref AWS::NoValue
-        Enabled: 'true'
+        Enabled: "true"
         CacheBehaviors:
           - AllowedMethods:
               - GET
@@ -221,7 +221,7 @@ Resources:
             CachedMethods:
               - GET
               - HEAD
-            TargetOriginId: !Sub 'S3-${S3BucketForWebsiteContent}'
+            TargetOriginId: !Sub "S3-${S3BucketForWebsiteContent}"
             ViewerProtocolPolicy: redirect-to-https
             CachePolicyId: !Ref WebsiteCDNCachingPolicyFiveMinutes
             ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
@@ -232,7 +232,7 @@ Resources:
             CachedMethods:
               - GET
               - HEAD
-            TargetOriginId: !Sub 'S3-${S3BucketForWebsiteContent}'
+            TargetOriginId: !Sub "S3-${S3BucketForWebsiteContent}"
             ViewerProtocolPolicy: redirect-to-https
             CachePolicyId: b2884449-e4de-46a7-ac36-70bc7f1ddd6d ## CachingOptimizedForUncompressedObjects - Default TTL: 86,400 seconds (24 hours) - https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html#managed-cache-policies-list
             ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
@@ -243,7 +243,7 @@ Resources:
             CachedMethods:
               - GET
               - HEAD
-            TargetOriginId: !Sub 'S3-${S3BucketForWebsiteContent}'
+            TargetOriginId: !Sub "S3-${S3BucketForWebsiteContent}"
             ViewerProtocolPolicy: redirect-to-https
             CachePolicyId: !Ref WebsiteCDNCachingPolicyOneHour
             ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
@@ -255,25 +255,25 @@ Resources:
           CachedMethods:
             - GET
             - HEAD
-          TargetOriginId: !Sub 'S3-${S3BucketForWebsiteContent}'
+          TargetOriginId: !Sub "S3-${S3BucketForWebsiteContent}"
           ViewerProtocolPolicy: redirect-to-https
           CachePolicyId: !Ref WebsiteCDNCachingPolicy
           ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
-        DefaultRootObject: 'index.html'
+        DefaultRootObject: "index.html"
         CustomErrorResponses:
           - ErrorCode: 404
             ResponseCode: 200
-            ResponsePagePath: '/index.html'
+            ResponsePagePath: "/index.html"
           - ErrorCode: 403
             ResponseCode: 200
-            ResponsePagePath: '/index.html'
+            ResponsePagePath: "/index.html"
         Origins:
-          - DomainName: !Sub '${S3BucketForWebsiteContent.RegionalDomainName}'
-            Id: !Sub 'S3-${S3BucketForWebsiteContent}'
+          - DomainName: !Sub "${S3BucketForWebsiteContent.RegionalDomainName}"
+            Id: !Sub "S3-${S3BucketForWebsiteContent}"
             S3OriginConfig:
               OriginAccessIdentity:
                 Fn::Join:
-                  - ''
+                  - ""
                   - - origin-access-identity/cloudfront/
                     - Ref: CloudFrontOriginAccessIdentity
         Logging:
@@ -292,14 +292,15 @@ Resources:
     Type: AWS::CloudFront::ResponseHeadersPolicy
     Properties:
       ResponseHeadersPolicyConfig:
-        Name: !Sub '${Name}-headerPolicy'
+        Name: !Sub "${Name}-headerPolicy"
         SecurityHeadersConfig:
           # add_header Content-Security-Policy
           ContentSecurityPolicy:
             ContentSecurityPolicy:
               Fn::Join:
-                - ' '
+                - " "
                 - - "default-src 'self';"
+                  - "object-src 'none';",
                   - !Sub " connect-src 'self' https://api-eu.mixpanel.com/track/  \
                     https://selfcare.pagopa.it/assets/ \
                     https://privacyportalde-cdn.onetrust.com/ \
@@ -318,11 +319,11 @@ Resources:
             Override: true
           # add_header X-Frame-Options "SAMEORIGIN";
           FrameOptions:
-            FrameOption: 'SAMEORIGIN'
+            FrameOption: "SAMEORIGIN"
             Override: true
           # add_header Referrer-Policy "no-referrer";
           ReferrerPolicy:
-            ReferrerPolicy: 'no-referrer'
+            ReferrerPolicy: "no-referrer"
             Override: true
           # add_header Strict-Transport-Security "max-age=31536000";
           StrictTransportSecurity:
@@ -410,17 +411,17 @@ Resources:
 Outputs:
   # - WebApp Outputs
   WebAppBucketName:
-    Value: !Ref 'S3BucketForWebsiteContent'
+    Value: !Ref "S3BucketForWebsiteContent"
     Description: Name of S3 bucket to hold website content
   WebAppCdnUrl:
-    Value: !Join ['', ['https://', !GetAtt WebsiteCDN.DomainName]]
+    Value: !Join ["", ["https://", !GetAtt WebsiteCDN.DomainName]]
     Description: Site access URL
   WebDomainUrl:
-    Value: !Sub 'https://${WebDomain}'
+    Value: !Sub "https://${WebDomain}"
     Description: Site access URL
   AlternateWebDomainUrl:
     Condition: CreateAlternateDNSname
-    Value: !Sub 'http://${AlternateWebDomain}'
+    Value: !Sub "http://${AlternateWebDomain}"
     Description: Alternate site access URL
 
   # Distribution ID
