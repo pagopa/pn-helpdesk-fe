@@ -51,16 +51,6 @@ Parameters:
   #    Description: The limit on requests per 5-minute period for a single originating IP address.
   #    Default: 1000
 
-  RequestsAlarmLimit:
-    Type: Number
-    Default: 50000
-    Description: The limit of requests on 5 minutes period to raise an alarm
-
-  ErrorRateAlarmLimit:
-    Type: Number
-    Default: 10
-    Description: The limit of error rate percentage on 5 minutes period to raise an alarm
-
   S3LogsBucket:
     Type: String
     Default: "-"
