@@ -309,6 +309,7 @@ const SearchForm = () => {
   };
 
   const downloadZip = (payload: any): any => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const url = process.env.REACT_APP_API_ENDPOINT! + getUrl();
 
     dispatch(spinnerActions.updateSpinnerOpened(true));

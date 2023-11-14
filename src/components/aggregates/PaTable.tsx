@@ -18,6 +18,7 @@ type PaBodyTableRowProps = {
 const PaBodyTableRow = ({ pa, onSelect }: PaBodyTableRowProps) => {
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>, pa: Pa) => {
     const checked = evt.target.checked;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     onSelect!(pa, checked);
   };
 

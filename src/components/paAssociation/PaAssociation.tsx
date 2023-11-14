@@ -35,6 +35,7 @@ const PaAssociation = ({ idAggregate }: Props) => {
         dispatch(snackbarActions.updateSnackbacrOpened(true));
         dispatch(snackbarActions.updateStatusCode('400'));
         dispatch(spinnerActions.updateSpinnerOpened(false));
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         navigate(routes.GET_UPDATE_AGGREGATE_PATH(idAggregate!));
       })
       .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
@@ -101,6 +102,7 @@ const PaAssociation = ({ idAggregate }: Props) => {
   const callAddPa = () => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
     apiRequests
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       .addPa(idAggregate!, paSelectedList)
       .then((res) => {
         let statusCode = '200';
@@ -128,6 +130,7 @@ const PaAssociation = ({ idAggregate }: Props) => {
       .finally(() => {
         dispatch(snackbarActions.updateSnackbacrOpened(true));
         dispatch(spinnerActions.updateSpinnerOpened(false));
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         navigate(routes.GET_UPDATE_AGGREGATE_PATH(idAggregate!));
       });
   };

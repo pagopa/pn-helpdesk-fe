@@ -21,7 +21,7 @@ describe('DeliveryDriverFormTest', () => {
 
   it('whenClickSaveWithoutRequiredFields', async function () {
     render(
-      <LocalizationProvider locale={italianStyle.it} dateAdapter={AdapterDateFns}>
+      <LocalizationProvider adapterLocale={italianStyle.it} dateAdapter={AdapterDateFns}>
         <DeliveryDriverForm fsu={false} initialValue={undefined} tenderCode={'abc-1234'} />
       </LocalizationProvider>
     );
@@ -45,7 +45,7 @@ describe('DeliveryDriverFormTest', () => {
 
   it('whenInsertTaxIdBadlyFormat', async function () {
     render(
-      <LocalizationProvider locale={italianStyle.it} dateAdapter={AdapterDateFns}>
+      <LocalizationProvider adapterLocale={italianStyle.it} dateAdapter={AdapterDateFns}>
         <DeliveryDriverForm fsu={false} initialValue={undefined} tenderCode={'abc-1234'} />
       </LocalizationProvider>
     );
@@ -65,7 +65,7 @@ describe('DeliveryDriverFormTest', () => {
 
   it('whenSaveWithAllRequiredField', async function () {
     render(
-      <LocalizationProvider locale={italianStyle.it} dateAdapter={AdapterDateFns}>
+      <LocalizationProvider adapterLocale={italianStyle.it} dateAdapter={AdapterDateFns}>
         <DeliveryDriverForm fsu={false} initialValue={undefined} tenderCode={'abc-1234'} />
       </LocalizationProvider>
     );
@@ -107,7 +107,7 @@ describe('DeliveryDriverFormTest', () => {
     createDriverSpy.mockRejectedValue(new Error('Error with Creation'));
 
     render(
-      <LocalizationProvider locale={italianStyle.it} dateAdapter={AdapterDateFns}>
+      <LocalizationProvider adapterLocale={italianStyle.it} dateAdapter={AdapterDateFns}>
         <DeliveryDriverForm fsu={false} initialValue={undefined} tenderCode={'abc-1234'} />
       </LocalizationProvider>
     );
@@ -155,7 +155,7 @@ describe('DeliveryDriverFormTest', () => {
     );
 
     render(
-      <LocalizationProvider locale={italianStyle.it} dateAdapter={AdapterDateFns}>
+      <LocalizationProvider adapterLocale={italianStyle.it} dateAdapter={AdapterDateFns}>
         <DeliveryDriverForm fsu={false} initialValue={undefined} tenderCode={'abc-1234'} />
       </LocalizationProvider>
     );

@@ -17,7 +17,7 @@ root.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
       {/* for date formatting in italian style */}
-      <LocalizationProvider locale={it} dateAdapter={AdapterDateFns}>
+      <LocalizationProvider adapterLocale={it} dateAdapter={AdapterDateFns}>
         <UserContextProvider>
           <CssBaseline />
           <Suspense fallback="loading...">

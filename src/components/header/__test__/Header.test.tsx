@@ -2,10 +2,9 @@
  * @jest-environment jsdom
  */
 import '@testing-library/jest-dom/extend-expect';
-import { cleanup, screen, within } from '@testing-library/react';
+import { cleanup, screen, within, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import 'regenerator-runtime/runtime';
 import { reducer } from '../../../mocks/mockReducer';
 import Header from '../Header';

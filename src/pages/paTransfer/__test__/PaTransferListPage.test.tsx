@@ -1,5 +1,4 @@
-import { waitFor, screen, within, fireEvent } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { waitFor, screen, within, fireEvent, act } from '@testing-library/react';
 import PaTransferListPage from '../PaTransferListPage';
 import { renderWithProviders } from '../../../mocks/mockReducer';
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';

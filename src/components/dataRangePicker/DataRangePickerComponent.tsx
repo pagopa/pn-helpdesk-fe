@@ -94,7 +94,7 @@ const DateRangePickerComponent = (props: Props) => {
   };
 
   return (
-    <Grid item container spacing={2}>
+    <Grid item container spacing={2} data-testid="data-range-picker">
       {dates.map((date, index) => (
         <Grid item key={date.label} xs={12} lg={6} sx={{ paddingRight: '0px!important' }}>
           <DatePicker
@@ -108,6 +108,7 @@ const DateRangePickerComponent = (props: Props) => {
             inputFormat={props.field.format || 'dd-MM-yyyy'}
             mask={'__-__-____'}
             maxDate={
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               props.field.name === 'monthInterval' ? new Date(props.field.maxDate!) : undefined
             }
             renderInput={(params) => (

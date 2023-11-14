@@ -60,7 +60,7 @@ export function CostsForm(props: CostFormProps) {
       zone: data.zone,
       cap: data.cap,
       productType:
-        data.type === 'NATIONAL' ? data!.nationalProductType : data!.internationalProductType,
+        data.type === 'NATIONAL' ? data.nationalProductType : data.internationalProductType,
     } as CostDTO;
 
     try {
@@ -122,7 +122,7 @@ export function CostsForm(props: CostFormProps) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props?.onCancel} variant="outlined">
+        <Button onClick={props?.onCancel} variant="outlined" data-testid={'btn-cancel-cost'}>
           Annulla
         </Button>
         <LoadingButton
