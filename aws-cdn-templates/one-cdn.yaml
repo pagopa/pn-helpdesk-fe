@@ -51,29 +51,46 @@ Parameters:
   #    Description: The limit on requests per 5-minute period for a single originating IP address.
   #    Default: 1000
 
-  RequestsAlarmLimit:
+  RequestsAlarmMinimumLimit:
     Type: Number
-    Default: 50000
+    Default: 300000
     Description: The limit of requests on 5 minutes period to raise an alarm
 
-  ErrorRateAlarmLimit:
+  ErrorRateAlarmPercentageLimit:
     Type: Number
-    Default: 10
+    Default: 20
     Description: The limit of error rate percentage on 5 minutes period to raise an alarm
+
+  AlarmSNSTopicArn:
+    Type: String
+    Description: ARN of the topic to send the alarm to
 
   S3LogsBucket:
     Type: String
-    Default: "-"
+    Default: '-'
     Description: Access Log bucket name
 
 Conditions:
+
+  # Is Portale PG site if name startsWith 'webapp-pg-cdn-'
+  IsPortalePg:
+    Fn::And:
+      - !Not [!Equals [!Ref Name, ""]]
+      - !Equals [!Select [0, !Split [webapp-pg-cdn-, !Ref Name]], ""]
+
+  # Is Portale PG prod if name is equals to 'webapp-pg-cdn-prod'
+  IsPortalePgProd:
+    Fn::And:
+      - !Not [!Equals [!Ref Name, ""]]
+      - !Equals [ webapp-pg-cdn-prod, !Ref Name ]
+
   # If domain is used in certificate, add this domain to CloudFront
   CreateDNSname: !Equals
     - !Ref WebDomainReferenceToSite
     - "true"
 
   # If domain is used in certificate, add this domain to CloudFront
-  HasLogsBucket: !Not [!Equals [!Ref S3LogsBucket, "-"]]
+  HasLogsBucket: !Not [!Equals [!Ref S3LogsBucket, "-" ]]
 
   # If alternate domain is provided and is used in certificate, add this domain to CloudFront
   CreateAlternateDNSname:
@@ -248,9 +265,101 @@ Resources:
               - HEAD
             TargetOriginId: !Sub "S3-${S3BucketForWebsiteContent}"
             ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: b2884449-e4de-46a7-ac36-70bc7f1ddd6d ## CachingOptimizedForUncompressedObjects - Default TTL: 86,400 seconds (24 hours) - https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html#managed-cache-policies-list
+            ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
+            PathPattern: /onetrust*
+          - AllowedMethods:
+              - GET
+              - HEAD
+            CachedMethods:
+              - GET
+              - HEAD
+            TargetOriginId: !Sub "S3-${S3BucketForWebsiteContent}"
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: !Ref WebsiteCDNCachingPolicyOneHour
+            ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
+            PathPattern: /locales*
+          - AllowedMethods:
+              - GET
+              - HEAD
+            CachedMethods:
+              - GET
+              - HEAD
+            TargetOriginId: !Sub "S3-${S3BucketForWebsiteContent}"
+            ViewerProtocolPolicy: redirect-to-https
             CachePolicyId: !Ref WebsiteCDNCachingPolicyOneHour
             ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
             PathPattern: /icons*
+          - Fn::If:
+            - IsPortalePg
+            - AllowedMethods:
+                - GET
+                - HEAD
+              CachedMethods:
+                - GET
+                - HEAD
+              TargetOriginId: pn-SelfCare-PG
+              ViewerProtocolPolicy: redirect-to-https
+              CachePolicyId: b2884449-e4de-46a7-ac36-70bc7f1ddd6d
+              ResponseHeadersPolicyId: !Ref SelfcareHeaderPolicy
+              PathPattern: /auth*
+            - !Ref "AWS::NoValue"
+          - Fn::If:
+            - IsPortalePg
+            - AllowedMethods:
+                - GET
+                - HEAD
+              CachedMethods:
+                - GET
+                - HEAD
+              TargetOriginId: pn-SelfCare-PG
+              ViewerProtocolPolicy: redirect-to-https
+              CachePolicyId: b2884449-e4de-46a7-ac36-70bc7f1ddd6d
+              ResponseHeadersPolicyId: !Ref SelfcareHeaderPolicy
+              PathPattern: /dashboard*
+            - !Ref "AWS::NoValue"  
+          - Fn::If:
+            - IsPortalePg
+            - AllowedMethods:
+                - GET
+                - HEAD
+              CachedMethods:
+                - GET
+                - HEAD
+              TargetOriginId: pn-SelfCare-PG
+              ViewerProtocolPolicy: redirect-to-https
+              CachePolicyId: b2884449-e4de-46a7-ac36-70bc7f1ddd6d
+              ResponseHeadersPolicyId: !Ref SelfcareHeaderPolicy
+              PathPattern: /onboarding*
+            - !Ref "AWS::NoValue"
+          - Fn::If:
+            - IsPortalePg
+            - AllowedMethods:
+                - GET
+                - HEAD
+              CachedMethods:
+                - GET
+                - HEAD
+              TargetOriginId: pn-SelfCare-PG
+              ViewerProtocolPolicy: redirect-to-https
+              CachePolicyId: b2884449-e4de-46a7-ac36-70bc7f1ddd6d
+              ResponseHeadersPolicyId: !Ref SelfcareHeaderPolicy
+              PathPattern: /assets*
+            - !Ref "AWS::NoValue"
+          - Fn::If:
+            - IsPortalePg
+            - AllowedMethods:
+                - GET
+                - HEAD
+              CachedMethods:
+                - GET
+                - HEAD
+              TargetOriginId: pn-SelfCare-PG
+              ViewerProtocolPolicy: redirect-to-https
+              CachePolicyId: b2884449-e4de-46a7-ac36-70bc7f1ddd6d
+              ResponseHeadersPolicyId: !Ref SelfcareHeaderPolicy
+              PathPattern: /microcomponents*
+            - !Ref "AWS::NoValue"                          
         DefaultCacheBehavior:
           AllowedMethods:
             - GET
@@ -262,6 +371,7 @@ Resources:
           ViewerProtocolPolicy: redirect-to-https
           CachePolicyId: !Ref WebsiteCDNCachingPolicy
           ResponseHeadersPolicyId: !Ref DefaultHeaderPolicy
+          FunctionAssociations: !Ref "AWS::NoValue"
         DefaultRootObject: "index.html"
         CustomErrorResponses:
           - ErrorCode: 404
@@ -279,6 +389,15 @@ Resources:
                   - ""
                   - - origin-access-identity/cloudfront/
                     - Ref: CloudFrontOriginAccessIdentity
+          - Fn::If:
+            - IsPortalePg
+            - DomainName: !If [ IsPortalePgProd, 'pnpg.selfcare.pagopa.it', 'pnpg.uat.selfcare.pagopa.it' ]
+              Id: "pn-SelfCare-PG"
+              CustomOriginConfig:
+                OriginProtocolPolicy: 'https-only'
+                OriginSSLProtocols:
+                  - TLSv1.2
+            - !Ref "AWS::NoValue"
         Logging:
           Fn::If:
             - HasLogsBucket
@@ -291,6 +410,53 @@ Resources:
           SslSupportMethod: sni-only
   #        WebACLId: !GetAtt ApiWafWebAcl.Arn
 
+  SelfcareHeaderPolicy:
+    Type: AWS::CloudFront::ResponseHeadersPolicy
+    Condition: IsPortalePg
+    Properties:
+      ResponseHeadersPolicyConfig:
+        Name: "pn-PnpgHeaderPolicy"
+        SecurityHeadersConfig:
+          # add_header Content-Security-Policy
+          ContentSecurityPolicy:
+            ContentSecurityPolicy:
+              "default-src 'self' https://pnpg.uat.selfcare.pagopa.it/ https://pnpg.selfcare.pagopa.it/ ; \ 
+              connect-src 'self' https://api-eu.mixpanel.com/track/ \
+              https://uat.selfcare.pagopa.it/assets/ \
+              https://selfcare.pagopa.it/assets/ \
+              https://pnpg.uat.selfcare.pagopa.it/assets/ \
+              https://pnpg.selfcare.pagopa.it/assets/ \
+              https://privacyportalde-cdn.onetrust.com/ \
+              https://api-pnpg.selfcare.pagopa.it \
+              https://api-pnpg.uat.selfcare.pagopa.it ; \
+              style-src 'self' 'unsafe-inline' \
+              https://pnpg.uat.selfcare.pagopa.it/ \
+              https://pnpg.selfcare.pagopa.it/ \
+              https://privacyportalde-cdn.onetrust.com/ ; \
+              worker-src 'none'; \ 
+              font-src 'self'; \
+              frame-ancestors 'self' ; \
+              img-src 'self' https://assets.cdn.io.italia.it/ https://selcpweupnpgcheckoutsa.z6.web.core.windows.net/ https://selcuweupnpgcheckoutsa.z6.web.core.windows.net/ https://imprese.uat.notifichedigitali.it/ https://imprese.notifichedigitali.it/ data:"
+            Override: true
+          # add_header X-Content-Type-Options "nosniff";
+          ContentTypeOptions:
+            #ContentTypeOptions: "nosniff"
+            Override: true
+          # add_header X-Frame-Options "SAMEORIGIN";
+          FrameOptions:
+            FrameOption: "SAMEORIGIN"
+            Override: true
+          # add_header Referrer-Policy "no-referrer";
+          ReferrerPolicy:
+            ReferrerPolicy: "no-referrer"
+            Override: true
+          # add_header Strict-Transport-Security "max-age=31536000";
+          StrictTransportSecurity:
+            AccessControlMaxAgeSec: 31536000
+            IncludeSubdomains: false
+            Preload: false
+            Override: true
+
   DefaultHeaderPolicy:
     Type: AWS::CloudFront::ResponseHeadersPolicy
     Properties:
@@ -302,18 +468,15 @@ Resources:
             ContentSecurityPolicy:
               Fn::Join:
                 - " "
-                - - "default-src 'self';"
-                  - "object-src 'none';"
+                - - "default-src 'self'; object-src 'none';"
                   - !Sub " connect-src 'self' https://api-eu.mixpanel.com/track/  \
                     https://selfcare.pagopa.it/assets/ \
                     https://privacyportalde-cdn.onetrust.com/ \
-                    ${WebApiUrl} \
-                    ${BoWebApiUrl}; \
+                    ${WebApiUrl}; \
                     style-src 'self' 'unsafe-inline' https://privacyportalde-cdn.onetrust.com/; \
-                    worker-src 'self'; \
+                    worker-src 'none'; \
                     font-src 'self'; \
                     frame-ancestors 'self' ; \
-                    script-src 'self' 'sha256-J7qES23guUSZZFDk5KFVCed+xo84oneRJplyzDFfDnA=' ; \
                     img-src 'self' https://assets.cdn.io.italia.it/ data:"
             Override: true
           # add_header X-Content-Type-Options "nosniff";
@@ -359,6 +522,85 @@ Resources:
         DNSName: !GetAtt WebsiteCDN.DomainName
         EvaluateTargetHealth: false
         HostedZoneId: Z2FDTNDATAQYW2
+
+  ##
+  ## Rewrite rule based on example provided by aws at https://github.com/aws-samples/amazon-cloudfront-functions/blob/main/url-rewrite-single-page-apps/index.js
+  RewriteFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      AutoPublish: true
+      FunctionCode: |
+        function handler(event) {
+            var request = event.request;
+            var uri = request.uri;
+            
+            if( uri != '/' && uri != '' ) { // Do not override default root object
+              
+              // Check whether the URI is missing a file name.
+              if (uri.endsWith('/')) {
+                request.uri += 'index.html';
+              } 
+              // Check whether the URI is missing a file extension.
+              else if (!uri.includes('.')) {
+                request.uri += '/index.html';
+              }
+            }
+            
+            return request;
+        }
+      FunctionConfig:
+        Comment: "Rewriting the request between a CloudFront Distribution and an origin"
+        Runtime: cloudfront-js-1.0
+      Name: !Sub "${AWS::StackName}-RewriteDefaultIndexRequest"
+
+  # Alarms
+  TooManyRequestsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${WebDomain}-DistributionRequestsAlarm"
+      AlarmDescription: "CloudWatch alarm for when distributions requests rate is too high."
+      AlarmActions:
+        - !Ref AlarmSNSTopicArn
+      InsufficientDataActions:
+        - !Ref AlarmSNSTopicArn
+      OKActions:
+        - !Ref AlarmSNSTopicArn
+      DatapointsToAlarm: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 1
+      Threshold: !Ref RequestsAlarmMinimumLimit
+      TreatMissingData: notBreaching
+      Namespace: "AWS/CloudFront"
+      Period: 300
+      MetricName: "Requests"
+      Dimensions:
+        - Name: DistributionId
+          Value: !Ref WebsiteCDN
+      Statistic: "Sum"
+
+  TooManyErrorsAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${WebDomain}-DistributionErrorsAlarm"
+      AlarmDescription: "CloudWatch alarm for when distributions error rate is too high."
+      AlarmActions:
+        - !Ref AlarmSNSTopicArn
+      InsufficientDataActions:
+        - !Ref AlarmSNSTopicArn
+      OKActions:
+        - !Ref AlarmSNSTopicArn
+      DatapointsToAlarm: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      EvaluationPeriods: 1
+      Period: 300
+      Threshold: !Ref ErrorRateAlarmPercentageLimit
+      TreatMissingData: notBreaching
+      Namespace: "AWS/CloudFront"
+      MetricName: "TotalErrorRate"
+      Dimensions:
+        - Name: DistributionId
+          Value: !Ref WebsiteCDN
+      Statistic: "Average"
 
   # AWS WAF Web ACLs for CloudFront
   #ApiWafWebAcl:
@@ -431,3 +673,11 @@ Outputs:
   DistributionId:
     Description: Cloudfront distribution ID
     Value: !Ref WebsiteCDN
+    
+  TooManyErrorsAlarmArn:
+    Value: !GetAtt TooManyErrorsAlarm.Arn
+    Description: ARN of distribution too many errors alarm
+
+  TooManyRequestsAlarmArn:
+    Value: !GetAtt TooManyRequestsAlarm.Arn
+    Description: ARN of distribution too many requests alarm
