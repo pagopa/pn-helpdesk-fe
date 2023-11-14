@@ -39,7 +39,7 @@ const ResponseData = () => {
       </Grid>
       <Grid item container>
         <Grid item>
-          <Typography align="center" color="text.primary">
+          <Typography align="center" color="text.primary" id="response">
             {`${ResponseType[Object.keys(response)[0] as keyof typeof ResponseType]}: ${
               Object.values(response)[0]
             }`}
