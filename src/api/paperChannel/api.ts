@@ -21,9 +21,6 @@ import {
   DUMMY_BASE_URL,
   assertParamExists,
   setApiKeyToObject,
-  setBasicAuthToObject,
-  setBearerAuthToObject,
-  setOAuthToObject,
   setSearchParams,
   serializeDataIfNeeded,
   toPathString,
@@ -31,7 +28,8 @@ import {
 } from './common';
 import type { RequestArgs } from './base';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base';
+import { BaseAPI } from './base';
+import { getConfiguration } from '../../services/configuration.service';
 
 /**
  *
@@ -61,7 +59,7 @@ export const BaseResponseCodeEnum = {
   NUMBER_99: 99,
 } as const;
 
-export type BaseResponseCodeEnum = typeof BaseResponseCodeEnum[keyof typeof BaseResponseCodeEnum];
+export type BaseResponseCodeEnum = (typeof BaseResponseCodeEnum)[keyof typeof BaseResponseCodeEnum];
 
 /**
  *
@@ -241,7 +239,7 @@ export const DeliveryDriverResponseDTOCodeEnum = {
 } as const;
 
 export type DeliveryDriverResponseDTOCodeEnum =
-  typeof DeliveryDriverResponseDTOCodeEnum[keyof typeof DeliveryDriverResponseDTOCodeEnum];
+  (typeof DeliveryDriverResponseDTOCodeEnum)[keyof typeof DeliveryDriverResponseDTOCodeEnum];
 
 /**
  *
@@ -278,7 +276,7 @@ export const FSUResponseDTOCodeEnum = {
 } as const;
 
 export type FSUResponseDTOCodeEnum =
-  typeof FSUResponseDTOCodeEnum[keyof typeof FSUResponseDTOCodeEnum];
+  (typeof FSUResponseDTOCodeEnum)[keyof typeof FSUResponseDTOCodeEnum];
 
 /**
  *
@@ -318,7 +316,7 @@ export const InfoDownloadDTOStatusEnum = {
 } as const;
 
 export type InfoDownloadDTOStatusEnum =
-  typeof InfoDownloadDTOStatusEnum[keyof typeof InfoDownloadDTOStatusEnum];
+  (typeof InfoDownloadDTOStatusEnum)[keyof typeof InfoDownloadDTOStatusEnum];
 
 /**
  *
@@ -333,7 +331,7 @@ export const InternationalZoneEnum = {
 } as const;
 
 export type InternationalZoneEnum =
-  typeof InternationalZoneEnum[keyof typeof InternationalZoneEnum];
+  (typeof InternationalZoneEnum)[keyof typeof InternationalZoneEnum];
 
 /**
  *
@@ -368,7 +366,7 @@ export const NotifyResponseDtoStatusEnum = {
 } as const;
 
 export type NotifyResponseDtoStatusEnum =
-  typeof NotifyResponseDtoStatusEnum[keyof typeof NotifyResponseDtoStatusEnum];
+  (typeof NotifyResponseDtoStatusEnum)[keyof typeof NotifyResponseDtoStatusEnum];
 
 /**
  *
@@ -743,7 +741,7 @@ export const ProductTypeEnumDto = {
   Rs: 'RS',
 } as const;
 
-export type ProductTypeEnumDto = typeof ProductTypeEnumDto[keyof typeof ProductTypeEnumDto];
+export type ProductTypeEnumDto = (typeof ProductTypeEnumDto)[keyof typeof ProductTypeEnumDto];
 
 /**
  *
@@ -789,7 +787,7 @@ export const StatusStatusCodeEnum = {
   Validated: 'VALIDATED',
 } as const;
 
-export type StatusStatusCodeEnum = typeof StatusStatusCodeEnum[keyof typeof StatusStatusCodeEnum];
+export type StatusStatusCodeEnum = (typeof StatusStatusCodeEnum)[keyof typeof StatusStatusCodeEnum];
 
 /**
  *
@@ -857,7 +855,7 @@ export const TenderCreateResponseDTOCodeEnum = {
 } as const;
 
 export type TenderCreateResponseDTOCodeEnum =
-  typeof TenderCreateResponseDTOCodeEnum[keyof typeof TenderCreateResponseDTOCodeEnum];
+  (typeof TenderCreateResponseDTOCodeEnum)[keyof typeof TenderCreateResponseDTOCodeEnum];
 
 /**
  *
@@ -904,7 +902,7 @@ export const TenderDTOStatusEnum = {
   Ended: 'ENDED',
 } as const;
 
-export type TenderDTOStatusEnum = typeof TenderDTOStatusEnum[keyof typeof TenderDTOStatusEnum];
+export type TenderDTOStatusEnum = (typeof TenderDTOStatusEnum)[keyof typeof TenderDTOStatusEnum];
 
 /**
  *
@@ -941,7 +939,7 @@ export const TenderDetailResponseDTOCodeEnum = {
 } as const;
 
 export type TenderDetailResponseDTOCodeEnum =
-  typeof TenderDetailResponseDTOCodeEnum[keyof typeof TenderDetailResponseDTOCodeEnum];
+  (typeof TenderDetailResponseDTOCodeEnum)[keyof typeof TenderDetailResponseDTOCodeEnum];
 
 const prepareRequest = async (
   path: string,
@@ -963,7 +961,7 @@ const prepareRequest = async (
   await setApiKeyToObject(localVarHeaderParameter, 'x-api-key', configuration);
 
   setSearchParams(localVarUrlObj, localVarQueryParameter);
-  let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+  let headersFromBaseOptions = baseOptions?.headers ? baseOptions.headers : {};
   if (body) localVarHeaderParameter['Content-Type'] = 'application/json';
   localVarRequestOptions.headers = {
     ...localVarHeaderParameter,
@@ -1393,6 +1391,7 @@ export const DeliveryDriverApiAxiosParamCreator = function (configuration?: Conf
  */
 export const DeliveryDriverApiFp = function (configuration?: Configuration) {
   const localVarAxiosParamCreator = DeliveryDriverApiAxiosParamCreator(configuration);
+  const { API_PAPER_CHANNEL_ENDPOINT } = getConfiguration();
   return {
     /**
      * API che consente di ottenere la presigned url necessaria al caricamento del file
@@ -1406,7 +1405,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PresignedUrlResponseDto>
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.addTenderFromFile(options);
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente di aggiungere o modificare i dettagli di un costo legato al deliveryDriver
@@ -1429,7 +1433,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         costDTO,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente di aggiungere o modificare i dettagli di un recapitista
@@ -1449,7 +1458,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         deliveryDriverDTO,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente di aggiungere o modificare i dettagli di una gara
@@ -1468,7 +1482,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         tenderCreateRequestDTO,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente di eliminare i dettagli di un costo legato al deliveryDriver.
@@ -1491,7 +1510,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         uuid,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente di eliminare i dettagli di un recapitista.
@@ -1511,7 +1535,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         deliveryDriverId,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente di eliminare i dettagli di una gara.
@@ -1525,7 +1554,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
       options?: AxiosRequestConfig
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.deleteTender(tenderCode, options);
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente il download dell\'elenco delle gare d\'appalto.
@@ -1545,7 +1579,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         uuid,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente di recuperare e paginare tutti i costi di un recapitista che partecipa ad una specifica gara
@@ -1573,7 +1612,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         size,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente il recupero dei dettagli di un FSU
@@ -1587,7 +1631,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
       options?: AxiosRequestConfig
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FSUResponseDTO>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.getDetailFSU(tenderCode, options);
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente il recupero dei dettagli di uno specifico recapitista
@@ -1609,7 +1658,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         deliveryDriverId,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente il recupero dei dettagli di una gara
@@ -1628,7 +1682,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         tenderCode,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente di notificare l\'avvenuto caricamento del file e avvio del flusso di salvataggio
@@ -1648,7 +1707,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         notifyUploadRequestDto,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente il recupero di tutti i recapitisti di una gara
@@ -1676,7 +1740,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         fsu,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente il recupero di tutte le gare
@@ -1694,7 +1763,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
       (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageableTenderResponseDto>
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.takeTender(page, size, options);
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
     /**
      * API che consente di aggiornare lo stato della gara
@@ -1716,7 +1790,12 @@ export const DeliveryDriverApiFp = function (configuration?: Configuration) {
         status,
         options
       );
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
   };
 };
@@ -2323,6 +2402,7 @@ export const HealthCheckApiAxiosParamCreator = function (configuration?: Configu
  */
 export const HealthCheckApiFp = function (configuration?: Configuration) {
   const localVarAxiosParamCreator = HealthCheckApiAxiosParamCreator(configuration);
+  const { API_PAPER_CHANNEL_ENDPOINT } = getConfiguration();
   return {
     /**
      * Ritorna lo status di salute dell\'API.
@@ -2334,7 +2414,12 @@ export const HealthCheckApiFp = function (configuration?: Configuration) {
       options?: AxiosRequestConfig
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.takeHealth(options);
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
   };
 };
@@ -2438,6 +2523,7 @@ export const SelectListApiAxiosParamCreator = function (configuration?: Configur
  */
 export const SelectListApiFp = function (configuration?: Configuration) {
   const localVarAxiosParamCreator = SelectListApiAxiosParamCreator(configuration);
+  const { API_PAPER_CHANNEL_ENDPOINT } = getConfiguration();
   return {
     /**
      * API che consente il recupero di tutti i cap
@@ -2451,7 +2537,12 @@ export const SelectListApiFp = function (configuration?: Configuration) {
       options?: AxiosRequestConfig
     ): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CapResponseDto>> {
       const localVarAxiosArgs = await localVarAxiosParamCreator.getAllCap(value, options);
-      return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+      return createRequestFunction(
+        localVarAxiosArgs,
+        globalAxios,
+        API_PAPER_CHANNEL_ENDPOINT,
+        configuration
+      );
     },
   };
 };
