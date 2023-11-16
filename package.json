@@ -2,7 +2,6 @@
   "name": "pn-helpdesk-fe",
   "version": "2.0.1",
   "private": true,
-  "proxy": "http://localhost:8080/log-extractor",
   "dependencies": {
     "@aws-amplify/auth": "^4.5.4",
     "@babel/core": "^7.0.0",

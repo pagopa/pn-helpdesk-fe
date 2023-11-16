@@ -4,7 +4,6 @@ import { useCallback } from 'react';
 import { Permission, UserData } from '../model/user-permission';
 import { useCurrentUser } from '../hooks/useCurrentUser';
 import { setStorage, resetStorage, deleteStorage } from './storage';
-import awsmobile from './aws-exports';
 
 type Props = {
   /**
@@ -17,17 +16,25 @@ type Props = {
   password: string;
 };
 
-Amplify.configure(awsmobile);
+export async function initAmplify() {
+  // the dynamic import is needed, because the aws-exports file uses properties from configuration
+  // so the configuration must be loaded (check the index.tsx file) before importing the aws-exports file
+  try {
+    const { default: awsmobile } = await import('./aws-exports');
+    Amplify.configure(awsmobile);
+  } catch (e: any) {
+    throw new Error(e);
+  }
+}
 
 function userDataForUser(user: any): UserData {
   const rawPermissions: string | undefined | null = user.attributes['custom:backoffice_tags'];
 
   // these are the permissions indicated in the Cognito state
   // rawPermissions could contain spaces after the commas, so we must trim the permission strings
-  const possiblePermissions: Array<string> =
-    rawPermissions && rawPermissions.length
-      ? rawPermissions.split(',').map((permission) => permission.trim())
-      : [];
+  const possiblePermissions: Array<string> = rawPermissions?.length
+    ? rawPermissions.split(',').map((permission) => permission.trim())
+    : [];
   const allLegalPermissions = Object.values(Permission) as Array<string>;
   // these are the permissions indicated in the Cognito state *and* recognized by this app
   const validatedPermissions = possiblePermissions.filter((perm) =>
