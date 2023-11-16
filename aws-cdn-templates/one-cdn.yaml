@@ -294,12 +294,11 @@ Resources:
                 - " "
                 - - "default-src 'self';"
                   - "object-src 'none';"
-                  - !Sub " connect-src 'self' https://api-eu.mixpanel.com/track/  \
-                    https://selfcare.pagopa.it/assets/ \
-                    https://privacyportalde-cdn.onetrust.com/ \
+                  - !Sub " connect-src 'self' \
+                    https://cognito-idp.eu-south-1.amazonaws.com/ \
                     ${WebApiUrl} \
                     ${BoWebApiUrl}; \
-                    style-src 'self' 'unsafe-inline' https://privacyportalde-cdn.onetrust.com/; \
+                    style-src 'self' 'unsafe-inline' ; \
                     worker-src 'self'; \
                     font-src 'self'; \
                     frame-ancestors 'self' ; \
