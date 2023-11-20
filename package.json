@@ -24,7 +24,7 @@
     "@types/streamsaver": "^2.0.1",
     "@types/uuid": "^9.0.0",
     "aws-amplify": "^4.3.24",
-    "axios": "^0.27",
+    "axios": "^1.6",
     "blob-util": "^2.0.2",
     "date-fns": "^2.28.0",
     "eslint-plugin-jest-dom": "^4.0.2",
