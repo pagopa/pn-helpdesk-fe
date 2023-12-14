@@ -104,6 +104,9 @@
     "sonarqube-scanner": "^3.0.0"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^axios$": "axios/dist/browser/axios.cjs"
+    },
     "collectCoverageFrom": [
       "**/src/components/**",
       "**/src/pages/**",
