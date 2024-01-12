@@ -16,6 +16,8 @@ test-report.xml
 # misc
 .DS_Store
 *.pem
+/public/conf/config.json
+.env.local
 
 # debug
 npm-debug.log*

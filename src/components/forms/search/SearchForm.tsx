@@ -15,6 +15,7 @@ import * as snackbarActions from '../../../redux/snackbarSlice';
 import * as spinnerActions from '../../../redux/spinnerSlice';
 import { FieldsProperties, FieldsProps, FormField, MenuItems } from '../../formFields/FormFields';
 import ResponseData from '../../responseData/ResponseData';
+import { getConfiguration } from '../../../services/configuration.service';
 
 /**
  * default values of the form fields
@@ -105,6 +106,8 @@ const SearchForm = () => {
    * used for watching Tipo Estrazione select menu
    */
   const watchTipoEstrazione = useWatch({ name: 'Tipo Estrazione', control });
+
+  const { API_ENDPOINT } = getConfiguration();
 
   /**
    * function handling changes of the Tipo Estrazione select menu
@@ -310,7 +313,7 @@ const SearchForm = () => {
 
   const downloadZip = (payload: any): any => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const url = process.env.REACT_APP_API_ENDPOINT! + getUrl();
+    const url = API_ENDPOINT + getUrl();
 
     dispatch(spinnerActions.updateSpinnerOpened(true));
     const token = sessionStorage.getItem('token');

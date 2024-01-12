@@ -2,7 +2,6 @@
   "name": "pn-helpdesk-fe",
   "version": "2.0.1",
   "private": true,
-  "proxy": "http://localhost:8080/log-extractor",
   "dependencies": {
     "@aws-amplify/auth": "^4.5.4",
     "@babel/core": "^7.0.0",
@@ -25,7 +24,7 @@
     "@types/streamsaver": "^2.0.1",
     "@types/uuid": "^9.0.0",
     "aws-amplify": "^4.3.24",
-    "axios": "^0.27",
+    "axios": "^1.6",
     "blob-util": "^2.0.2",
     "date-fns": "^2.28.0",
     "eslint-plugin-jest-dom": "^4.0.2",
@@ -105,6 +104,9 @@
     "sonarqube-scanner": "^3.0.0"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^axios$": "axios/dist/browser/axios.cjs"
+    },
     "collectCoverageFrom": [
       "**/src/components/**",
       "**/src/pages/**",

@@ -15,10 +15,8 @@
 import type { Configuration } from './configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
-
-export const BASE_PATH = process.env['REACT_APP_API_PAPER_CHANNEL_ENDPOINT '] || '';
 
 /**
  *
@@ -51,12 +49,12 @@ export class BaseAPI {
 
   constructor(
     configuration?: Configuration,
-    protected basePath: string = BASE_PATH,
+    protected basePath?: string,
     protected axios: AxiosInstance = globalAxios
   ) {
     if (configuration) {
       this.configuration = configuration;
-      this.basePath = configuration.basePath || this.basePath;
+      this.basePath = configuration.basePath ?? this.basePath;
     }
   }
 }
