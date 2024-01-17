@@ -101,7 +101,7 @@
     "react-test-renderer": "^18.2.0",
     "redux-mock-store": "^1.5.4",
     "rimraf": "^3.0.2",
-    "sonarqube-scanner": "^3.0.0"
+    "sonarqube-scanner": "^3.3.0"
   },
   "jest": {
     "moduleNameMapper": {
