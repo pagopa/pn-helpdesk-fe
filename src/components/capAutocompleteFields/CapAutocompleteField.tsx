@@ -21,15 +21,11 @@ export function CapAutocompleteField(props: Props) {
   const [cap, setCap] = useState<Array<string>>([]);
 
   const fetch = useCallback(async () => {
-    try {
-      const response = await retrieveCaps(inputText);
-      if (props.field.fsu) {
-        setCap(['99999', ...response.content.map((item) => item.cap)]);
-      } else {
-        setCap(response.content.map((item) => item.cap));
-      }
-    } catch (e) {
-      console.error('Error with caps request ', e);
+    const response = await retrieveCaps(inputText);
+    if (props.field.fsu) {
+      setCap(['99999', ...response.content.map((item) => item.cap)]);
+    } else {
+      setCap(response.content.map((item) => item.cap));
     }
   }, [inputText, props.field.fsu]);
 

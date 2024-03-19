@@ -12,8 +12,7 @@ export async function apiUpload(url: string, file: File, sha: string) {
       },
     });
     return response;
-  } catch (e) {
-    console.error('RESPONSE UPLOAD ERROR S3');
-    console.error(e);
+  } catch (e: any) {
+    throw new Error(e);
   }
 }
