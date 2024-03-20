@@ -11,11 +11,8 @@ export async function apiUpload(url: string, file: File, sha: string) {
         'x-amz-checksum-sha256': sha,
       },
     });
-    console.log('RESPONSE UPLOAD FILE S3');
-    console.log(response);
     return response;
-  } catch (e) {
-    console.error('RESPONSE UPLOAD ERROR S3');
-    console.error(e);
+  } catch (e: any) {
+    throw new Error(e);
   }
 }
