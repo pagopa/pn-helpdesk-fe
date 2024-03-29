@@ -21,17 +21,20 @@ export function CapAutocompleteField(props: Props) {
   const [cap, setCap] = useState<Array<string>>([]);
 
   const fetch = useCallback(async () => {
-    const response = await retrieveCaps(inputText);
-    if (props.field.fsu) {
-      setCap(['99999', ...response.content.map((item) => item.cap)]);
-    } else {
-      setCap(response.content.map((item) => item.cap));
+    try {
+      const response = await retrieveCaps(inputText);
+      if (props.field.fsu) {
+        setCap(['99999', ...response.content.map((item) => item.cap)]);
+      } else {
+        setCap(response.content.map((item) => item.cap));
+      }
+    } catch (e) {
+      console.error('Error with caps request ', e);
     }
   }, [inputText, props.field.fsu]);
 
   useEffect(() => {
-    // eslint-disable-next-line
-    fetch();
+    void fetch();
   }, [fetch]);
 
   const handleOnChange = (event: React.SyntheticEvent, value: Array<string>) => {
@@ -47,7 +50,8 @@ export function CapAutocompleteField(props: Props) {
       value={props.value}
       fullWidth={true}
       limitTags={3}
-      onInputChange={(_, newInputValue) => {
+      onInputChange={(event, newInputValue) => {
+        // console.log(event, newInputValue)
         setInputText(newInputValue);
       }}
       onChange={handleOnChange}
