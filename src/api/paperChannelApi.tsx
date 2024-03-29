@@ -38,8 +38,8 @@ export const createTender = async (body: Tender) => {
     } as TenderCreateRequestDTO;
     const response = await apiPaperChannel().createUpdateTender(request);
     return response.data.tender;
-  } catch (e: any) {
-    throw new Error(e);
+  } catch (e) {
+    throw e;
   }
 };
 
@@ -50,16 +50,16 @@ export const createDeliveryDriver = async (tenderCode: string, body: DeliveryDri
     } as DeliveryDriverDTO;
     const response = await apiPaperChannel().createUpdateDriver(tenderCode, request);
     return response.data;
-  } catch (e: any) {
-    throw new Error(e);
+  } catch (e) {
+    throw e;
   }
 };
 
 export const createCost = async (tenderCode: string, driverCode: string, body: CostDTO) => {
   try {
     await apiPaperChannel().createUpdateCost(tenderCode, driverCode, body);
-  } catch (e: any) {
-    throw new Error(e);
+  } catch (e) {
+    throw e;
   }
 };
 
@@ -67,8 +67,8 @@ export const retrieveCaps = async (inputText: string) => {
   try {
     const response = await apiCaps().getAllCap(inputText);
     return response.data;
-  } catch (e: any) {
-    throw new Error(e);
+  } catch (e) {
+    throw e;
   }
 };
 
@@ -76,7 +76,7 @@ export const retrieveTenderDetails = async (tenderCode: string) => {
   try {
     const response = await apiPaperChannel().getTenderDetails(tenderCode);
     return response.data;
-  } catch (e: any) {
-    throw new Error(e);
+  } catch (e) {
+    throw e;
   }
 };
