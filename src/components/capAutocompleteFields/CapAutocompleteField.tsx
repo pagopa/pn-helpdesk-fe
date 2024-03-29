@@ -34,7 +34,8 @@ export function CapAutocompleteField(props: Props) {
   }, [inputText, props.field.fsu]);
 
   useEffect(() => {
-    void fetch();
+    // eslint-disable-next-line
+    fetch();
   }, [fetch]);
 
   const handleOnChange = (event: React.SyntheticEvent, value: Array<string>) => {
