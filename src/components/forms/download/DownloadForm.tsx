@@ -26,13 +26,10 @@ export function DownloadBox(props: DownloadBoxProps) {
   const retrieveAsync = async () => {
     const download = downloadState.download;
     if (download.uid && download.retry && download.loading) {
-      console.log('new attempt');
       setTimeout(
         () => dispatch(getFile({ uid: download.uid, tenderCode: props.tenderCode })),
         download.retry
       );
-    } else if (!download.retry && !download.error) {
-      console.log('Attempt ended');
     } else {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
       dispatch(snackbarActions.updateStatusCode(400));

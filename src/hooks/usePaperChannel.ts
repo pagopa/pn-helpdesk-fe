@@ -52,7 +52,6 @@ export const usePaperChannel = () => {
       dispatch(setLoadingTenders(false));
       dispatch(resetAllTenderState());
     } catch (e) {
-      console.log(e);
       dispatch(setLoadingTenders(false));
       showErrorMessage(e, 'Errore durante il cambio di stato della gara!');
     }
