@@ -25,6 +25,11 @@ export function DownloadBox(props: DownloadBoxProps) {
 
   const retrieveAsync = async () => {
     const download = downloadState.download;
+
+    if (!download.retry && !download.error) {
+      return;
+    }
+
     if (download.uid && download.retry && download.loading) {
       setTimeout(
         () => dispatch(getFile({ uid: download.uid, tenderCode: props.tenderCode })),
