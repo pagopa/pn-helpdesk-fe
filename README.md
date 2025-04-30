@@ -4,7 +4,9 @@
 
 Nella root del progetto utilizzare il comando
 
-`yarn install`
+```bash
+  yarn install
+```
 
 ### **Avviare l'applicazione**
 
@@ -31,4 +33,7 @@ Per avviare l'applicazione utilizzare il comando
 
 `sudo yarn start`
 
-Per eseguire i test di tutti i packages utilizzare il comando `yarn test`
+Per eseguire i test di tutti i packages utilizzare il comando 
+```bash
+  yarn test
+```

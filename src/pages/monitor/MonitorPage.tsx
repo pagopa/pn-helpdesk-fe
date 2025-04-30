@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { format } from 'date-fns';
 import { DateTimePicker } from '@mui/x-date-pickers';
+import StarterKit from '@tiptap/starter-kit';
+
 import {
   Dialog,
   DialogTitle,
@@ -15,7 +17,18 @@ import {
   DialogActions,
   Button,
   Typography,
+  Box,
 } from '@mui/material';
+import {
+  LinkBubbleMenu,
+  MenuButtonBold,
+  MenuButtonBulletedList,
+  MenuButtonItalic,
+  MenuControlsContainer,
+  MenuDivider,
+  RichTextEditor,
+  RichTextEditorRef,
+} from 'mui-tiptap';
 import DataGridComponent from '../../components/dataGrid/DataGridComponent';
 import MainLayout from '../mainLayout/MainLayout';
 import apiRequests from '../../api/apiRequests';
@@ -32,6 +45,7 @@ import { Permission } from '../../model/user-permission';
  */
 const MonitorPage = () => {
   const dispatch = useDispatch();
+  const rteRef = useRef<RichTextEditorRef>(null);
 
   const [rows, setRows] = useState<Array<any>>([]);
 
@@ -291,6 +305,23 @@ const MonitorPage = () => {
                   />
                 )}
               />
+              <Box padding="24px 0">
+                <RichTextEditor
+                  ref={rteRef}
+                  extensions={[StarterKit]} // Or any Tiptap extensions you wish!
+                  // Initial content for the editor content=""
+                  // Optionally include `renderControls` for a menu-bar atop the editor:
+                  renderControls={() => (
+                    <MenuControlsContainer>
+                      <MenuButtonBulletedList />
+                      <LinkBubbleMenu />
+                      <MenuDivider />
+                      <MenuButtonBold />
+                      <MenuButtonItalic />
+                    </MenuControlsContainer>
+                  )}
+                />
+              </Box>
             </Grid>
           </Grid>
           <FormHelperText error>{error ? error : ' '}</FormHelperText>
