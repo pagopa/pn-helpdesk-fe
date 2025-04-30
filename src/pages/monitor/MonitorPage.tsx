@@ -20,7 +20,6 @@ import {
   Box,
 } from '@mui/material';
 import {
-  LinkBubbleMenu,
   MenuButtonBold,
   MenuButtonBulletedList,
   MenuButtonItalic,
@@ -314,7 +313,6 @@ const MonitorPage = () => {
                   renderControls={() => (
                     <MenuControlsContainer>
                       <MenuButtonBulletedList />
-                      <LinkBubbleMenu />
                       <MenuDivider />
                       <MenuButtonBold />
                       <MenuButtonItalic />
