@@ -63,6 +63,7 @@ type getEventsType = [
     timestamp: string;
     functionality: Array<string>;
     sourceType: string;
+    description?: string;
   }
 ];
 /**
