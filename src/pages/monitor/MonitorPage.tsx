@@ -329,6 +329,9 @@ const MonitorPage = () => {
               </DialogContentText>
             </Grid>
             <Grid item>
+              <Typography variant="body2" sx={{ fontWeight: 600, mb: 2 }}>
+                Data e ora {modalPayload.status === 'OK' ? 'fine' : 'inizio'} dell’evento
+              </Typography>
               <DateTimePicker
                 disableFuture
                 maxDateTime={new Date()}
@@ -347,6 +350,12 @@ const MonitorPage = () => {
             {modalPayload.status === 'OK' && (
               <>
                 <Grid item>
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                    Informazioni aggiuntive
+                  </Typography>
+                  <Typography variant="body2" sx={{ mb: 2 }}>
+                    Inserire casistiche specifiche di malfunzionamento
+                  </Typography>
                   <RichTextEditor
                     ref={rteRef}
                     extensions={[StarterKit, Underline]}
