@@ -313,13 +313,11 @@ const MonitorPage = () => {
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
           {modalPayload.status === 'OK' ? 'Risolvi' : 'Inserisci'} evento |{' '}
           {modalFunctionalityName && FunctionalityName[modalFunctionalityName]}
         </DialogTitle>
-
         <DialogContent>
           <Grid container spacing={3} direction="column">
             <Grid item>
