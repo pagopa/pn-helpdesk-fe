@@ -29,11 +29,11 @@ const MonitorPage = () => {
   const [backEndStatus, setBackEndStatus] = useState<boolean>(true);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalEventDate, setModalEventDate] = useState(new Date());
+  const [modalEventDate, setModalEventDate] = useState<Date | null>(new Date());
+  const [modalEventHtmlDescription, setModalEventHtmlDescription] = useState<string | undefined>();
   const [modalFunctionalityName, setModalFunctionalityName] = useState<
     keyof typeof FunctionalityName | undefined
   >();
-  const [modalDescription] = useState<string | undefined>();
 
   const [modalPayload, setModalPayload] = useState<modalPayloadType>({
     status: '',
@@ -41,7 +41,7 @@ const MonitorPage = () => {
     sourceType: '',
   });
 
-  const [timestampError, setTimestampError] = useState('');
+  const [dateError, setDateError] = useState('');
   const [htmlDescriptionError, setHtmlDescriptionError] = useState('');
 
   const isUserWriter = useHasPermissions([Permission.LOG_DOWNTIME_WRITE]);
@@ -49,18 +49,24 @@ const MonitorPage = () => {
   useEffect(() => {
     if (!isModalOpen) {
       setModalEventDate(new Date());
-      setTimestampError('');
+      setModalEventHtmlDescription('');
+      setDateError('');
       setHtmlDescriptionError('');
     }
   }, [isModalOpen]);
 
-  const handleChange = (value: any) => {
-    if (value) {
-      setTimestampError('');
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      setDateError('');
+    }
+    setModalEventDate(date);
+  };
+
+  const handleDescriptionChange = (html?: string) => {
+    if (html) {
       setHtmlDescriptionError('');
     }
-    setModalEventDate(value);
-    // setModalHtmlDescription(rteRef.current?.editor?.getHTML());
+    setModalEventHtmlDescription(html);
   };
 
   const updateSnackbar = useCallback(
@@ -138,8 +144,8 @@ const MonitorPage = () => {
 
   const events = () => {
     if (!modalEventDate) {
-      setTimestampError('Seleziona una data');
-    } else if (!modalDescription) {
+      setDateError('Seleziona una data');
+    } else if (!modalEventHtmlDescription) {
       setHtmlDescriptionError('Inserisci un valore');
     } else {
       const params = [
@@ -149,9 +155,10 @@ const MonitorPage = () => {
             new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
             "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
           ),
-          htmlDescription: modalDescription,
+          htmlDescription: modalEventHtmlDescription,
         },
       ];
+      console.log('--------------- html: ', modalEventHtmlDescription);
       apiRequests
         .getEvents(params as getEventsType)
         .then((res: any) => {
@@ -282,9 +289,10 @@ const MonitorPage = () => {
         modalPayload={modalPayload}
         modalFunctionalityName={modalFunctionalityName}
         modalEventDate={modalEventDate}
-        handleChange={handleChange}
-        timestampError={timestampError}
-        modalDescription={modalDescription}
+        handleDateChange={handleDateChange}
+        handleDescriptionChange={handleDescriptionChange}
+        dateError={dateError}
+        modalEventHtmlDescription={modalEventHtmlDescription}
         htmlDescriptionError={htmlDescriptionError}
         events={events}
       />

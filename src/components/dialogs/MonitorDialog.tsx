@@ -36,10 +36,11 @@ interface MonitorDialogProps {
   setIsModalOpen: (open: boolean) => void;
   modalPayload: modalPayloadType;
   modalFunctionalityName: keyof typeof FunctionalityName | undefined;
-  modalEventDate: Date;
-  handleChange: (date: Date | null) => void;
-  timestampError: string;
-  modalDescription: string | undefined;
+  modalEventDate: Date | null;
+  handleDateChange: (date: Date | null) => void;
+  handleDescriptionChange: (html?: string) => void;
+  dateError: string;
+  modalEventHtmlDescription: string | undefined;
   htmlDescriptionError: string;
   events: () => void;
 }
@@ -76,12 +77,12 @@ export function MonitorDialog(props: MonitorDialogProps) {
               maxDateTime={new Date()}
               label="Data e ora evento"
               value={props.modalEventDate}
-              onChange={(date: Date | null) => props.handleChange(date)}
+              onChange={(date: Date | null) => props.handleDateChange(date)}
               renderInput={(params: any) => (
                 <TextField
                   onKeyDown={(e) => e.preventDefault()}
                   {...params}
-                  error={props.timestampError ? true : false}
+                  error={props.dateError ? true : false}
                 />
               )}
             />
@@ -102,6 +103,10 @@ export function MonitorDialog(props: MonitorDialogProps) {
                   }}
                 >
                   <RichTextEditor
+                    onUpdate={({ editor }) => {
+                      const html = editor?.getHTML();
+                      props.handleDescriptionChange(html); // Supponendo che `handleChange` accetti l'HTML
+                    }}
                     ref={rteRef}
                     extensions={[StarterKit, Underline]}
                     renderControls={() => (
@@ -113,7 +118,7 @@ export function MonitorDialog(props: MonitorDialogProps) {
                         <MenuButtonBulletedList />
                       </MenuControlsContainer>
                     )}
-                    content={props.modalDescription}
+                    content={props.modalEventHtmlDescription}
                   />
                 </Box>
                 <FormHelperText error>{props.htmlDescriptionError}</FormHelperText>
@@ -135,9 +140,9 @@ export function MonitorDialog(props: MonitorDialogProps) {
             </Grid>
           )}
         </Grid>
-        <FormHelperText error>{props.timestampError ? props.timestampError : ''}</FormHelperText>
+        <FormHelperText error>{props.dateError ? props.dateError : ''}</FormHelperText>
       </DialogContent>
-      <DialogActions sx={{ justifyContent: 'end' }}>
+      <DialogActions sx={{ justifyContent: 'end', p: '0 24px 20px 0' }}>
         <Button
           variant="outlined"
           onClick={() => props.setIsModalOpen(false)}
