@@ -1,37 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { format } from 'date-fns';
-import { DateTimePicker } from '@mui/x-date-pickers';
-import StarterKit from '@tiptap/starter-kit';
 
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Grid,
-  TextField,
-  FormHelperText,
-  DialogActions,
-  Button,
-  Typography,
-  DialogContentText,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-} from '@mui/material';
-import {
-  MenuButtonBold,
-  MenuButtonBulletedList,
-  MenuButtonItalic,
-  MenuControlsContainer,
-  MenuDivider,
-  RichTextEditor,
-  MenuButtonUnderline,
-  RichTextEditorRef,
-} from 'mui-tiptap';
-import Underline from '@tiptap/extension-underline';
+import { Button, Typography } from '@mui/material';
 import { GridColumns } from '@mui/x-data-grid';
 import DataGridComponent from '../../components/dataGrid/DataGridComponent';
 import MainLayout from '../mainLayout/MainLayout';
@@ -42,6 +15,8 @@ import { getEventsType } from '../../api/apiRequestTypes';
 import * as snackbarActions from '../../redux/snackbarSlice';
 import { useHasPermissions } from '../../hooks/useHasPermissions';
 import { Permission } from '../../model/user-permission';
+import { FunctionalityName, modalPayloadType } from '../../model';
+import { MonitorDialog } from '../../components/dialogs/MonitorDialog';
 
 /**
  * Monitor page
@@ -49,7 +24,6 @@ import { Permission } from '../../model/user-permission';
  */
 const MonitorPage = () => {
   const dispatch = useDispatch();
-  const rteRef = useRef<RichTextEditorRef>(null);
 
   const [rows, setRows] = useState<Array<any>>([]);
   const [backEndStatus, setBackEndStatus] = useState<boolean>(true);
@@ -61,41 +35,32 @@ const MonitorPage = () => {
   >();
   const [modalDescription] = useState<string | undefined>();
 
-  type modalPayloadType = {
-    status: string;
-    functionality: Array<string>;
-    sourceType: string;
-  };
-
   const [modalPayload, setModalPayload] = useState<modalPayloadType>({
     status: '',
     functionality: [],
     sourceType: '',
   });
 
-  const [error, setError] = useState('');
+  const [timestampError, setTimestampError] = useState('');
+  const [htmlDescriptionError, setHtmlDescriptionError] = useState('');
 
   const isUserWriter = useHasPermissions([Permission.LOG_DOWNTIME_WRITE]);
-
-  enum FunctionalityName {
-    'NOTIFICATION_CREATE' = 'Creazione Notifiche',
-    'NOTIFICATION_VISUALIZATION' = 'Visualizzazione notifiche',
-    'NOTIFICATION_WORKFLOW' = 'Workflow Notifiche',
-  }
 
   useEffect(() => {
     if (!isModalOpen) {
       setModalEventDate(new Date());
-      setError('');
+      setTimestampError('');
+      setHtmlDescriptionError('');
     }
   }, [isModalOpen]);
 
   const handleChange = (value: any) => {
     if (value) {
-      setError('');
+      setTimestampError('');
+      setHtmlDescriptionError('');
     }
     setModalEventDate(value);
-    // setModalDescription(rteRef.current?.editor?.getHTML());
+    // setModalHtmlDescription(rteRef.current?.editor?.getHTML());
   };
 
   const updateSnackbar = useCallback(
@@ -173,9 +138,9 @@ const MonitorPage = () => {
 
   const events = () => {
     if (!modalEventDate) {
-      setError('Seleziona una data');
+      setTimestampError('Seleziona una data');
     } else if (!modalDescription) {
-      setError('Inserisci un valore');
+      setHtmlDescriptionError('Inserisci un valore');
     } else {
       const params = [
         {
@@ -184,7 +149,7 @@ const MonitorPage = () => {
             new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
             "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
           ),
-          description: modalDescription,
+          htmlDescription: modalDescription,
         },
       ];
       apiRequests
@@ -266,6 +231,7 @@ const MonitorPage = () => {
       renderCell: (params: any) =>
         params.row.state ? (
           <Button
+            size="small"
             id="KO-insert"
             key="Inserire KO"
             variant="outlined"
@@ -285,6 +251,7 @@ const MonitorPage = () => {
           </Button>
         ) : (
           <Button
+            size="small"
             id="KO-resolve"
             key="Risolvi OK"
             variant="contained"
@@ -309,94 +276,18 @@ const MonitorPage = () => {
   return (
     <MainLayout>
       <DataGridComponent columns={columns} rows={rows} />
-      <Dialog
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        aria-labelledby="alert-dialog-title"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {modalPayload.status === 'OK' ? 'Risolvi' : 'Inserisci'} evento |{' '}
-          {modalFunctionalityName && FunctionalityName[modalFunctionalityName]}
-        </DialogTitle>
-        <DialogContent>
-          <Grid container spacing={3} direction="column">
-            <Grid item>
-              <DialogContentText>
-                {modalPayload.status === 'OK' ? 'Risolvi' : 'Inserisci'} un malfunzionamento legato
-                all’area di {modalFunctionalityName && FunctionalityName[modalFunctionalityName]}
-              </DialogContentText>
-            </Grid>
-            <Grid item>
-              <Typography variant="body2" sx={{ fontWeight: 600, mb: 2 }}>
-                Data e ora {modalPayload.status === 'OK' ? 'fine' : 'inizio'} dell’evento
-              </Typography>
-              <DateTimePicker
-                disableFuture
-                maxDateTime={new Date()}
-                label="Data e ora evento"
-                value={modalEventDate}
-                onChange={(date) => handleChange(date)}
-                renderInput={(params: any) => (
-                  <TextField
-                    onKeyDown={(e) => e.preventDefault()}
-                    {...params}
-                    error={error ? true : false}
-                  />
-                )}
-              />
-            </Grid>
-            {modalPayload.status === 'OK' && (
-              <>
-                <Grid item>
-                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                    Informazioni aggiuntive
-                  </Typography>
-                  <Typography variant="body2" sx={{ mb: 2 }}>
-                    Inserire casistiche specifiche di malfunzionamento
-                  </Typography>
-                  <RichTextEditor
-                    ref={rteRef}
-                    extensions={[StarterKit, Underline]}
-                    renderControls={() => (
-                      <MenuControlsContainer>
-                        <MenuButtonBold />
-                        <MenuButtonItalic />
-                        <MenuButtonUnderline />
-                        <MenuDivider />
-                        <MenuButtonBulletedList />
-                      </MenuControlsContainer>
-                    )}
-                    content={modalDescription}
-                  />
-                </Grid>
-              </>
-            )}
-            {modalPayload.status === 'OK' ? (
-              <></>
-            ) : (
-              <Grid item>
-                <FormGroup>
-                  <FormControlLabel
-                    required
-                    control={<Checkbox />}
-                    label="Sono consapevole che inserire un evento di malfunzionamento 
-  richiede una successiva risoluzione, che produce un’attestazione dedicata."
-                  />
-                </FormGroup>
-              </Grid>
-            )}
-          </Grid>
-          <FormHelperText error>{error ? error : ' '}</FormHelperText>
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: 'space-between' }}>
-          <Button onClick={() => setIsModalOpen(false)} sx={{ padding: '0 18px' }}>
-            Annulla
-          </Button>
-          <Button autoFocus onClick={events} id="buttonInserisciDisservizio">
-            {modalPayload.status === 'OK' ? 'Risolvi' : 'Inserisci'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <MonitorDialog
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        modalPayload={modalPayload}
+        modalFunctionalityName={modalFunctionalityName}
+        modalEventDate={modalEventDate}
+        handleChange={handleChange}
+        timestampError={timestampError}
+        modalDescription={modalDescription}
+        htmlDescriptionError={htmlDescriptionError}
+        events={events}
+      />
     </MainLayout>
   );
 };

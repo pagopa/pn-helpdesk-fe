@@ -112,3 +112,15 @@ export const mockListCost: Array<Cost> = [
     zone: 'ZONE_1',
   },
 ];
+
+export type modalPayloadType = {
+  status: string;
+  functionality: Array<string>;
+  sourceType: string;
+};
+
+export enum FunctionalityName {
+  'NOTIFICATION_CREATE' = 'Creazione Notifiche',
+  'NOTIFICATION_VISUALIZATION' = 'Visualizzazione notifiche',
+  'NOTIFICATION_WORKFLOW' = 'Workflow Notifiche',
+}
