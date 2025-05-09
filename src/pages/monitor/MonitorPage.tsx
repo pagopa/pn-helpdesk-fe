@@ -11,7 +11,6 @@ import MainLayout from '../mainLayout/MainLayout';
 import apiRequests from '../../api/apiRequests';
 import * as spinnerActions from '../../redux/spinnerSlice';
 import { errorMessages, functionalitiesNames } from '../../helpers/messagesConstants';
-import { getEventsType } from '../../api/apiRequestTypes';
 import * as snackbarActions from '../../redux/snackbarSlice';
 import { useHasPermissions } from '../../hooks/useHasPermissions';
 import { Permission } from '../../model/user-permission';
@@ -27,47 +26,17 @@ const MonitorPage = () => {
 
   const [rows, setRows] = useState<Array<any>>([]);
   const [backEndStatus, setBackEndStatus] = useState<boolean>(true);
-
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalEventDate, setModalEventDate] = useState<Date | null>(new Date());
-  const [modalEventHtmlDescription, setModalEventHtmlDescription] = useState<string | undefined>();
   const [modalFunctionalityName, setModalFunctionalityName] = useState<
     keyof typeof FunctionalityName | undefined
   >();
-
   const [modalPayload, setModalPayload] = useState<modalPayloadType>({
     status: '',
     functionality: [],
     sourceType: '',
   });
 
-  const [dateError, setDateError] = useState('');
-  const [htmlDescriptionError, setHtmlDescriptionError] = useState('');
-
   const isUserWriter = useHasPermissions([Permission.LOG_DOWNTIME_WRITE]);
-
-  useEffect(() => {
-    if (!isModalOpen) {
-      setModalEventDate(new Date());
-      setModalEventHtmlDescription('');
-      setDateError('');
-      setHtmlDescriptionError('');
-    }
-  }, [isModalOpen]);
-
-  const handleDateChange = (date: Date | null) => {
-    if (date) {
-      setDateError('');
-    }
-    setModalEventDate(date);
-  };
-
-  const handleDescriptionChange = (html?: string) => {
-    if (html) {
-      setHtmlDescriptionError('');
-    }
-    setModalEventHtmlDescription(html);
-  };
 
   const updateSnackbar = useCallback(
     (response: any) => {
@@ -79,6 +48,7 @@ const MonitorPage = () => {
     [dispatch]
   );
 
+  // function to create event
   const getEvents = useCallback(() => {
     apiRequests
       .getStatus()
@@ -141,41 +111,6 @@ const MonitorPage = () => {
       clearInterval(idTokenInterval);
     };
   }, [dispatch, getEvents]);
-
-  const events = () => {
-    if (!modalEventDate) {
-      setDateError('Seleziona una data');
-    } else if (!modalEventHtmlDescription) {
-      setHtmlDescriptionError('Inserisci un valore');
-    } else {
-      const params = [
-        {
-          ...modalPayload,
-          timestamp: format(
-            new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-            "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-          ),
-          htmlDescription: modalEventHtmlDescription,
-        },
-      ];
-      console.log('--------------- html: ', modalEventHtmlDescription);
-      apiRequests
-        .getEvents(params as getEventsType)
-        .then((res: any) => {
-          dispatch(spinnerActions.updateSpinnerOpened(true));
-          getEvents();
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          updateSnackbar(res);
-        })
-        .catch((error: any) => {
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          updateSnackbar(error.response);
-        })
-        .finally(() => {
-          setIsModalOpen(false);
-        });
-    }
-  };
 
   const columns: GridColumns = [
     {
@@ -284,17 +219,13 @@ const MonitorPage = () => {
     <MainLayout>
       <DataGridComponent columns={columns} rows={rows} />
       <MonitorDialog
+        getEvents={getEvents}
+        modalPayload={modalPayload}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        modalPayload={modalPayload}
         modalFunctionalityName={modalFunctionalityName}
-        modalEventDate={modalEventDate}
-        handleDateChange={handleDateChange}
-        handleDescriptionChange={handleDescriptionChange}
-        dateError={dateError}
-        modalEventHtmlDescription={modalEventHtmlDescription}
-        htmlDescriptionError={htmlDescriptionError}
-        events={events}
+        setModalFunctionalityName={setModalFunctionalityName}
+        updateSnackbar={updateSnackbar}
       />
     </MainLayout>
   );
