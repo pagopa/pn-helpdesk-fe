@@ -185,7 +185,6 @@ const MonitorPage = () => {
       id: 'stato',
       field: 'state',
       headerName: 'Stato',
-      type: 'actions',
       width: 400,
       renderCell: (param: any) =>
         param.row.state ? (

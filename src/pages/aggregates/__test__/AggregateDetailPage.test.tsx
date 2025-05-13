@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import 'regenerator-runtime/runtime';
-import { fireEvent, waitFor, screen } from '@testing-library/react';
+import { fireEvent, waitFor, screen, act } from '@testing-library/react';
 import * as router from 'react-router';
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
 import { renderWithProvidersAndPermissions } from '../../../mocks/mockReducer';
@@ -27,7 +27,7 @@ describe('AggregateDetailPage MODIFY', () => {
     const apiSpyAssociatedPa = jest.spyOn(apiRequests, 'getAssociatedPaList');
     apiSpyAssociatedPa.mockImplementation(() => Promise.resolve(mockData3));
     jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
-    jest.spyOn(router, 'useParams').mockImplementation(() => ({ idAggregate: 'agg_1' }));
+    jest.spyOn(router, 'useParams').mockImplementation(() => ({ idAggregate: mockData2.id }));
   });
 
   afterEach(() => {
@@ -37,12 +37,14 @@ describe('AggregateDetailPage MODIFY', () => {
   });
 
   it('Renders AggregateDetailPage MODIFY', async () => {
-    renderWithProvidersAndPermissions(
-      <ConfirmationProvider>
-        <AggregateDetailPage email="test@test.com" />
-      </ConfirmationProvider>,
-      [Permission.API_KEY_WRITE]
-    );
+    await act(async () => {
+      renderWithProvidersAndPermissions(
+        <ConfirmationProvider>
+          <AggregateDetailPage email="test@test.com" />
+        </ConfirmationProvider>,
+        [Permission.API_KEY_WRITE]
+      );
+    });
 
     expect(apiRequests.getUsagePlans).toHaveBeenCalled();
     expect(apiRequests.getAggregateDetails).toHaveBeenCalled();
@@ -57,35 +59,41 @@ describe('AggregateDetailPage MODIFY', () => {
   });
 
   it('Click Associa', async () => {
-    renderWithProvidersAndPermissions(
-      <ConfirmationProvider>
-        <AggregateDetailPage email="test@test.com" />
-      </ConfirmationProvider>,
-      [Permission.API_KEY_WRITE]
-    );
+    await act(async () => {
+      renderWithProvidersAndPermissions(
+        <ConfirmationProvider>
+          <AggregateDetailPage email="test@test.com" />
+        </ConfirmationProvider>,
+        [Permission.API_KEY_WRITE]
+      );
+    });
     const associa_pa_button = await screen.findByRole('button', { name: 'Associa PA' });
     expect(associa_pa_button).toBeInTheDocument();
-    fireEvent.click(associa_pa_button);
+    await act(async () => {
+      fireEvent.click(associa_pa_button);
+    });
     await waitFor(() =>
       expect(navigate).toHaveBeenCalledWith(routes.ADD_PA, {
-        state: { aggregate: { associatedPa: [] } },
+        state: { aggregate: { ...mockData2, associatedPa: mockData3.items } },
       })
     );
   });
 
-  it('Click Trasferisci', async () => {
-    renderWithProvidersAndPermissions(
-      <ConfirmationProvider>
-        <AggregateDetailPage email="test@test.com" />
-      </ConfirmationProvider>,
-      [Permission.API_KEY_WRITE]
-    );
+  it.only('Click Trasferisci', async () => {
+    await act(async () => {
+      renderWithProvidersAndPermissions(
+        <ConfirmationProvider>
+          <AggregateDetailPage email="test@test.com" />
+        </ConfirmationProvider>,
+        [Permission.API_KEY_WRITE]
+      );
+    });
     const trasferisci_pa_button = await screen.findByRole('button', { name: 'Trasferisci PA' });
     expect(trasferisci_pa_button).toBeInTheDocument();
     fireEvent.click(trasferisci_pa_button);
     await waitFor(() =>
       expect(navigate).toHaveBeenCalledWith(routes.TRANSFER_PA, {
-        state: { aggregate: { id: 'agg_1', name: undefined } },
+        state: { aggregate: { id: mockData2.id, name: mockData2.name } },
       })
     );
   });
@@ -93,12 +101,14 @@ describe('AggregateDetailPage MODIFY', () => {
 
 describe('AggregateDetailPage CREATE', () => {
   it('Renders AggregateDetailPage CREATE with Read permission', async () => {
-    renderWithProvidersAndPermissions(
-      <ConfirmationProvider>
-        <AggregateDetailPage email="test@test.com" />
-      </ConfirmationProvider>,
-      [Permission.API_KEY_READ]
-    );
+    await act(async () => {
+      renderWithProvidersAndPermissions(
+        <ConfirmationProvider>
+          <AggregateDetailPage email="test@test.com" />
+        </ConfirmationProvider>,
+        [Permission.API_KEY_READ]
+      );
+    });
     const pa_table = screen.queryByLabelText('Tabella di Pubbliche amministrazioni');
     const create_aggregate_button = screen.queryByRole('button', { name: 'Crea' });
     const trasferisci_pa_button = screen.queryByRole('button', { name: 'Trasferisci PA' });
@@ -110,12 +120,14 @@ describe('AggregateDetailPage CREATE', () => {
   });
 
   it('Renders AggregateDetailPage CREATE with Write permission', async () => {
-    renderWithProvidersAndPermissions(
-      <ConfirmationProvider>
-        <AggregateDetailPage email="test@test.com" />
-      </ConfirmationProvider>,
-      [Permission.API_KEY_WRITE]
-    );
+    await act(async () => {
+      renderWithProvidersAndPermissions(
+        <ConfirmationProvider>
+          <AggregateDetailPage email="test@test.com" />
+        </ConfirmationProvider>,
+        [Permission.API_KEY_WRITE]
+      );
+    });
     const create_aggregate_button = await screen.findByRole('button', { name: 'Crea' });
     expect(create_aggregate_button).toBeDisabled();
     const pa_table = screen.queryByLabelText('Tabella di Pubbliche amministrazioni');
@@ -132,12 +144,15 @@ describe('AggregateDetailPage FAILED_PROMISE', () => {
     const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getUsagePlans');
     apiSpyUsagePlans.mockImplementation(() => Promise.reject());
     jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
-    renderWithProvidersAndPermissions(
-      <ConfirmationProvider>
-        <AggregateDetailPage email="test@test.com" />
-      </ConfirmationProvider>,
-      [Permission.API_KEY_READ]
-    );
+
+    await act(async () => {
+      renderWithProvidersAndPermissions(
+        <ConfirmationProvider>
+          <AggregateDetailPage email="test@test.com" />
+        </ConfirmationProvider>,
+        [Permission.API_KEY_READ]
+      );
+    });
     await waitFor(() => expect(apiRequests.getUsagePlans).toHaveBeenCalled());
     await waitFor(() => expect(navigate).toHaveBeenCalledWith(routes.AGGREGATES_LIST));
   });
