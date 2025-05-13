@@ -64,6 +64,7 @@ type getEventsType = [
     functionality: Array<string>;
     sourceType: string;
     htmlDescription?: string;
+    confirmCheck: boolean;
   }
 ];
 /**

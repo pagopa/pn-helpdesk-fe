@@ -60,7 +60,7 @@ export function MonitorDialog({
   const [modalEventDate, setModalEventDate] = useState<Date | null>(new Date());
   const [modalEventHtmlDescription, setModalEventHtmlDescription] = useState<string | undefined>();
   const [isPreviewShowed, setIsPreviewShowed] = useState(false);
-
+  const [isChecked, setIsChecked] = useState(false);
   useEffect(() => {
     if (!isModalOpen) {
       setModalEventDate(new Date());
@@ -83,16 +83,22 @@ export function MonitorDialog({
     }
     setModalEventHtmlDescription(html);
   };
+  const handleConfirmCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(event.target.checked);
+  };
 
   const handleClick = () => {
-    if (isPreviewShowed) {
-      setIsPreviewShowed(false);
+    if (!isPreviewShowed) {
+      setIsPreviewShowed(true);
+      console.log('siamo qui');
     } else {
       setIsModalOpen(false);
+      console.log('anzi qui');
     }
   };
   const functionalityStatus = modalPayload.status;
   const rteRef = useRef<RichTextEditorRef>(null);
+
   const getCta = () => {
     if (functionalityStatus === 'OK' && isPreviewShowed) {
       return 'Risolvi';
@@ -102,6 +108,7 @@ export function MonitorDialog({
       return 'Inserisci';
     }
   };
+
   const getTitle = () => {
     const functionalityName = modalFunctionalityName && FunctionalityName[modalFunctionalityName];
     let modalType = '';
@@ -125,7 +132,7 @@ export function MonitorDialog({
       return;
     }
 
-    // se è inserimento risoluzione ko
+    // RESOLVE KO - step 1
     if (functionalityStatus === 'OK' && !isPreviewShowed) {
       const params = [
         {
@@ -140,7 +147,12 @@ export function MonitorDialog({
       console.log('risoluzione: ', params);
       setIsPreviewShowed(true);
     }
+    // RESOLVE KO - step 2
     if (functionalityStatus === 'OK' && isPreviewShowed) {
+      if (!isChecked) {
+        setIsChecked(true);
+        return;
+      }
       const params = [
         {
           ...modalPayload,
@@ -149,6 +161,7 @@ export function MonitorDialog({
             "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
           ),
           htmlDescription: modalEventHtmlDescription,
+          confirmCheck: false,
         },
       ];
       apiRequests
@@ -166,12 +179,16 @@ export function MonitorDialog({
         .finally(() => {
           setIsModalOpen(false);
           setIsPreviewShowed(false);
-          console.log('risoluzione inserita ', params);
         });
+      setIsChecked(false);
     }
 
-    // se è creazione ko
+    // INSERT KO
     if (functionalityStatus === 'KO') {
+      if (!isChecked) {
+        console.log('Checkbox non selezionata!');
+        return;
+      }
       const params = [
         {
           ...modalPayload,
@@ -181,7 +198,6 @@ export function MonitorDialog({
           ),
         },
       ];
-      console.log('creazione: ', params);
       apiRequests
         .getEvents(params as getEventsType)
         .then((res: any) => {
@@ -198,6 +214,7 @@ export function MonitorDialog({
           setIsModalOpen(false);
           console.log('malfunzionamento inserito ', params);
         });
+      setIsChecked(false);
     }
   };
 
@@ -256,7 +273,7 @@ export function MonitorDialog({
                     <RichTextEditor
                       onUpdate={({ editor }) => {
                         const html = editor?.getHTML();
-                        handleDescriptionChange(html); // Supponendo che `handleChange` accetti l'HTML
+                        handleDescriptionChange(html);
                       }}
                       ref={rteRef}
                       extensions={[StarterKit, Underline]}
@@ -283,7 +300,7 @@ export function MonitorDialog({
                 <FormGroup>
                   <FormControlLabel
                     required
-                    control={<Checkbox />}
+                    control={<Checkbox checked={isChecked} onChange={handleConfirmCheckChange} />}
                     label="Sono consapevole che inserire un evento di malfunzionamento 
   richiede una successiva risoluzione, che produce un’attestazione dedicata."
                   />
@@ -298,7 +315,12 @@ export function MonitorDialog({
         <Button variant="outlined" onClick={handleClick} sx={{ padding: '0 18px' }}>
           {functionalityStatus === 'OK' && isPreviewShowed ? 'Indietro' : 'Annulla'}
         </Button>
-        <Button variant="contained" autoFocus onClick={events} id="createEvent">
+        <Button
+          variant="contained"
+          autoFocus
+          onClick={functionalityStatus === 'OK' && !isPreviewShowed ? handleClick : events}
+          id="createEvent"
+        >
           {getCta()}
         </Button>
       </DialogActions>
