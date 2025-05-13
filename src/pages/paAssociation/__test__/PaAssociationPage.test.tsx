@@ -1,8 +1,9 @@
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import { aggregate as mockAggregate } from '../../../api/mock_agg_response';
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
 import { renderWithProviders } from '../../../mocks/mockReducer';
 import PaAssociationPage from '../PaAssociationPage';
+import apiRequests from '../../../api/apiRequests';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -13,13 +14,21 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('PaAssociationPage test', () => {
+  beforeEach(() => {
+    const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getAssociablePaList');
+    apiSpyUsagePlans.mockImplementation(() => Promise.resolve({ items: [] }));
+  });
+
   it('render', async () => {
     const Wrapped = (
       <ConfirmationProvider>
         <PaAssociationPage />
       </ConfirmationProvider>
     );
-    renderWithProviders(Wrapped);
+
+    await act(async () => {
+      renderWithProviders(Wrapped);
+    });
 
     expect(screen.getByTestId('aggregate-accordion')).toBeInTheDocument();
     expect(screen.getByRole('table'));
