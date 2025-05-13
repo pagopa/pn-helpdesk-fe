@@ -38,6 +38,15 @@ export const handlers = [
     };
     return res(ctx.json(mockResponse));
   }),
+  rest.post(
+    'https://api.bo.dev.notifichedigitali.it/log-extractor/logs/v1/persons',
+    (req, res, ctx) => {
+      const mockResponse = {
+        detail: "Errore nell'elaborazione della richiesta",
+      };
+      return res(ctx.json(mockResponse));
+    }
+  ),
 
   rest.post('http://localhost/logs/v1/notifications/monthly', (req, res, ctx) => {
     const mockResponse = {
@@ -52,4 +61,13 @@ export const handlers = [
     };
     return res(ctx.json(mockResponse));
   }),
+  rest.post(
+    'https://api.bo.dev.notifichedigitali.it/log-extractor/logs/v1/sessions',
+    (req, res, ctx) => {
+      const mockResponse = {
+        detail: "Errore nell'elaborazione della richiesta",
+      };
+      return res(ctx.json(mockResponse));
+    }
+  ),
 ];

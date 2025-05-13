@@ -15,8 +15,8 @@ jest.mock('react-router-dom', () => ({
 
 describe('PaAssociationPage test', () => {
   beforeEach(() => {
-    const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getAssociablePaList');
-    apiSpyUsagePlans.mockImplementation(() => Promise.resolve({ items: [] }));
+    const apiSpyGetAssociablePaList = jest.spyOn(apiRequests, 'getAssociablePaList');
+    apiSpyGetAssociablePaList.mockImplementation(() => Promise.resolve({ items: [] }));
   });
 
   it('render', async () => {

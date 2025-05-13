@@ -13,8 +13,8 @@ describe('AggregatesPage test', () => {
   beforeEach(() => {
     // mock navigation
     jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
-    const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getAggregates');
-    apiSpyUsagePlans.mockImplementation(() =>
+    const apiSpyGetAggregates = jest.spyOn(apiRequests, 'getAggregates');
+    apiSpyGetAggregates.mockImplementation(() =>
       Promise.resolve({
         items: [],
         lastEvaluatedId: '',
