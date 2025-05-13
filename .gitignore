@@ -51,6 +51,7 @@ amplifytools.xcconfig
 #openapi
 /test-report.xml
 /src/api/paperChannel
+/src/api/downtimeLogs
 
 /.fleet
 /.fleet/
