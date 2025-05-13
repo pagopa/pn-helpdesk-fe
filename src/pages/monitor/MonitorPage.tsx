@@ -15,7 +15,8 @@ import * as snackbarActions from '../../redux/snackbarSlice';
 import { useHasPermissions } from '../../hooks/useHasPermissions';
 import { Permission } from '../../model/user-permission';
 import { FunctionalityName, modalPayloadType } from '../../model';
-import { MonitorDialog } from '../../components/dialogs/MonitorDialog';
+import { CreateMalfunctionDialog } from '../../components/dialogs/CreateMulfunctionDialog';
+import { ResolveMalfunctionDialog } from '../../components/dialogs/ResolveMulfunctionDialog';
 
 /**
  * Monitor page
@@ -26,7 +27,8 @@ const MonitorPage = () => {
 
   const [rows, setRows] = useState<Array<any>>([]);
   const [backEndStatus, setBackEndStatus] = useState<boolean>(true);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isResolveModalOpen, setIsResolveModalOpen] = useState<boolean>(false);
   const [modalFunctionalityName, setModalFunctionalityName] = useState<
     keyof typeof FunctionalityName | undefined
   >();
@@ -183,7 +185,7 @@ const MonitorPage = () => {
                 functionality: Array(params.row.functionalityName)[0],
                 sourceType: 'OPERATOR',
               });
-              setIsModalOpen(true);
+              setIsCreateModalOpen(true);
               setModalFunctionalityName(Array(params.row.functionalityName)[0]);
             }}
           >
@@ -203,7 +205,7 @@ const MonitorPage = () => {
                 functionality: Array(params.row.functionalityName),
                 sourceType: 'OPERATOR',
               });
-              setIsModalOpen(true);
+              setIsResolveModalOpen(true);
               setModalFunctionalityName(Array(params.row.functionalityName)[0]);
             }}
           >
@@ -216,11 +218,20 @@ const MonitorPage = () => {
   return (
     <MainLayout>
       <DataGridComponent columns={columns} rows={rows} />
-      <MonitorDialog
+      <CreateMalfunctionDialog
         getEvents={getEvents}
         modalPayload={modalPayload}
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
+        isModalOpen={isCreateModalOpen}
+        setIsModalOpen={setIsCreateModalOpen}
+        modalFunctionalityName={modalFunctionalityName}
+        setModalFunctionalityName={setModalFunctionalityName}
+        updateSnackbar={updateSnackbar}
+      />
+      <ResolveMalfunctionDialog
+        getEvents={getEvents}
+        modalPayload={modalPayload}
+        isModalOpen={isResolveModalOpen}
+        setIsModalOpen={setIsResolveModalOpen}
         modalFunctionalityName={modalFunctionalityName}
         setModalFunctionalityName={setModalFunctionalityName}
         updateSnackbar={updateSnackbar}

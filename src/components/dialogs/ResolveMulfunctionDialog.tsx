@@ -1,15 +1,11 @@
 import {
   Box,
   Button,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
   FormHelperText,
   Grid,
   TextField,
@@ -47,7 +43,7 @@ interface MonitorDialogProps {
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
-export function MonitorDialog({
+export function ResolveMalfunctionDialog({
   modalPayload,
   getEvents,
   isModalOpen,
@@ -59,11 +55,11 @@ export function MonitorDialog({
 
   const [dateError, setDateError] = useState('');
   const [htmlDescriptionError, setHtmlDescriptionError] = useState('');
-  const [checkboxError, setCheckboxError] = useState(false);
   const [modalEventDate, setModalEventDate] = useState<Date | null>(new Date());
   const [modalEventHtmlDescription, setModalEventHtmlDescription] = useState<string | undefined>();
   const [isPreviewShowed, setIsPreviewShowed] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+
   useEffect(() => {
     if (!isModalOpen) {
       setModalEventDate(new Date());
@@ -86,42 +82,21 @@ export function MonitorDialog({
     }
     setModalEventHtmlDescription(html);
   };
-  const handleConfirmCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(event.target.checked);
-    if (event.target.checked) {
-      setCheckboxError(false);
-    }
-  };
 
-  const handleClick = () => {
-    if (!isPreviewShowed) {
-      setIsPreviewShowed(true);
+  const handleCancel = () => {
+    if (isPreviewShowed) {
+      setIsPreviewShowed(false);
     } else {
       setIsModalOpen(false);
     }
   };
+
   const functionalityStatus = modalPayload.status;
   const rteRef = useRef<RichTextEditorRef>(null);
 
-  const getCta = () => {
-    if (functionalityStatus === 'OK' && isPreviewShowed) {
-      return 'Risolvi';
-    } else if (functionalityStatus === 'OK' && !isPreviewShowed) {
-      return 'Continua';
-    } else {
-      return 'Inserisci';
-    }
-  };
-
   const getTitle = () => {
     const functionalityName = modalFunctionalityName && FunctionalityName[modalFunctionalityName];
-    let modalType = '';
-    if (isPreviewShowed) {
-      modalType = 'Anteprima documento';
-    } else {
-      modalType = functionalityStatus === 'KO' ? 'Inserisci evento' : 'Risolvi evento';
-    }
-    return `${modalType} | ${functionalityName}`;
+    return `${isPreviewShowed ? 'Anteprima documento' : 'Risolvi evento'} | ${functionalityName}`;
   };
 
   const events = () => {
@@ -129,13 +104,14 @@ export function MonitorDialog({
       setDateError('Seleziona una data');
       return;
     }
-    if (functionalityStatus === 'OK' && !modalEventHtmlDescription) {
+    if (!modalEventHtmlDescription) {
       setHtmlDescriptionError('Inserisci informazioni aggiuntive');
       return;
     }
 
     // RESOLVE KO - step 1
-    if (functionalityStatus === 'OK' && !isPreviewShowed) {
+    if (!isPreviewShowed) {
+      console.log('hai cliccato su continua');
       const params = [
         {
           ...modalPayload,
@@ -146,12 +122,12 @@ export function MonitorDialog({
           htmlDescription: modalEventHtmlDescription,
         },
       ];
-      console.log('risoluzione: ', params);
+      console.log("verso l'anteprima: ", params);
       setIsPreviewShowed(true);
     }
 
     // RESOLVE KO - step 2
-    if (functionalityStatus === 'OK' && isPreviewShowed) {
+    if (isPreviewShowed) {
       if (!isChecked) {
         // todo: remove when preview is developed
         setIsChecked(true);
@@ -182,39 +158,6 @@ export function MonitorDialog({
         .finally(() => {
           setIsModalOpen(false);
           setIsPreviewShowed(false);
-        });
-      setIsChecked(false);
-    }
-
-    // INSERT KO
-    if (functionalityStatus === 'KO') {
-      if (!isChecked) {
-        setCheckboxError(true);
-        return;
-      }
-      const params = [
-        {
-          ...modalPayload,
-          timestamp: format(
-            new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-            "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-          ),
-        },
-      ];
-      apiRequests
-        .getEvents(params as getEventsType)
-        .then((res: any) => {
-          dispatch(spinnerActions.updateSpinnerOpened(true));
-          getEvents();
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          updateSnackbar(res);
-        })
-        .catch((error: any) => {
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          updateSnackbar(error.response);
-        })
-        .finally(() => {
-          setIsModalOpen(false);
         });
       setIsChecked(false);
     }
@@ -257,78 +200,50 @@ export function MonitorDialog({
                 )}
               />
             </Grid>
-            {functionalityStatus === 'OK' && (
-              <>
-                <Grid item>
-                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                    Informazioni aggiuntive
-                  </Typography>
-                  <Typography variant="body2" sx={{ mb: 2 }}>
-                    Inserire casistiche specifiche di malfunzionamento
-                  </Typography>
-                  <Box
-                    sx={{
-                      border: htmlDescriptionError ? '1px solid rgba(216, 87, 87, 1)' : 'none',
-                      borderRadius: '4px',
-                    }}
-                  >
-                    <RichTextEditor
-                      onUpdate={({ editor }) => {
-                        const html = editor?.getHTML();
-                        handleDescriptionChange(html);
-                      }}
-                      ref={rteRef}
-                      extensions={[StarterKit, Underline]}
-                      renderControls={() => (
-                        <MenuControlsContainer>
-                          <MenuButtonBold />
-                          <MenuButtonItalic />
-                          <MenuButtonUnderline />
-                          <MenuDivider />
-                          <MenuButtonBulletedList />
-                        </MenuControlsContainer>
-                      )}
-                      content={modalEventHtmlDescription}
-                    />
-                  </Box>
-                  <FormHelperText error>{htmlDescriptionError}</FormHelperText>
-                </Grid>
-              </>
-            )}
-            {functionalityStatus === 'OK' ? (
-              <></>
-            ) : (
-              <Grid item>
-                <FormControl error={checkboxError}>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={<Checkbox checked={isChecked} onChange={handleConfirmCheckChange} />}
-                      label="Sono consapevole che inserire un evento di malfunzionamento 
-  richiede una successiva risoluzione, che produce un’attestazione dedicata."
-                    />
-                  </FormGroup>
-
-                  {checkboxError && (
-                    <FormHelperText color="error">Questo campo è obbligatorio</FormHelperText>
+            <Grid item>
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                Informazioni aggiuntive
+              </Typography>
+              <Typography variant="body2" sx={{ mb: 2 }}>
+                Inserire casistiche specifiche di malfunzionamento
+              </Typography>
+              <Box
+                sx={{
+                  border: htmlDescriptionError ? '1px solid rgba(216, 87, 87, 1)' : 'none',
+                  borderRadius: '4px',
+                }}
+              >
+                <RichTextEditor
+                  onUpdate={({ editor }) => {
+                    const html = editor?.getHTML();
+                    handleDescriptionChange(html);
+                  }}
+                  ref={rteRef}
+                  extensions={[StarterKit, Underline]}
+                  renderControls={() => (
+                    <MenuControlsContainer>
+                      <MenuButtonBold />
+                      <MenuButtonItalic />
+                      <MenuButtonUnderline />
+                      <MenuDivider />
+                      <MenuButtonBulletedList />
+                    </MenuControlsContainer>
                   )}
-                </FormControl>
-              </Grid>
-            )}
+                  content={modalEventHtmlDescription}
+                />
+              </Box>
+              <FormHelperText error>{htmlDescriptionError}</FormHelperText>
+            </Grid>
           </Grid>
           <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
         </DialogContent>
       )}
       <DialogActions sx={{ justifyContent: 'end', p: '0 24px 20px 0' }}>
-        <Button variant="outlined" onClick={handleClick} sx={{ padding: '0 18px' }}>
-          {functionalityStatus === 'OK' && isPreviewShowed ? 'Indietro' : 'Annulla'}
+        <Button variant="outlined" onClick={handleCancel} sx={{ padding: '0 18px' }}>
+          {isPreviewShowed ? 'Indietro' : 'Annulla'}
         </Button>
-        <Button
-          variant="contained"
-          autoFocus
-          onClick={functionalityStatus === 'OK' && !isPreviewShowed ? handleClick : events}
-          id="createEvent"
-        >
-          {getCta()}
+        <Button variant="contained" autoFocus onClick={events} id="createEvent">
+          {isPreviewShowed ? 'Risolvi' : 'Continua'}
         </Button>
       </DialogActions>
     </Dialog>
