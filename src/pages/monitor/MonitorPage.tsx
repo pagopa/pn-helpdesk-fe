@@ -130,7 +130,6 @@ const MonitorPage = () => {
     {
       field: 'state',
       headerName: 'Stato',
-      type: 'status',
       width: 400,
       renderCell: (param: any) =>
         param.row.state ? (
@@ -164,7 +163,6 @@ const MonitorPage = () => {
       field: 'actions',
       headerName: 'Cambio Stato',
       width: 200,
-      type: 'actions',
       flex: 1,
       minWidth: 132,
       sortable: false,

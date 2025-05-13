@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControl,
   FormControlLabel,
   FormGroup,
   FormHelperText,
@@ -45,6 +46,7 @@ interface MonitorDialogProps {
   modalFunctionalityName: keyof typeof FunctionalityName | undefined;
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function MonitorDialog({
   modalPayload,
   getEvents,
@@ -57,6 +59,7 @@ export function MonitorDialog({
 
   const [dateError, setDateError] = useState('');
   const [htmlDescriptionError, setHtmlDescriptionError] = useState('');
+  const [checkboxError, setCheckboxError] = useState(false);
   const [modalEventDate, setModalEventDate] = useState<Date | null>(new Date());
   const [modalEventHtmlDescription, setModalEventHtmlDescription] = useState<string | undefined>();
   const [isPreviewShowed, setIsPreviewShowed] = useState(false);
@@ -85,15 +88,16 @@ export function MonitorDialog({
   };
   const handleConfirmCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(event.target.checked);
+    if (event.target.checked) {
+      setCheckboxError(false);
+    }
   };
 
   const handleClick = () => {
     if (!isPreviewShowed) {
       setIsPreviewShowed(true);
-      console.log('siamo qui');
     } else {
       setIsModalOpen(false);
-      console.log('anzi qui');
     }
   };
   const functionalityStatus = modalPayload.status;
@@ -123,12 +127,10 @@ export function MonitorDialog({
   const events = () => {
     if (!modalEventDate) {
       setDateError('Seleziona una data');
-      console.log('errore data');
       return;
     }
     if (functionalityStatus === 'OK' && !modalEventHtmlDescription) {
       setHtmlDescriptionError('Inserisci informazioni aggiuntive');
-      console.log('errore descrizione');
       return;
     }
 
@@ -147,11 +149,12 @@ export function MonitorDialog({
       console.log('risoluzione: ', params);
       setIsPreviewShowed(true);
     }
+
     // RESOLVE KO - step 2
     if (functionalityStatus === 'OK' && isPreviewShowed) {
       if (!isChecked) {
+        // todo: remove when preview is developed
         setIsChecked(true);
-        return;
       }
       const params = [
         {
@@ -186,7 +189,7 @@ export function MonitorDialog({
     // INSERT KO
     if (functionalityStatus === 'KO') {
       if (!isChecked) {
-        console.log('Checkbox non selezionata!');
+        setCheckboxError(true);
         return;
       }
       const params = [
@@ -212,7 +215,6 @@ export function MonitorDialog({
         })
         .finally(() => {
           setIsModalOpen(false);
-          console.log('malfunzionamento inserito ', params);
         });
       setIsChecked(false);
     }
@@ -297,14 +299,19 @@ export function MonitorDialog({
               <></>
             ) : (
               <Grid item>
-                <FormGroup>
-                  <FormControlLabel
-                    required
-                    control={<Checkbox checked={isChecked} onChange={handleConfirmCheckChange} />}
-                    label="Sono consapevole che inserire un evento di malfunzionamento 
+                <FormControl error={checkboxError}>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={<Checkbox checked={isChecked} onChange={handleConfirmCheckChange} />}
+                      label="Sono consapevole che inserire un evento di malfunzionamento 
   richiede una successiva risoluzione, che produce un’attestazione dedicata."
-                  />
-                </FormGroup>
+                    />
+                  </FormGroup>
+
+                  {checkboxError && (
+                    <FormHelperText color="error">Questo campo è obbligatorio</FormHelperText>
+                  )}
+                </FormControl>
               </Grid>
             )}
           </Grid>
