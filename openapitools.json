@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
+  "spaces": 2,
+  "generator-cli": {
+    "version": "7.13.0",
+    "generators": {
+      "api-paper-channel": {
+        "generatorName": "typescript-axios",
+        "inputSpec": "https://raw.githubusercontent.com/pagopa/pn-paper-channel/d5427fef4cdd37afd4b90b92bfb099b3380f6e44/docs/openapi/pn-paper-channel-v1.yaml",
+        "output": "./src/api/paperChannel",
+        "additionalProperties": {
+          "supportsES6": true,
+          "apiPackage": "apis",
+          "modelPackage": "models",
+          "cleanupOutput": true
+        }
+      }
+    }
+  }
+}
