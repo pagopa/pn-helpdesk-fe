@@ -41,9 +41,7 @@ describe('Header Component', () => {
   it('simulate log out button click and Anulla after that', async () => {
     const button = screen.getAllByRole('button')[2] as HTMLButtonElement;
     const user = userEvent.setup();
-    await act(async () => {
-      await user.click(button);
-    });
+    await user.click(button);
 
     const modal = await screen.findByRole('dialog');
     expect(modal).toBeInTheDocument();
@@ -54,17 +52,13 @@ describe('Header Component', () => {
       name: 'Annulla',
     });
 
-    await act(async () => {
-      await user.click(esciButton);
-    });
+    await user.click(esciButton);
   });
 
   it('simulate log out button click and Esci after that', async () => {
     const button = screen.getAllByRole('button')[2];
     const user = userEvent.setup();
-    await act(async () => {
-      await user.click(button);
-    });
+    await user.click(button);
 
     const modal = await screen.findByRole('dialog');
     expect(modal).toBeInTheDocument();
@@ -75,9 +69,7 @@ describe('Header Component', () => {
       name: 'Esci',
     });
 
-    await act(async () => {
-      await user.click(esciButton);
-    });
+    await user.click(esciButton);
 
     expect(window.location.pathname).toBe('/');
     expect(modal).not.toBeVisible();

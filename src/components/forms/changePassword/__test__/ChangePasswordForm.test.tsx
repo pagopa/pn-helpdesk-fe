@@ -1,12 +1,10 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'react';
 import 'regenerator-runtime/runtime';
 import '@testing-library/jest-dom/extend-expect';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-test-renderer';
 import ChangePasswordForm from '../ChangePasswordForm';
 import { reducer } from '../../../../mocks/mockReducer';
 
@@ -47,9 +45,7 @@ describe('ChangePasswordForm', () => {
       name: 'Cambia password',
     });
     const user = userEvent.setup();
-    await act(async () => {
-      await user.click(button);
-    });
+    await user.click(button);
 
     const errors = await screen.findAllByText('Password non corretta');
     expect(errors).toHaveLength(2);
