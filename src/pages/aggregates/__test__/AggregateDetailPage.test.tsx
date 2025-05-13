@@ -79,7 +79,7 @@ describe('AggregateDetailPage MODIFY', () => {
     );
   });
 
-  it.only('Click Trasferisci', async () => {
+  it('Click Trasferisci', async () => {
     await act(async () => {
       renderWithProvidersAndPermissions(
         <ConfirmationProvider>
@@ -100,6 +100,11 @@ describe('AggregateDetailPage MODIFY', () => {
 });
 
 describe('AggregateDetailPage CREATE', () => {
+  beforeEach(async () => {
+    const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getUsagePlans');
+    apiSpyUsagePlans.mockImplementation(() => Promise.resolve(usage_plan_list));
+  });
+
   it('Renders AggregateDetailPage CREATE with Read permission', async () => {
     await act(async () => {
       renderWithProvidersAndPermissions(
@@ -140,6 +145,11 @@ describe('AggregateDetailPage CREATE', () => {
 });
 
 describe('AggregateDetailPage FAILED_PROMISE', () => {
+  beforeEach(async () => {
+    const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getUsagePlans');
+    apiSpyUsagePlans.mockImplementation(() => Promise.resolve(usage_plan_list));
+  });
+  
   it('Renders AggregateDetailPage FAILED_PROMISE', async () => {
     const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getUsagePlans');
     apiSpyUsagePlans.mockImplementation(() => Promise.reject());
