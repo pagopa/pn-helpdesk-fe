@@ -124,7 +124,6 @@ export function ResolveMalfunctionDialog({
       return;
     }
 
-    console.log(modalEventHtmlDescription);
     // RESOLVE KO - step 1
     if (!isPreviewShowed) {
       const params = [
