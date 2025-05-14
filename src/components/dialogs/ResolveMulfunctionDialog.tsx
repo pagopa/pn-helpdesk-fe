@@ -56,6 +56,7 @@ export function ResolveMalfunctionDialog({
   const [modalEventHtmlDescription, setModalEventHtmlDescription] = useState<string | undefined>();
   const [isPreviewShowed, setIsPreviewShowed] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const isErrorPresent = htmlDescriptionError || dateError;
 
   const functionalityName =
     FunctionalityName[modalPayload.functionality[0] as unknown as keyof typeof FunctionalityName];
@@ -106,7 +107,6 @@ export function ResolveMalfunctionDialog({
 
     // RESOLVE KO - step 1
     if (!isPreviewShowed) {
-      console.log('hai cliccato su continua');
       const params = [
         {
           ...modalPayload,
@@ -117,7 +117,7 @@ export function ResolveMalfunctionDialog({
           htmlDescription: modalEventHtmlDescription,
         },
       ];
-      console.log("verso l'anteprima: ", params);
+      console.log(params);
       setIsPreviewShowed(true);
     }
 
@@ -134,7 +134,7 @@ export function ResolveMalfunctionDialog({
             new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
             "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
           ),
-          htmlDescription: modalEventHtmlDescription,
+          // htmlDescription: modalEventHtmlDescription,
         },
       ];
       apiRequests
@@ -238,7 +238,13 @@ export function ResolveMalfunctionDialog({
         <Button variant="outlined" onClick={handleCancel} sx={{ padding: '0 18px' }}>
           {isPreviewShowed ? 'Indietro' : 'Annulla'}
         </Button>
-        <Button variant="contained" autoFocus onClick={events} id="createEvent">
+        <Button
+          variant={isErrorPresent ? 'outlined' : 'contained'}
+          color={isErrorPresent ? 'error' : 'primary'}
+          autoFocus
+          onClick={events}
+          id="createEvent"
+        >
           {isPreviewShowed ? 'Risolvi' : 'Continua'}
         </Button>
       </DialogActions>

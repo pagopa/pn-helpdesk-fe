@@ -41,12 +41,12 @@ export function CreateMalfunctionDialog({
   updateSnackbar,
 }: MonitorDialogProps) {
   const dispatch = useDispatch();
-  console.log(modalPayload);
   const [dateError, setDateError] = useState('');
   const [checkboxError, setCheckboxError] = useState(false);
   const [modalEventDate, setModalEventDate] = useState<Date | null>(new Date());
   const [isChecked, setIsChecked] = useState(false);
 
+  const isErrorPresent = checkboxError || dateError;
   const functionalityName =
     FunctionalityName[modalPayload.functionality[0] as unknown as keyof typeof FunctionalityName];
 
@@ -167,7 +167,13 @@ export function CreateMalfunctionDialog({
         <Button variant="outlined" onClick={handleClick} sx={{ padding: '0 18px' }}>
           Annulla
         </Button>
-        <Button variant="contained" autoFocus onClick={events} id="createEvent">
+        <Button
+          variant={isErrorPresent ? 'outlined' : 'contained'}
+          color={isErrorPresent ? 'error' : 'primary'}
+          autoFocus
+          onClick={events}
+          id="createEvent"
+        >
           Inserisci
         </Button>
       </DialogActions>
