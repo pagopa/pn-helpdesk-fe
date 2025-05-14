@@ -1,3 +1,5 @@
+import { FunctionalityName } from '../model';
+
 /**
  * @typedef {Object} getPersonIdType
  */
@@ -61,7 +63,7 @@ type getEventsType = [
   {
     status: string;
     timestamp: string;
-    functionality: Array<string>;
+    functionality: Array<FunctionalityName>;
     sourceType: string;
     htmlDescription?: string;
     confirmCheck: boolean;

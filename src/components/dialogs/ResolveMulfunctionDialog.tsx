@@ -38,8 +38,6 @@ interface MonitorDialogProps {
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
   updateSnackbar: (r: any) => void;
-  setModalFunctionalityName: (name: keyof typeof FunctionalityName | undefined) => void;
-  modalFunctionalityName: keyof typeof FunctionalityName | undefined;
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -49,7 +47,6 @@ export function ResolveMalfunctionDialog({
   isModalOpen,
   setIsModalOpen,
   updateSnackbar,
-  modalFunctionalityName,
 }: MonitorDialogProps) {
   const dispatch = useDispatch();
 
@@ -59,6 +56,9 @@ export function ResolveMalfunctionDialog({
   const [modalEventHtmlDescription, setModalEventHtmlDescription] = useState<string | undefined>();
   const [isPreviewShowed, setIsPreviewShowed] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+
+  const functionalityName =
+    FunctionalityName[modalPayload.functionality[0] as unknown as keyof typeof FunctionalityName];
 
   useEffect(() => {
     if (!isModalOpen) {
@@ -93,11 +93,6 @@ export function ResolveMalfunctionDialog({
 
   const functionalityStatus = modalPayload.status;
   const rteRef = useRef<RichTextEditorRef>(null);
-
-  const getTitle = () => {
-    const functionalityName = modalFunctionalityName && FunctionalityName[modalFunctionalityName];
-    return `${isPreviewShowed ? 'Anteprima documento' : 'Risolvi evento'} | ${functionalityName}`;
-  };
 
   const events = () => {
     if (!modalEventDate) {
@@ -140,7 +135,6 @@ export function ResolveMalfunctionDialog({
             "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
           ),
           htmlDescription: modalEventHtmlDescription,
-          confirmCheck: false,
         },
       ];
       apiRequests
@@ -169,7 +163,9 @@ export function ResolveMalfunctionDialog({
       onClose={() => setIsModalOpen(false)}
       aria-labelledby="alert-dialog-title"
     >
-      <DialogTitle id="alert-dialog-title">{getTitle()}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">
+        {isPreviewShowed ? 'Anteprima documento' : 'Risolvi evento'} | {functionalityName}
+      </DialogTitle>
       {isPreviewShowed === true ? (
         <DialogContent>Preview</DialogContent>
       ) : (
@@ -178,7 +174,7 @@ export function ResolveMalfunctionDialog({
             <Grid item>
               <DialogContentText>
                 {functionalityStatus === 'OK' ? 'Risolvi' : 'Inserisci'} un malfunzionamento legato
-                all’area di {modalFunctionalityName && FunctionalityName[modalFunctionalityName]}
+                all’area di {functionalityName}
               </DialogContentText>
             </Grid>
             <Grid item>

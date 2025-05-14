@@ -30,8 +30,6 @@ interface MonitorDialogProps {
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
   updateSnackbar: (r: any) => void;
-  setModalFunctionalityName: (name: keyof typeof FunctionalityName | undefined) => void;
-  modalFunctionalityName: keyof typeof FunctionalityName | undefined;
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
@@ -41,14 +39,17 @@ export function CreateMalfunctionDialog({
   isModalOpen,
   setIsModalOpen,
   updateSnackbar,
-  modalFunctionalityName,
 }: MonitorDialogProps) {
   const dispatch = useDispatch();
-
+  console.log(modalPayload);
   const [dateError, setDateError] = useState('');
   const [checkboxError, setCheckboxError] = useState(false);
   const [modalEventDate, setModalEventDate] = useState<Date | null>(new Date());
   const [isChecked, setIsChecked] = useState(false);
+
+  const functionalityName =
+    FunctionalityName[modalPayload.functionality[0] as unknown as keyof typeof FunctionalityName];
+
   useEffect(() => {
     if (!isModalOpen) {
       setModalEventDate(new Date());
@@ -72,11 +73,6 @@ export function CreateMalfunctionDialog({
 
   const handleClick = () => {
     setIsModalOpen(false);
-  };
-
-  const getTitle = () => {
-    const functionalityName = modalFunctionalityName && FunctionalityName[modalFunctionalityName];
-    return `Inserisci evento | ${functionalityName}`;
   };
 
   const events = () => {
@@ -122,13 +118,12 @@ export function CreateMalfunctionDialog({
       onClose={() => setIsModalOpen(false)}
       aria-labelledby="alert-dialog-title"
     >
-      <DialogTitle id="alert-dialog-title">{getTitle()}</DialogTitle>
+      <DialogTitle id="alert-dialog-title">Inserisci evento | {functionalityName}</DialogTitle>
       <DialogContent>
         <Grid container spacing={3} direction="column">
           <Grid item>
             <DialogContentText>
-              Inserisci un malfunzionamento legato all’area di{' '}
-              {modalFunctionalityName && FunctionalityName[modalFunctionalityName]}
+              Inserisci un malfunzionamento legato all’area di {functionalityName}
             </DialogContentText>
           </Grid>
           <Grid item>
