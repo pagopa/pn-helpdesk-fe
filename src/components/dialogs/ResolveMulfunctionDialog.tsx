@@ -77,8 +77,24 @@ export function ResolveMalfunctionDialog({
     setModalEventDate(date);
   };
 
-  const handleDescriptionChange = (html?: string) => {
-    if (html) {
+  function stripParagraphTags(html: string): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const paragraphs = Array.from(doc.body.childNodes);
+
+    return paragraphs
+      .map((node) => {
+        if (node.nodeName === 'P') {
+          return (node as HTMLElement).innerHTML;
+        }
+        return (node as HTMLElement).outerHTML || (node as Text).textContent || '';
+      })
+      .join('\n'); // o '<br />' se vuoi HTML leggibile
+  }
+
+  const handleDescriptionChange = (html: string) => {
+    const plainHtml = stripParagraphTags(html);
+    if (plainHtml) {
       setHtmlDescriptionError('');
     }
     setModalEventHtmlDescription(html);
@@ -96,15 +112,19 @@ export function ResolveMalfunctionDialog({
   const rteRef = useRef<RichTextEditorRef>(null);
 
   const events = () => {
+    const plainHtmlDescription = modalEventHtmlDescription
+      ? stripParagraphTags(modalEventHtmlDescription)
+      : '';
     if (!modalEventDate) {
       setDateError('Seleziona una data');
       return;
     }
-    if (!modalEventHtmlDescription) {
+    if (!plainHtmlDescription) {
       setHtmlDescriptionError('Inserisci informazioni aggiuntive');
       return;
     }
 
+    console.log(modalEventHtmlDescription);
     // RESOLVE KO - step 1
     if (!isPreviewShowed) {
       const params = [
@@ -114,7 +134,7 @@ export function ResolveMalfunctionDialog({
             new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
             "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
           ),
-          htmlDescription: modalEventHtmlDescription,
+          htmlDescription: plainHtmlDescription,
         },
       ];
       console.log(params);
@@ -134,7 +154,7 @@ export function ResolveMalfunctionDialog({
             new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
             "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
           ),
-          // htmlDescription: modalEventHtmlDescription,
+          htmlDescription: plainHtmlDescription,
         },
       ];
       apiRequests
