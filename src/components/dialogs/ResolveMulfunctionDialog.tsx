@@ -29,12 +29,12 @@ import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import { FunctionalityName, modalPayloadType } from '../../model';
 import apiRequests from '../../api/apiRequests';
-import { getEventsType } from '../../api/apiRequestTypes';
+import { postEventType } from '../../api/apiRequestTypes';
 import * as spinnerActions from '../../redux/spinnerSlice';
 
 interface MonitorDialogProps {
   modalPayload: modalPayloadType;
-  getEvents: () => void;
+  postEvent: () => void;
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
   updateSnackbar: (r: any) => void;
@@ -43,7 +43,7 @@ interface MonitorDialogProps {
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function ResolveMalfunctionDialog({
   modalPayload,
-  getEvents,
+  postEvent,
   isModalOpen,
   setIsModalOpen,
   updateSnackbar,
@@ -126,16 +126,14 @@ export function ResolveMalfunctionDialog({
 
     // RESOLVE KO - step 1
     if (!isPreviewShowed) {
-      const params = [
-        {
-          ...modalPayload,
-          timestamp: format(
-            new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-            "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-          ),
-          htmlDescription: plainHtmlDescription,
-        },
-      ];
+      const params = {
+        ...modalPayload,
+        timestamp: format(
+          new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
+          "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
+        ),
+        htmlDescription: plainHtmlDescription,
+      };
       console.log(params);
       setIsPreviewShowed(true);
     }
@@ -146,21 +144,19 @@ export function ResolveMalfunctionDialog({
         // todo: remove when preview is developed
         setIsChecked(true);
       }
-      const params = [
-        {
-          ...modalPayload,
-          timestamp: format(
-            new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-            "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-          ),
-          htmlDescription: plainHtmlDescription,
-        },
-      ];
+      const params = {
+        ...modalPayload,
+        timestamp: format(
+          new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
+          "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
+        ),
+        htmlDescription: plainHtmlDescription,
+      };
       apiRequests
-        .getEvents(params as getEventsType)
+        .postEvent(params as postEventType)
         .then((res: any) => {
           dispatch(spinnerActions.updateSpinnerOpened(true));
-          getEvents();
+          postEvent();
           dispatch(spinnerActions.updateSpinnerOpened(false));
           updateSnackbar(res);
         })

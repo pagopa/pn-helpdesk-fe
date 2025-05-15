@@ -14,6 +14,7 @@ import {
   Pa,
   searchPaType,
   updatePdndRequest,
+  postEventType,
 } from './apiRequestTypes';
 import { http as logExtractoraggregateApiClient } from './logExtractorAxiosClient';
 import { http as aggregateApiClient } from './aggregateAxiosClient';
@@ -333,6 +334,17 @@ const getUsagePlans = async () => {
     });
 };
 
+const postEvent = async (data: postEventType) => {
+  return await logExtractoraggregateApiClient
+    .postEvent(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
 const apiRequests = {
   getPersonId,
   getPersonTaxId,
@@ -356,6 +368,7 @@ const apiRequests = {
   searchApiKey,
   modifyPdnd,
   getDownloadUrl,
+  postEvent,
 };
 
 export default apiRequests;

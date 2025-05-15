@@ -63,12 +63,24 @@ type getEventsType = [
   {
     status: string;
     timestamp: string;
-    functionality: Array<FunctionalityName>;
+    functionality: FunctionalityName;
     sourceType: string;
     htmlDescription?: string;
     confirmCheck: boolean;
   }
 ];
+
+/**
+ * @typedef {Object} postEventType
+ */
+type postEventType = {
+  status: string;
+  timestamp: string;
+  functionality: FunctionalityName;
+  sourceType: string;
+  htmlDescription?: string;
+};
+
 /**
  * @typedef {Object} getEventsType
  */
@@ -271,6 +283,14 @@ type getUsagePlansType = {
 };
 
 /**
+ * @typedef {Object} getPreview
+ */
+type getPreview = {
+  id: string;
+  name: string;
+};
+
+/**
  * @typedef {Object} aggregateId
  */
 type aggregateId = {
@@ -317,4 +337,6 @@ export type {
   changePdndResponse,
   updatePdndRequest,
   virtualKey,
+  postEventType,
+  getPreview,
 };
