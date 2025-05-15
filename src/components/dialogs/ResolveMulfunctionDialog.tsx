@@ -77,24 +77,8 @@ export function ResolveMalfunctionDialog({
     setModalEventDate(date);
   };
 
-  function stripParagraphTags(html: string): string {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const paragraphs = Array.from(doc.body.childNodes);
-
-    return paragraphs
-      .map((node) => {
-        if (node.nodeName === 'P') {
-          return (node as HTMLElement).innerHTML;
-        }
-        return (node as HTMLElement).outerHTML || (node as Text).textContent || '';
-      })
-      .join('\n'); // o '<br />' se vuoi HTML leggibile
-  }
-
   const handleDescriptionChange = (html: string) => {
-    const plainHtml = stripParagraphTags(html);
-    if (plainHtml) {
+    if (!isEmptyHtml(html)) {
       setHtmlDescriptionError('');
     }
     setModalEventHtmlDescription(html);
@@ -112,14 +96,11 @@ export function ResolveMalfunctionDialog({
   const rteRef = useRef<RichTextEditorRef>(null);
 
   const events = () => {
-    const plainHtmlDescription = modalEventHtmlDescription
-      ? stripParagraphTags(modalEventHtmlDescription)
-      : '';
     if (!modalEventDate) {
       setDateError('Seleziona una data');
       return;
     }
-    if (!plainHtmlDescription) {
+    if (isEmptyHtml(modalEventHtmlDescription)) {
       setHtmlDescriptionError('Inserisci informazioni aggiuntive');
       return;
     }
@@ -132,7 +113,7 @@ export function ResolveMalfunctionDialog({
           new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
           "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
         ),
-        htmlDescription: plainHtmlDescription,
+        htmlDescription: modalEventHtmlDescription,
       };
       console.log(params);
       setIsPreviewShowed(true);
@@ -150,7 +131,7 @@ export function ResolveMalfunctionDialog({
           new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
           "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
         ),
-        htmlDescription: plainHtmlDescription,
+        htmlDescription: modalEventHtmlDescription,
       };
       apiRequests
         .postEvent(params as postEventType)
@@ -266,3 +247,12 @@ export function ResolveMalfunctionDialog({
     </Dialog>
   );
 }
+
+const isEmptyHtml = (html?: string): boolean => {
+  if (!html) {
+    return true;
+  }
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  return !div.textContent || div.textContent.trim() === '';
+};
