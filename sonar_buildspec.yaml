@@ -16,6 +16,7 @@ phases:
   pre_build:
     commands:
       - echo launching yarn install
+      - yarn generate:api
       - yarn install --frozen-lockfile
   build:
     commands:

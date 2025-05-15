@@ -50,9 +50,9 @@
   "scripts": {
     "generate:api": "npx @openapitools/openapi-generator-cli generate",
     "start": "yarn generate:api && react-scripts start",
-    "build": "yarn generate:api && react-scripts build",
-    "test": "yarn generate:api && react-scripts test --watchAll=false",
-    "test:coverage": "yarn generate:api && react-scripts test --watchAll=false --ci --coverage --testResultsProcessor=jest-sonar-reporter",
+    "build": "react-scripts build",
+    "test": "react-scripts test --watchAll=false",
+    "test:coverage": "react-scripts test --watchAll=false --ci --coverage --testResultsProcessor=jest-sonar-reporter",
     "eject": "react-scripts eject",
     "sonar": "node sonarqube-scanner.js",
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",

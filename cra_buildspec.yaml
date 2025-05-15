@@ -12,6 +12,7 @@ phases:
     commands:
       - echo launching yarn install...
       - yarn install
+      - yarn generate:api 
       - echo Running tests.. && yarn test
   build:
     on-failure: ABORT
