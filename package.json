@@ -58,9 +58,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "generate:api": "rimraf generated && mkdir generated && gen-api-models --api-spec https://raw.githubusercontent.com/pagopa/pn-logextractor-be/develop/docs/openapi/swagger.yaml --no-strict --out-dir ./generated --request-types --response-decoders --client",
-    "generate:api-paper-channel": "openapi-generator-cli generate -g typescript-axios -i https://raw.githubusercontent.com/pagopa/pn-paper-channel/develop/docs/openapi/pn-paper-channel-v1.yaml -o ./src/api/paperChannel --additional-properties=supportsES6=true",
-    "start": "react-scripts start",
+    "generate:api": "npx @openapitools/openapi-generator-cli generate",
+    "start": "yarn generate:api && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
     "test:coverage": "react-scripts test --watchAll=false --ci --coverage --testResultsProcessor=jest-sonar-reporter",
