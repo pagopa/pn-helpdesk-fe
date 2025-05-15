@@ -65,8 +65,6 @@ type getEventsType = [
     timestamp: string;
     functionality: FunctionalityName;
     sourceType: string;
-    htmlDescription?: string;
-    confirmCheck: boolean;
   }
 ];
 
