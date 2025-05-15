@@ -31,4 +31,5 @@ Per avviare l'applicazione utilizzare il comando
 
 `sudo yarn start`
 
-Per eseguire i test di tutti i packages utilizzare il comando `yarn test`
+Per eseguire i test di tutti i packages utilizzare il comando 
+`yarn test`

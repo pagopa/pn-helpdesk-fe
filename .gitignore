@@ -59,3 +59,7 @@ amplifytools.xcconfig
 
 /.fleet
 /.fleet/
+.idea/misc.xml
+.gitignore
+.gitignore
+.idea/vcs.xml
