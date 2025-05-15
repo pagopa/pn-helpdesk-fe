@@ -33,7 +33,6 @@ const MonitorPage = () => {
   const [modalPayload, setModalPayload] = useState<modalPayloadType>({
     status: '',
     functionality: '' as FunctionalityName,
-    sourceType: '',
   });
 
   const isUserWriter = useHasPermissions([Permission.LOG_DOWNTIME_WRITE]);
@@ -181,7 +180,6 @@ const MonitorPage = () => {
               setModalPayload({
                 status: 'KO',
                 functionality: params.row.functionalityName,
-                sourceType: 'OPERATOR',
               });
               setIsCreateModalOpen(true);
             }}
@@ -200,7 +198,6 @@ const MonitorPage = () => {
               setModalPayload({
                 status: 'OK',
                 functionality: params.row.functionalityName,
-                sourceType: 'OPERATOR',
               });
               setIsResolveModalOpen(true);
             }}

@@ -334,9 +334,20 @@ const getUsagePlans = async () => {
     });
 };
 
-const postEvent = async (data: postEventType) => {
-  return await logExtractoraggregateApiClient
+const postEvent = (data: postEventType) => {
+  return logExtractoraggregateApiClient
     .postEvent(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+// /downtime-bo/v1/legal-facts/malfunction/preview
+const getPreview = (data: postEventType) => {
+  return logExtractoraggregateApiClient
+    .getPreview(data)
     .then((result: any) => {
       return result;
     })

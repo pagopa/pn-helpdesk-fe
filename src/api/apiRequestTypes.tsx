@@ -77,7 +77,6 @@ type postEventType = {
   status: string;
   timestamp: string;
   functionality: FunctionalityName;
-  sourceType: string;
   htmlDescription?: string;
 };
 

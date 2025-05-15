@@ -42,13 +42,13 @@ export function CreateMalfunctionDialog({
 }: MonitorDialogProps) {
   const dispatch = useDispatch();
   const [dateError, setDateError] = useState('');
-  const [checkboxError, setCheckboxError] = useState(false);
   const [modalEventDate, setModalEventDate] = useState<Date | null>(new Date());
   const [isChecked, setIsChecked] = useState(false);
+  const [checkboxError, setCheckboxError] = useState(false);
 
   const isErrorPresent = checkboxError || dateError;
   const functionalityName =
-    FunctionalityName[modalPayload.functionality[0] as unknown as keyof typeof FunctionalityName];
+    FunctionalityName[modalPayload.functionality as unknown as keyof typeof FunctionalityName];
 
   useEffect(() => {
     if (!isModalOpen) {
