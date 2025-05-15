@@ -344,7 +344,7 @@ const postEvent = (data: postEventType) => {
       throw error;
     });
 };
-// /downtime-bo/v1/legal-facts/malfunction/preview
+
 const getPreview = (data: postEventType) => {
   return logExtractoraggregateApiClient
     .getPreview(data)
@@ -380,6 +380,7 @@ const apiRequests = {
   modifyPdnd,
   getDownloadUrl,
   postEvent,
+  getPreview,
 };
 
 export default apiRequests;
