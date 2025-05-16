@@ -69,6 +69,12 @@ export function ResolveMalfunctionDialog({
   const [isPreviewShowed, setIsPreviewShowed] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [checkboxError, setCheckboxError] = useState(false);
+  const [params, setParams] = useState<postEventType>({
+    status: '',
+    timestamp: '',
+    functionality: '' as FunctionalityName,
+    htmlDescription: '',
+  });
 
   const isErrorPresent = htmlDescriptionError || dateError || checkboxError;
 
@@ -132,19 +138,36 @@ export function ResolveMalfunctionDialog({
     // RESOLVE KO - step 1
     if (!isPreviewShowed) {
       setIsPreviewShowed(true);
-    }
-
-    // RESOLVE KO - step 2
-    if (isPreviewShowed) {
-      const params = {
+      setParams({
         ...modalPayload,
         timestamp: format(
           new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
           "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
         ),
         htmlDescription: modalEventHtmlDescription,
-      };
+      });
 
+      apiRequests
+        .getPreview(params as postEventType)
+        .then((res: any) => {
+          dispatch(spinnerActions.updateSpinnerOpened(true));
+          postEvent();
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+          updateSnackbar(res);
+        })
+        .catch((error: any) => {
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+          updateSnackbar(error.response);
+        })
+        .finally(() => {
+          setIsModalOpen(false);
+          setIsPreviewShowed(false);
+          setIsChecked(false);
+        });
+    }
+
+    // RESOLVE KO - step 2
+    if (isPreviewShowed) {
       if (!isChecked) {
         setCheckboxError(true);
         return;

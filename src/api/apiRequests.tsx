@@ -349,6 +349,7 @@ const getPreview = (data: postEventType) => {
   return logExtractoraggregateApiClient
     .getPreview(data)
     .then((result: any) => {
+      console.log('provaaaaa');
       return result;
     })
     .catch((error: any) => {
