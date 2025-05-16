@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { TenderTable } from '../TenderTable';
 import { reducer } from '../../../mocks/mockReducer';
@@ -69,7 +69,10 @@ describe('TenderTableTest', () => {
     const options = screen.getAllByRole('option');
     expect(options[1]).toBeInTheDocument();
     expect(options[1].textContent).toEqual('25');
-    options[1].click();
+
+    await act(async () => {
+      options[1].click();
+    });
     await waitFor(() => {
       expect(mockDispatch).toBeCalledTimes(2);
       expect(mockDispatch).toBeCalledWith({

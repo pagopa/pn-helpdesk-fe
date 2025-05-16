@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { DeliveriesDriverTable } from '../DeliveriesDriverTable';
 import * as reactRedux from '../../../redux/hook';
@@ -92,7 +92,9 @@ describe('DeliveriesDriverTableTest', () => {
     const dialog = await screen.findByTestId('driver-costs-dialog');
     expect(dialog).toBeInTheDocument();
 
-    fireEvent.click(dialog.firstChild!);
+    await act(async () => {
+      fireEvent.click(dialog.firstChild!);
+    });
 
     expect(dispatchMockFn).toBeCalledWith({
       payload: undefined,
@@ -113,7 +115,11 @@ describe('DeliveriesDriverTableTest', () => {
     const options = screen.getAllByRole('option');
     expect(options[1]).toBeInTheDocument();
     expect(options[1].textContent).toEqual('25');
-    options[1].click();
+
+    await act(async () => {
+      options[1].click();
+    });
+    
     await waitFor(async () => {
       expect(dispatchMockFn).toBeCalledWith({
         payload: {
