@@ -167,27 +167,29 @@ describe('CostsForm Test', () => {
       />
     );
 
+    const [basePrice] = screen.getAllByRole('textbox');
     await act(async () => {
-      const [basePrice] = screen.getAllByRole('textbox');
       fireEvent.change(basePrice, {
         target: {
           value: '1,34',
         },
       });
-      expect(basePrice.getAttribute('value')).toEqual('1,34');
-      const btnSave = screen.getByTestId('btn-save-cost');
+    });
+    expect(basePrice.getAttribute('value')).toEqual('1,34');
+    const btnSave = screen.getByTestId('btn-save-cost');
+    await act(async () => {
       fireEvent.click(btnSave);
+    });
 
-      await waitFor(async () => {
-        expect(createCostMockFn).toBeCalledTimes(1);
-        expect(createCostMockFn).toBeCalledWith('1234', '123-driver', {
-          uid: undefined,
-          price: 1.34,
-          priceAdditional: internationalCost.priceAdditional,
-          zone: internationalCost.zone,
-          cap: undefined,
-          productType: internationalCost.internationalProductType,
-        });
+    await waitFor(async () => {
+      expect(createCostMockFn).toBeCalledTimes(1);
+      expect(createCostMockFn).toBeCalledWith('1234', '123-driver', {
+        uid: undefined,
+        price: 1.34,
+        priceAdditional: internationalCost.priceAdditional,
+        zone: internationalCost.zone,
+        cap: undefined,
+        productType: internationalCost.internationalProductType,
       });
     });
   });
@@ -213,30 +215,33 @@ describe('CostsForm Test', () => {
       />
     );
 
+    const [basePrice] = screen.getAllByRole('textbox');
     await act(async () => {
-      const [basePrice] = screen.getAllByRole('textbox');
       fireEvent.change(basePrice, {
         target: {
           value: '1,34',
         },
       });
-      expect(basePrice.getAttribute('value')).toEqual('1,34');
-      const btnSave = screen.getByTestId('btn-save-cost');
-      fireEvent.click(btnSave);
+    });
+    expect(basePrice.getAttribute('value')).toEqual('1,34');
+    const btnSave = screen.getByTestId('btn-save-cost');
 
-      await waitFor(async () => {
-        expect(dispatchMockFn).toBeCalledWith({
-          payload: true,
-          type: 'snackbar/updateSnackbacrOpened',
-        });
-        expect(dispatchMockFn).toBeCalledWith({
-          payload: response.status,
-          type: 'snackbar/updateStatusCode',
-        });
-        expect(dispatchMockFn).toBeCalledWith({
-          payload: response.data.detail,
-          type: 'snackbar/updateMessage',
-        });
+    await act(async () => {
+      fireEvent.click(btnSave);
+    });
+
+    await waitFor(async () => {
+      expect(dispatchMockFn).toBeCalledWith({
+        payload: true,
+        type: 'snackbar/updateSnackbacrOpened',
+      });
+      expect(dispatchMockFn).toBeCalledWith({
+        payload: response.status,
+        type: 'snackbar/updateStatusCode',
+      });
+      expect(dispatchMockFn).toBeCalledWith({
+        payload: response.data.detail,
+        type: 'snackbar/updateMessage',
       });
     });
   });

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import * as italianStyle from 'date-fns/locale';
@@ -38,7 +38,10 @@ describe('DeliveryDriverFormTest', () => {
 
     const btnSave = screen.getByTestId('btn-save-driver');
     expect(btnSave).toBeInTheDocument();
-    fireEvent.click(btnSave);
+
+    await act(async () => {
+      fireEvent.click(btnSave);
+    });
 
     expect(createDriverMockFn).toBeCalledTimes(0);
   });
@@ -58,7 +61,9 @@ describe('DeliveryDriverFormTest', () => {
 
     const btnSave = screen.getByTestId('btn-save-driver');
     expect(btnSave).toBeInTheDocument();
-    fireEvent.click(btnSave);
+    await act(async () => {
+      fireEvent.click(btnSave);
+    });
 
     expect(createDriverMockFn).toBeCalledTimes(0);
   });
@@ -88,7 +93,10 @@ describe('DeliveryDriverFormTest', () => {
 
     const btnSave = screen.getByTestId('btn-save-driver');
     expect(btnSave).toBeInTheDocument();
-    fireEvent.click(btnSave);
+
+    await act(async () => {
+      fireEvent.click(btnSave);
+    });
 
     await waitFor(async () => {
       expect(createDriverMockFn).toBeCalledTimes(1);
@@ -113,16 +121,18 @@ describe('DeliveryDriverFormTest', () => {
     );
     const [taxId, ragSoc, , , , , ,] = screen.getAllByRole('textbox');
 
-    fireEvent.input(taxId, {
-      target: {
-        value: '12345678901',
-      },
-    });
+    await act(async () => {
+      fireEvent.input(taxId, {
+        target: {
+          value: '12345678901',
+        },
+      });
 
-    fireEvent.input(ragSoc, {
-      target: {
-        value: 'Ragione Sociale',
-      },
+      fireEvent.input(ragSoc, {
+        target: {
+          value: 'Ragione Sociale',
+        },
+      });
     });
 
     expect(taxId.getAttribute('value')).toEqual('12345678901');
@@ -130,7 +140,10 @@ describe('DeliveryDriverFormTest', () => {
 
     const btnSave = screen.getByTestId('btn-save-driver');
     expect(btnSave).toBeInTheDocument();
-    fireEvent.click(btnSave);
+
+    await act(async () => {
+      fireEvent.click(btnSave);
+    });
 
     await waitFor(async () => {
       expect(dispatchMockFn).toBeCalledWith({
@@ -161,16 +174,18 @@ describe('DeliveryDriverFormTest', () => {
     );
     const [taxId, ragSoc, , , , , ,] = screen.getAllByRole('textbox');
 
-    fireEvent.input(taxId, {
-      target: {
-        value: '12345678901',
-      },
-    });
-
-    fireEvent.input(ragSoc, {
-      target: {
-        value: 'Ragione Sociale',
-      },
+    await act(async () => {
+      fireEvent.input(taxId, {
+        target: {
+          value: '12345678901',
+        },
+      });
+  
+      fireEvent.input(ragSoc, {
+        target: {
+          value: 'Ragione Sociale',
+        },
+      });
     });
 
     expect(taxId.getAttribute('value')).toEqual('12345678901');
@@ -178,6 +193,9 @@ describe('DeliveryDriverFormTest', () => {
 
     const btnSave = screen.getByTestId('btn-save-driver');
     expect(btnSave).toBeInTheDocument();
-    fireEvent.click(btnSave);
+
+    await act(async () => {
+      fireEvent.click(btnSave);
+    });
   });
 });
