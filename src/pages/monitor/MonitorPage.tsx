@@ -1,30 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { GridActionsCellItem } from '@mui/x-data-grid';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { format } from 'date-fns';
-import { DateTimePicker } from '@mui/x-date-pickers';
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Grid,
-  TextField,
-  FormHelperText,
-  DialogActions,
-  Button,
-  Typography,
-} from '@mui/material';
+
+import { Button, Typography } from '@mui/material';
+import { GridColumns } from '@mui/x-data-grid';
 import DataGridComponent from '../../components/dataGrid/DataGridComponent';
 import MainLayout from '../mainLayout/MainLayout';
 import apiRequests from '../../api/apiRequests';
 import * as spinnerActions from '../../redux/spinnerSlice';
 import { errorMessages, functionalitiesNames } from '../../helpers/messagesConstants';
-import { getEventsType } from '../../api/apiRequestTypes';
 import * as snackbarActions from '../../redux/snackbarSlice';
 import { useHasPermissions } from '../../hooks/useHasPermissions';
 import { Permission } from '../../model/user-permission';
+import { modalPayloadType } from '../../model';
+import { CreateMalfunctionDialog } from '../../components/dialogs/CreateMulfunctionDialog';
+import { ResolveMalfunctionDialog } from '../../components/dialogs/ResolveMulfunctionDialog';
 
 /**
  * Monitor page
@@ -34,32 +26,17 @@ const MonitorPage = () => {
   const dispatch = useDispatch();
 
   const [rows, setRows] = useState<Array<any>>([]);
-
   const [backEndStatus, setBackEndStatus] = useState<boolean>(true);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isResolveModalOpen, setIsResolveModalOpen] = useState<boolean>(false);
 
-  const [modalStatus, setModalStatus] = useState<boolean>(false);
-
-  const [modalEventDate, setModalEventDate] = useState(new Date());
-
-  const [modalPayload, setModalPaylod] = useState({});
-
-  const [error, setError] = useState('');
+  const [modalPayload, setModalPayload] = useState<modalPayloadType>({
+    status: '',
+    functionality: [],
+    sourceType: '',
+  });
 
   const isUserWriter = useHasPermissions([Permission.LOG_DOWNTIME_WRITE]);
-
-  useEffect(() => {
-    if (!modalStatus) {
-      setModalEventDate(new Date());
-      setError('');
-    }
-  }, [modalStatus]);
-
-  const handleChange = (value: any) => {
-    if (value) {
-      setError('');
-    }
-    setModalEventDate(value);
-  };
 
   const updateSnackbar = useCallback(
     (response: any) => {
@@ -71,6 +48,7 @@ const MonitorPage = () => {
     [dispatch]
   );
 
+  // function to create event
   const getEvents = useCallback(() => {
     apiRequests
       .getStatus()
@@ -134,40 +112,8 @@ const MonitorPage = () => {
     };
   }, [dispatch, getEvents]);
 
-  const events = () => {
-    if (!modalEventDate) {
-      setError('Inserire un valore');
-    } else {
-      const params = [
-        {
-          ...modalPayload,
-          timestamp: format(
-            new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-            "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-          ),
-        },
-      ];
-      apiRequests
-        .getEvents(params as getEventsType)
-        .then((res: any) => {
-          dispatch(spinnerActions.updateSpinnerOpened(true));
-          getEvents();
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          updateSnackbar(res);
-        })
-        .catch((error: any) => {
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          updateSnackbar(error.response);
-        })
-        .finally(() => {
-          setModalStatus(false);
-        });
-    }
-  };
-
-  const columns = [
+  const columns: GridColumns = [
     {
-      id: 'funzionalità',
       field: 'functionality',
       headerName: 'Funzionalità',
       width: 200,
@@ -182,7 +128,6 @@ const MonitorPage = () => {
       ),
     },
     {
-      id: 'stato',
       field: 'state',
       headerName: 'Stato',
       width: 400,
@@ -196,7 +141,6 @@ const MonitorPage = () => {
       minWidth: 100,
     },
     {
-      id: 'dataCreazione',
       field: 'data',
       headerName: 'Data di creazione',
       type: 'date',
@@ -216,93 +160,74 @@ const MonitorPage = () => {
         ),
     },
     {
-      id: 'menu',
       field: 'actions',
       headerName: 'Cambio Stato',
       width: 200,
-      type: 'actions',
       flex: 1,
-      minWidth: 100,
+      minWidth: 132,
       sortable: false,
       disableColumnMenu: true,
       hide: !backEndStatus && !isUserWriter,
-      getActions: (params: any) =>
-        params.row.state
-          ? [
-              <GridActionsCellItem
-                id="KO-insert"
-                key="Inserire KO"
-                label="Inserire KO"
-                onClick={() => {
-                  setModalPaylod({
-                    status: 'KO',
-                    functionality: Array(params.row.functionalityName),
-                    sourceType: 'OPERATOR',
-                  });
-                  setModalStatus(true);
-                }}
-                showInMenu
-              />,
-            ]
-          : [
-              <GridActionsCellItem
-                id="OK-insert"
-                key="Inserire OK"
-                label="Inserire OK"
-                onClick={() => {
-                  setModalPaylod({
-                    status: 'OK',
-                    functionality: Array(params.row.functionalityName),
-                    sourceType: 'OPERATOR',
-                  });
-                  setModalStatus(true);
-                }}
-                showInMenu
-              />,
-            ],
+      renderCell: (params: any) =>
+        params.row.state ? (
+          <Button
+            size="small"
+            id="KO-insert"
+            key="Inserire KO"
+            variant="outlined"
+            color="primary"
+            sx={{ minWidth: '132px' }}
+            onClick={() => {
+              setModalPayload({
+                status: 'KO',
+                functionality: Array(params.row.functionalityName),
+                sourceType: 'OPERATOR',
+              });
+              setIsCreateModalOpen(true);
+            }}
+          >
+            Inserisci KO
+          </Button>
+        ) : (
+          <Button
+            size="small"
+            id="KO-resolve"
+            key="Risolvi OK"
+            variant="contained"
+            color="primary"
+            sx={{ minWidth: '132px' }}
+            onClick={() => {
+              setModalPayload({
+                status: 'OK',
+                functionality: Array(params.row.functionalityName),
+                sourceType: 'OPERATOR',
+              });
+              setIsResolveModalOpen(true);
+            }}
+          >
+            Risolvi KO
+          </Button>
+        ),
     },
   ];
 
   return (
     <MainLayout>
       <DataGridComponent columns={columns} rows={rows} />
-      <Dialog
-        open={modalStatus}
-        onClose={() => setModalStatus(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">Nuovo evento</DialogTitle>
-        <DialogContent>
-          <Grid container columnSpacing={2} sx={{ pt: 2 }}>
-            <Grid item>
-              <DateTimePicker
-                disableFuture
-                maxDateTime={new Date()}
-                label="Data e ora evento"
-                value={modalEventDate}
-                onChange={(date) => handleChange(date)}
-                renderInput={(params: any) => (
-                  <TextField
-                    onKeyDown={(e) => e.preventDefault()}
-                    {...params}
-                    error={error ? true : false}
-                  />
-                )}
-              />
-            </Grid>
-          </Grid>
-          <FormHelperText error>{error ? error : ' '}</FormHelperText>
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: 'space-between' }}>
-          <Button onClick={() => setModalStatus(false)} sx={{ padding: '0 18px' }}>
-            Annulla
-          </Button>
-          <Button autoFocus onClick={events} id="buttonInserisciDisservizio">
-            Inserisci
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <CreateMalfunctionDialog
+        getEvents={getEvents}
+        modalPayload={modalPayload}
+        isModalOpen={isCreateModalOpen}
+        setIsModalOpen={setIsCreateModalOpen}
+        updateSnackbar={updateSnackbar}
+      />
+      <ResolveMalfunctionDialog
+        getEvents={getEvents}
+        modalPayload={modalPayload}
+        isModalOpen={isResolveModalOpen}
+        setIsModalOpen={setIsResolveModalOpen}
+        updateSnackbar={updateSnackbar}
+      />
     </MainLayout>
   );
 };

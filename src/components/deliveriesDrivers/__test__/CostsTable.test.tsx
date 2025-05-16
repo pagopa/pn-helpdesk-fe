@@ -21,7 +21,7 @@ const costsTable = {
         productType: ProductTypeEnumDto.Ar,
         cap: ['01234', '56789'],
         // eslint-disable-next-line no-underscore-dangle
-        zone: InternationalZoneEnum._1,
+        zone: InternationalZoneEnum.Zone1,
       },
       {
         uid: '1',
@@ -32,7 +32,7 @@ const costsTable = {
         productType: ProductTypeEnumDto.Ar,
         cap: ['00100', '09512'],
         // eslint-disable-next-line no-underscore-dangle
-        zone: InternationalZoneEnum._2,
+        zone: InternationalZoneEnum.Zone2,
       }
     ),
   },
