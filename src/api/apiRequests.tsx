@@ -18,6 +18,8 @@ import {
 } from './apiRequestTypes';
 import { http as logExtractoraggregateApiClient } from './logExtractorAxiosClient';
 import { http as aggregateApiClient } from './aggregateAxiosClient';
+import { getMalfunctionPreview } from './downtimeLogsApi';
+import { BoStatusUpdateEvent, PnFunctionality, PnFunctionalityStatus } from './downtimeLogs';
 
 /**
  * Return the person's ID depending on the input received
@@ -345,16 +347,38 @@ const postEvent = (data: postEventType) => {
     });
 };
 
-const getPreview = (data: postEventType) => {
-  return logExtractoraggregateApiClient
-    .getPreview(data)
-    .then((result: any) => {
-      return result;
+const getPreview = (payload: postEventType) => {
+  const data: BoStatusUpdateEvent = {
+    status: payload.status as PnFunctionalityStatus,
+    timestamp: payload.timestamp,
+    functionality: payload.functionality as unknown as PnFunctionality,
+    htmlDescription: payload.htmlDescription,
+  };
+
+  return getMalfunctionPreview(data)
+    .then((result: File) => {
+      // to do
+      return fileToBase64(result);
     })
     .catch((error: any) => {
       throw error;
     });
 };
+
+function fileToBase64(file: File) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      // Il risultato è una stringa Base64 con prefisso data URI
+      resolve(reader.result);
+    };
+
+    reader.onerror = (error) => reject(error);
+
+    reader.readAsDataURL(file); // Converte il file in Base64
+  });
+}
 
 const apiRequests = {
   getPersonId,

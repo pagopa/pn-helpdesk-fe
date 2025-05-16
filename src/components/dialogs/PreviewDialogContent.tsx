@@ -7,6 +7,7 @@ interface PreviewDialogContentProps {
   isChecked: boolean;
   handleConfirmCheckChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
 export function PreviewDialogContent({
   preview,
   checkboxError,

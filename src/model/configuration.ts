@@ -15,6 +15,7 @@ export interface AppConfiguration extends AppConfigurationFromFile {
   API_ENDPOINT: string;
   API_AGGREGATE_ENDPOINT: string;
   API_PAPER_CHANNEL_ENDPOINT: string;
+  API_DOWNTIME_LOGS_ENDPOINT: string;
 }
 
 class ConfigurationError extends Error {}

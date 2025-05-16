@@ -65,10 +65,6 @@ class Http {
   postEvent<T = any, R = AxiosResponse<T>>(payload: postEventType): Promise<R> {
     return this.http.post<T, R>('/downtime/v1/events', payload);
   }
-
-  getPreview<T = any, R = AxiosResponse<T>>(payload: postEventType): Promise<R> {
-    return this.http.post<T, R>('/downtime-bo/v1/legal-facts/malfunction/preview', payload);
-  }
 }
 
 export const http = new Http();

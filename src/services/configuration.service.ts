@@ -9,6 +9,7 @@ export function getConfiguration(): AppConfiguration {
     API_ENDPOINT: `https://${configurationFromFile.API_DOMAIN}/log-extractor`,
     API_AGGREGATE_ENDPOINT: `https://${configurationFromFile.WEB_API_DOMAIN}/api-key-bo`,
     API_PAPER_CHANNEL_ENDPOINT: `https://${configurationFromFile.WEB_API_DOMAIN}`,
+    API_DOWNTIME_LOGS_ENDPOINT: `https://${configurationFromFile.WEB_API_DOMAIN}`,
   };
 }
 

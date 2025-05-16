@@ -40,9 +40,9 @@ const MonitorPage = () => {
   const updateSnackbar = useCallback(
     (response: any) => {
       dispatch(snackbarActions.updateSnackbacrOpened(true));
-      dispatch(snackbarActions.updateStatusCode(response.status));
-      (response.data.detail || response.data.message) &&
-        dispatch(snackbarActions.updateMessage(response.data.detail || response.message));
+      dispatch(snackbarActions.updateStatusCode(response?.status));
+      (response?.data.detail || response?.data.message) &&
+        dispatch(snackbarActions.updateMessage(response?.data.detail || response?.message));
     },
     [dispatch]
   );
