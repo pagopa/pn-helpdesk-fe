@@ -21,7 +21,9 @@ export const apiDowntimeLogs = () => new DowntimeBoApi(configuration());
 
 export const getMalfunctionPreview = async (data: BoStatusUpdateEvent) => {
   try {
-    const response = await apiDowntimeLogs().getMalfunctionPreview('xPagopaPnUid', data);
+    const response = await apiDowntimeLogs().getMalfunctionPreview('xPagopaPnUid', data, {
+      responseType: 'blob',
+    });
     return response.data;
   } catch (e: any) {
     throw new Error(e);

@@ -347,7 +347,7 @@ const postEvent = (data: postEventType) => {
     });
 };
 
-const getPreview = (payload: postEventType) => {
+const getPreview = async (payload: postEventType): Promise<string> => {
   const data: BoStatusUpdateEvent = {
     status: payload.status as PnFunctionalityStatus,
     timestamp: payload.timestamp,
@@ -355,28 +355,21 @@ const getPreview = (payload: postEventType) => {
     htmlDescription: payload.htmlDescription,
   };
 
-  return getMalfunctionPreview(data)
-    .then((result: File) => {
-      // to do
-      return fileToBase64(result);
-    })
-    .catch((error: any) => {
-      throw error;
-    });
+  try {
+    const file = await getMalfunctionPreview(data);
+    const base64 = await fileToBase64(file);
+    return base64;
+  } catch (e: any) {
+    throw new Error(e);
+  }
 };
 
-function fileToBase64(file: File) {
-  return new Promise((resolve, reject) => {
+function fileToBase64(file: File): Promise<string> {
+ return new Promise((resolve, reject) => {
     const reader = new FileReader();
-
-    reader.onload = () => {
-      // Il risultato è una stringa Base64 con prefisso data URI
-      resolve(reader.result);
-    };
-
-    reader.onerror = (error) => reject(error);
-
-    reader.readAsDataURL(file); // Converte il file in Base64
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
   });
 }
 
