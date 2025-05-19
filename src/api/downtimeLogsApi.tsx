@@ -5,12 +5,10 @@ import { BoStatusUpdateEvent, Configuration, DowntimeBoApi } from './downtimeLog
 const configuration = () => {
   const { API_DOWNTIME_LOGS_ENDPOINT } = getConfiguration();
   const conf = new Configuration();
-  const token = sessionStorage.getItem('token');
   const accessToken = sessionStorage.getItem('accessToken');
   conf.baseOptions = {
     headers: {
-      Authorization: `Bearer ${token}`,
-      Auth: accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
   };
   conf.basePath = API_DOWNTIME_LOGS_ENDPOINT;
