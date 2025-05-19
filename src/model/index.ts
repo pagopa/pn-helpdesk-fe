@@ -115,8 +115,7 @@ export const mockListCost: Array<Cost> = [
 
 export type modalPayloadType = {
   status: string;
-  functionality: Array<FunctionalityName>;
-  sourceType: string;
+  functionality: FunctionalityName;
 };
 
 export enum FunctionalityName {

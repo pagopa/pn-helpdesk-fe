@@ -21,12 +21,12 @@ import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import { FunctionalityName, modalPayloadType } from '../../model';
 import apiRequests from '../../api/apiRequests';
-import { getEventsType } from '../../api/apiRequestTypes';
+import { postEventType } from '../../api/apiRequestTypes';
 import * as spinnerActions from '../../redux/spinnerSlice';
 
 interface MonitorDialogProps {
   modalPayload: modalPayloadType;
-  getEvents: () => void;
+  postEvent: () => void;
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
   updateSnackbar: (r: any) => void;
@@ -35,20 +35,20 @@ interface MonitorDialogProps {
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function CreateMalfunctionDialog({
   modalPayload,
-  getEvents,
+  postEvent,
   isModalOpen,
   setIsModalOpen,
   updateSnackbar,
 }: MonitorDialogProps) {
   const dispatch = useDispatch();
   const [dateError, setDateError] = useState('');
-  const [checkboxError, setCheckboxError] = useState(false);
   const [modalEventDate, setModalEventDate] = useState<Date | null>(new Date());
   const [isChecked, setIsChecked] = useState(false);
+  const [checkboxError, setCheckboxError] = useState(false);
 
   const isErrorPresent = checkboxError || dateError;
   const functionalityName =
-    FunctionalityName[modalPayload.functionality[0] as unknown as keyof typeof FunctionalityName];
+    FunctionalityName[modalPayload.functionality as unknown as keyof typeof FunctionalityName];
 
   useEffect(() => {
     if (!isModalOpen) {
@@ -85,20 +85,18 @@ export function CreateMalfunctionDialog({
       setCheckboxError(true);
       return;
     }
-    const params = [
-      {
-        ...modalPayload,
-        timestamp: format(
-          new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-          "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-        ),
-      },
-    ];
+    const params = {
+      ...modalPayload,
+      timestamp: format(
+        new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
+        "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
+      ),
+    };
     apiRequests
-      .getEvents(params as getEventsType)
+      .postEvent(params as postEventType)
       .then((res: any) => {
         dispatch(spinnerActions.updateSpinnerOpened(true));
-        getEvents();
+        postEvent();
         dispatch(spinnerActions.updateSpinnerOpened(false));
         updateSnackbar(res);
       })

@@ -53,6 +53,13 @@ const DataGridComponent = (props: Props) => (
                 [`& .${gridClasses.row}`]: {
                   bgcolor: () => 'background.default',
                 },
+                [`& .MuiDataGrid-cell--withRenderer.MuiDataGrid-cell.MuiDataGrid-cell--textLeft:focus`]:
+                  {
+                    outline: 'none',
+                  },
+                [`.MuiDataGrid-cell:focus-within`]: {
+                  outline: 'none',
+                },
               }}
             />
           </Grid>
