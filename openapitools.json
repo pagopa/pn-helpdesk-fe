@@ -17,7 +17,7 @@
       },
       "api-downtime-logs": {
         "generatorName": "typescript-axios",
-        "inputSpec": "https://raw.githubusercontent.com/pagopa/pn-downtime-logs/453b7b2bee7022c86e13311d14a6e49e7635d969/docs/openapi/api-bo-v1.yaml",
+        "inputSpec": "https://raw.githubusercontent.com/pagopa/pn-downtime-logs/0a508dc83d27c94f35daf1bcd6b557cb310ead56/docs/openapi/api-bo-v1.yaml",
         "output": "./src/api/downtimeLogs",
         "additionalProperties": {
           "supportsES6": true,

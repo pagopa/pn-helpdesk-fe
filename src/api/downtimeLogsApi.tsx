@@ -1,4 +1,3 @@
-import { DeliveryDriver, Tender } from '../model';
 import { getConfiguration } from '../services/configuration.service';
 import { BoStatusUpdateEvent, Configuration, DowntimeBoApi } from './downtimeLogs';
 
@@ -24,6 +23,15 @@ export const getMalfunctionPreview = async (data: BoStatusUpdateEvent) => {
     const response = await apiDowntimeLogs().getMalfunctionPreview('xPagopaPnUid', data, {
       responseType: 'blob',
     });
+    return response.data;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+};
+
+export const postEvent = async (data: BoStatusUpdateEvent) => {
+  try {
+    const response = await apiDowntimeLogs().addStatusChangeEventBo('xPagopaPnUid', data);
     return response.data;
   } catch (e: any) {
     throw new Error(e);
