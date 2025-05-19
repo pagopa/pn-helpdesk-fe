@@ -41,7 +41,6 @@ const DataGridComponent = (props: Props) => (
         >
           <Grid item>
             <DataGrid
-              data-testid="griglia"
               rows={props.rows}
               columns={props.columns}
               disableSelectionOnClick
