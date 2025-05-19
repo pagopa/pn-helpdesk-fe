@@ -60,13 +60,13 @@ export function ResolveMalfunctionDialog({
   const functionalityStatus = modalPayload.status;
 
   useEffect(() => {
-    if (!isModalOpen) {
-      setModalEventDate(new Date());
-      setModalEventHtmlDescription('');
-      setDateError('');
-      setHtmlDescriptionError('');
-      setCheckboxError(false);
-    }
+    setModalEventDate(new Date());
+    setModalEventHtmlDescription('');
+    setDateError('');
+    setHtmlDescriptionError('');
+    setCheckboxError(false);
+    setPreview('');
+    setIsSecondStep(false);
   }, [isModalOpen]);
 
   const handleCancel = () => {
@@ -215,7 +215,7 @@ export function ResolveMalfunctionDialog({
           onClick={events}
           id="createEvent"
         >
-          {isSecondStep ? 'Risolvi' : 'Continua'}
+          {isSecondStep ? 'Conferma e Pubblica' : 'Continua'}
         </Button>
       </DialogActions>
     </Dialog>
