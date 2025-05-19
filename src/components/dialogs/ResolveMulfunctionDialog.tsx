@@ -57,6 +57,7 @@ export function ResolveMalfunctionDialog({
 
   const functionalityName =
     FunctionalityName[modalPayload.functionality as unknown as keyof typeof FunctionalityName];
+  const functionalityStatus = modalPayload.status;
 
   useEffect(() => {
     if (!isModalOpen) {
@@ -83,8 +84,6 @@ export function ResolveMalfunctionDialog({
       setCheckboxError(false);
     }
   };
-
-  const functionalityStatus = modalPayload.status;
 
   const events = () => {
     if (!modalEventDate) {
