@@ -8,7 +8,7 @@ interface PreviewDialogContentProps {
   handleConfirmCheckChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const PDFViewer = ({ base64 }: { base64: string }) => (
-  <iframe src={`${base64}`} title="PDF Viewer" width="100%" height="500px" />
+  <iframe src={`${base64}`} title="PDF Viewer" width="100%" height="500px" frameBorder="none" />
 );
 
 export function PreviewDialogContent({
