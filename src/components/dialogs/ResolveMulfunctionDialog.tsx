@@ -164,6 +164,8 @@ export function ResolveMalfunctionDialog({
 
   return (
     <Dialog
+      maxWidth="md"
+      fullWidth={isSecondStep}
       open={isModalOpen}
       onClose={() => setIsModalOpen(false)}
       aria-labelledby="alert-dialog-title"

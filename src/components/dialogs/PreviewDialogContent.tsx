@@ -7,6 +7,9 @@ interface PreviewDialogContentProps {
   isChecked: boolean;
   handleConfirmCheckChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
+const PDFViewer = ({ base64 }: { base64: string }) => (
+  <iframe src={`${base64}`} title="PDF Viewer" width="100%" height="500px" />
+);
 
 export function PreviewDialogContent({
   preview,
@@ -14,10 +17,6 @@ export function PreviewDialogContent({
   isChecked,
   handleConfirmCheckChange,
 }: PreviewDialogContentProps) {
-  const PDFViewer = ({ base64 }: { base64: string }) => (
-    <iframe src={`${base64}#toolbar=0`} title="PDF Viewer" width="100%" height="500px" />
-  );
-
   return (
     <Grid item>
       <Box sx={{ borderRadius: '4px' }}>
