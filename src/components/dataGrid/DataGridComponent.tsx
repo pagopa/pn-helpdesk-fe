@@ -41,6 +41,7 @@ const DataGridComponent = (props: Props) => (
         >
           <Grid item>
             <DataGrid
+              data-testid="griglia"
               rows={props.rows}
               columns={props.columns}
               disableSelectionOnClick
@@ -57,6 +58,9 @@ const DataGridComponent = (props: Props) => (
                   {
                     outline: 'none',
                   },
+                [`.MuiDataGrid-cell:focus-within`]: {
+                  outline: 'none',
+                },
               }}
             />
           </Grid>
