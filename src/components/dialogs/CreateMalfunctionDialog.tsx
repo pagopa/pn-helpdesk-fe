@@ -16,8 +16,8 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { DateTimePicker } from '@mui/x-date-pickers';
-
 import { useDispatch } from 'react-redux';
+import { AxiosError, AxiosResponse } from 'axios';
 import apiRequests from '../../api/apiRequests';
 import * as spinnerActions from '../../redux/spinnerSlice';
 import { FunctionalityName, MonitorDialogProps } from '../../model/monitor';
@@ -79,12 +79,11 @@ export function CreateMalfunctionDialog({
 
     apiRequests
       .createEvent(formatPayload(modalPayload, modalEventDate))
-      .then((res: any) => {
+      .then((response: AxiosResponse) => {
         refreshStatus();
-        updateSnackbar(res);
+        updateSnackbar(response);
       })
-      .catch((error: any) => {
-        console.log('catch');
+      .catch((error: AxiosError) => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
         updateSnackbar(error.response);
       })
@@ -126,6 +125,7 @@ export function CreateMalfunctionDialog({
                 />
               )}
             />
+            <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
           </Grid>
           <Grid item>
             <FormControl error={checkboxError}>
@@ -143,7 +143,6 @@ export function CreateMalfunctionDialog({
             </FormControl>
           </Grid>
         </Grid>
-        <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'end', p: '0 24px 20px 0' }}>
         <Button variant="outlined" onClick={handleClick} sx={{ padding: '0 18px' }}>

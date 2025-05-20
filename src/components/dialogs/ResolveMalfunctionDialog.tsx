@@ -5,11 +5,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormHelperText,
   Grid,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { AxiosError, AxiosResponse } from 'axios';
+import { format, isBefore } from 'date-fns';
 import apiRequests from '../../api/apiRequests';
 import * as spinnerActions from '../../redux/spinnerSlice';
 import { formatPayload, isEmptyHtml, maxLength } from '../../helpers/monitor.utility';
@@ -73,6 +74,16 @@ export function ResolveMalfunctionDialog({
       return;
     }
 
+    if (modalPayload.initialKODate && isBefore(modalEventDate, modalPayload.initialKODate)) {
+      setDateError(
+        `Seleziona una data successiva a quella di inizio del malfunzionamento: ${format(
+          modalPayload.initialKODate,
+          'dd/MM/yyyy HH:mm'
+        )}`
+      );
+      return;
+    }
+
     if (!modalEventHtmlDescription || isEmptyHtml(modalEventHtmlDescription)) {
       setHtmlDescriptionError('Inserisci informazioni aggiuntive');
       return;
@@ -87,12 +98,12 @@ export function ResolveMalfunctionDialog({
     if (!isSecondStep) {
       apiRequests
         .getPreview(formatPayload(modalPayload, modalEventDate, modalEventHtmlDescription))
-        .then((res: any) => {
+        .then((res: string) => {
           refreshStatus();
           setIsSecondStep(true);
           setPreview(res);
         })
-        .catch((error: any) => {
+        .catch((error: AxiosError) => {
           dispatch(spinnerActions.updateSpinnerOpened(false));
           updateSnackbar(error.response);
         })
@@ -110,11 +121,11 @@ export function ResolveMalfunctionDialog({
 
       apiRequests
         .createEvent(formatPayload(modalPayload, modalEventDate, modalEventHtmlDescription))
-        .then((res: any) => {
+        .then((response: AxiosResponse) => {
           refreshStatus();
-          console.log('creazione evento:', res);
+          updateSnackbar(response);
         })
-        .catch((error: any) => {
+        .catch((error: AxiosError) => {
           dispatch(spinnerActions.updateSpinnerOpened(false));
           updateSnackbar(error.response);
         })
@@ -167,7 +178,6 @@ export function ResolveMalfunctionDialog({
             />
           )}
         </Grid>
-        <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'end', p: '0 24px 20px 0' }}>
         <Button variant="outlined" onClick={handleCancel} sx={{ padding: '0 18px' }}>

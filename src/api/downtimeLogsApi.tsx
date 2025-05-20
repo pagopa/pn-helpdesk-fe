@@ -24,16 +24,16 @@ export const getMalfunctionPreview = async (data: BoStatusUpdateEvent) => {
       responseType: 'blob',
     });
     return response.data;
-  } catch (e: any) {
-    throw e;
+  } catch (error: any) {
+    throw error;
   }
 };
 
 export const createMalfunctionEvent = async (data: BoStatusUpdateEvent) => {
   try {
     const response = await apiDowntimeLogs().addStatusChangeEventBo('xPagopaPnUid', data);
-    return response.data;
-  } catch (e: any) {
-    throw e;
+    return response;
+  } catch (error: any) {
+    throw error;
   }
 };

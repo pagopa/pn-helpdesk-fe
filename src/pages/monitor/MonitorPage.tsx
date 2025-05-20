@@ -40,7 +40,6 @@ const MonitorPage = () => {
   const updateSnackbar = useCallback(
     (response: any) => {
       dispatch(snackbarActions.updateSnackbarOpened(true));
-      console.log(response);
       dispatch(snackbarActions.updateStatusCode(response?.status));
       (response?.data.detail || response?.data.message) &&
         dispatch(snackbarActions.updateMessage(response?.data.detail || response?.message));
@@ -202,6 +201,7 @@ const MonitorPage = () => {
               setModalPayload({
                 status: 'OK',
                 functionality: params.row.functionalityName,
+                initialKODate: params.row.data,
               });
               setIsResolveModalOpen(true);
             }}

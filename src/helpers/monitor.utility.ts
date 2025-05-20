@@ -17,18 +17,15 @@ export const formatPayload = (
   payload: ModalPayloadType,
   modalEventDate: Date,
   modalHtmlDescription?: string
-): BoStatusUpdateEvent => {
-  console.log('hello');
-  return {
-    status: payload.status as PnFunctionalityStatus,
-    timestamp: format(
-      new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-      "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-    ),
-    functionality: payload.functionality as unknown as PnFunctionality,
-    htmlDescription: modalHtmlDescription,
-  };
-};
+): BoStatusUpdateEvent => ({
+  status: payload.status as PnFunctionalityStatus,
+  timestamp: format(
+    new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
+    "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
+  ),
+  functionality: payload.functionality as unknown as PnFunctionality,
+  htmlDescription: modalHtmlDescription,
+});
 
 export function fileToBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {

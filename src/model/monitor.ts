@@ -1,6 +1,7 @@
 export type ModalPayloadType = {
   status: string;
   functionality: FunctionalityName;
+  initialKODate?: Date;
 };
 
 export enum FunctionalityName {
