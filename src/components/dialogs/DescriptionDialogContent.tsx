@@ -26,6 +26,7 @@ interface DescriptionDialogContentProps {
   setHtmlDescriptionError: (error: string) => void;
   htmlDescriptionError: string;
 }
+
 export function DescriptionDialogContent({
   modalEventDate,
   setModalEventDate,

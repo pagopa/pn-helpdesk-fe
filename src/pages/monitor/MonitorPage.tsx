@@ -14,9 +14,9 @@ import { errorMessages, functionalitiesNames } from '../../helpers/messagesConst
 import * as snackbarActions from '../../redux/snackbarSlice';
 import { useHasPermissions } from '../../hooks/useHasPermissions';
 import { Permission } from '../../model/user-permission';
-import { FunctionalityName, modalPayloadType } from '../../model';
-import { CreateMalfunctionDialog } from '../../components/dialogs/CreateMulfunctionDialog';
-import { ResolveMalfunctionDialog } from '../../components/dialogs/ResolveMulfunctionDialog';
+import { CreateMalfunctionDialog } from '../../components/dialogs/CreateMalfunctionDialog';
+import { ResolveMalfunctionDialog } from '../../components/dialogs/ResolveMalfunctionDialog';
+import { FunctionalityName, ModalPayloadType } from '../../model/monitor';
 
 /**
  * Monitor page
@@ -30,7 +30,7 @@ const MonitorPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [isResolveModalOpen, setIsResolveModalOpen] = useState<boolean>(false);
 
-  const [modalPayload, setModalPayload] = useState<modalPayloadType>({
+  const [modalPayload, setModalPayload] = useState<ModalPayloadType>({
     status: '',
     functionality: '' as FunctionalityName,
   });

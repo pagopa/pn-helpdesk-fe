@@ -9,31 +9,13 @@ import {
   Grid,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
-import { FunctionalityName, modalPayloadType } from '../../model';
 import apiRequests from '../../api/apiRequests';
-import { postEventType } from '../../api/apiRequestTypes';
 import * as spinnerActions from '../../redux/spinnerSlice';
+import { formatPayload, isEmptyHtml, maxLength } from '../../helpers/monitor.utility';
+import { FunctionalityName, MonitorDialogProps } from '../../model/monitor';
 import { PreviewDialogContent } from './PreviewDialogContent';
 import { DescriptionDialogContent } from './DescriptionDialogContent';
-
-interface MonitorDialogProps {
-  modalPayload: modalPayloadType;
-  refreshStatus: () => void;
-  isModalOpen: boolean;
-  setIsModalOpen: (open: boolean) => void;
-  updateSnackbar: (r: any) => void;
-}
-
-const isEmptyHtml = (html?: string): boolean => {
-  if (!html) {
-    return true;
-  }
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  return !div.textContent || div.textContent.trim() === '';
-};
 
 export function ResolveMalfunctionDialog({
   refreshStatus,
@@ -91,24 +73,20 @@ export function ResolveMalfunctionDialog({
       return;
     }
 
-    if (isEmptyHtml(modalEventHtmlDescription)) {
+    if (!modalEventHtmlDescription || isEmptyHtml(modalEventHtmlDescription)) {
       setHtmlDescriptionError('Inserisci informazioni aggiuntive');
+      return;
+    }
+
+    if (modalEventHtmlDescription?.length > maxLength) {
+      setHtmlDescriptionError('Il campo è troppo lungo');
       return;
     }
 
     // RESOLVE KO - step 1
     if (!isSecondStep) {
-      const params = {
-        ...modalPayload,
-        timestamp: format(
-          new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-          "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-        ),
-        htmlDescription: modalEventHtmlDescription,
-      };
-
       apiRequests
-        .getPreview(params as postEventType)
+        .getPreview(formatPayload(modalPayload, modalEventDate, modalEventHtmlDescription))
         .then((res: any) => {
           refreshStatus();
           setIsSecondStep(true);
@@ -130,17 +108,8 @@ export function ResolveMalfunctionDialog({
         return;
       }
 
-      const params = {
-        ...modalPayload,
-        timestamp: format(
-          new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-          "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-        ),
-        htmlDescription: modalEventHtmlDescription,
-      };
-
       apiRequests
-        .createEvent(params as postEventType)
+        .createEvent(formatPayload(modalPayload, modalEventDate, modalEventHtmlDescription))
         .then((res: any) => {
           refreshStatus();
           console.log('creazione evento:', res);

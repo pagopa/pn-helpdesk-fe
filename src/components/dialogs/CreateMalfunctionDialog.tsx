@@ -17,20 +17,11 @@ import {
 import { useEffect, useState } from 'react';
 import { DateTimePicker } from '@mui/x-date-pickers';
 
-import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
-import { FunctionalityName, modalPayloadType } from '../../model';
 import apiRequests from '../../api/apiRequests';
-import { postEventType } from '../../api/apiRequestTypes';
 import * as spinnerActions from '../../redux/spinnerSlice';
-
-interface MonitorDialogProps {
-  modalPayload: modalPayloadType;
-  refreshStatus: () => void;
-  isModalOpen: boolean;
-  setIsModalOpen: (open: boolean) => void;
-  updateSnackbar: (r: any) => void;
-}
+import { FunctionalityName, MonitorDialogProps } from '../../model/monitor';
+import { formatPayload } from '../../helpers/monitor.utility';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function CreateMalfunctionDialog({
@@ -85,15 +76,9 @@ export function CreateMalfunctionDialog({
       setCheckboxError(true);
       return;
     }
-    const params = {
-      ...modalPayload,
-      timestamp: format(
-        new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-        "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-      ),
-    };
+
     apiRequests
-      .createEvent(params as postEventType)
+      .createEvent(formatPayload(modalPayload, modalEventDate))
       .then((res: any) => {
         refreshStatus();
         updateSnackbar(res);
