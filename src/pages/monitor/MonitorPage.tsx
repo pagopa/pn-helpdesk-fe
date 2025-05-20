@@ -14,9 +14,9 @@ import { errorMessages, functionalitiesNames } from '../../helpers/messagesConst
 import * as snackbarActions from '../../redux/snackbarSlice';
 import { useHasPermissions } from '../../hooks/useHasPermissions';
 import { Permission } from '../../model/user-permission';
-import { FunctionalityName, modalPayloadType } from '../../model';
-import { CreateMalfunctionDialog } from '../../components/dialogs/CreateMulfunctionDialog';
-import { ResolveMalfunctionDialog } from '../../components/dialogs/ResolveMulfunctionDialog';
+import { CreateMalfunctionDialog } from '../../components/dialogs/CreateMalfunctionDialog';
+import { ResolveMalfunctionDialog } from '../../components/dialogs/ResolveMalfunctionDialog';
+import { FunctionalityName, ModalPayloadType } from '../../model/monitor';
 
 /**
  * Monitor page
@@ -30,7 +30,7 @@ const MonitorPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [isResolveModalOpen, setIsResolveModalOpen] = useState<boolean>(false);
 
-  const [modalPayload, setModalPayload] = useState<modalPayloadType>({
+  const [modalPayload, setModalPayload] = useState<ModalPayloadType>({
     status: '',
     functionality: '' as FunctionalityName,
   });
@@ -39,7 +39,7 @@ const MonitorPage = () => {
 
   const updateSnackbar = useCallback(
     (response: any) => {
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
       dispatch(snackbarActions.updateStatusCode(response?.status));
       (response?.data.detail || response?.data.message) &&
         dispatch(snackbarActions.updateMessage(response?.data.detail || response?.message));
@@ -47,8 +47,7 @@ const MonitorPage = () => {
     [dispatch]
   );
 
-  // function to create event
-  const postEvent = useCallback(() => {
+  const getStatus = useCallback(() => {
     apiRequests
       .getStatus()
       .then((res) => {
@@ -99,17 +98,21 @@ const MonitorPage = () => {
       });
   }, [updateSnackbar]);
 
+  const refreshStatus = () => {
+    dispatch(spinnerActions.updateSpinnerOpened(true));
+    getStatus();
+    dispatch(spinnerActions.updateSpinnerOpened(false));
+  };
+
   useEffect(() => {
     const idTokenInterval = setInterval(async () => {
-      postEvent();
+      getStatus();
     }, 60000);
-    dispatch(spinnerActions.updateSpinnerOpened(true));
-    postEvent();
-    dispatch(spinnerActions.updateSpinnerOpened(false));
+    refreshStatus();
     return () => {
       clearInterval(idTokenInterval);
     };
-  }, [dispatch, postEvent]);
+  }, [dispatch, getStatus]);
 
   const columns: GridColumns = [
     {
@@ -198,6 +201,7 @@ const MonitorPage = () => {
               setModalPayload({
                 status: 'OK',
                 functionality: params.row.functionalityName,
+                initialKODate: params.row.data,
               });
               setIsResolveModalOpen(true);
             }}
@@ -212,14 +216,14 @@ const MonitorPage = () => {
     <MainLayout>
       <DataGridComponent columns={columns} rows={rows} />
       <CreateMalfunctionDialog
-        postEvent={postEvent}
+        refreshStatus={refreshStatus}
         modalPayload={modalPayload}
         isModalOpen={isCreateModalOpen}
         setIsModalOpen={setIsCreateModalOpen}
         updateSnackbar={updateSnackbar}
       />
       <ResolveMalfunctionDialog
-        postEvent={postEvent}
+        refreshStatus={refreshStatus}
         modalPayload={modalPayload}
         isModalOpen={isResolveModalOpen}
         setIsModalOpen={setIsResolveModalOpen}

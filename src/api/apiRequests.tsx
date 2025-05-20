@@ -18,8 +18,9 @@ import {
 } from './apiRequestTypes';
 import { http as logExtractoraggregateApiClient } from './logExtractorAxiosClient';
 import { http as aggregateApiClient } from './aggregateAxiosClient';
-import { getMalfunctionPreview } from './downtimeLogsApi';
+import { createMalfunctionEvent, getMalfunctionPreview } from './downtimeLogsApi';
 import { BoStatusUpdateEvent, PnFunctionality, PnFunctionalityStatus } from './downtimeLogs';
+import { fileToBase64 } from '../helpers/monitor.utility';
 
 /**
  * Return the person's ID depending on the input received
@@ -336,42 +337,19 @@ const getUsagePlans = async () => {
     });
 };
 
-const postEvent = (data: postEventType) => {
-  return logExtractoraggregateApiClient
-    .postEvent(data)
-    .then((result: any) => {
-      return result;
-    })
-    .catch((error: any) => {
-      throw error;
-    });
+export const createEvent = async (payload: BoStatusUpdateEvent) => {
+  return createMalfunctionEvent(payload);
 };
 
-const getPreview = async (payload: postEventType): Promise<string> => {
-  const data: BoStatusUpdateEvent = {
-    status: payload.status as PnFunctionalityStatus,
-    timestamp: payload.timestamp,
-    functionality: payload.functionality as unknown as PnFunctionality,
-    htmlDescription: payload.htmlDescription,
-  };
-
+const getPreview = async (payload: BoStatusUpdateEvent): Promise<string> => {
   try {
-    const file = await getMalfunctionPreview(data);
+    const file = await getMalfunctionPreview(payload);
     const base64 = await fileToBase64(file);
     return base64;
   } catch (e: any) {
-    throw new Error(e);
+    throw e;
   }
 };
-
-function fileToBase64(file: File): Promise<string> {
- return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = error => reject(error);
-    reader.readAsDataURL(file);
-  });
-}
 
 const apiRequests = {
   getPersonId,
@@ -396,7 +374,7 @@ const apiRequests = {
   searchApiKey,
   modifyPdnd,
   getDownloadUrl,
-  postEvent,
+  createEvent,
   getPreview,
 };
 

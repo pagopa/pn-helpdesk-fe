@@ -1,4 +1,4 @@
-import { FunctionalityName } from '../model';
+import { FunctionalityName } from '../model/monitor';
 
 /**
  * @typedef {Object} getPersonIdType

@@ -5,39 +5,22 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormHelperText,
   Grid,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
-import { FunctionalityName, modalPayloadType } from '../../model';
+import { AxiosError, AxiosResponse } from 'axios';
+import { format, isBefore } from 'date-fns';
 import apiRequests from '../../api/apiRequests';
-import { postEventType } from '../../api/apiRequestTypes';
 import * as spinnerActions from '../../redux/spinnerSlice';
+import { formatPayload, isEmptyHtml, maxLength } from '../../helpers/monitor.utility';
+import { FunctionalityName, MonitorDialogProps } from '../../model/monitor';
 import { PreviewDialogContent } from './PreviewDialogContent';
 import { DescriptionDialogContent } from './DescriptionDialogContent';
 
-interface MonitorDialogProps {
-  modalPayload: modalPayloadType;
-  postEvent: () => void;
-  isModalOpen: boolean;
-  setIsModalOpen: (open: boolean) => void;
-  updateSnackbar: (r: any) => void;
-}
-
-const isEmptyHtml = (html?: string): boolean => {
-  if (!html) {
-    return true;
-  }
-  const div = document.createElement('div');
-  div.innerHTML = html;
-  return !div.textContent || div.textContent.trim() === '';
-};
-
 export function ResolveMalfunctionDialog({
+  refreshStatus,
   modalPayload,
-  postEvent,
   isModalOpen,
   setIsModalOpen,
   updateSnackbar,
@@ -91,32 +74,36 @@ export function ResolveMalfunctionDialog({
       return;
     }
 
-    if (isEmptyHtml(modalEventHtmlDescription)) {
+    if (modalPayload.initialKODate && isBefore(modalEventDate, modalPayload.initialKODate)) {
+      setDateError(
+        `Seleziona una data successiva a quella di inizio del malfunzionamento: ${format(
+          modalPayload.initialKODate,
+          'dd/MM/yyyy HH:mm'
+        )}`
+      );
+      return;
+    }
+
+    if (!modalEventHtmlDescription || isEmptyHtml(modalEventHtmlDescription)) {
       setHtmlDescriptionError('Inserisci informazioni aggiuntive');
+      return;
+    }
+
+    if (modalEventHtmlDescription?.length > maxLength) {
+      setHtmlDescriptionError('Il campo è troppo lungo');
       return;
     }
 
     // RESOLVE KO - step 1
     if (!isSecondStep) {
-      const params = {
-        ...modalPayload,
-        timestamp: format(
-          new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-          "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-        ),
-        htmlDescription: modalEventHtmlDescription,
-      };
-
       apiRequests
-        .getPreview(params as postEventType)
-        .then((res: any) => {
-          dispatch(spinnerActions.updateSpinnerOpened(true));
-          postEvent();
-          dispatch(spinnerActions.updateSpinnerOpened(false));
+        .getPreview(formatPayload(modalPayload, modalEventDate, modalEventHtmlDescription))
+        .then((res: string) => {
+          refreshStatus();
           setIsSecondStep(true);
           setPreview(res);
         })
-        .catch((error: any) => {
+        .catch((error: AxiosError) => {
           dispatch(spinnerActions.updateSpinnerOpened(false));
           updateSnackbar(error.response);
         })
@@ -132,24 +119,13 @@ export function ResolveMalfunctionDialog({
         return;
       }
 
-      const params = {
-        ...modalPayload,
-        timestamp: format(
-          new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-          "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-        ),
-        htmlDescription: modalEventHtmlDescription,
-      };
-
       apiRequests
-        .postEvent(params as postEventType)
-        .then((res: any) => {
-          dispatch(spinnerActions.updateSpinnerOpened(true));
-          postEvent();
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          console.log('creazione evento:', res);
+        .createEvent(formatPayload(modalPayload, modalEventDate, modalEventHtmlDescription))
+        .then((response: AxiosResponse) => {
+          refreshStatus();
+          updateSnackbar(response);
         })
-        .catch((error: any) => {
+        .catch((error: AxiosError) => {
           dispatch(spinnerActions.updateSpinnerOpened(false));
           updateSnackbar(error.response);
         })
@@ -202,7 +178,6 @@ export function ResolveMalfunctionDialog({
             />
           )}
         </Grid>
-        <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'end', p: '0 24px 20px 0' }}>
         <Button variant="outlined" onClick={handleCancel} sx={{ padding: '0 18px' }}>

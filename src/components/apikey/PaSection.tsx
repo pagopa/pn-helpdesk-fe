@@ -133,7 +133,7 @@ const PaSection = ({ onSelect, selectedPa }: Props) => {
       })
       .catch(() => {
         if (isFetching) {
-          reduxDispatch(snackbarActions.updateSnackbacrOpened(true));
+          reduxDispatch(snackbarActions.updateSnackbarOpened(true));
           reduxDispatch(snackbarActions.updateStatusCode('400'));
           reduxDispatch(
             snackbarActions.updateMessage('Non è stato possibile ottenere i dati richiesti')

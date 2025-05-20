@@ -26,6 +26,7 @@ interface DescriptionDialogContentProps {
   setHtmlDescriptionError: (error: string) => void;
   htmlDescriptionError: string;
 }
+
 export function DescriptionDialogContent({
   modalEventDate,
   setModalEventDate,
@@ -73,6 +74,7 @@ export function DescriptionDialogContent({
             />
           )}
         />
+        <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
       </Grid>
       <Grid item>
         <Typography variant="body2" sx={{ fontWeight: 600 }}>

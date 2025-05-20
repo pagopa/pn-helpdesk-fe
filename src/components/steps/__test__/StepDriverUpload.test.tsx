@@ -122,7 +122,7 @@ describe('StepDriverUploadTest', function () {
 
     expect(mockDispatchFn).toBeCalledWith({
       payload: true,
-      type: 'snackbar/updateSnackbacrOpened',
+      type: 'snackbar/updateSnackbarOpened',
     });
 
     expect(mockDispatchFn).toBeCalledWith({

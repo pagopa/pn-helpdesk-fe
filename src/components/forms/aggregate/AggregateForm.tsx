@@ -104,13 +104,13 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
       request
         .then((res) => {
           reset();
-          dispatch(snackbarActions.updateSnackbacrOpened(true));
+          dispatch(snackbarActions.updateSnackbarOpened(true));
           dispatch(snackbarActions.updateStatusCode('200'));
           dispatch(snackbarActions.updateMessage(`Aggregato creato con successo`));
           navigate(routes.GET_UPDATE_AGGREGATE_PATH(res.id));
         })
         .catch(() => {
-          dispatch(snackbarActions.updateSnackbacrOpened(true));
+          dispatch(snackbarActions.updateSnackbarOpened(true));
           dispatch(snackbarActions.updateStatusCode('400'));
           dispatch(snackbarActions.updateMessage(`Non è stato possibile creare l'aggregato`));
         })
@@ -134,12 +134,12 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
     if (request) {
       request
         .then(() => {
-          dispatch(snackbarActions.updateSnackbacrOpened(true));
+          dispatch(snackbarActions.updateSnackbarOpened(true));
           dispatch(snackbarActions.updateStatusCode('200'));
           dispatch(snackbarActions.updateMessage(`Aggregato modificato con successo`));
         })
         .catch(() => {
-          dispatch(snackbarActions.updateSnackbacrOpened(true));
+          dispatch(snackbarActions.updateSnackbarOpened(true));
           dispatch(snackbarActions.updateStatusCode('400'));
           dispatch(snackbarActions.updateMessage(`Non è stato possibile modificare l'aggregato`));
         })
@@ -156,13 +156,13 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
     if (request) {
       request
         .then(() => {
-          dispatch(snackbarActions.updateSnackbacrOpened(true));
+          dispatch(snackbarActions.updateSnackbarOpened(true));
           dispatch(snackbarActions.updateStatusCode('200'));
           dispatch(snackbarActions.updateMessage(`Aggregato eliminato con successo`));
           navigate(routes.AGGREGATES_LIST);
         })
         .catch((err) => {
-          dispatch(snackbarActions.updateSnackbacrOpened(true));
+          dispatch(snackbarActions.updateSnackbarOpened(true));
           dispatch(snackbarActions.updateStatusCode('400'));
           if (err.response && err.response.data) {
             const error = err.response.data as ErrorResponse;

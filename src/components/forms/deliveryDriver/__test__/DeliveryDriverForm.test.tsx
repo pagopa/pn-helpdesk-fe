@@ -102,7 +102,7 @@ describe('DeliveryDriverFormTest', () => {
       expect(createDriverMockFn).toBeCalledTimes(1);
       expect(dispatchMockFn).toBeCalledWith({
         payload: true,
-        type: 'snackbar/updateSnackbacrOpened',
+        type: 'snackbar/updateSnackbarOpened',
       });
       expect(dispatchMockFn).toBeCalledWith({
         payload: 200,
@@ -148,7 +148,7 @@ describe('DeliveryDriverFormTest', () => {
     await waitFor(async () => {
       expect(dispatchMockFn).toBeCalledWith({
         payload: true,
-        type: 'snackbar/updateSnackbacrOpened',
+        type: 'snackbar/updateSnackbarOpened',
       });
       expect(dispatchMockFn).toBeCalledWith({
         payload: 400,
@@ -180,7 +180,7 @@ describe('DeliveryDriverFormTest', () => {
           value: '12345678901',
         },
       });
-  
+
       fireEvent.input(ragSoc, {
         target: {
           value: 'Ragione Sociale',

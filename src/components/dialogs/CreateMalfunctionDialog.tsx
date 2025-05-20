@@ -16,26 +16,17 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { DateTimePicker } from '@mui/x-date-pickers';
-
-import { format } from 'date-fns';
 import { useDispatch } from 'react-redux';
-import { FunctionalityName, modalPayloadType } from '../../model';
+import { AxiosError, AxiosResponse } from 'axios';
 import apiRequests from '../../api/apiRequests';
-import { postEventType } from '../../api/apiRequestTypes';
 import * as spinnerActions from '../../redux/spinnerSlice';
-
-interface MonitorDialogProps {
-  modalPayload: modalPayloadType;
-  postEvent: () => void;
-  isModalOpen: boolean;
-  setIsModalOpen: (open: boolean) => void;
-  updateSnackbar: (r: any) => void;
-}
+import { FunctionalityName, MonitorDialogProps } from '../../model/monitor';
+import { formatPayload } from '../../helpers/monitor.utility';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function CreateMalfunctionDialog({
   modalPayload,
-  postEvent,
+  refreshStatus,
   isModalOpen,
   setIsModalOpen,
   updateSnackbar,
@@ -85,22 +76,14 @@ export function CreateMalfunctionDialog({
       setCheckboxError(true);
       return;
     }
-    const params = {
-      ...modalPayload,
-      timestamp: format(
-        new Date(modalEventDate.setSeconds(0, 0)).setMilliseconds(0),
-        "yyyy-MM-dd'T'HH:mm:ss.sssXXXXX"
-      ),
-    };
+
     apiRequests
-      .postEvent(params as postEventType)
-      .then((res: any) => {
-        dispatch(spinnerActions.updateSpinnerOpened(true));
-        postEvent();
-        dispatch(spinnerActions.updateSpinnerOpened(false));
-        updateSnackbar(res);
+      .createEvent(formatPayload(modalPayload, modalEventDate))
+      .then((response: AxiosResponse) => {
+        refreshStatus();
+        updateSnackbar(response);
       })
-      .catch((error: any) => {
+      .catch((error: AxiosError) => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
         updateSnackbar(error.response);
       })
@@ -142,6 +125,7 @@ export function CreateMalfunctionDialog({
                 />
               )}
             />
+            <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
           </Grid>
           <Grid item>
             <FormControl error={checkboxError}>
@@ -159,7 +143,6 @@ export function CreateMalfunctionDialog({
             </FormControl>
           </Grid>
         </Grid>
-        <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'end', p: '0 24px 20px 0' }}>
         <Button variant="outlined" onClick={handleClick} sx={{ padding: '0 18px' }}>

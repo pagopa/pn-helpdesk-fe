@@ -32,7 +32,7 @@ const PaAssociation = ({ idAggregate }: Props) => {
         setAssociablePaList(response.items);
       })
       .catch(() => {
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(snackbarActions.updateStatusCode('400'));
         dispatch(spinnerActions.updateSpinnerOpened(false));
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -128,7 +128,7 @@ const PaAssociation = ({ idAggregate }: Props) => {
         dispatch(snackbarActions.updateStatusCode('400'));
       })
       .finally(() => {
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(spinnerActions.updateSpinnerOpened(false));
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         navigate(routes.GET_UPDATE_AGGREGATE_PATH(idAggregate!));

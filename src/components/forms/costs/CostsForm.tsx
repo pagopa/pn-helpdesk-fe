@@ -78,7 +78,7 @@ export function CostsForm(props: CostFormProps) {
         }
       }
       setSubmitting(false);
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
       dispatch(snackbarActions.updateStatusCode(status));
       dispatch(snackbarActions.updateMessage(message));
     }

@@ -36,7 +36,7 @@ export function StepTender() {
       const tender = response.tender;
       if (tender.status !== 'CREATED') {
         dispatch(spinnerActions.updateSpinnerOpened(false));
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(snackbarActions.updateStatusCode(404));
         dispatch(snackbarActions.updateMessage('La gara non può essere modifica!'));
         navigate(TENDERS_TABLE_ROUTE);
@@ -50,7 +50,7 @@ export function StepTender() {
       );
     } catch (e) {
       dispatch(spinnerActions.updateSpinnerOpened(false));
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
       dispatch(snackbarActions.updateStatusCode(404));
       dispatch(snackbarActions.updateMessage('Gara non trovata !'));
       navigate(TENDERS_TABLE_ROUTE);

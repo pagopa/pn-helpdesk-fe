@@ -6,7 +6,7 @@ import Slide, { SlideProps } from '@mui/material/Slide';
 import { Typography } from '@mui/material';
 import { infoMessages } from '../../helpers/messagesConstants';
 import {
-  updateSnackbacrOpened,
+  updateSnackbarOpened,
   opened,
   statusCode,
   message,
@@ -73,7 +73,7 @@ const SnackbarComponent = () => {
     reason: SnackbarCloseReason = 'escapeKeyDown'
   ) => {
     if (reason !== 'clickaway') {
-      dispatch(updateSnackbacrOpened(false));
+      dispatch(updateSnackbarOpened(false));
     }
   };
 
