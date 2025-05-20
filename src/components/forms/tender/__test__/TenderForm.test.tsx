@@ -73,7 +73,7 @@ describe('TenderFormTest', () => {
       expect(createTenderMockFn).toBeCalledTimes(1);
       expect(dispatchMockFn).toBeCalledWith({
         payload: true,
-        type: 'snackbar/updateSnackbacrOpened',
+        type: 'snackbar/updateSnackbarOpened',
       });
       expect(dispatchMockFn).toBeCalledWith({
         payload: 200,
@@ -109,11 +109,11 @@ describe('TenderFormTest', () => {
     await act(async () => {
       fireEvent.submit(btnSave);
     });
-    
+
     await waitFor(async () => {
       expect(dispatchMockFn).toBeCalledWith({
         payload: true,
-        type: 'snackbar/updateSnackbacrOpened',
+        type: 'snackbar/updateSnackbarOpened',
       });
       expect(dispatchMockFn).toBeCalledWith({
         payload: 400,

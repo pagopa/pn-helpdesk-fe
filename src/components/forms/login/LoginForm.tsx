@@ -77,7 +77,7 @@ const LoginForm = ({ setUser }: any) => {
       })
       .catch(() => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(snackbarActions.updateStatusCode('400'));
       });
   };
@@ -148,7 +148,7 @@ const LoginForm = ({ setUser }: any) => {
 
               <Grid item>
                 <Button
-                id="buttonLogin"
+                  id="buttonLogin"
                   sx={{
                     backgroundColor: 'primary.main',
                     '&:hover': { backgroundColor: 'primary.dark' },

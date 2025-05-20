@@ -71,7 +71,7 @@ const AggregatesTable = () => {
         dispatch(setAggregates(res));
       })
       .catch(() => {
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(snackbarActions.updateStatusCode('400'));
         dispatch(snackbarActions.updateMessage('Non è stato possibile ottenere i dati richiesti'));
         dispatch(resetState());
@@ -95,7 +95,7 @@ const AggregatesTable = () => {
       .deleteAggregate(id)
       .then(() => {
         dispatch(snackbarActions.updateStatusCode('200'));
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(snackbarActions.updateMessage('Aggregazione eliminata con successo'));
         fetchAggregates();
       })
@@ -104,7 +104,7 @@ const AggregatesTable = () => {
           const error = err.response.data as ErrorResponse;
           dispatch(snackbarActions.updateMessage(error.detail));
         }
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(snackbarActions.updateStatusCode('400'));
       })
       .finally(() => {

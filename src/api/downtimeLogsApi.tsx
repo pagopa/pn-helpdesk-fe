@@ -25,15 +25,15 @@ export const getMalfunctionPreview = async (data: BoStatusUpdateEvent) => {
     });
     return response.data;
   } catch (e: any) {
-    throw new Error(e);
+    throw e;
   }
 };
 
-export const postEvent = async (data: BoStatusUpdateEvent) => {
+export const createMalfunctionEvent = async (data: BoStatusUpdateEvent) => {
   try {
     const response = await apiDowntimeLogs().addStatusChangeEventBo('xPagopaPnUid', data);
     return response.data;
   } catch (e: any) {
-    throw new Error(e);
+    throw e;
   }
 };

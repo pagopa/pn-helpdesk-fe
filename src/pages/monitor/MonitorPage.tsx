@@ -39,7 +39,8 @@ const MonitorPage = () => {
 
   const updateSnackbar = useCallback(
     (response: any) => {
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
+      console.log(response);
       dispatch(snackbarActions.updateStatusCode(response?.status));
       (response?.data.detail || response?.data.message) &&
         dispatch(snackbarActions.updateMessage(response?.data.detail || response?.message));
@@ -47,8 +48,7 @@ const MonitorPage = () => {
     [dispatch]
   );
 
-  // function to create event
-  const postEvent = useCallback(() => {
+  const getStatus = useCallback(() => {
     apiRequests
       .getStatus()
       .then((res) => {
@@ -99,17 +99,21 @@ const MonitorPage = () => {
       });
   }, [updateSnackbar]);
 
+  const refreshStatus = () => {
+    dispatch(spinnerActions.updateSpinnerOpened(true));
+    getStatus();
+    dispatch(spinnerActions.updateSpinnerOpened(false));
+  };
+
   useEffect(() => {
     const idTokenInterval = setInterval(async () => {
-      postEvent();
+      getStatus();
     }, 60000);
-    dispatch(spinnerActions.updateSpinnerOpened(true));
-    postEvent();
-    dispatch(spinnerActions.updateSpinnerOpened(false));
+    refreshStatus();
     return () => {
       clearInterval(idTokenInterval);
     };
-  }, [dispatch, postEvent]);
+  }, [dispatch, getStatus]);
 
   const columns: GridColumns = [
     {
@@ -212,14 +216,14 @@ const MonitorPage = () => {
     <MainLayout>
       <DataGridComponent columns={columns} rows={rows} />
       <CreateMalfunctionDialog
-        postEvent={postEvent}
+        refreshStatus={refreshStatus}
         modalPayload={modalPayload}
         isModalOpen={isCreateModalOpen}
         setIsModalOpen={setIsCreateModalOpen}
         updateSnackbar={updateSnackbar}
       />
       <ResolveMalfunctionDialog
-        postEvent={postEvent}
+        refreshStatus={refreshStatus}
         modalPayload={modalPayload}
         isModalOpen={isResolveModalOpen}
         setIsModalOpen={setIsResolveModalOpen}

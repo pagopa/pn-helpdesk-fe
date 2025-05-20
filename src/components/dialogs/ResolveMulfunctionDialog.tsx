@@ -20,7 +20,7 @@ import { DescriptionDialogContent } from './DescriptionDialogContent';
 
 interface MonitorDialogProps {
   modalPayload: modalPayloadType;
-  postEvent: () => void;
+  refreshStatus: () => void;
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
   updateSnackbar: (r: any) => void;
@@ -36,8 +36,8 @@ const isEmptyHtml = (html?: string): boolean => {
 };
 
 export function ResolveMalfunctionDialog({
+  refreshStatus,
   modalPayload,
-  postEvent,
   isModalOpen,
   setIsModalOpen,
   updateSnackbar,
@@ -110,9 +110,7 @@ export function ResolveMalfunctionDialog({
       apiRequests
         .getPreview(params as postEventType)
         .then((res: any) => {
-          dispatch(spinnerActions.updateSpinnerOpened(true));
-          postEvent();
-          dispatch(spinnerActions.updateSpinnerOpened(false));
+          refreshStatus();
           setIsSecondStep(true);
           setPreview(res);
         })
@@ -142,11 +140,9 @@ export function ResolveMalfunctionDialog({
       };
 
       apiRequests
-        .postEvent(params as postEventType)
+        .createEvent(params as postEventType)
         .then((res: any) => {
-          dispatch(spinnerActions.updateSpinnerOpened(true));
-          postEvent();
-          dispatch(spinnerActions.updateSpinnerOpened(false));
+          refreshStatus();
           console.log('creazione evento:', res);
         })
         .catch((error: any) => {

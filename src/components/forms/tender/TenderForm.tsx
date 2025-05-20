@@ -48,12 +48,12 @@ export function TenderForm(props: TenderFormProps) {
       const response = await createTender(tender);
       setLoading(false);
       props.onChanged?.(response as Tender);
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
       dispatch(snackbarActions.updateStatusCode(200));
       dispatch(snackbarActions.updateMessage('Gara ' + updateString + ' correttamente'));
     } catch (e) {
       setLoading(false);
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
       dispatch(snackbarActions.updateStatusCode(400));
       dispatch(snackbarActions.updateMessage('Gara non ' + updateString + ' correttamente'));
     }

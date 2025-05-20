@@ -233,7 +233,7 @@ describe('CostsForm Test', () => {
     await waitFor(async () => {
       expect(dispatchMockFn).toBeCalledWith({
         payload: true,
-        type: 'snackbar/updateSnackbacrOpened',
+        type: 'snackbar/updateSnackbarOpened',
       });
       expect(dispatchMockFn).toBeCalledWith({
         payload: response.status,

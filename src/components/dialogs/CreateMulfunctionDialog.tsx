@@ -26,7 +26,7 @@ import * as spinnerActions from '../../redux/spinnerSlice';
 
 interface MonitorDialogProps {
   modalPayload: modalPayloadType;
-  postEvent: () => void;
+  refreshStatus: () => void;
   isModalOpen: boolean;
   setIsModalOpen: (open: boolean) => void;
   updateSnackbar: (r: any) => void;
@@ -35,7 +35,7 @@ interface MonitorDialogProps {
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function CreateMalfunctionDialog({
   modalPayload,
-  postEvent,
+  refreshStatus,
   isModalOpen,
   setIsModalOpen,
   updateSnackbar,
@@ -93,14 +93,13 @@ export function CreateMalfunctionDialog({
       ),
     };
     apiRequests
-      .postEvent(params as postEventType)
+      .createEvent(params as postEventType)
       .then((res: any) => {
-        dispatch(spinnerActions.updateSpinnerOpened(true));
-        postEvent();
-        dispatch(spinnerActions.updateSpinnerOpened(false));
+        refreshStatus();
         updateSnackbar(res);
       })
       .catch((error: any) => {
+        console.log('catch');
         dispatch(spinnerActions.updateSpinnerOpened(false));
         updateSnackbar(error.response);
       })
