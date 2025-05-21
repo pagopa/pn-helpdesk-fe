@@ -53,7 +53,6 @@ const columns = [
   {
     field: 'state',
     headerName: 'Stato',
-    type: 'actions',
     width: 400,
     renderCell: (params: any) =>
       params.row.state ? <CheckCircleIcon color="success" /> : <CancelIcon color={'error'} />,

@@ -22,7 +22,7 @@ export const getCosts = createAsyncThunk<Page<CostDTO>, FilterRequest>(
         content: fromResponse.content,
       } as Page<CostDTO>;
     } catch (e) {
-      thunkAPI.dispatch(snackbarActions.updateSnackbacrOpened(true));
+      thunkAPI.dispatch(snackbarActions.updateSnackbarOpened(true));
       thunkAPI.dispatch(snackbarActions.updateStatusCode(400));
       thunkAPI.dispatch(snackbarActions.updateMessage('Errore con dei costi'));
       return thunkAPI.rejectWithValue(e);

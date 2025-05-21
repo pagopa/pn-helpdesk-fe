@@ -78,7 +78,7 @@ const ChangePasswordForm = ({ user }: any) => {
       })
       .catch(() => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(snackbarActions.updateStatusCode('400'));
       });
   };

@@ -7,6 +7,7 @@ import {
   getPersonTaxIdType,
   getEventsType,
   getSessionLogsType,
+  postEventType,
 } from './apiRequestTypes';
 import { createAxiosInstance } from './axiosInstanceCreator';
 import { getConfiguration } from '../services/configuration.service';
@@ -59,6 +60,10 @@ class Http {
 
   getDownloadUrl<T = any, R = AxiosResponse<T>>(key: string): Promise<R> {
     return this.http.get<T, R>('/logs/v1/status?key=' + key);
+  }
+
+  postEvent<T = any, R = AxiosResponse<T>>(payload: postEventType): Promise<R> {
+    return this.http.post<T, R>('/downtime/v1/events', payload);
   }
 }
 

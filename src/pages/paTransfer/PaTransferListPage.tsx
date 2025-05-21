@@ -126,14 +126,14 @@ const PaTransferListPage = ({ email }: any) => {
         dispatch(snackbarActions.updateMessage(message));
         dispatch(snackbarActions.updateStatusCode(statusCode));
         dispatch(snackbarActions.updateAutoHideDuration(null));
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
 
         // Refresh lists
         getPas1(undefined, input1Value);
         getPas2(undefined, input2Value);
       })
       .catch((err) => {
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(snackbarActions.updateStatusCode(400));
         dispatch(snackbarActions.updateMessage('Errore nel trasferimento delle PA'));
         console.log('Errore: ', err);

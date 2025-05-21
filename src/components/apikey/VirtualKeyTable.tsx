@@ -59,7 +59,7 @@ const VirtualKeyTable = ({ id }: Props) => {
             reduxDispatch(
               snackbarActions.updateMessage('Non è stato possibile ottenere le Virtual Keys')
             );
-            reduxDispatch(snackbarActions.updateSnackbacrOpened(true));
+            reduxDispatch(snackbarActions.updateSnackbarOpened(true));
           }
         })
         .finally(() => {
@@ -198,7 +198,7 @@ const VirtualKeyTable = ({ id }: Props) => {
       .then((res) => {
         if (res.unprocessedKey && res.unprocessedKey.length > 0) {
           const unprocessedKey = res.unprocessedKey.join(',');
-          reduxDispatch(snackbarActions.updateSnackbacrOpened(true));
+          reduxDispatch(snackbarActions.updateSnackbarOpened(true));
           reduxDispatch(snackbarActions.updateStatusCode('202'));
           reduxDispatch(
             snackbarActions.updateMessage(
@@ -210,7 +210,7 @@ const VirtualKeyTable = ({ id }: Props) => {
         setNeedRefresh((refresh) => !refresh);
       })
       .catch(() => {
-        reduxDispatch(snackbarActions.updateSnackbacrOpened(true));
+        reduxDispatch(snackbarActions.updateSnackbarOpened(true));
         reduxDispatch(snackbarActions.updateStatusCode('400'));
         reduxDispatch(snackbarActions.updateMessage('Problemi con la modifica delle Virtual Keys'));
       })
