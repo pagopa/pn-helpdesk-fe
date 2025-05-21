@@ -1,10 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'react';
 import 'regenerator-runtime/runtime';
 import '@testing-library/jest-dom/extend-expect';
-import { screen, act, cleanup, waitForElementToBeRemoved } from '@testing-library/react';
+import { screen, cleanup, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { reducer } from '../../../../mocks/mockReducer';
 import LoginForm from '../LoginForm';
@@ -37,7 +36,7 @@ describe('LoginForm', () => {
   it('submit form without inputs', async () => {
     const button = screen.getByRole('button', { name: 'LOGIN' });
     const user = userEvent.setup();
-    await act(async () => await user.click(button));
+    await user.click(button);
 
     expect(await screen.findByText('Email non corretta')).toBeInTheDocument();
     expect(await screen.findByText('Password non corretta')).toBeInTheDocument();
@@ -49,9 +48,7 @@ describe('LoginForm', () => {
 
     const user = userEvent.setup();
 
-    await act(async () => {
-      await user.click(forgotPassword);
-    });
+    await user.click(forgotPassword);
 
     const tooltip = await screen.findByRole('tooltip');
     expect(tooltip).toBeInTheDocument();
@@ -59,9 +56,7 @@ describe('LoginForm', () => {
     const email = screen.getByRole('textbox', {
       name: 'Email',
     });
-    await act(async () => {
-      await user.click(email);
-    });
+    await user.click(email);
     await waitForElementToBeRemoved(() => screen.queryByRole('tooltip'));
     expect(tooltip).not.toBeInTheDocument();
   });

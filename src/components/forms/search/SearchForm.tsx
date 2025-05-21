@@ -431,7 +431,7 @@ const SearchForm = () => {
   const updateSnackbar = (response: any, duration?: number) => {
     const message = response.data?.detail ?? response.data.message;
     message && dispatch(snackbarActions.updateMessage(message));
-    dispatch(snackbarActions.updateSnackbacrOpened(true));
+    dispatch(snackbarActions.updateSnackbarOpened(true));
     dispatch(snackbarActions.updateStatusCode(response.status));
     if (duration) {
       dispatch(snackbarActions.updateAutoHideDuration(duration));

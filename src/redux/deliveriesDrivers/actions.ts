@@ -21,18 +21,18 @@ export const getAllDrivers = createAsyncThunk<Page<DeliveryDriver>, FilterReques
         page: response.data.number ? response.data.number : 0,
         content: response.data.content
           ? response.data.content.map(
-            (item) =>
-            ({
-              ...item,
-              tenderCode: filter.tenderCode,
-            } as DeliveryDriver)
-          )
+              (item) =>
+                ({
+                  ...item,
+                  tenderCode: filter.tenderCode,
+                } as DeliveryDriver)
+            )
           : [],
       };
       return page;
     } catch (e) {
       thunkAPI.dispatch(spinnerActions.updateSpinnerOpened(false));
-      thunkAPI.dispatch(snackbarActions.updateSnackbacrOpened(true));
+      thunkAPI.dispatch(snackbarActions.updateSnackbarOpened(true));
       thunkAPI.dispatch(snackbarActions.updateStatusCode(400));
       thunkAPI.dispatch(
         snackbarActions.updateMessage('Errore durante il recupero dei recapitisti')
@@ -58,7 +58,7 @@ export const getDriverDetails = createAsyncThunk<
     } as DeliveryDriver;
   } catch (e) {
     thunkAPI.dispatch(spinnerActions.updateSpinnerOpened(false));
-    thunkAPI.dispatch(snackbarActions.updateSnackbacrOpened(true));
+    thunkAPI.dispatch(snackbarActions.updateSnackbarOpened(true));
     thunkAPI.dispatch(snackbarActions.updateStatusCode(400));
     thunkAPI.dispatch(snackbarActions.updateMessage('Errore durante il recupero dei costi'));
     return thunkAPI.rejectWithValue(e);
@@ -82,7 +82,7 @@ export const getFsuDetail = createAsyncThunk<DeliveryDriver, string>(
         return thunkAPI.rejectWithValue(new Error('Driver Not Found!'));
       }
 
-      thunkAPI.dispatch(snackbarActions.updateSnackbacrOpened(true));
+      thunkAPI.dispatch(snackbarActions.updateSnackbarOpened(true));
       thunkAPI.dispatch(snackbarActions.updateStatusCode(400));
       thunkAPI.dispatch(snackbarActions.updateMessage('Errore con il recupero dettagli'));
       return thunkAPI.rejectWithValue(e);

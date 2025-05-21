@@ -1,3 +1,5 @@
+import { FunctionalityName } from '../model/monitor';
+
 /**
  * @typedef {Object} getPersonIdType
  */
@@ -61,10 +63,21 @@ type getEventsType = [
   {
     status: string;
     timestamp: string;
-    functionality: Array<string>;
+    functionality: FunctionalityName;
     sourceType: string;
   }
 ];
+
+/**
+ * @typedef {Object} postEventType
+ */
+type postEventType = {
+  status: string;
+  timestamp: string;
+  functionality: FunctionalityName;
+  htmlDescription?: string;
+};
+
 /**
  * @typedef {Object} getEventsType
  */
@@ -267,6 +280,14 @@ type getUsagePlansType = {
 };
 
 /**
+ * @typedef {Object} getPreview
+ */
+type getPreview = {
+  id: string;
+  name: string;
+};
+
+/**
  * @typedef {Object} aggregateId
  */
 type aggregateId = {
@@ -313,4 +334,6 @@ export type {
   changePdndResponse,
   updatePdndRequest,
   virtualKey,
+  postEventType,
+  getPreview,
 };

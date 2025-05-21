@@ -51,7 +51,7 @@ export function DeliveryDriverForm(props: PropsDeliveryBox) {
       await createDeliveryDriver(props.tenderCode, driver);
       setLoading(false);
       props.onChanged?.(driver);
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
       dispatch(snackbarActions.updateStatusCode(200));
       const updateString = props.initialValue ? 'aggiornato' : 'salvato';
       dispatch(snackbarActions.updateMessage('Recapitista ' + updateString + ' correttamente'));
@@ -60,7 +60,7 @@ export function DeliveryDriverForm(props: PropsDeliveryBox) {
       if (e instanceof AxiosError && e.response?.data?.detail) {
         message = e.response?.data?.detail;
       }
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
       dispatch(snackbarActions.updateStatusCode(400));
       dispatch(snackbarActions.updateMessage(message));
       setLoading(false);

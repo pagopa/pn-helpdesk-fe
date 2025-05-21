@@ -1,17 +1,5 @@
-import { DataGrid, gridClasses } from '@mui/x-data-grid';
+import { DataGrid, gridClasses, GridColumns } from '@mui/x-data-grid';
 import { Box, Typography, Container, Grid, Card } from '@mui/material';
-
-/**
- * @typedef {Object} Columns
- */
-type Columns = {
-  id:string;
-  field: string;
-  headerName: string;
-  width: number;
-  flex: number;
-  minWidth: number;
-};
 
 /**
  * @typedef {Object} Row
@@ -28,7 +16,7 @@ type Row = {
  */
 type Props = {
   rows: Array<Row>;
-  columns: Array<Columns>;
+  columns: GridColumns;
 };
 
 const DataGridComponent = (props: Props) => (
@@ -60,9 +48,17 @@ const DataGridComponent = (props: Props) => (
               experimentalFeatures={{ newEditingApi: true }}
               disableVirtualization
               sx={{
+                width: '100%',
                 height: '230px',
                 [`& .${gridClasses.row}`]: {
                   bgcolor: () => 'background.default',
+                },
+                [`& .MuiDataGrid-cell--withRenderer.MuiDataGrid-cell.MuiDataGrid-cell--textLeft:focus`]:
+                  {
+                    outline: 'none',
+                  },
+                [`.MuiDataGrid-cell:focus-within`]: {
+                  outline: 'none',
                 },
               }}
             />

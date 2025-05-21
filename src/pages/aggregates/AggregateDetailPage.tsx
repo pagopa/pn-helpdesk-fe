@@ -58,7 +58,7 @@ const AggregateDetailPage = ({ email }: any) => {
         }
       })
       .catch(() => {
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(snackbarActions.updateStatusCode('400'));
         dispatch(snackbarActions.updateMessage(`Errore nel caricamento dei dati`));
         navigate(routes.AGGREGATES_LIST);

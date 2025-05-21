@@ -16,7 +16,7 @@ export function StepDriverUpload(props: { tenderCode: string }) {
 
   const notifyUploaded = () => {
     if (stateUpload.status !== UPLOAD_STATUS_ENUM.UPLOADED_FILE_S3 || !stateUpload.uid) {
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
       dispatch(snackbarActions.updateStatusCode(500));
       dispatch(snackbarActions.updateMessage('Error durante il caricamento del file'));
       return;
@@ -33,7 +33,7 @@ export function StepDriverUpload(props: { tenderCode: string }) {
       !stateUpload.error &&
       stateUpload.status === UPLOAD_STATUS_ENUM.DATA_SAVED
     ) {
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
       dispatch(snackbarActions.updateStatusCode(200));
       dispatch(snackbarActions.updateMessage('Caricamento dati terminato correttamente'));
     }

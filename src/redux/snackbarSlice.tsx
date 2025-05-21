@@ -20,7 +20,7 @@ export const snackbarSlice = createSlice({
   initialState,
   reducers: {
     resetState: () => initialState,
-    updateSnackbacrOpened: (state, action: PayloadAction<boolean>) => {
+    updateSnackbarOpened: (state, action: PayloadAction<boolean>) => {
       state.opened = action.payload;
       // reset initial state after each closure
       if (!action.payload) {
@@ -42,7 +42,7 @@ export const snackbarSlice = createSlice({
 });
 
 export const {
-  updateSnackbacrOpened,
+  updateSnackbarOpened,
   updateStatusCode,
   updateMessage,
   resetState,

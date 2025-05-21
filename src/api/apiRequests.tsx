@@ -14,9 +14,13 @@ import {
   Pa,
   searchPaType,
   updatePdndRequest,
+  postEventType,
 } from './apiRequestTypes';
 import { http as logExtractoraggregateApiClient } from './logExtractorAxiosClient';
 import { http as aggregateApiClient } from './aggregateAxiosClient';
+import { createMalfunctionEvent, getMalfunctionPreview } from './downtimeLogsApi';
+import { BoStatusUpdateEvent, PnFunctionality, PnFunctionalityStatus } from './downtimeLogs';
+import { fileToBase64 } from '../helpers/monitor.utility';
 
 /**
  * Return the person's ID depending on the input received
@@ -333,6 +337,20 @@ const getUsagePlans = async () => {
     });
 };
 
+export const createEvent = async (payload: BoStatusUpdateEvent) => {
+  return createMalfunctionEvent(payload);
+};
+
+const getPreview = async (payload: BoStatusUpdateEvent): Promise<string> => {
+  try {
+    const file = await getMalfunctionPreview(payload);
+    const base64 = await fileToBase64(file);
+    return base64;
+  } catch (e: any) {
+    throw e;
+  }
+};
+
 const apiRequests = {
   getPersonId,
   getPersonTaxId,
@@ -356,6 +374,8 @@ const apiRequests = {
   searchApiKey,
   modifyPdnd,
   getDownloadUrl,
+  createEvent,
+  getPreview,
 };
 
 export default apiRequests;

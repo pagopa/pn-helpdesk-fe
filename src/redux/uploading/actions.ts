@@ -138,7 +138,7 @@ export const notifyFileUpload = createAsyncThunk<NotifyFileResponse, NotifyFileR
           }));
         }
       }
-      thunkAPI.dispatch(snackbarActions.updateSnackbacrOpened(true));
+      thunkAPI.dispatch(snackbarActions.updateSnackbarOpened(true));
       thunkAPI.dispatch(snackbarActions.updateStatusCode(400));
       thunkAPI.dispatch(
         snackbarActions.updateMessage("Errore durante l'elaborazione del file Excel")

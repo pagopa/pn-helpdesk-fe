@@ -36,7 +36,7 @@ export function DownloadBox(props: DownloadBoxProps) {
         download.retry
       );
     } else {
-      dispatch(snackbarActions.updateSnackbacrOpened(true));
+      dispatch(snackbarActions.updateSnackbarOpened(true));
       dispatch(snackbarActions.updateStatusCode(400));
       dispatch(snackbarActions.updateMessage('Error durante il download del file'));
     }

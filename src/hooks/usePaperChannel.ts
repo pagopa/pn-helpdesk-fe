@@ -66,7 +66,7 @@ export const usePaperChannel = () => {
       message = e.response.data.detail;
     }
     dispatch(spinnerActions.updateSpinnerOpened(false));
-    dispatch(snackbarActions.updateSnackbacrOpened(true));
+    dispatch(snackbarActions.updateSnackbarOpened(true));
     dispatch(snackbarActions.updateStatusCode(400));
     dispatch(snackbarActions.updateMessage(message));
   };

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import * as italianStyle from 'date-fns/locale';
@@ -36,7 +36,9 @@ describe('TenderFormTest', () => {
 
     const btnSave = screen.getByTestId('btn-save-tender');
     expect(btnSave).toBeInTheDocument();
-    fireEvent.click(btnSave);
+    await act(async () => {
+      fireEvent.click(btnSave);
+    });
 
     expect(createTenderMockFn).toBeCalledTimes(0);
   });
@@ -50,22 +52,28 @@ describe('TenderFormTest', () => {
     // description field, startDate field, endDateField
     const [inputDescription, ,] = screen.getAllByRole('textbox');
     expect(inputDescription).toBeInTheDocument();
-    fireEvent.input(inputDescription, {
-      target: {
-        value: 'ABCD',
-      },
+
+    await act(async () => {
+      fireEvent.input(inputDescription, {
+        target: {
+          value: 'ABCD',
+        },
+      });
     });
 
     expect(inputDescription.getAttribute('value')).toEqual('ABCD');
 
     const btnSave = screen.getByTestId('btn-save-tender');
     expect(btnSave).toBeInTheDocument();
-    fireEvent.submit(btnSave);
+
+    await act(async () => {
+      fireEvent.submit(btnSave);
+    });
     await waitFor(async () => {
       expect(createTenderMockFn).toBeCalledTimes(1);
       expect(dispatchMockFn).toBeCalledWith({
         payload: true,
-        type: 'snackbar/updateSnackbacrOpened',
+        type: 'snackbar/updateSnackbarOpened',
       });
       expect(dispatchMockFn).toBeCalledWith({
         payload: 200,
@@ -84,21 +92,28 @@ describe('TenderFormTest', () => {
     // description field, startDate field, endDateField
     const [inputDescription, ,] = screen.getAllByRole('textbox');
     expect(inputDescription).toBeInTheDocument();
-    fireEvent.input(inputDescription, {
-      target: {
-        value: 'ABCD',
-      },
+
+    await act(async () => {
+      fireEvent.input(inputDescription, {
+        target: {
+          value: 'ABCD',
+        },
+      });
     });
 
     expect(inputDescription.getAttribute('value')).toEqual('ABCD');
 
     const btnSave = screen.getByTestId('btn-save-tender');
     expect(btnSave).toBeInTheDocument();
-    fireEvent.submit(btnSave);
+
+    await act(async () => {
+      fireEvent.submit(btnSave);
+    });
+
     await waitFor(async () => {
       expect(dispatchMockFn).toBeCalledWith({
         payload: true,
-        type: 'snackbar/updateSnackbacrOpened',
+        type: 'snackbar/updateSnackbarOpened',
       });
       expect(dispatchMockFn).toBeCalledWith({
         payload: 400,
