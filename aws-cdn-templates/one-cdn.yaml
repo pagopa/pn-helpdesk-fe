@@ -294,6 +294,7 @@ Resources:
                 - " "
                 - - "default-src 'self';"
                   - "object-src 'none';"
+                  - "frame-src 'self';"
                   - !Sub " connect-src 'self' \
                     https://cognito-idp.eu-south-1.amazonaws.com/ \
                     ${WebApiUrl} \
