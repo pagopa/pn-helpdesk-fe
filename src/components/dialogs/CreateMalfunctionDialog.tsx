@@ -98,6 +98,7 @@ export function CreateMalfunctionDialog({
       open={isModalOpen}
       onClose={() => setIsModalOpen(false)}
       aria-labelledby="alert-dialog-title"
+      data-testid="create-malfunction-dialog-testid"
     >
       <DialogTitle id="alert-dialog-title">Inserisci evento | {functionalityName}</DialogTitle>
       <DialogContent>
