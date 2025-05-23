@@ -1,4 +1,4 @@
-import { Grid, Typography, TextField, Box, FormHelperText } from '@mui/material';
+import { Grid, Typography, TextField, Box, FormHelperText, styled } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
@@ -26,6 +26,10 @@ interface DescriptionDialogContentProps {
   setHtmlDescriptionError: (error: string) => void;
   htmlDescriptionError: string;
 }
+
+const StyledRichTextEditor = styled(RichTextEditor)(() => ({
+  minHeight: '200px',
+}));
 
 export function DescriptionDialogContent({
   modalEventDate,
@@ -89,7 +93,7 @@ export function DescriptionDialogContent({
             borderRadius: '4px',
           }}
         >
-          <RichTextEditor
+          <StyledRichTextEditor
             onUpdate={({ editor }) => {
               const html = editor?.getHTML();
               handleDescriptionChange(html);
