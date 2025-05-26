@@ -28,7 +28,7 @@ interface DescriptionDialogContentProps {
 }
 
 const StyledRichTextEditor = styled(RichTextEditor)(() => ({
-  minHeight: '200px',
+  '& .tiptap': { minHeight: '100px' },
 }));
 
 export function DescriptionDialogContent({
