@@ -53,7 +53,6 @@ const mockedResponse: AxiosResponse<void> = {
 };
 
 const mockedApi = apiRequests as jest.Mocked<typeof apiRequests>;
-mockedApi.createEvent.mockResolvedValueOnce(mockedResponse);
 
 const defaultProps = {
   refreshStatus: jest.fn(),
@@ -78,6 +77,10 @@ function renderComponent() {
 describe('CreateMalfunctionDialog component', () => {
   const server = setupServer(...handlers);
   beforeAll(() => server.listen());
+  beforeEach(() => {
+    mockedApi.createEvent.mockClear();
+    mockedApi.createEvent.mockResolvedValue(mockedResponse);
+  });
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
@@ -116,5 +119,13 @@ describe('CreateMalfunctionDialog component', () => {
     await waitFor(() => {
       expect(mockedApi.createEvent).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('setIsModalOpen is false when Annulla button is clicked', async () => {
+    renderComponent();
+    expect(screen.getByTestId('create-malfunction-dialog-testid')).toBeInTheDocument();
+    const cancelButton = screen.getByRole('button', { name: 'Annulla' });
+    await userEvent.click(cancelButton);
+    expect(defaultProps.setIsModalOpen).toHaveBeenCalledWith(false);
   });
 });
