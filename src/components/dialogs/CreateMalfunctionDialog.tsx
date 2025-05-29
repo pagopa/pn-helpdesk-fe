@@ -132,7 +132,13 @@ export function CreateMalfunctionDialog({
             <FormControl error={checkboxError}>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={isChecked} onChange={handleConfirmCheckChange} />}
+                  control={
+                    <Checkbox
+                      data-testid="checkbox"
+                      checked={isChecked}
+                      onChange={handleConfirmCheckChange}
+                    />
+                  }
                   label="Sono consapevole che inserire un evento di malfunzionamento 
   richiede una successiva risoluzione, che produce un’attestazione dedicata."
                 />
