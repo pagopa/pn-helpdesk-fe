@@ -41,11 +41,15 @@ export function CreateMalfunctionDialog({
   const functionalityName =
     FunctionalityName[modalPayload.functionality as unknown as keyof typeof FunctionalityName];
 
+  const cleanDialog = () => {
+    setModalEventDate(new Date());
+    setDateError('');
+    setCheckboxError(false);
+    setIsChecked(false);
+  };
+
   useEffect(() => {
-    if (!isModalOpen) {
-      setModalEventDate(new Date());
-      setDateError('');
-    }
+    cleanDialog();
   }, [isModalOpen]);
 
   const handleDateChange = (date: Date | null) => {
@@ -155,7 +159,7 @@ export function CreateMalfunctionDialog({
           onClick={events}
           id="createEvent"
         >
-          Inserisci
+          Inserisci KO
         </Button>
       </DialogActions>
     </Dialog>
