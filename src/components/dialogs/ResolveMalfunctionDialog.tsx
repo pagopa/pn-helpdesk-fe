@@ -136,8 +136,6 @@ export function ResolveMalfunctionDialog({
         })
         .finally(() => {
           setIsModalOpen(false);
-          setIsSecondStep(false);
-          setIsChecked(false);
         });
     }
   };
