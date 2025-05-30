@@ -42,14 +42,19 @@ export function ResolveMalfunctionDialog({
     FunctionalityName[modalPayload.functionality as unknown as keyof typeof FunctionalityName];
   const functionalityStatus = modalPayload.status;
 
-  useEffect(() => {
+  const cleanDialog = () => {
     setModalEventDate(new Date());
     setModalEventHtmlDescription('');
     setDateError('');
     setHtmlDescriptionError('');
     setCheckboxError(false);
+    setIsChecked(false);
     setPreview('');
     setIsSecondStep(false);
+  };
+
+  useEffect(() => {
+    cleanDialog();
   }, [isModalOpen]);
 
   const handleCancel = () => {
