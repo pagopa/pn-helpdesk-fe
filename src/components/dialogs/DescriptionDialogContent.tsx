@@ -92,6 +92,7 @@ export function DescriptionDialogContent({
             border: htmlDescriptionError ? '1px solid rgba(216, 87, 87, 1)' : 'none',
             borderRadius: '4px',
           }}
+          data-testid="rich-text-description"
         >
           <StyledRichTextEditor
             onUpdate={({ editor }) => {
