@@ -147,6 +147,7 @@ export function ResolveMalfunctionDialog({
       open={isModalOpen}
       onClose={() => setIsModalOpen(false)}
       aria-labelledby="alert-dialog-title"
+      data-testid="resolve-malfunction-dialog-testid"
     >
       <DialogTitle id="alert-dialog-title">
         {isSecondStep ? 'Anteprima documento' : 'Risolvi evento'} | {functionalityName}

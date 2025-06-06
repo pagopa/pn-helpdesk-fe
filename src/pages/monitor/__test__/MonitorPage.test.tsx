@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { act, screen, waitFor } from '@testing-library/react';
+import { act, RenderResult, screen, waitFor } from '@testing-library/react';
 import 'regenerator-runtime/runtime';
 import userEvent from '@testing-library/user-event';
 import MonitorPage from '../MonitorPage';
@@ -87,35 +87,42 @@ describe('MonitorPage', () => {
   });
 
   it('click button to create an event KO', async () => {
+    let rendered: RenderResult;
     await act(async () => {
-      reducer(<MonitorPage />);
+      rendered = reducer(<MonitorPage />);
     });
 
-    // TODO adapt this test to the new implementation
-    
-    // const buttons = screen.queryAllByRole('menuitem');
-    // expect(buttons).toHaveLength(3);
+    await waitFor(async () => {
+      const buttonsKO = rendered.getAllByText('Inserisci KO');
+      expect(buttonsKO).toHaveLength(2);
 
-    // const user = userEvent.setup();
-    // await user.click(buttons[0]);
+      const user = userEvent.setup();
+      await user.click(buttonsKO[0]);
+    });
 
-    // const button = await screen.findByRole('menuitem', { name: 'Inserire KO' });
-    // expect(button).toBeInTheDocument();
-    // await user.click(button);
+    await waitFor(async () => {
+      const dialog = await screen.findByTestId('create-malfunction-dialog-testid');
+      expect(dialog).toBeInTheDocument();
+    });
   });
 
   it('render button to create an event OK and get error', async () => {
+    let rendered: RenderResult;
     await act(async () => {
-      reducer(<MonitorPage />);
+      rendered = reducer(<MonitorPage />);
     });
 
-    // TODO adapt this test to the new implementation
+    await waitFor(async () => {
+      const buttonsKO = rendered.getAllByText('Risolvi KO');
+      expect(buttonsKO).toHaveLength(1);
 
-    // const buttons = screen.queryAllByRole('menuitem');
-    // const user = userEvent.setup();
-    // await user.click(buttons[1]);
-    // const button = await screen.findByRole('menuitem', { name: 'Inserire OK' });
-    // expect(button).toBeInTheDocument();
-    // await user.click(button);
+      const user = userEvent.setup();
+      await user.click(buttonsKO[0]);
+    });
+
+    await waitFor(async () => {
+      const dialog = await screen.findByTestId('resolve-malfunction-dialog-testid');
+      expect(dialog).toBeInTheDocument();
+    });
   });
 });

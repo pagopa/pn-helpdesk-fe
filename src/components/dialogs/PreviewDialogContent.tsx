@@ -29,7 +29,13 @@ export function PreviewDialogContent({
             <FormControl error={checkboxError}>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={isChecked} onChange={handleConfirmCheckChange} />}
+                  control={
+                    <Checkbox
+                      checked={isChecked}
+                      onChange={handleConfirmCheckChange}
+                      data-testid="checkbox"
+                    />
+                  }
                   label="Il testo è corretto e verrà pubblicato."
                 />
               </FormGroup>
