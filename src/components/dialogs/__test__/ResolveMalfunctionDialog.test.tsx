@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -181,5 +181,47 @@ describe('ResolveMalfunctionDialog component - second step', () => {
     const backButton = screen.getByRole('button', { name: 'Indietro' });
     await userEvent.click(backButton);
     expect(screen.getByTestId('rich-text-description')).toBeInTheDocument();
+  });
+
+  it('show error if checkbox is not checked and call api when checked', async () => {
+    renderComponent();
+
+    const continueButton = screen.getByRole('button', { name: 'Continua' });
+    const richTextContainer = screen.getByTestId('rich-text-description');
+
+    const richTextContainerEditor = richTextContainer
+      .querySelector('.ProseMirror')
+      ?.querySelector('p');
+
+    if (richTextContainerEditor) {
+      await act(async () => {
+        fireEvent.change(richTextContainerEditor, {
+          target: { textContent: 'Prova' },
+        });
+      });
+    }
+
+    await userEvent.click(continueButton);
+
+    const insertButton = screen.getByRole('button', { name: 'Conferma e Pubblica' });
+    await userEvent.click(insertButton);
+
+    expect(
+      await screen.findByText((content) => content.includes('Questo campo è obbligatorio'))
+    ).toBeInTheDocument();
+
+    const checkboxInput = screen
+      .getByTestId('checkbox')
+      .querySelector('input[type="checkbox"]') as HTMLInputElement;
+
+    await userEvent.click(checkboxInput);
+    await waitFor(() => {
+      expect(checkboxInput).toBeChecked();
+    });
+    await userEvent.click(insertButton);
+
+    await waitFor(() => {
+      expect(mockedApi.createEvent).toHaveBeenCalledTimes(1);
+    });
   });
 });
