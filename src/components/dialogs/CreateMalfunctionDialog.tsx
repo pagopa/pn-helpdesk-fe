@@ -102,6 +102,7 @@ export function CreateMalfunctionDialog({
       open={isModalOpen}
       onClose={() => setIsModalOpen(false)}
       aria-labelledby="alert-dialog-title"
+      data-testid="create-malfunction-dialog-testid"
     >
       <DialogTitle id="alert-dialog-title">Inserisci evento | {functionalityName}</DialogTitle>
       <DialogContent>
@@ -135,7 +136,13 @@ export function CreateMalfunctionDialog({
             <FormControl error={checkboxError}>
               <FormGroup>
                 <FormControlLabel
-                  control={<Checkbox checked={isChecked} onChange={handleConfirmCheckChange} />}
+                  control={
+                    <Checkbox
+                      data-testid="checkbox"
+                      checked={isChecked}
+                      onChange={handleConfirmCheckChange}
+                    />
+                  }
                   label="Sono consapevole che inserire un evento di malfunzionamento 
   richiede una successiva risoluzione, che produce un’attestazione dedicata."
                 />
