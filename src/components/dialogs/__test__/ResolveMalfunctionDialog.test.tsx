@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -39,6 +39,7 @@ jest.mock('../../../api/apiRequests', () => ({
   __esModule: true,
   default: {
     createEvent: jest.fn(),
+    getPreview: () => new Promise((resolve) => resolve('Prova')),
   },
 }));
 
@@ -84,18 +85,47 @@ describe('ResolveMalfunctionDialog component', () => {
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
-  it.skip('render ResolveMalfunctionDialog', () => {
+  it('render ResolveMalfunctionDialog', () => {
     renderComponent();
     expect(screen.getByTestId('resolve-malfunction-dialog-testid')).toBeInTheDocument();
     expect(screen.getByText('Risolvi evento | Creazione Notifiche')).toBeInTheDocument();
     expect(screen.getByTestId('rich-text-description')).toBeInTheDocument();
   });
 
-  it.skip('setIsModalOpen is false when Annulla button is clicked', async () => {
+  it('setIsModalOpen is false when Annulla button is clicked', async () => {
     renderComponent();
     expect(screen.getByTestId('resolve-malfunction-dialog-testid')).toBeInTheDocument();
     const cancelButton = screen.getByRole('button', { name: 'Annulla' });
     await userEvent.click(cancelButton);
     expect(defaultProps.setIsModalOpen).toHaveBeenCalledWith(false);
+  });
+
+  it('show error if description is not filled and go to next step when filled', async () => {
+    renderComponent();
+
+    const continueButton = screen.getByRole('button', { name: 'Continua' });
+    await userEvent.click(continueButton);
+
+    expect(
+      await screen.findByText((content) => content.includes('Inserisci informazioni aggiuntive'))
+    ).toBeInTheDocument();
+
+    const richTextContainer = screen.getByTestId('rich-text-description');
+
+    const richTextContainerEditor = richTextContainer
+      .querySelector('.ProseMirror')
+      ?.querySelector('p');
+
+    if (richTextContainerEditor) {
+      await act(async () => {
+        fireEvent.change(richTextContainerEditor, {
+          target: { textContent: 'Prova' },
+        });
+      });
+    }
+
+    await userEvent.click(continueButton);
+    expect(screen.getByTestId('resolve-malfunction-dialog-testid')).toBeInTheDocument();
+    expect(screen.getByText('Anteprima documento | Creazione Notifiche')).toBeInTheDocument();
   });
 });
