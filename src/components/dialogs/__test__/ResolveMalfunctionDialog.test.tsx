@@ -74,24 +74,25 @@ function renderComponent() {
     </Provider>
   );
 }
+const server = setupServer(...handlers);
+beforeAll(() => server.listen());
+beforeEach(() => {
+  mockedApi.createEvent.mockClear();
+  mockedApi.createEvent.mockResolvedValue(mockedResponse);
+});
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('ResolveMalfunctionDialog component', () => {
-  const server = setupServer(...handlers);
-  beforeAll(() => server.listen());
-  beforeEach(() => {
-    mockedApi.createEvent.mockClear();
-    mockedApi.createEvent.mockResolvedValue(mockedResponse);
-  });
-  afterEach(() => server.resetHandlers());
-  afterAll(() => server.close());
-
   it('render ResolveMalfunctionDialog', () => {
     renderComponent();
     expect(screen.getByTestId('resolve-malfunction-dialog-testid')).toBeInTheDocument();
     expect(screen.getByText('Risolvi evento | Creazione Notifiche')).toBeInTheDocument();
     expect(screen.getByTestId('rich-text-description')).toBeInTheDocument();
   });
+});
 
+describe('ResolveMalfunctionDialog component - first step', () => {
   it('setIsModalOpen is false when Annulla button is clicked', async () => {
     renderComponent();
     expect(screen.getByTestId('resolve-malfunction-dialog-testid')).toBeInTheDocument();
@@ -127,5 +128,58 @@ describe('ResolveMalfunctionDialog component', () => {
     await userEvent.click(continueButton);
     expect(screen.getByTestId('resolve-malfunction-dialog-testid')).toBeInTheDocument();
     expect(screen.getByText('Anteprima documento | Creazione Notifiche')).toBeInTheDocument();
+  });
+});
+
+describe('ResolveMalfunctionDialog component - second step', () => {
+  it('check preview is showed', async () => {
+    renderComponent();
+
+    const continueButton = screen.getByRole('button', { name: 'Continua' });
+    const richTextContainer = screen.getByTestId('rich-text-description');
+
+    const richTextContainerEditor = richTextContainer
+      .querySelector('.ProseMirror')
+      ?.querySelector('p');
+
+    if (richTextContainerEditor) {
+      await act(async () => {
+        fireEvent.change(richTextContainerEditor, {
+          target: { textContent: 'Prova' },
+        });
+      });
+    }
+
+    await userEvent.click(continueButton);
+    expect(screen.getByTestId('resolve-malfunction-dialog-testid')).toBeInTheDocument();
+    expect(screen.getByText('Anteprima documento | Creazione Notifiche')).toBeInTheDocument();
+
+    expect(await screen.findByTitle('PDF Viewer')).toBeTruthy();
+  });
+
+  it('go back to first step when Indietro button is clicked', async () => {
+    renderComponent();
+
+    const continueButton = screen.getByRole('button', { name: 'Continua' });
+    const richTextContainer = screen.getByTestId('rich-text-description');
+
+    const richTextContainerEditor = richTextContainer
+      .querySelector('.ProseMirror')
+      ?.querySelector('p');
+
+    if (richTextContainerEditor) {
+      await act(async () => {
+        fireEvent.change(richTextContainerEditor, {
+          target: { textContent: 'Prova' },
+        });
+      });
+    }
+
+    await userEvent.click(continueButton);
+
+    expect(screen.getByTestId('resolve-malfunction-dialog-testid')).toBeInTheDocument();
+    const backButton = screen.getByRole('button', { name: 'Indietro' });
+    await userEvent.click(backButton);
+    expect(screen.getByTestId('rich-text-description')).toBeInTheDocument();
   });
 });
