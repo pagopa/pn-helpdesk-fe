@@ -99,7 +99,7 @@ describe('CreateMalfunctionDialog component', () => {
   it('show error if checkbox is not checked and call api when checked', async () => {
     renderComponent();
 
-    const insertButton = screen.getByRole('button', { name: 'Inserisci' });
+    const insertButton = screen.getByRole('button', { name: 'Inserisci KO' });
     await userEvent.click(insertButton);
 
     expect(
