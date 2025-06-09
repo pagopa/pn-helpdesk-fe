@@ -88,12 +88,9 @@ describe('CreateMalfunctionDialog component', () => {
     renderComponent();
 
     expect(screen.getByTestId('create-malfunction-dialog-testid')).toBeInTheDocument();
-    expect(screen.getByText('Inserisci evento | Creazione Notifiche')).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        'Sono consapevole che inserire un evento di malfunzionamento richiede una successiva risoluzione, che produce un’attestazione dedicata.'
-      )
-    ).toBeInTheDocument();
+    expect(screen.getByTestId('create-event-Creazione Notifiche')).toBeInTheDocument();
+
+    expect(screen.getByTestId('create-event-label')).toBeInTheDocument();
   });
 
   it('show error if checkbox is not checked and call api when checked', async () => {

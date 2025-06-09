@@ -104,7 +104,9 @@ export function CreateMalfunctionDialog({
       aria-labelledby="alert-dialog-title"
       data-testid="create-malfunction-dialog-testid"
     >
-      <DialogTitle id="alert-dialog-title">Inserisci evento | {functionalityName}</DialogTitle>
+      <DialogTitle id="alert-dialog-title" data-testid={`create-event-${functionalityName}`}>
+        Inserisci evento | {functionalityName}
+      </DialogTitle>
       <DialogContent>
         <Grid container spacing={3} direction="column">
           <Grid item>
@@ -134,7 +136,7 @@ export function CreateMalfunctionDialog({
           </Grid>
           <Grid item>
             <FormControl error={checkboxError}>
-              <FormGroup>
+              <FormGroup data-testid="create-event-label">
                 <FormControlLabel
                   control={
                     <Checkbox
