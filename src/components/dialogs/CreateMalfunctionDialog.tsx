@@ -158,7 +158,12 @@ export function CreateMalfunctionDialog({
         </Grid>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'end', p: '0 24px 20px 0' }}>
-        <Button variant="outlined" onClick={handleClick} sx={{ padding: '0 18px' }}>
+        <Button
+          variant="outlined"
+          onClick={handleClick}
+          sx={{ padding: '0 18px' }}
+          data-testid="cancel-event"
+        >
           Annulla
         </Button>
         <Button
@@ -167,6 +172,7 @@ export function CreateMalfunctionDialog({
           autoFocus
           onClick={events}
           id="createEvent"
+          data-testid="create-event-ko"
         >
           Inserisci KO
         </Button>

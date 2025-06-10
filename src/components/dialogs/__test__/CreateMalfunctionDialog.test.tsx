@@ -96,7 +96,7 @@ describe('CreateMalfunctionDialog component', () => {
   it('show error if checkbox is not checked and call api when checked', async () => {
     renderComponent();
 
-    const insertButton = screen.getByRole('button', { name: 'Inserisci KO' });
+    const insertButton = screen.getByTestId('create-event-ko');
     await userEvent.click(insertButton);
 
     expect(
@@ -121,7 +121,8 @@ describe('CreateMalfunctionDialog component', () => {
   it('setIsModalOpen is false when Annulla button is clicked', async () => {
     renderComponent();
     expect(screen.getByTestId('create-malfunction-dialog-testid')).toBeInTheDocument();
-    const cancelButton = screen.getByRole('button', { name: 'Annulla' });
+    const cancelButton = screen.getByTestId('cancel-event');
+
     await userEvent.click(cancelButton);
     expect(defaultProps.setIsModalOpen).toHaveBeenCalledWith(false);
   });
