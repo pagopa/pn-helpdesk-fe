@@ -104,7 +104,9 @@ export function CreateMalfunctionDialog({
       aria-labelledby="alert-dialog-title"
       data-testid="create-malfunction-dialog-testid"
     >
-      <DialogTitle id="alert-dialog-title">Inserisci evento | {functionalityName}</DialogTitle>
+      <DialogTitle id="alert-dialog-title" data-testid={`create-event-${functionalityName}`}>
+        Inserisci evento | {functionalityName}
+      </DialogTitle>
       <DialogContent>
         <Grid container spacing={3} direction="column">
           <Grid item>
@@ -134,7 +136,7 @@ export function CreateMalfunctionDialog({
           </Grid>
           <Grid item>
             <FormControl error={checkboxError}>
-              <FormGroup>
+              <FormGroup data-testid="create-event-label">
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -156,7 +158,12 @@ export function CreateMalfunctionDialog({
         </Grid>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'end', p: '0 24px 20px 0' }}>
-        <Button variant="outlined" onClick={handleClick} sx={{ padding: '0 18px' }}>
+        <Button
+          variant="outlined"
+          onClick={handleClick}
+          sx={{ padding: '0 18px' }}
+          data-testid="cancel-event"
+        >
           Annulla
         </Button>
         <Button
@@ -165,6 +172,7 @@ export function CreateMalfunctionDialog({
           autoFocus
           onClick={events}
           id="createEvent"
+          data-testid="create-event-ko"
         >
           Inserisci KO
         </Button>
