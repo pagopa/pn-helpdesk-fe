@@ -12,17 +12,15 @@ import apiRequests from '../../../api/apiRequests';
 
 const mockStore = configureStore([thunk]);
 
-const handlers = [
-  rest.post('/downtime/v1/events', (req, res, ctx) => {
-    console.log('MSW: intercepted POST!');
-    return res(ctx.status(200), ctx.json({ success: true }));
-  }),
-  rest.options('/downtime/v1/events', (req, res, ctx) => {
-    console.log('MSW: intercepted OPTIONS!');
-    return res(ctx.status(204));
-  }),
-];
+// API handlers
+const server = setupServer(
+  rest.post('/downtime/v1/events', (req, res, ctx) =>
+    res(ctx.status(200), ctx.json({ success: true }))
+  ),
+  rest.options('/downtime/v1/events', (req, res, ctx) => res(ctx.status(204)))
+);
 
+// Mock date picker
 jest.mock('@mui/x-date-pickers', () => ({
   ...jest.requireActual('@mui/x-date-pickers'),
   DateTimePicker: ({ label, value, onChange }: any) => (
@@ -35,6 +33,7 @@ jest.mock('@mui/x-date-pickers', () => ({
   ),
 }));
 
+// Mock API
 jest.mock('../../../api/apiRequests', () => ({
   __esModule: true,
   default: {
@@ -42,18 +41,16 @@ jest.mock('../../../api/apiRequests', () => ({
   },
 }));
 
+const mockedApi = apiRequests as jest.Mocked<typeof apiRequests>;
 const mockedResponse: AxiosResponse<void> = {
   data: undefined,
   status: 200,
   statusText: 'OK',
   headers: new AxiosHeaders(),
-  config: {
-    headers: new AxiosHeaders(),
-  },
+  config: { headers: new AxiosHeaders() },
 };
 
-const mockedApi = apiRequests as jest.Mocked<typeof apiRequests>;
-
+// Props e store
 const defaultProps = {
   refreshStatus: jest.fn(),
   setIsModalOpen: jest.fn(),
@@ -74,56 +71,63 @@ function renderComponent() {
   );
 }
 
-describe('CreateMalfunctionDialog component', () => {
-  const server = setupServer(...handlers);
-  beforeAll(() => server.listen());
-  beforeEach(() => {
-    mockedApi.createEvent.mockClear();
-    mockedApi.createEvent.mockResolvedValue(mockedResponse);
-  });
-  afterEach(() => server.resetHandlers());
-  afterAll(() => server.close());
+// Helpers
+async function checkCheckbox() {
+  const checkbox = screen
+    .getByTestId('checkbox')
+    .querySelector('input[type="checkbox"]') as HTMLInputElement;
+  await userEvent.click(checkbox);
+  await waitFor(() => expect(checkbox).toBeChecked());
+}
 
-  it('render CreateMalfunctionDialog', () => {
+async function submitForm() {
+  const submitButton = screen.getByTestId('create-event-ko');
+  await userEvent.click(submitButton);
+}
+
+async function cancelDialog() {
+  const cancelButton = screen.getByTestId('cancel-event');
+  await userEvent.click(cancelButton);
+}
+
+// Setup test lifecycle
+beforeAll(() => server.listen());
+beforeEach(() => {
+  mockedApi.createEvent.mockClear();
+  mockedApi.createEvent.mockResolvedValue(mockedResponse);
+});
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+// ---------------------- TESTS ----------------------
+
+describe('CreateMalfunctionDialog', () => {
+  it('renders correctly', () => {
     renderComponent();
-
     expect(screen.getByTestId('create-malfunction-dialog-testid')).toBeInTheDocument();
     expect(screen.getByTestId('create-event-Creazione Notifiche')).toBeInTheDocument();
-
     expect(screen.getByTestId('create-event-label')).toBeInTheDocument();
   });
 
-  it('show error if checkbox is not checked and call api when checked', async () => {
+  it('shows error if checkbox not checked and calls API when checked', async () => {
     renderComponent();
 
-    const insertButton = screen.getByTestId('create-event-ko');
-    await userEvent.click(insertButton);
+    // Primo invio senza checkbox
+    await submitForm();
+    expect(await screen.findByText(/Questo campo è obbligatorio/i)).toBeInTheDocument();
 
-    expect(
-      await screen.findByText((content) => content.includes('Questo campo è obbligatorio'))
-    ).toBeInTheDocument();
-
-    const checkboxInput = screen
-      .getByTestId('checkbox')
-      .querySelector('input[type="checkbox"]') as HTMLInputElement;
-
-    await userEvent.click(checkboxInput);
-    await waitFor(() => {
-      expect(checkboxInput).toBeChecked();
-    });
-    await userEvent.click(insertButton);
+    // Selezione checkbox e reinvio
+    await checkCheckbox();
+    await submitForm();
 
     await waitFor(() => {
       expect(mockedApi.createEvent).toHaveBeenCalledTimes(1);
     });
   });
 
-  it('setIsModalOpen is false when Annulla button is clicked', async () => {
+  it('closes dialog on "Annulla"', async () => {
     renderComponent();
-    expect(screen.getByTestId('create-malfunction-dialog-testid')).toBeInTheDocument();
-    const cancelButton = screen.getByTestId('cancel-event');
-
-    await userEvent.click(cancelButton);
+    await cancelDialog();
     expect(defaultProps.setIsModalOpen).toHaveBeenCalledWith(false);
   });
 });
