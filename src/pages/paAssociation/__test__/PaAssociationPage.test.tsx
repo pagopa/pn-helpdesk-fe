@@ -1,26 +1,37 @@
-import { RenderResult, waitFor, screen } from '@testing-library/react';
-import PaAssociationPage from '../PaAssociationPage';
-import { renderWithProviders } from "../../../mocks/mockReducer";
-import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
+import { act, screen } from '@testing-library/react';
 import { aggregate as mockAggregate } from '../../../api/mock_agg_response';
+import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
+import { renderWithProviders } from '../../../mocks/mockReducer';
+import PaAssociationPage from '../PaAssociationPage';
+import apiRequests from '../../../api/apiRequests';
 
-jest.mock("react-router-dom", () => ({
-    ...jest.requireActual("react-router-dom"),
-    useLocation: () => ({
-      pathname: "localhost:3000/example/path",
-      state: {aggregate: mockAggregate}
-    })
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => ({
+    pathname: 'localhost:3000/example/path',
+    state: { aggregate: mockAggregate },
+  }),
 }));
 
-describe("PaAssociationPage test", () => {
-    let result: RenderResult | undefined;
+describe('PaAssociationPage test', () => {
+  beforeEach(() => {
+    const apiSpyGetAssociablePaList = jest.spyOn(apiRequests, 'getAssociablePaList');
+    apiSpyGetAssociablePaList.mockImplementation(() => Promise.resolve({ items: [] }));
+  });
 
-    it("render", async () => {
-        let Wrapped = <ConfirmationProvider><PaAssociationPage /></ConfirmationProvider>;
-        result = renderWithProviders(Wrapped);
+  it('render', async () => {
+    const Wrapped = (
+      <ConfirmationProvider>
+        <PaAssociationPage />
+      </ConfirmationProvider>
+    );
 
-        expect(screen.getByTestId("aggregate-accordion")).toBeInTheDocument();
-        expect(screen.getByRole("table"));
-        expect(screen.getAllByTestId("customCard"));
-    })
-})
+    await act(async () => {
+      renderWithProviders(Wrapped);
+    });
+
+    expect(screen.getByTestId('aggregate-accordion')).toBeInTheDocument();
+    expect(screen.getByRole('table'));
+    expect(screen.getAllByTestId('customCard'));
+  });
+});

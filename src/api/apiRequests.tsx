@@ -1,4 +1,4 @@
-import { formatDate } from "../helpers/formatter.utility";
+import { formatDate } from '../helpers/formatter.utility';
 import {
   getLogsProcessesType,
   getNotificationsInfoLogsType,
@@ -13,10 +13,14 @@ import {
   AggregateSummary,
   Pa,
   searchPaType,
-  updatePdndRequest
-} from "./apiRequestTypes";
-import { http as logExtractoraggregateApiClient } from "./logExtractorAxiosClient";
-import { http as aggregateApiClient } from "./aggregateAxiosClient";
+  updatePdndRequest,
+  postEventType,
+} from './apiRequestTypes';
+import { http as logExtractoraggregateApiClient } from './logExtractorAxiosClient';
+import { http as aggregateApiClient } from './aggregateAxiosClient';
+import { createMalfunctionEvent, getMalfunctionPreview } from './downtimeLogsApi';
+import { BoStatusUpdateEvent, PnFunctionality, PnFunctionalityStatus } from './downtimeLogs';
+import { fileToBase64 } from '../helpers/monitor.utility';
 
 /**
  * Return the person's ID depending on the input received
@@ -80,15 +84,15 @@ const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
 };
 
 const getDownloadUrl = async (data: string) => {
-  return await logExtractoraggregateApiClient.getDownloadUrl(data)
-  .then((result: any) => {
-    return result;
-  })
-  .catch((error: any) => {
-    throw error;
-  });
-
-}
+  return await logExtractoraggregateApiClient
+    .getDownloadUrl(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
 
 /**
  * Extract all log paths by given a specific traceId
@@ -148,11 +152,11 @@ const getAggregates = async (data: getAggregateParams) => {
     .then((result) => {
       const items = result.data.items.map(
         (agg) =>
-        ({
-          ...agg,
-          createdAt: formatDate(agg.createdAt, true),
-          lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
-        } as AggregateSummary)
+          ({
+            ...agg,
+            createdAt: formatDate(agg.createdAt, true),
+            lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
+          } as AggregateSummary)
       );
 
       return {
@@ -206,15 +210,18 @@ const searchPa = async (data: searchPaType) => {
 };
 
 /**
- * Create an 
+ * Create an
  */
 const searchApiKey = async (data: string) => {
   return await aggregateApiClient
     .searchApiKey(data)
     .then((result) => {
       let items = result.data.items;
-      result.data.items = items.map((vk) => ({...vk, groups: Array.isArray(vk.groups) && vk.groups.length > 0 ? vk.groups.join(", ") : ""}));
-      
+      result.data.items = items.map((vk) => ({
+        ...vk,
+        groups: Array.isArray(vk.groups) && vk.groups.length > 0 ? vk.groups.join(', ') : '',
+      }));
+
       return result.data;
     })
     .catch((error) => {
@@ -330,6 +337,20 @@ const getUsagePlans = async () => {
     });
 };
 
+export const createEvent = async (payload: BoStatusUpdateEvent) => {
+  return createMalfunctionEvent(payload);
+};
+
+const getPreview = async (payload: BoStatusUpdateEvent): Promise<string> => {
+  try {
+    const file = await getMalfunctionPreview(payload);
+    const base64 = await fileToBase64(file);
+    return base64;
+  } catch (e: any) {
+    throw e;
+  }
+};
+
 const apiRequests = {
   getPersonId,
   getPersonTaxId,
@@ -352,7 +373,9 @@ const apiRequests = {
   searchPa,
   searchApiKey,
   modifyPdnd,
-  getDownloadUrl
+  getDownloadUrl,
+  createEvent,
+  getPreview,
 };
 
 export default apiRequests;

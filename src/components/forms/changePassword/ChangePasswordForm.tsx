@@ -1,33 +1,22 @@
-import {
-  Grid,
-  Button,
-  Box,
-  Card,
-  FormHelperText,
-  Typography,
-  InputAdornment,
-} from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { FieldsProperties, FormField } from "../../formFields/FormFields";
-import LockIcon from "@mui/icons-material/Lock";
-import {
-  errorMessages,
-  infoMessages,
-} from "../../../helpers/messagesConstants";
-import { useAuth } from "../../../Authentication/auth";
-import HelpIcon from "@mui/icons-material/Help";
-import Tooltip from "@mui/material/Tooltip";
-import { useDispatch } from "react-redux";
-import * as snackbarActions from "../../../redux/snackbarSlice";
-import * as spinnerActions from "../../../redux/spinnerSlice";
+import { Grid, Button, Box, Card, FormHelperText, Typography, InputAdornment } from '@mui/material';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import LockIcon from '@mui/icons-material/Lock';
+import HelpIcon from '@mui/icons-material/Help';
+import Tooltip from '@mui/material/Tooltip';
+import { useDispatch } from 'react-redux';
+import { useAuth } from '../../../Authentication/auth';
+import { errorMessages, infoMessages } from '../../../helpers/messagesConstants';
+import { FieldsProperties, FormField } from '../../formFields/FormFields';
+import * as snackbarActions from '../../../redux/snackbarSlice';
+import * as spinnerActions from '../../../redux/spinnerSlice';
 
 /**
  * default values of the form fields
  */
 const defaultFormValues: { [key: string]: string } = {
-  newPassword: "",
-  newPasswordConfirm: "",
+  newPassword: '',
+  newPasswordConfirm: '',
 };
 
 /**
@@ -42,12 +31,12 @@ const ChangePasswordForm = ({ user }: any) => {
    */
   const fields: Array<{ [key: string]: string }> = [
     {
-      name: "newPassword",
-      label: "Nuova password",
+      name: 'newPassword',
+      label: 'Nuova password',
     },
     {
-      name: "newPasswordConfirm",
-      label: "Conferma password",
+      name: 'newPasswordConfirm',
+      label: 'Conferma password',
     },
   ];
 
@@ -71,8 +60,8 @@ const ChangePasswordForm = ({ user }: any) => {
     getValues,
   } = useForm({
     defaultValues: defaultFormValues,
-    mode: "onSubmit",
-    reValidateMode: "onSubmit",
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
   });
 
   /**
@@ -83,14 +72,14 @@ const ChangePasswordForm = ({ user }: any) => {
   const onSubmit = async (data: { [x: string]: string }) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
     await changePassword(user, data.newPassword)
-      .then((res) => {
+      .then(() => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
-        navigate("/search");
+        navigate('/search');
       })
-      .catch((error: any) => {
+      .catch(() => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
-        dispatch(snackbarActions.updateStatusCode("400"));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
+        dispatch(snackbarActions.updateStatusCode('400'));
       });
   };
 
@@ -101,23 +90,23 @@ const ChangePasswordForm = ({ user }: any) => {
       justifyContent="center"
       alignItems="center"
       minHeight="100vh"
-      sx={{ backgroundColor: "primary.main" }}
+      sx={{ backgroundColor: 'primary.main' }}
     >
       <Card
         elevation={24}
         sx={{
           width: 1 / 2,
-          padding: "5%",
-          boxShadow: "0px 3px 3px -2px ",
-          backgroundColor: "background.paper",
+          padding: '5%',
+          boxShadow: '0px 3px 3px -2px ',
+          backgroundColor: 'background.paper',
         }}
       >
         <Grid container direction="column" rowSpacing={2}>
           <Grid item container justifyContent="center">
-            <LockIcon sx={{ height: "15%", width: "15%", color: "#0066CC" }} />
+            <LockIcon sx={{ height: '15%', width: '15%', color: '#0066CC' }} />
           </Grid>
           <Grid item container alignItems="center" justifyContent="center">
-            <Grid item sx={{ paddingBottom: "2%" }}>
+            <Grid item sx={{ paddingBottom: '2%' }}>
               <Typography color="text.primary" variant="h4">
                 Cambio password
               </Typography>
@@ -131,32 +120,24 @@ const ChangePasswordForm = ({ user }: any) => {
                     control={control}
                     name={currentField.name}
                     rules={{
-                      ...FieldsProperties["password"].rules,
+                      ...FieldsProperties.password.rules,
                       validate: {
-                        newPasswordEquality: () => {
-                          return (
-                            getValues(fields[0].name) ===
-                              getValues(fields[1].name) ||
-                            errorMessages.PSSWORDS_EQUALITY
-                          );
-                        },
+                        newPasswordEquality: () =>
+                          getValues(fields[0].name) === getValues(fields[1].name) ||
+                          errorMessages.PSSWORDS_EQUALITY,
                       },
                     }}
-                    render={({
-                      field: { onChange, onBlur, value, name, ref },
-                      fieldState: { invalid, isTouched, isDirty, error },
-                      formState,
-                    }) => (
+                    render={({ field: { onChange, value }, fieldState: { error } }) => (
                       <>
                         <FormField
                           error={error}
                           key={currentField.name}
                           field={{
-                            ...FieldsProperties["password"],
+                            ...FieldsProperties.password,
                             label: currentField.label,
                             InputProps: {
                               endAdornment:
-                                currentField.name === "newPassword" ? (
+                                currentField.name === 'newPassword' ? (
                                   <Tooltip
                                     title={infoMessages.PASSWORD_TOOLTIP_MSG}
                                     placement="right"
@@ -173,8 +154,8 @@ const ChangePasswordForm = ({ user }: any) => {
                         />
                         <FormHelperText error>
                           {errors[currentField.name]
-                            ? errors[currentField.name].message
-                            : " "}
+                            ? (errors[currentField.name]?.message as string)
+                            : ' '}
                         </FormHelperText>
                       </>
                     )}
@@ -185,17 +166,15 @@ const ChangePasswordForm = ({ user }: any) => {
               <Grid item>
                 <Button
                   sx={{
-                    backgroundColor: "primary.main",
-                    "&:hover": { backgroundColor: "primary.dark" },
+                    backgroundColor: 'primary.main',
+                    '&:hover': { backgroundColor: 'primary.dark' },
                   }}
                   fullWidth
                   size="large"
                   type="submit"
                   variant="outlined"
                 >
-                  <Typography sx={{ color: "white" }}>
-                    Cambia password
-                  </Typography>
+                  <Typography sx={{ color: 'white' }}>Cambia password</Typography>
                 </Button>
               </Grid>
             </Grid>

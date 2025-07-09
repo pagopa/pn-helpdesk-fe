@@ -1,4 +1,3 @@
-import { CheckboxClassKey } from '@mui/material';
 import { ReactNode } from 'react';
 
 type Order = 'asc' | 'desc';

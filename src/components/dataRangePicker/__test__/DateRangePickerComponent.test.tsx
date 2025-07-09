@@ -1,12 +1,11 @@
 /**
  * @jest-environment jsdom
  */
-import React from "react";
-import "regenerator-runtime/runtime";
-import { fireEvent, screen } from "@testing-library/react";
-import { CalendarPickerView } from "@mui/lab";
-import DateRangePickerComponent from "../DataRangePickerComponent";
-import { reducer } from "../../../mocks/mockReducer";
+import { CalendarPickerView } from '@mui/lab';
+import { fireEvent, screen } from '@testing-library/react';
+import 'regenerator-runtime/runtime';
+import { reducer } from '../../../mocks/mockReducer';
+import DateRangePickerComponent from '../DataRangePickerComponent';
 
 /**
  * @typedef {Object} DatePicker
@@ -19,7 +18,7 @@ type DatePickerType = {
   /**
    * calendar type
    */
-  view: CalendarPickerView[];
+  view: Array<CalendarPickerView>;
   /**
    * value of the field if there is any
    */
@@ -28,34 +27,34 @@ type DatePickerType = {
 
 const datePickers: Array<DatePickerType> = [
   {
-    label: "Dal",
-    view: ["day"],
-    value: "2022-10-01",
+    label: 'Dal',
+    view: ['day'],
+    value: '2022-10-01',
   },
   {
-    label: "Al",
-    view: ["day"],
-    value: "2022-10-20",
+    label: 'Al',
+    view: ['day'],
+    value: '2022-10-20',
   },
 ];
 
 const fieldProps = {
-  name: "Time interval",
-  componentType: "dateRangePicker",
-  label: "Time interval",
+  name: 'Time interval',
+  componentType: 'dateRangePicker',
+  label: 'Time interval',
   hidden: false,
   required: false,
-  intervalLimit: [3, "months"],
+  intervalLimit: [3, 'months'],
   disableFuture: true,
 };
 
-describe("DateRangePickerComponent", () => {
+describe('DateRangePickerComponent', () => {
   beforeAll(() => {
-    Object.defineProperty(window, "matchMedia", {
+    Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: (query: string) => ({
         media: query,
-        matches: query === "(pointer: fine)",
+        matches: query === '(pointer: fine)',
         onchange: () => {},
         addEventListener: () => {},
         removeEventListener: () => {},
@@ -66,7 +65,7 @@ describe("DateRangePickerComponent", () => {
     });
   });
 
-  it("renders component with certain values", async () => {
+  it('renders component with certain values', async () => {
     reducer(
       <DateRangePickerComponent
         field={fieldProps}
@@ -76,24 +75,24 @@ describe("DateRangePickerComponent", () => {
         onBlur={jest.fn()}
       />
     );
-    const inputs = await screen.findAllByRole("textbox");
+    const inputs = await screen.findAllByRole('textbox');
     expect(inputs).toHaveLength(2);
 
-    const dal = await screen.findByRole("textbox", {
-      name: "Dal",
+    const dal = await screen.findByRole('textbox', {
+      name: 'Dal',
     });
-    const al = await screen.findByRole("textbox", {
-      name: "Al",
+    const al = await screen.findByRole('textbox', {
+      name: 'Al',
     });
 
     expect(dal).toBeInTheDocument();
     expect(al).toBeInTheDocument();
 
-    expect(dal).toHaveValue("01-10-2022");
-    expect(al).toHaveValue("20-10-2022");
+    expect(dal).toHaveValue('01-10-2022');
+    expect(al).toHaveValue('20-10-2022');
   });
 
-  it("test changing dal value", async () => {
+  it('test changing dal value', async () => {
     const mockChangeFn = jest.fn();
     reducer(
       <DateRangePickerComponent
@@ -105,17 +104,17 @@ describe("DateRangePickerComponent", () => {
       />
     );
 
-    const inputs = await screen.findAllByRole("textbox");
+    const inputs = await screen.findAllByRole('textbox');
     expect(inputs).toHaveLength(2);
 
     fireEvent.change(inputs[0], {
-      target: { value: "14-10-2022" },
+      target: { value: '14-10-2022' },
     });
-    expect(inputs[0]).toHaveValue("14-10-2022");
+    expect(inputs[0]).toHaveValue('14-10-2022');
     expect(mockChangeFn).toBeCalled();
   });
 
-  it("test changing al value", async () => {
+  it('test changing al value', async () => {
     const mockChangeFn = jest.fn();
     reducer(
       <DateRangePickerComponent
@@ -127,13 +126,13 @@ describe("DateRangePickerComponent", () => {
       />
     );
 
-    const inputs = await screen.findAllByRole("textbox");
+    const inputs = await screen.findAllByRole('textbox');
     expect(inputs).toHaveLength(2);
 
     fireEvent.change(inputs[1], {
-      target: { value: "14-10-2022" },
+      target: { value: '14-10-2022' },
     });
-    expect(inputs[1]).toHaveValue("14-10-2022");
+    expect(inputs[1]).toHaveValue('14-10-2022');
     expect(mockChangeFn).toBeCalled();
   });
 });

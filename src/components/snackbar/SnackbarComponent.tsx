@@ -1,19 +1,19 @@
-import { SyntheticEvent, useEffect, useState } from "react";
-import Alert from "@mui/material/Alert";
-import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
+import { SyntheticEvent, useEffect, useState } from 'react';
+import Alert from '@mui/material/Alert';
+import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
+import { useDispatch, useSelector } from 'react-redux';
+import Slide, { SlideProps } from '@mui/material/Slide';
+import { Typography } from '@mui/material';
+import { infoMessages } from '../../helpers/messagesConstants';
 import {
-  updateSnackbacrOpened,
+  updateSnackbarOpened,
   opened,
   statusCode,
   message,
-  autoHideDuration
-} from "../../redux/snackbarSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { infoMessages } from "../../helpers/messagesConstants";
-import Slide, { SlideProps } from "@mui/material/Slide";
-import { Typography } from "@mui/material";
+  autoHideDuration,
+} from '../../redux/snackbarSlice';
 
-type TransitionProps = Omit<SlideProps, "direction">;
+type TransitionProps = Omit<SlideProps, 'direction'>;
 
 function TransitionDown(props: TransitionProps) {
   return <Slide {...props} direction="down" />;
@@ -26,11 +26,11 @@ function TransitionDown(props: TransitionProps) {
  * @type {string}
  */
 enum Severity {
-  "OK" = "success",
-  "Accepted" = "warning",
-  "Bad Request" = "error",
-  "Internal Server Error" = "error",
-  "Gateway Timeout" = "error",
+  'OK' = 'success',
+  'Accepted' = 'warning',
+  'Bad Request' = 'error',
+  'Internal Server Error' = 'error',
+  'Gateway Timeout' = 'error',
 }
 
 /**
@@ -38,11 +38,11 @@ enum Severity {
  * @readonly
  */
 const defaultSeverityMessage: { [key: string]: string } = {
-  "OK": infoMessages.OK_RESPONSE,
-  "Accepted": infoMessages.ACCEPTED_RESPONSE,
-  "Bad Request": infoMessages.BAD_REQUEST_RESPONSE,
-  "Internal Server Error": infoMessages.INTERNEL_SERVER_ERROR_RESPONSE,
-  "Gateway Timeout": infoMessages.TIMEOUT,
+  OK: infoMessages.OK_RESPONSE,
+  Accepted: infoMessages.ACCEPTED_RESPONSE,
+  'Bad Request': infoMessages.BAD_REQUEST_RESPONSE,
+  'Internal Server Error': infoMessages.INTERNEL_SERVER_ERROR_RESPONSE,
+  'Gateway Timeout': infoMessages.TIMEOUT,
 };
 
 /**
@@ -51,7 +51,7 @@ const defaultSeverityMessage: { [key: string]: string } = {
  * @param {Props} props
  */
 const SnackbarComponent = () => {
-  const [severity, setSeverity] = useState("");
+  const [severity, setSeverity] = useState('');
 
   const snackbarOpened: boolean = useSelector(opened);
 
@@ -70,28 +70,28 @@ const SnackbarComponent = () => {
    */
   const handleClose = (
     event?: Event | SyntheticEvent<any, Event>,
-    reason: SnackbarCloseReason = "escapeKeyDown"
+    reason: SnackbarCloseReason = 'escapeKeyDown'
   ) => {
-    if (reason !== "clickaway") {
-      dispatch(updateSnackbacrOpened(false));
+    if (reason !== 'clickaway') {
+      dispatch(updateSnackbarOpened(false));
     }
   };
 
   /* istanbul ignore next */
   const getSeverity = () => {
-    if(status){
-      let statusNumber = Number(status);
-      
-      if(statusNumber === 202){
-        setSeverity("Accepted")
-      }else if(statusNumber >= 200 && status < 300){
-        setSeverity("OK")
-      }else if(statusNumber >= 400 && status < 500){
-        setSeverity("Bad Request")
-      }else if(statusNumber >= 504){
-        setSeverity("Gateway Timeout")
-      }else{
-        setSeverity("Internal Server Error");
+    if (status) {
+      const statusNumber = Number(status);
+
+      if (statusNumber === 202) {
+        setSeverity('Accepted');
+      } else if (statusNumber >= 200 && status < 300) {
+        setSeverity('OK');
+      } else if (statusNumber >= 400 && status < 500) {
+        setSeverity('Bad Request');
+      } else if (statusNumber >= 504) {
+        setSeverity('Gateway Timeout');
+      } else {
+        setSeverity('Internal Server Error');
       }
     }
   };
@@ -102,22 +102,17 @@ const SnackbarComponent = () => {
     <Snackbar
       open={snackbarOpened}
       autoHideDuration={autoHide}
-      sx={{ "@media (min-width: 630px)": { top: "75px" } }}
-      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      sx={{ '@media (min-width: 630px)': { top: '75px' } }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       TransitionComponent={TransitionDown}
-      onClose={(
-        e: Event | SyntheticEvent<any, Event>,
-        r: SnackbarCloseReason
-      ) => handleClose(e, r)}
+      onClose={(e: Event | SyntheticEvent<any, Event>, r: SnackbarCloseReason) => handleClose(e, r)}
     >
       <Alert
         onClose={handleClose}
         variant="filled"
         severity={Severity[severity as keyof typeof Severity]}
       >
-        <Typography>
-          {snackbarMessage || defaultSeverityMessage[severity]}
-        </Typography>
+        <Typography>{snackbarMessage || defaultSeverityMessage[severity]}</Typography>
       </Alert>
     </Snackbar>
   );

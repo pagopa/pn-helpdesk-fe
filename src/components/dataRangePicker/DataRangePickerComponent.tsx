@@ -1,10 +1,10 @@
-import TextField from "@mui/material/TextField";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { CalendarPickerView } from "@mui/lab";
-import { useState } from "react";
-import { FormHelperText, Grid } from "@mui/material";
-import { FieldsProps } from "../formFields/FormFields";
-import { format } from "date-fns";
+import TextField from '@mui/material/TextField';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { CalendarPickerView } from '@mui/lab';
+import { useState } from 'react';
+import { FormHelperText, Grid } from '@mui/material';
+import { format } from 'date-fns';
+import { FieldsProps } from '../formFields/FormFields';
 
 /**
  * @typedef {Object} DatePicker
@@ -17,7 +17,7 @@ type DatePickerType = {
   /**
    * calendar type
    */
-  view: CalendarPickerView[];
+  view: Array<CalendarPickerView>;
   /**
    * value of the field if there is any
    */
@@ -75,21 +75,18 @@ const DateRangePickerComponent = (props: Props) => {
    */
   /* istanbul ignore next */
   const handleChange = (value: any, field: number) => {
-    value =
-      props.field.name !== "monthInterval"
-        ? format(value, "yyyy-MM-dd")
-        : format(
-            new Date(value.setHours(0, 0, 0, 0)),
-            "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
-          );
-    let prevState = [...dates];
+    const date =
+      props.field.name !== 'monthInterval'
+        ? format(value, 'yyyy-MM-dd')
+        : format(new Date(value.setHours(0, 0, 0, 0)), "yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+    const prevState = [...dates];
     switch (field) {
       case 0:
-        prevState[0] = { ...prevState[0], value: value };
+        prevState[0] = { ...prevState[0], value: date };
         setDates(prevState);
         break;
       case 1:
-        prevState[1] = { ...prevState[1], value: value };
+        prevState[1] = { ...prevState[1], value: date };
         setDates(prevState);
         break;
     }
@@ -97,15 +94,9 @@ const DateRangePickerComponent = (props: Props) => {
   };
 
   return (
-    <Grid item container spacing={2}>
+    <Grid item container spacing={2} data-testid="data-range-picker">
       {dates.map((date, index) => (
-        <Grid
-          item
-          key={date.label}
-          xs={12}
-          lg={6}
-          sx={{ paddingRight: "0px!important" }}
-        >
+        <Grid item key={date.label} xs={12} lg={6} sx={{ paddingRight: '0px!important' }}>
           <DatePicker
             views={date.view}
             key={date.label}
@@ -114,12 +105,11 @@ const DateRangePickerComponent = (props: Props) => {
             onChange={(e) => handleChange(e, index)}
             onClose={props.onBlur}
             disableFuture={props.field.disableFuture}
-            inputFormat={props.field.format || "dd-MM-yyyy"}
-            mask={"__-__-____"}
+            inputFormat={props.field.format || 'dd-MM-yyyy'}
+            mask={'__-__-____'}
             maxDate={
-              props.field.name === "monthInterval"
-                ? new Date(props.field.maxDate!)
-                : undefined
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              props.field.name === 'monthInterval' ? new Date(props.field.maxDate!) : undefined
             }
             renderInput={(params) => (
               <>
@@ -131,9 +121,7 @@ const DateRangePickerComponent = (props: Props) => {
                   error={props.error ? true : false}
                   fullWidth
                 />
-                <FormHelperText error>
-                  {props.error ? props.error.message : " "}
-                </FormHelperText>
+                <FormHelperText error>{props.error ? props.error.message : ' '}</FormHelperText>
               </>
             )}
           />

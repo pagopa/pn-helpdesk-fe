@@ -5,8 +5,8 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
-} from "@mui/material";
-import { Options } from "./ConfirmationTypes";
+} from '@mui/material';
+import { Options } from './ConfirmationTypes';
 
 type Props = {
   open: boolean;
@@ -39,10 +39,7 @@ const ConfirmationDialog = ({ open, options, onCancel, onConfirm }: Props) => {
         </DialogTitle>
       )}
       <DialogContent>
-        <DialogContentText
-          id="alert-dialog-description"
-          data-testid="dialog-description"
-        >
+        <DialogContentText id="alert-dialog-description" data-testid="dialog-description">
           {message}
         </DialogContentText>
         {extraContent}

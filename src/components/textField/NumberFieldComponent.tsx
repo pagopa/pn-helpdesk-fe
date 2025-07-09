@@ -1,8 +1,8 @@
-import React from "react";
-import {NumericFormat, NumericFormatProps} from "react-number-format";
+import React from 'react';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 
-import { TextField } from "@mui/material";
-import { FieldsProps } from "../formFields/FormFields";
+import { TextField } from '@mui/material';
+import { FieldsProps } from '../formFields/FormFields';
 
 type Props = {
   field: FieldsProps;
@@ -19,6 +19,7 @@ const NumberFieldComponent = (props: Props) => {
       required={field.required}
       fullWidth
       type={field.type}
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       hidden={field.hidden!}
       value={props.value}
       id={field.label}
@@ -26,10 +27,10 @@ const NumberFieldComponent = (props: Props) => {
       variant="outlined"
       error={!!props.error}
       onBlur={props.value && props.value.length ? props.onBlur : () => {}}
-      //onChange={(e) => props.onChange(e)}
+      // onChange={(e) => props.onChange(e)}
       InputProps={{
         inputComponent: NumericFormatCustom as any,
-        inputProps: { ...props}
+        inputProps: { ...props },
       }}
       disabled={props.field.disabled}
     />
@@ -37,23 +38,21 @@ const NumberFieldComponent = (props: Props) => {
 };
 export default NumberFieldComponent;
 
-
-const NumericFormatCustom = React.forwardRef<NumericFormatProps, any>(
-
-  function NumericFormatCustom(props, ref) {
-    const { onChange, ...other } = props;
-    console.log(props);
-    return (
-      <NumericFormat
-        {...other}
-        getInputRef={ref}
-        onValueChange={(values) => {
-          onChange(values.floatValue);
-        }}
-        allowNegative={false}
-        decimalScale={2}
-        decimalSeparator=","
-      />
-    );
-  },
-);
+const NumericFormatCustom = React.forwardRef<NumericFormatProps, any>(function NumericFormatCustom(
+  props,
+  ref
+) {
+  const { onChange, ...other } = props;
+  return (
+    <NumericFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={(values) => {
+        onChange(values.floatValue);
+      }}
+      allowNegative={false}
+      decimalScale={2}
+      decimalSeparator=","
+    />
+  );
+});
