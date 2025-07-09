@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import MainLayout from "../mainLayout/MainLayout";
-import { useLocation } from "react-router-dom";
+import { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Autocomplete,
   TextField,
@@ -12,15 +11,16 @@ import {
   Checkbox,
   Container,
   Box,
-} from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import apiRequests from "../../api/apiRequests";
-import * as snackbarActions from "../../redux/snackbarSlice";
-import * as spinnerActions from "../../redux/spinnerSlice";
-import { useDispatch } from "react-redux";
-import Breadcrumbs from "../../components/breadcrumbs/Breadcrumbs";
-import * as routes from "../../navigation/router.const";
-import { Pa } from "../../api/apiRequestTypes";
+} from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import { useDispatch } from 'react-redux';
+import MainLayout from '../mainLayout/MainLayout';
+import apiRequests from '../../api/apiRequests';
+import * as snackbarActions from '../../redux/snackbarSlice';
+import * as spinnerActions from '../../redux/spinnerSlice';
+import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
+import * as routes from '../../navigation/router.const';
+import { Pa } from '../../api/apiRequestTypes';
 
 const PaTransferListPage = ({ email }: any) => {
   const location: any = useLocation();
@@ -38,14 +38,14 @@ const PaTransferListPage = ({ email }: any) => {
   useEffect(() => {
     const getAggregates = () => {
       dispatch(spinnerActions.updateSpinnerOpened(true));
-      let request = apiRequests.getAggregates({ lastEvaluatedId: "" });
+      const request = apiRequests.getAggregates({ lastEvaluatedId: '' });
       if (request) {
         request
           .then((res) => {
             setRenderedAggList(res);
           })
           .catch((err) => {
-            console.log("Errore: ", err);
+            console.log('Errore: ', err);
           })
           .finally(() => dispatch(spinnerActions.updateSpinnerOpened(false)));
       }
@@ -72,8 +72,8 @@ const PaTransferListPage = ({ email }: any) => {
   };
 
   const getPas1 = (e: any, value: any) => {
-    let idAggregation = value?.id;
-    let request = apiRequests.getAssociatedPaList(idAggregation);
+    const idAggregation = value?.id;
+    const request = apiRequests.getAssociatedPaList(idAggregation);
     if (request) {
       request
         .then((res) => {
@@ -81,21 +81,21 @@ const PaTransferListPage = ({ email }: any) => {
           setPaList1(res);
         })
         .catch((err) => {
-          console.log("Errore: ", err);
+          console.log('Errore: ', err);
         });
     }
   };
 
   const getPas2 = (e: any, value: any) => {
-    let idAggregation = value?.id;
-    let request = apiRequests.getAssociatedPaList(idAggregation);
+    const idAggregation = value?.id;
+    const request = apiRequests.getAssociatedPaList(idAggregation);
     if (request) {
       request
         .then((res) => {
           setPaList2(res);
         })
         .catch((err) => {
-          console.log("Errore: ", err);
+          console.log('Errore: ', err);
         });
     }
   };
@@ -105,40 +105,38 @@ const PaTransferListPage = ({ email }: any) => {
     apiRequests
       .movePa(input2Value.id, checked)
       .then((res) => {
-        let statusCode = "200";
-        let message = "";
+        let statusCode = '200';
+        let message = '';
 
         if (res.processed === checked.length) {
-          message = "Tutte le PA sono state trasferite con successo";
+          message = 'Tutte le PA sono state trasferite con successo';
         } else {
           if (res.processed === 0) {
-            message = "Non è stato possibile trasferire le PA selezionate";
-            statusCode = "400";
+            message = 'Non è stato possibile trasferire le PA selezionate';
+            statusCode = '400';
           } else {
             message =
-              "Riscontrati problemi nel trasferimento delle seguenti PA : " +
+              'Riscontrati problemi nel trasferimento delle seguenti PA : ' +
               res.unprocessedPA.toString() +
-              ". Le restanti PA selezionate sono state salvate con successo";
-            statusCode = "202";
+              '. Le restanti PA selezionate sono state salvate con successo';
+            statusCode = '202';
           }
         }
 
         dispatch(snackbarActions.updateMessage(message));
         dispatch(snackbarActions.updateStatusCode(statusCode));
         dispatch(snackbarActions.updateAutoHideDuration(null));
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
 
-        //Refresh lists
+        // Refresh lists
         getPas1(undefined, input1Value);
         getPas2(undefined, input2Value);
       })
       .catch((err) => {
-        dispatch(snackbarActions.updateSnackbacrOpened(true));
+        dispatch(snackbarActions.updateSnackbarOpened(true));
         dispatch(snackbarActions.updateStatusCode(400));
-        dispatch(
-          snackbarActions.updateMessage("Errore nel trasferimento delle PA")
-        );
-        console.log("Errore: ", err);
+        dispatch(snackbarActions.updateMessage('Errore nel trasferimento delle PA'));
+        console.log('Errore: ', err);
       })
       .finally(() => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
@@ -148,24 +146,25 @@ const PaTransferListPage = ({ email }: any) => {
   const breadcrumbsLinks = aggParam
     ? [
         {
-          linkLabel: "Gestione Aggregazioni ApiKey",
+          linkLabel: 'Gestione Aggregazioni ApiKey',
           linkRoute: routes.AGGREGATES_LIST,
         },
         {
-          linkLabel: "Dettaglio Aggregazione",
+          linkLabel: 'Dettaglio Aggregazione',
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           linkRoute: routes.GET_UPDATE_AGGREGATE_PATH(aggParam.id!),
         },
       ]
     : [];
 
-  const list2 = useMemo(() => {
-    return (
+  const list2 = useMemo(
+    () => (
       <List
         style={{
-          backgroundColor: "white",
+          backgroundColor: 'white',
           width: 500,
           height: 500,
-          overflow: "auto",
+          overflow: 'auto',
         }}
       >
         {!areInputsEqual && paList2 && paList2?.items?.length < 1 ? (
@@ -178,8 +177,9 @@ const PaTransferListPage = ({ email }: any) => {
           ))
         )}
       </List>
-    );
-  }, [paList2, areInputsEqual]);
+    ),
+    [paList2, areInputsEqual]
+  );
 
   const list1 = useMemo(() => {
     const addToChecked = (pa: any) => {
@@ -193,16 +193,16 @@ const PaTransferListPage = ({ email }: any) => {
     return (
       <List
         style={{
-          backgroundColor: "white",
+          backgroundColor: 'white',
           width: 500,
           height: 500,
-          overflow: "auto",
+          overflow: 'auto',
         }}
       >
         {paList1 && paList1?.items?.length < 1 ? (
           <ListItem>La lista è vuota</ListItem>
         ) : (
-          paList1?.items?.map((pa: any, ind: number) => (
+          paList1?.items?.map((pa: any) => (
             <ListItem key={pa.id}>
               <ListItemIcon>
                 <Checkbox
@@ -210,7 +210,7 @@ const PaTransferListPage = ({ email }: any) => {
                   edge="start"
                   tabIndex={-1}
                   disableRipple
-                  inputProps={{ "aria-labelledby": pa.id }}
+                  inputProps={{ 'aria-labelledby': pa.id }}
                 />
               </ListItemIcon>
               <ListItemText id={pa.id} primary={pa.name} />
@@ -225,10 +225,7 @@ const PaTransferListPage = ({ email }: any) => {
     <MainLayout email={email}>
       {aggParam && (
         <Container>
-          <Breadcrumbs
-            currentLocationLabel="Trasferimento di PA"
-            links={breadcrumbsLinks}
-          />
+          <Breadcrumbs currentLocationLabel="Trasferimento di PA" links={breadcrumbsLinks} />
         </Container>
       )}
 
@@ -236,41 +233,27 @@ const PaTransferListPage = ({ email }: any) => {
         <h1>Trasferimento di PA</h1>
       </Container>
       <Container style={{ marginTop: 20 }}>
-        <Box className="agg-selection" style={{ display: "flex", gap: 350 }}>
+        <Box className="agg-selection" style={{ display: 'flex', gap: 350 }}>
           <Autocomplete
             onChange={handleChangeInput1}
-            options={
-              renderedAggList?.items || [
-                { id: "Caricamento", name: "Caricamento" },
-              ]
-            }
+            options={renderedAggList?.items || [{ id: 'Caricamento', name: 'Caricamento' }]}
             sx={{ width: 500 }}
             defaultValue={aggParam || null}
             getOptionLabel={(option: any) => option.name}
-            renderInput={(params) => (
-              <TextField {...params} label="Aggregazione di partenza" />
-            )}
+            renderInput={(params) => <TextField {...params} label="Aggregazione di partenza" />}
             isOptionEqualToValue={(opt, value) => value.id === opt.id}
             data-testid="sender-agg-autocomplete"
           />
           <Autocomplete
             onChange={handleChangeInput2}
-            options={
-              renderedAggList?.items || [
-                { id: "Caricamento", name: "Caricamento" },
-              ]
-            }
+            options={renderedAggList?.items || [{ id: 'Caricamento', name: 'Caricamento' }]}
             sx={{ width: 500 }}
             disabled={isInput2Disabled}
             getOptionLabel={(option: any) => option.name}
             renderInput={(params) => (
               <TextField
                 error={areInputsEqual}
-                helperText={
-                  areInputsEqual
-                    ? "Scegli una lista di aggregazione diversa"
-                    : null
-                }
+                helperText={areInputsEqual ? 'Scegli una lista di aggregazione diversa' : null}
                 {...params}
                 label="Aggregazione di destinazione"
               />
@@ -279,17 +262,14 @@ const PaTransferListPage = ({ email }: any) => {
             isOptionEqualToValue={(opt, value) => value.id === opt.id}
           />
         </Box>
-        <Box
-          className="transfer-list"
-          style={{ display: "flex", gap: 100, marginTop: 50 }}
-        >
+        <Box className="transfer-list" style={{ display: 'flex', gap: 100, marginTop: 50 }}>
           {list1}
           <Box
             style={{
               width: 150,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
             }}
           >
             {isInput2Disabled ||

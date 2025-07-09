@@ -1,7 +1,8 @@
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import LogoutIcon from "@mui/icons-material/Logout";
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import {
   Button,
   Container,
@@ -10,18 +11,19 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
+  Grid,
   Tooltip,
-} from "@mui/material";
-import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { infoMessages } from "../../helpers/messagesConstants";
-import { Divider, Grid, Typography } from "@material-ui/core";
-import { useAuth } from "../../Authentication/auth";
-import { useDispatch } from "react-redux";
-import * as spinnerActions from "../../redux/spinnerSlice";
-import NavigationMenu from "../navigationMenu/NavigationMenu";
-import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import { useCurrentUser } from "../../hooks/useCurrentUser";
+  Typography,
+} from '@mui/material';
+import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { infoMessages } from '../../helpers/messagesConstants';
+import { useAuth } from '../../Authentication/auth';
+import * as spinnerActions from '../../redux/spinnerSlice';
+import NavigationMenu from '../navigationMenu/NavigationMenu';
+import { useCurrentUser } from '../../hooks/useCurrentUser';
 
 /**
  * General component presenting the header of the app.
@@ -33,8 +35,8 @@ const Header = () => {
   const [open, setOpen] = useState(false);
 
   const { currentUser } = useCurrentUser();
-  
-  const email = useMemo(() => currentUser?.email || "no email", [currentUser]);
+
+  const email = useMemo(() => currentUser?.email || 'no email', [currentUser]);
 
   const navigate = useNavigate();
 
@@ -68,7 +70,7 @@ const Header = () => {
     logout()
       .then(() => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
-        navigate("/");
+        navigate('/');
       })
       .catch((error: any) => {
         dispatch(spinnerActions.updateSpinnerOpened(false));
@@ -77,15 +79,15 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="sticky" sx={{ bgcolor: "primary.main" }}>
+    <AppBar position="sticky" sx={{ bgcolor: 'primary.main' }}>
       <Container>
         <Toolbar
           sx={{
-            paddingRight: "0px",
-            paddingLeft: "0px",
-            "@media (min-width: 640px)": {
-              paddingRight: "0px",
-              paddingLeft: "0px",
+            paddingRight: '0px',
+            paddingLeft: '0px',
+            '@media (min-width: 640px)': {
+              paddingRight: '0px',
+              paddingLeft: '0px',
             },
           }}
         >
@@ -96,16 +98,11 @@ const Header = () => {
               </Grid>
             </Grid>
             <Grid item xs={3} md={6}>
-              <Typography align="center">PagoPA S.p.A.</Typography>
+              <Typography align="center" color="primary.contrastText">
+                PagoPA S.p.A.
+              </Typography>
             </Grid>
-            <Grid
-              container
-              item
-              xs={6}
-              md={3}
-              justifyContent="flex-end"
-              alignItems="center"
-            >
+            <Grid container item xs={6} md={3} justifyContent="flex-end" alignItems="center">
               {/* <Grid container justifyContent="flex-end" alignItems="center"> */}
               <Grid item>
                 {/* <Typography align="right">{email}</Typography> */}
@@ -114,15 +111,15 @@ const Header = () => {
                     size="large"
                     edge="start"
                     color="inherit"
+                    id="profile"
                     aria-label="menu"
-                    sx={{ paddingRight: 0 }}
                   >
-                    <PermIdentityIcon sx={{ color: "white" }} />
+                    <PermIdentityIcon sx={{ color: 'white' }} />
                   </IconButton>
                 </Tooltip>
               </Grid>
               <Divider
-                style={{ background: "white" }}
+                style={{ background: 'white' }}
                 orientation="vertical"
                 variant="middle"
                 flexItem
@@ -133,11 +130,12 @@ const Header = () => {
                     size="large"
                     edge="start"
                     color="inherit"
+                    id="logout"
                     aria-label="menu"
                     onClick={handleOpenModal}
-                    sx={{ paddingRight: 0 }}
+                    sx={{ ml: 0, pr: 0 }}
                   >
-                    <LogoutIcon sx={{ color: "white" }} />
+                    <LogoutIcon sx={{ color: 'white' }} />
                   </IconButton>
                 </Tooltip>
               </Grid>
@@ -158,11 +156,11 @@ const Header = () => {
             {infoMessages.LOGOUT_CONFIRMATION}
           </DialogContentText>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "space-between" }}>
-          <Button onClick={handleCloseModal} sx={{ padding: "0 18px" }}>
+        <DialogActions sx={{ justifyContent: 'space-between' }}>
+          <Button id="cancelLogout" onClick={handleCloseModal} sx={{ padding: '0 18px' }}>
             Annulla
           </Button>
-          <Button onClick={handleLogOut} autoFocus>
+          <Button id="doLogout" onClick={handleLogOut} autoFocus>
             Esci
           </Button>
         </DialogActions>

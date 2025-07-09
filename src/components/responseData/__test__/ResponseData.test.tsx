@@ -2,16 +2,16 @@
  * @jest-environment jsdom
  */
 
-import React from "react";
-import "regenerator-runtime/runtime";
-import { render, screen, cleanup } from "@testing-library/react";
-import { Provider } from "react-redux";
-import ResponseData from "../ResponseData";
-import configureMockStore from "redux-mock-store";
+import React from 'react';
+import 'regenerator-runtime/runtime';
+import { render, screen, cleanup } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import configureMockStore from 'redux-mock-store';
+import ResponseData from '../ResponseData';
 
 const mockStore = configureMockStore([]);
 
-describe("ResponseData", () => {
+describe('ResponseData', () => {
   afterEach(cleanup);
   let store: any;
 
@@ -24,12 +24,12 @@ describe("ResponseData", () => {
     });
   });
 
-  it("renders component", () => {
+  it('renders component', () => {
     render(
       <Provider store={store}>
         <ResponseData />
       </Provider>
     );
-    expect(screen.getByText("Dati di risposta:")).toBeInTheDocument();
+    expect(screen.getByText('Dati di risposta:')).toBeInTheDocument();
   });
 });

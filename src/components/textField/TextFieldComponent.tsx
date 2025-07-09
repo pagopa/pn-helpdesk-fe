@@ -1,5 +1,5 @@
-import { TextField } from "@mui/material";
-import { FieldsProps } from "../formFields/FormFields";
+import { TextField } from '@mui/material';
+import { FieldsProps } from '../formFields/FormFields';
 
 /**
  * @typedef {Object} Props
@@ -41,17 +41,16 @@ const TextFieldComponent = (props: Props) => {
       InputProps={field.InputProps ? field.InputProps : {}}
       fullWidth
       type={field.type}
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       hidden={field.hidden!}
       value={props.value}
       id={field.label}
       label={field.label}
       variant="outlined"
       error={props.error ? true : false}
-      onBlur={props.value && props.value.length ? props.onBlur : () => { }}
+      onBlur={props.value && props.value.length ? props.onBlur : () => {}}
       onChange={(e) =>
-        field.name === "taxId"
-          ? props.onChange(e.target.value.toUpperCase())
-          : props.onChange(e)
+        field.name === 'taxId' ? props.onChange(e.target.value.toUpperCase()) : props.onChange(e)
       }
       disabled={props.field.disabled}
       size={field.Size}

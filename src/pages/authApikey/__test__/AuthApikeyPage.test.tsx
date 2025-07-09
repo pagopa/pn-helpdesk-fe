@@ -1,95 +1,112 @@
-import { renderWithProviders } from "../../../mocks/mockReducer";
+import { RenderResult, fireEvent, waitFor, screen } from '@testing-library/react';
+import { renderWithProviders } from '../../../mocks/mockReducer';
 import apiRequests from '../../../api/apiRequests';
-import AuthApikeyPage from "../AuthApikeyPage";
-import { RenderResult, fireEvent, waitFor, within, screen, waitForElementToBeRemoved, act } from "@testing-library/react";
+import AuthApikeyPage from '../AuthApikeyPage';
 import { api_key, search_pa } from '../../../api/mock_agg_response';
-import { ConfirmationProvider } from "../../../components/confirmationDialog/ConfirmationProvider";
+import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
 
 const DEFAULT_LIMIT = 10;
 
-describe("AuthApikeyPage tests", () => {
-    let result: RenderResult | undefined;
+describe('AuthApikeyPage tests', () => {
+  let result: RenderResult | undefined;
 
-    const mockedPaData = search_pa(DEFAULT_LIMIT, "", "");
-    const mockedVkData = api_key;
+  const mockedVkData = api_key;
 
-    beforeEach(() => {
-        // mock api
-        let apiSpySearchPa = jest.spyOn(apiRequests, 'searchPa');
-        apiSpySearchPa.mockImplementation((params) => {
-            const { lastEvaluatedId, limit, paName} = params;
-            let res = search_pa(limit!, lastEvaluatedId!, paName);
-            return Promise.resolve(res);
-        });
-
-        let apiSpySearchApiKey = jest.spyOn(apiRequests, 'searchApiKey');
-        apiSpySearchApiKey.mockImplementation((params) => {
-            let res = api_key;
-            return Promise.resolve(res);
-        });
-    })
-
-    afterEach(() => {
-        jest.resetAllMocks();
-        jest.clearAllMocks();
-        jest.restoreAllMocks();
-        result = undefined;
+  beforeEach(() => {
+    // mock api
+    const apiSpySearchPa = jest.spyOn(apiRequests, 'searchPa');
+    apiSpySearchPa.mockImplementation((params) => {
+      const { lastEvaluatedId, limit, paName } = params;
+      const res = search_pa(limit!, lastEvaluatedId!, paName);
+      return Promise.resolve(res);
     });
 
-    it("renders before PA selection", async () => {
-        result = renderWithProviders(<ConfirmationProvider><AuthApikeyPage /></ConfirmationProvider>);
+    const apiSpySearchApiKey = jest.spyOn(apiRequests, 'searchApiKey');
+    apiSpySearchApiKey.mockImplementation(() => {
+      const res = api_key;
+      return Promise.resolve(res);
+    });
+  });
 
-        //Render PaSection
-        //filter 
-        expect(result?.getByRole("textbox", {name: "Nome PA"}));
-        expect(result?.getByTestId("apply-filters"));
-        expect(result?.getByTestId("clear-filters"));
+  afterEach(() => {
+    jest.resetAllMocks();
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
+    result = undefined;
+  });
 
-        //PaList with fetched elements
-        await waitFor(() => {
-            expect(result?.queryAllByTestId('paList-item')).toHaveLength(DEFAULT_LIMIT);
-        });
+  it('renders before PA selection', async () => {
+    result = renderWithProviders(
+      <ConfirmationProvider>
+        <AuthApikeyPage />
+      </ConfirmationProvider>
+    );
 
-        //Pagination
-        const pageSelector = result?.queryByTestId('pageSelector');
-        expect(pageSelector).toBeInTheDocument();
+    // Render PaSection
+    // filter
+    expect(result?.getByRole('textbox', { name: 'Nome PA' }));
+    expect(result?.getByTestId('apply-filters'));
+    expect(result?.getByTestId('clear-filters'));
 
-        //Render VirtualKeyTable
-        expect(result.getByText("Seleziona un elemento dalla sezione \"Seleziona una PA\" per visualizzare le corrispettive Virtual keys"))
-    })
+    // PaList with fetched elements
+    await waitFor(() => {
+      expect(result?.queryAllByTestId('paList-item')).toHaveLength(DEFAULT_LIMIT);
+    });
 
-    it("select PA", async () => {
-        result = renderWithProviders(<ConfirmationProvider><AuthApikeyPage /></ConfirmationProvider>);
+    // Pagination
+    const pageSelector = result?.queryByTestId('pageSelector');
+    expect(pageSelector).toBeInTheDocument();
 
-        //Render PaSection
-        //filter 
-        expect(result?.getByRole("textbox", {name: "Nome PA"}));
-        expect(result?.getByTestId("apply-filters"));
-        expect(result?.getByTestId("clear-filters"));
+    // Render VirtualKeyTable
+    expect(
+      result.getByText(
+        'Seleziona un elemento dalla sezione "Seleziona una PA" per visualizzare le corrispettive Virtual keys'
+      )
+    );
+  });
 
-        //PaList with fetched elements
-        await waitFor(() => {
-            expect(result?.queryAllByTestId('paList-item')).toHaveLength(DEFAULT_LIMIT);
-        });
+  it('select PA', async () => {
+    result = renderWithProviders(
+      <ConfirmationProvider>
+        <AuthApikeyPage />
+      </ConfirmationProvider>
+    );
 
-        //Pagination
-        const pageSelector = result?.queryByTestId('pageSelector');
-        expect(pageSelector).toBeInTheDocument();
+    // Render PaSection
+    // filter
+    expect(result?.getByRole('textbox', { name: 'Nome PA' }));
+    expect(result?.getByTestId('apply-filters'));
+    expect(result?.getByTestId('clear-filters'));
 
-        //Render VirtualKeyTable
-        expect(result.getByText("Seleziona un elemento dalla sezione \"Seleziona una PA\" per visualizzare le corrispettive Virtual keys"))
-    
-        //Click on first item of PaList
-        let firstItem = result?.queryAllByTestId('paList-item')[0];
-        fireEvent.click(firstItem);
+    // PaList with fetched elements
+    await waitFor(() => {
+      expect(result?.queryAllByTestId('paList-item')).toHaveLength(DEFAULT_LIMIT);
+    });
 
-        //Wait for table to be displayed
-        await waitFor(() => {
-            expect(screen.getByRole('table')).toBeInTheDocument();
-        });
-        //VirtualKeys fetched and displayed
-        await waitFor(() => {
-            expect(result?.container.querySelectorAll("tbody tr")).toHaveLength(mockedVkData.items.length)
-        })
-    })
-})
+    // Pagination
+    const pageSelector = result?.queryByTestId('pageSelector');
+    expect(pageSelector).toBeInTheDocument();
+
+    // Render VirtualKeyTable
+    expect(
+      result.getByText(
+        'Seleziona un elemento dalla sezione "Seleziona una PA" per visualizzare le corrispettive Virtual keys'
+      )
+    );
+
+    // Click on first item of PaList
+    const firstItem = result?.queryAllByTestId('paList-item')[0];
+    fireEvent.click(firstItem);
+
+    // Wait for table to be displayed
+    await waitFor(() => {
+      expect(screen.getByRole('table')).toBeInTheDocument();
+    });
+    // VirtualKeys fetched and displayed
+    await waitFor(() => {
+      expect(result?.container.querySelectorAll('tbody tr')).toHaveLength(
+        mockedVkData.items.length
+      );
+    });
+  });
+});

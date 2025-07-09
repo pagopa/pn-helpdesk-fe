@@ -1,5 +1,5 @@
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { FieldsProps } from "../formFields/FormFields";
+import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { FieldsProps } from '../formFields/FormFields';
 
 /**
  * @typedef {Object} Props
@@ -23,7 +23,7 @@ const SelectField = (props: Props) => {
   const { field, value, onChange } = props;
 
   return (
-    <FormControl sx={{ width: "100%" }}>
+    <FormControl sx={{ width: '100%' }}>
       <InputLabel id={field.label}>{field.label}</InputLabel>
       <Select
         data-testid={`select-${field.name}`}
@@ -32,14 +32,12 @@ const SelectField = (props: Props) => {
         label={field.label}
         onChange={onChange}
         value={value}
-        sx={{ width: "100%" }}
+        sx={{ width: '100%' }}
         disabled={field.disabled}
       >
-        {
-          (field.label !== "Tipo Estrazione") && (<MenuItem key="none" value=""></MenuItem>)
-        }
+        {field.label !== 'Tipo Estrazione' && <MenuItem key="none" value=""></MenuItem>}
         {field.selectItems?.map((item) => (
-          <MenuItem key={item} value={item}>
+          <MenuItem id={item} key={item} value={item}>
             {item}
           </MenuItem>
         ))}

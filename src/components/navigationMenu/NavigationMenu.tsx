@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import MenuIcon from "@mui/icons-material/Menu";
+import React, { useState } from 'react';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   Divider,
   Drawer,
@@ -8,28 +8,27 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Toolbar
-} from "@mui/material";
-import { Link } from "react-router-dom";
+  Toolbar,
+} from '@mui/material';
+import { Link } from 'react-router-dom';
 
-import { useNavigationItems } from "../../hooks/useNavigationItems";
+import { useNavigationItems } from '../../hooks/useNavigationItems';
 
 const NavigationMenu = () => {
   const [open, setOpen] = useState(false);
   const { availableItems } = useNavigationItems();
 
-  const toggleDrawer =
-    (status: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
-      ) {
-        return;
-      }
+  const toggleDrawer = (status: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    if (
+      event.type === 'keydown' &&
+      ((event as React.KeyboardEvent).key === 'Tab' ||
+        (event as React.KeyboardEvent).key === 'Shift')
+    ) {
+      return;
+    }
 
-      setOpen(status);
-    };
+    setOpen(status);
+  };
 
   const handleClick = () => {
     setOpen(true);
@@ -38,8 +37,9 @@ const NavigationMenu = () => {
   return (
     <div>
       <IconButton
-        sx={{ color: "white", paddingLeft: 0 }}
+        sx={{ color: 'white', paddingLeft: 0 }}
         aria-label="menu"
+        id="menu"
         onClick={handleClick}
       >
         <MenuIcon />
@@ -50,11 +50,7 @@ const NavigationMenu = () => {
 
         <List>
           {availableItems.map((item) => (
-            <Link
-              key={item.title}
-              to={item.link}
-              style={{ textDecoration: "none" }}
-            >
+            <Link key={item.title} to={item.link} style={{ textDecoration: 'none' }}>
               <ListItem key={item.title} disablePadding>
                 <ListItemButton>
                   <ListItemText primary={item.title} />
