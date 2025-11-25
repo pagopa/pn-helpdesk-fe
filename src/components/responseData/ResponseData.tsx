@@ -2723,6 +2723,36 @@ const ResponseData = () => {
   };
   const textGenerality = `IUN:${data.iun},\nSENTAT:${data.sentAt},\nSUBJECT:${data.subject},\nABSTRACT:${data.abstract}\n ....`;
 
+  const highlightDiff = (a?: string, b?: string) => {
+    const wordsA = a?.split(" ");
+    const wordsB = b?.split(" ");
+
+    return wordsA?.map((w: string, i: number) => {
+      if (wordsB) {
+        const isDifferent = w !== wordsB[i];
+        return (
+          <span
+            key={i}
+            style={{
+              backgroundColor: isDifferent ? "yellow" : "transparent",
+              padding: isDifferent ? "2px 4px" : 0,
+            }}
+          >
+            {w + " "}
+          </span>
+        );
+      }
+    });
+  };
+
+  // SEND_COURTESY_MESSAGE per messaggio di cortesia
+  // PREPARE_DIGITAL_DOMICILE domicilio digitale generale
+  // SEND_DIGITAL_FEEDBACK
+  // SEND_DIGITAL_PROGRESS entrambi per esiti pec
+  const countOfSendCourtesyMessage = data.timeline.filter(el =>
+    el.elementId.includes('SEND_COURTESY_MESSAGE')
+  ).length;
+
 
   return (
     <div>
@@ -2739,26 +2769,71 @@ const ResponseData = () => {
           {textGenerality}
         </AccordionDetails>
       </Accordion>
+      {data.timeline.map((el) => {
+        const oldAddress = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.oldAddress?.address}, ` : undefined;
+        const oldMunicipality = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.oldAddress?.municipality}, ` : undefined;
+        const oldMunicipalityDetails = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.oldAddress?.municipalityDetails}, ` : undefined;
+        const oldZip = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.oldAddress?.zip}, ` : undefined;
+        const oldProvince = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.oldAddress?.province}, ` : undefined;
+
+        const normalizedAddress = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.normalizedAddress?.address}, ` : undefined;
+        const normalizedMunicipality = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.normalizedAddress?.municipality}, ` : undefined;
+        const normalizedMunicipalityDetails = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.normalizedAddress?.municipalityDetails}, ` : undefined;
+        const normalizedZip = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.normalizedAddress?.zip}, ` : undefined;
+        const normalizedProvince = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.normalizedAddress?.province}, ` : undefined;
 
 
-      {
-        data.timeline.map((el, idx) => {
-          const textOfAddress = el.elementId.includes('NORMALIZED_ADDRESS') ? `Address:${el?.details.oldAddress?.address},AddressNormalized:${el?.details.normalizedAddress?.address},` : false;
+        const sendCourtesyMessage = el.elementId.includes('NORMALIZED_ADDRESS') ? `Type : ${el.details.digitalAddress?.type}, Address : ${el.details.digitalAddress?.address}, SendAt: ${el.details.sendDate}` : undefined;
+        const isIosendCourtesyMessage = el.details.digitalAddress?.type === "APPIO";
+        const ioResult = el.elementId.includes('NORMALIZED_ADDRESS') && isIosendCourtesyMessage ? `AppIo-Result: ${el.details.ioSendMessageResult}` : undefined;
 
-          return textOfAddress && <Accordion key={`panel${idx}`}>
+        return <> {oldAddress && normalizedAddress && <Accordion key={'nomalize'}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2-content"
+            id="panel2-header"
+          >
+            <Typography component="span">Indirizzo normalizzato</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography variant="body1">
+              Indirizzo normalizzato: {highlightDiff(normalizedAddress, oldAddress)}
+              {highlightDiff(normalizedMunicipality, oldMunicipality)}
+              {highlightDiff(normalizedMunicipalityDetails, oldMunicipalityDetails)}
+              {highlightDiff(normalizedZip, oldZip)}
+              {highlightDiff(normalizedProvince, oldProvince)}
+
+            </Typography>
+            <Typography variant="body1">
+              Indirizzo inserito da ente: {highlightDiff(oldAddress, normalizedAddress)}
+              {highlightDiff(oldMunicipality, normalizedMunicipality)}
+              {highlightDiff(oldMunicipalityDetails, normalizedMunicipalityDetails)}
+              {highlightDiff(oldZip, normalizedZip)}
+              {highlightDiff(oldProvince, normalizedProvince)}
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        }
+          {sendCourtesyMessage && <Accordion key={'send-message'} >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2-content"
-              id="panel2-header"
+              aria-controls="panel3-content"
+              id="panel3-header"
             >
-              <Typography component="span">Indirizzo normalizzato</Typography>
+              <Typography component="span">Messaggio di cortesia</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {textOfAddress}
+              <Typography variant="body1">
+                Numero di messaggi di cortesia: {countOfSendCourtesyMessage}
+              </Typography>
+              <Typography variant="body1">
+                {sendCourtesyMessage}, {ioResult}
+              </Typography>
             </AccordionDetails>
-          </Accordion>;
-        })
-      }
+          </Accordion>}
+        </>;
+
+      })}
 
     </div >
   );
