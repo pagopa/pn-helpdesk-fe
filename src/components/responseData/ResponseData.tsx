@@ -1,8 +1,10 @@
 import React from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Box, /* Divider, Grid,  */Typography } from '@mui/material';
+import { Box, /* Divider, Grid,  */Typography } from '@mui/material';
 // import { useSelector } from 'react-redux';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
+import AnalogEvent from './AnalogEvent';
+import DetailOfAddress from './DetailOfAddress';
+import CourtesyMessage from './CourtesyMessage';
 // import { opened } from '../../redux/responseSlice';
 
 /**
@@ -17,139 +19,6 @@ import AccordionTimeline from '../accordionData/AccordionTimeline';
   internalId = 'Codice Univoco',
   downloadLink = 'Download',
 } */
-type AnalogEvent = {
-  analogEvents: Array<{
-    elementId: string;
-    category: string;
-    details?: {
-      schedulingDate?: string | null;
-      serviceLevel?: string | null;
-      deliveryDetailCode?: string | null;
-      deliveryFailureCause?: string | null;
-      responseStatus?: string | null;
-      registeredLetterCode?: string | null;
-      [key: string]: any;
-    };
-  }>;
-};
-
-const RenderAnalog: React.FC<AnalogEvent> = ({ analogEvents }) => (
-  <Accordion>
-    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-      <Typography variant="body1">
-        Workflow Analogico ({analogEvents.length} eventi)
-      </Typography>
-    </AccordionSummary>
-
-    <AccordionDetails sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      {analogEvents.map((el: any, i: number) => {
-        const isScheduled = el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW");
-
-        const schedulingDate =
-          isScheduled && el.details?.schedulingDate
-            ? new Date(el.details.schedulingDate).toLocaleDateString()
-            : null;
-
-        const sendAnalog =
-          el.elementId.includes("SEND_ANALOG_PROGRESS") && el.details
-            ? {
-              serviceLevel: el.details.serviceLevel,
-              deliveryDetailCode: el.details.deliveryDetailCode,
-              deliveryFailureCause: el.details.deliveryFailureCause,
-              responseStatus: el.details.responseStatus,
-              registeredLetterCode: el.details.registeredLetterCode,
-            }
-            : null;
-
-        const sendAnalogFeedback =
-          el.elementId.includes("SEND_ANALOG_FEEDBACK") && el.details
-            ? {
-              serviceLevel: el.details.serviceLevel,
-              deliveryDetailCode: el.details.deliveryDetailCode,
-              responseStatus: el.details.responseStatus,
-              deliveryFailureCause: el.details.deliveryFailureCause,
-            }
-            : null;
-
-        return (
-          <Accordion key={`analog-${i}`}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="body1">
-                Evento {i + 1}: {el.category}
-              </Typography>
-            </AccordionSummary>
-
-            <AccordionDetails>
-              <Box component="div" display="flex" flexDirection="column" gap={1}>
-                {schedulingDate && (
-                  <Typography variant="body1">
-                    Schedulato il: {schedulingDate}
-                  </Typography>
-                )}
-
-                {sendAnalog && (
-                  <>
-                    {sendAnalog.deliveryDetailCode && (
-                      <Typography variant="body1">
-                        Codice dettaglio: {sendAnalog.deliveryDetailCode}
-                      </Typography>
-                    )}
-                    {sendAnalog.deliveryFailureCause && (
-                      <Typography variant="body1">
-                        Causa fallimento: {sendAnalog.deliveryFailureCause}
-                      </Typography>
-                    )}
-                    {sendAnalog.serviceLevel && (
-                      <Typography variant="body1">
-                        Livello servizio: {sendAnalog.serviceLevel}
-                      </Typography>
-                    )}
-                    {sendAnalog.responseStatus && (
-                      <Typography variant="body1">
-                        Status risposta: {sendAnalog.responseStatus}
-                      </Typography>
-                    )}
-                    {sendAnalog.registeredLetterCode && (
-                      <Typography variant="body1">
-                        Raccomandata: {sendAnalog.registeredLetterCode}
-                      </Typography>
-                    )}
-                  </>
-                )}
-
-                {sendAnalogFeedback && (
-                  <>
-                    {sendAnalogFeedback.deliveryDetailCode && (
-                      <Typography variant="body1">
-                        Codice dettaglio: {sendAnalogFeedback.deliveryDetailCode}
-                      </Typography>
-                    )}
-                    {sendAnalogFeedback.serviceLevel && (
-                      <Typography variant="body1">
-                        Livello servizio: {sendAnalogFeedback.serviceLevel}
-                      </Typography>
-                    )}
-                    {sendAnalogFeedback.responseStatus && (
-                      <Typography variant="body1">
-                        Status risposta: {sendAnalogFeedback.responseStatus}
-                      </Typography>
-                    )}
-                    {sendAnalogFeedback.deliveryFailureCause && (
-                      <Typography variant="body1">
-                        Causa fallimento: {sendAnalogFeedback.deliveryFailureCause}
-                      </Typography>
-                    )}
-                  </>
-                )}
-              </Box>
-            </AccordionDetails>
-          </Accordion>
-        );
-      })}
-    </AccordionDetails>
-  </Accordion>
-);
-
 
 
 /**
@@ -2858,31 +2727,7 @@ const ResponseData = () => {
     ]
   };
 
-  const highlightDiff = (a?: string, b?: string) => {
-    const wordsA = a?.split(" ");
-    const wordsB = b?.split(" ");
-
-    return wordsA?.map((w: string, i: number) => {
-      if (wordsB) {
-        const isDifferent = w !== wordsB[i];
-        return (
-          <span
-            key={i}
-            style={{
-              backgroundColor: isDifferent ? "yellow" : "transparent",
-              padding: isDifferent ? "2px 4px" : 0,
-            }}
-          >
-            {w + " "}
-          </span>
-        );
-      }
-    });
-  };
-
-  // SEND_DIGITAL_FEEDBACK
-  // SEND_DIGITAL_PROGRESS entrambi per esiti pec
-
+  // per WF digitale MGKV-WHQA-RHGN-202509-D-1 TETN-TRGU-EXMD-202511-P-1
   // definire una canned su un testo univico con le parti salienti della notifica
 
   const countOfSendCourtesyMessage = data.timeline.filter(el =>
@@ -2896,27 +2741,19 @@ const ResponseData = () => {
     el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW") ||
     el.elementId.includes("SCHEDULE_ANALOG_FEEDBACK")
   );
+
   return (
-    <div>
-      <AccordionTimeline keyValue='panel1'
+    <Box sx={{ width: 'inherit' }}>
+      <AccordionTimeline keyValue='notifica'
         accordionSummaryChild={<Typography component="span">Generalitá notifica</Typography>}
         accordionDetailsChild={dataGenerality.map((el, idx) => (
           <Typography key={idx}>{el}</Typography>
         ))}></AccordionTimeline>
+
       {data.timeline.map((el) => {
-        const oldAddress = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.oldAddress?.address}, ` : undefined;
-        const oldMunicipality = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.oldAddress?.municipality}, ` : undefined;
-        const oldMunicipalityDetails = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.oldAddress?.municipalityDetails}, ` : undefined;
-        const oldZip = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.oldAddress?.zip}, ` : undefined;
-        const oldProvince = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.oldAddress?.province} ` : undefined;
 
-        const normalizedAddress = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.normalizedAddress?.address}, ` : undefined;
-        const normalizedMunicipality = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.normalizedAddress?.municipality}, ` : undefined;
-        const normalizedMunicipalityDetails = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.normalizedAddress?.municipalityDetails}, ` : undefined;
-        const normalizedZip = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.normalizedAddress?.zip}, ` : undefined;
-        const normalizedProvince = el.elementId.includes('NORMALIZED_ADDRESS') ? `${el.details.normalizedAddress?.province} ` : undefined;
-
-        const checkCourtesyMessage = el.elementId.includes('SEND_COURTESY_MESSAGE') || el.elementId.includes('SEND_DIGITAL') || el.elementId.includes('SEND_DIGITAL_FEEDBACK');
+        const addressFlag = el.elementId.includes('NORMALIZED_ADDRESS');
+        const checkCourtesyMessage = el.elementId.includes('SEND_COURTESY_MESSAGE') || (el.elementId.includes('SEND_DIGITAL') && !el.elementId.includes('SEND_DIGITAL_FEEDBACK')) || el.elementId.includes('SEND_DIGITAL_FEEDBACK') || el.elementId.includes('DIGITAL_PROG');
         const sendCourtesyMessage = checkCourtesyMessage ?
           [`Type : ${el.details.digitalAddress?.type}`, ` Address : ${el.details.digitalAddress?.address}`, ` SendAt: ${el.details.sendDate ? new Date(el.details.sendDate).toLocaleDateString() : ""}`, `Source: ${el.details.digitalAddressSource}`, `Response: ${el.details.responseStatus}`, `Detail code: ${el.details.deliveryDetailCode}`, `Failure cause: ${el.details.deliveryFailureCause}`]
           : [];
@@ -2926,52 +2763,14 @@ const ResponseData = () => {
         const analogWorkflow = el.elementId.includes('SCHEDULE_ANALOG_WORKFLOW');
 
         return <>
-          {oldAddress && normalizedAddress && <Accordion key={'normalize'}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2-content"
-              id="panel2-header"
-            >
-              <Typography component="span">Indirizzo normalizzato</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="body1">
-                Indirizzo inserito da ente: {highlightDiff(oldAddress, normalizedAddress)}
-                {highlightDiff(oldMunicipality, normalizedMunicipality)}
-                {highlightDiff(oldMunicipalityDetails, normalizedMunicipalityDetails)}
-                {highlightDiff(oldZip, normalizedZip)}
-                {highlightDiff(oldProvince, normalizedProvince)}
-              </Typography>
-              <Typography variant="body1">
-                Indirizzo normalizzato: {highlightDiff(normalizedAddress, oldAddress)}
-                {highlightDiff(normalizedMunicipality, oldMunicipality)}
-                {highlightDiff(normalizedMunicipalityDetails, oldMunicipalityDetails)}
-                {highlightDiff(normalizedZip, oldZip)}
-                {highlightDiff(normalizedProvince, oldProvince)}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-          }
-          {checkCourtesyMessage &&
-            <AccordionTimeline keyValue='panel3'
-              accordionSummaryChild={<Typography component="span">Messaggio di cortesia</Typography>}
-              accordionDetailsChild={<>
-                <Typography variant="body1">
-                  Numero di messaggi di cortesia: {countOfSendCourtesyMessage}
-                </Typography>
-                {sendCourtesyMessage.map((el, idx) =>
-                  <Typography key={idx} variant="body1">
-                    {el}
-                  </Typography>)}
-                <Typography variant='body1'>{ioResult}</Typography>
-              </>
-              }
-            ></AccordionTimeline>}
-          {analogWorkflow && <RenderAnalog analogEvents={analogEvents}></RenderAnalog>}
+          {addressFlag && <DetailOfAddress oldAddress={el.details.oldAddress} normalizeAddress={el.details.normalizedAddress}></DetailOfAddress>}
+          {checkCourtesyMessage && <CourtesyMessage sendCourtesyMessage={sendCourtesyMessage} ioResult={ioResult} numberOfSendCourtesyMessage={countOfSendCourtesyMessage}></CourtesyMessage>}
+          {analogWorkflow && <AnalogEvent analogEvents={analogEvents}></AnalogEvent>}
         </>;
       })}
-    </div >
+    </Box >
   );
+
   /* return openedResponseData ? (
 /*     <Grid item container direction="column" rowSpacing={2}>
       <Grid item>

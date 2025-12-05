@@ -42,3 +42,9 @@ export const calcSha256String = (file: File): Promise<{ hashHex: string; hashBas
     };
   });
 };
+
+
+
+
+
+
