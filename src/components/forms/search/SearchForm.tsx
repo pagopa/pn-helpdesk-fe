@@ -107,7 +107,7 @@ const SearchForm = () => {
    */
   const watchTipoEstrazione = useWatch({ name: 'Tipo Estrazione', control });
 
-  const { API_ENDPOINT } = getConfiguration();
+  const { API_ENDPOINT, API_ENDPOINT_BFHD } = getConfiguration();
 
   /**
    * function handling changes of the Tipo Estrazione select menu
@@ -217,7 +217,7 @@ const SearchForm = () => {
         if (
           selectedValue === 'Ottieni log completi' &&
           [...neededFields].sort().join('') ===
-            [...MenuItems['Ottieni log completi']].sort().join('') &&
+          [...MenuItems['Ottieni log completi']].sort().join('') &&
           field.name !== 'ticketNumber'
         ) {
           return { ...field, required: false };
@@ -532,7 +532,7 @@ const SearchForm = () => {
                                     />
                                     <FormHelperText error>
                                       {errors[field?.name] &&
-                                      field.componentType !== 'dateRangePicker'
+                                        field.componentType !== 'dateRangePicker'
                                         ? (errors[field?.name]?.message as string)
                                         : ' '}
                                     </FormHelperText>
