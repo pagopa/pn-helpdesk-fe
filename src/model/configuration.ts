@@ -15,10 +15,11 @@ export interface AppConfiguration extends AppConfigurationFromFile {
   API_ENDPOINT: string;
   API_AGGREGATE_ENDPOINT: string;
   API_PAPER_CHANNEL_ENDPOINT: string;
+  API_ENDPOINT_BFHD: string;
   API_DOWNTIME_LOGS_ENDPOINT: string;
 }
 
-class ConfigurationError extends Error {}
+class ConfigurationError extends Error { }
 
 export class Configuration {
   private static storedConfiguration: AppConfigurationFromFile | null = null;
