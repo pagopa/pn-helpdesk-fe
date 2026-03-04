@@ -249,7 +249,8 @@ const SearchForm = () => {
     if (selectedValue === 'Ottieni EncCF' || selectedValue === 'Ottieni CF') {
       createRequest(payload);
     } else {
-      downloadZip(JSON.stringify(payload));
+      // downloadZip(JSON.stringify(payload));
+      fetchNotification(JSON.stringify(payload));
     }
   };
 
@@ -309,6 +310,42 @@ const SearchForm = () => {
       default:
         return '';
     }
+  };
+
+  const fetchNotification = (payload: any): any => {
+    const url = API_ENDPOINT_BFHD + getUrl();
+    dispatch(spinnerActions.updateSpinnerOpened(true));
+    const token = sessionStorage.getItem('token');
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        /* 'uid': uuid(),
+        'cx-type': 'BO',
+        'cx-id': '', */
+      },
+      body: payload,
+    }).then((res) => {
+      if (res.status !== 200) {
+        const msg =
+          res.status === 204
+            ? 'Nessun dato disponibile'
+            : "Si è verificato un errore durante l'estrazione";
+        updateSnackbar({ data: { message: msg }, status: 500 });
+
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+        return;
+      }
+      console.log('res :>> ', res);
+    }).catch(() => {
+      updateSnackbar({
+        data: { message: "Si è verificato un errore durante l'estrazione" },
+        status: 500,
+      });
+
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+    });
   };
 
   const downloadZip = (payload: any): any => {
