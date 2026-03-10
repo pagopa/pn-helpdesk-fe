@@ -107,7 +107,7 @@ const SearchForm = () => {
    */
   const watchTipoEstrazione = useWatch({ name: 'Tipo Estrazione', control });
 
-  const { API_ENDPOINT, API_ENDPOINT_BFHD } = getConfiguration();
+  const { API_ENDPOINT } = getConfiguration();
 
   /**
    * function handling changes of the Tipo Estrazione select menu
@@ -242,7 +242,7 @@ const SearchForm = () => {
    * handling form submit
    * @param data values from the form
    */
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     resetStore();
     dispatch(spinnerActions.updateSpinnerOpened(true));
     const payload = createPayload(data);
@@ -250,7 +250,7 @@ const SearchForm = () => {
       createRequest(payload);
     } else {
       // downloadZip(JSON.stringify(payload));
-      fetchNotification(JSON.stringify(payload));
+      await fetchNotification(JSON.stringify(payload));
     }
   };
 
@@ -312,40 +312,29 @@ const SearchForm = () => {
     }
   };
 
-  const fetchNotification = (payload: any): any => {
-    const url = API_ENDPOINT_BFHD + getUrl();
+  const fetchNotification = async (payload: any) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
-    const token = sessionStorage.getItem('token');
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        /* 'uid': uuid(),
-        'cx-type': 'BO',
-        'cx-id': '', */
-      },
-      body: payload,
-    }).then((res) => {
-      if (res.status !== 200) {
-        const msg =
-          res.status === 204
-            ? 'Nessun dato disponibile'
-            : "Si è verificato un errore durante l'estrazione";
-        updateSnackbar({ data: { message: msg }, status: 500 });
+    await apiRequests.getNotificationsInfo(payload)
+      .then((res) => {
+        if (res.status !== 200) {
+          const msg =
+            res.status === 204
+              ? 'Nessun dato disponibile'
+              : "Si è verificato un errore durante l'estrazione";
+          updateSnackbar({ data: { message: msg }, status: 500 });
+
+          dispatch(spinnerActions.updateSpinnerOpened(false));
+          return;
+        }
+        console.log('res :>> ', res);
+      }).catch(() => {
+        updateSnackbar({
+          data: { message: "Si è verificato un errore durante l'estrazione" },
+          status: 500,
+        });
 
         dispatch(spinnerActions.updateSpinnerOpened(false));
-        return;
-      }
-      console.log('res :>> ', res);
-    }).catch(() => {
-      updateSnackbar({
-        data: { message: "Si è verificato un errore durante l'estrazione" },
-        status: 500,
       });
-
-      dispatch(spinnerActions.updateSpinnerOpened(false));
-    });
   };
 
   const downloadZip = (payload: any): any => {
