@@ -1,37 +1,56 @@
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { responseNotificationData } from "../../redux/responseSlice";
 import AccordionTimeline from "../accordionData/AccordionTimeline";
+import { TimelineElement } from "../../model/notification";
 import AnalogEvent from "./AnalogEvent";
 import CourtesyMessage from "./CourtesyMessage";
 import DetailOfAddress from "./DetailOfAddress";
 
 
-
-
 const NotificationData = () => {
     const data = useSelector(responseNotificationData);
+    const [countOfSendCourtesyMessage, setCountOfSendCourtesyMessage] = useState<number>(0);
+    const [dataGenerality, setDataGenerality] = useState<Array<string>>([]);
+    const [analogEvents, setAnalogEvents] = useState<Array<TimelineElement>>([]);
 
-    const countOfSendCourtesyMessage = data.timeline && data.timeline.filter((el: { elementId: string | Array<string> }) =>
-        el.elementId.includes('SEND_COURTESY_MESSAGE') || el.elementId.includes('SEND_DIGITAL')
-    ).length;
+    useEffect(() => {
+        if (!data) { return; };
 
-    const dateLocalSentAt = new Date(data.sentAt).toLocaleDateString();
-    const dataGenerality = [`IUN: ${data.iun}`, `SENT AT: ${dateLocalSentAt}`, `SUBJECT: ${data.subject}`, `PAYMENTS: ${!!data.recipients?.[0]?.payments}`];
-    const analogEvents = data.timeline && data.timeline.filter((el: { elementId: string | Array<string> }) =>
-        el.elementId.includes("SEND_ANALOG_PROGRESS") ||
-        el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW") ||
-        el.elementId.includes("SCHEDULE_ANALOG_FEEDBACK")
-    );
+        const courtesyCount = data.timeline.filter((el: TimelineElement) =>
+            el.elementId.includes('SEND_COURTESY_MESSAGE') ||
+            el.elementId.includes('SEND_DIGITAL')
+        ).length;
 
-    return <Box sx={{ width: 'inherit' }}>
-        {data.iun && <AccordionTimeline keyValue='notifica'
+        const formattedDate = new Date(data.sentAt).toLocaleDateString();
+
+        setCountOfSendCourtesyMessage(courtesyCount);
+        setDataGenerality([
+            `IUN: ${data.iun}`,
+            `SENT AT: ${formattedDate}`,
+            `SUBJECT: ${data.subject}`,
+            `PAYMENTS: ${!!data.recipients?.[0]?.payments}`,
+        ]);
+        setAnalogEvents(
+            data.timeline.filter((el: TimelineElement) =>
+                el.elementId.includes("SEND_ANALOG_PROGRESS") ||
+                el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW") ||
+                el.elementId.includes("SCHEDULE_ANALOG_FEEDBACK")
+            )
+        );
+    }, [data]);
+
+
+
+    return data && <Box sx={{ width: 'inherit' }}>
+        <AccordionTimeline keyValue='notifica'
             accordionSummaryChild={<Typography component="span">Generalitá notifica</Typography>}
             accordionDetailsChild={dataGenerality.map((el: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, idx: React.Key | null | undefined) => (
                 <Typography key={idx}>{el}</Typography>
-            ))}></AccordionTimeline>}
+            ))}></AccordionTimeline>
 
-        {data && data.timeline.map((el) => {
+        {data.timeline.map((el) => {
 
             const addressFlag = el.elementId.includes('NORMALIZED_ADDRESS');
             const checkCourtesyMessage = el.elementId.includes('SEND_COURTESY_MESSAGE') || (el.elementId.includes('SEND_DIGITAL') && !el.elementId.includes('SEND_DIGITAL_FEEDBACK')) || el.elementId.includes('SEND_DIGITAL_FEEDBACK') || el.elementId.includes('DIGITAL_PROG');
@@ -50,6 +69,7 @@ const NotificationData = () => {
             </>;
         })}
     </Box >;
+
 };
 
 export default NotificationData;

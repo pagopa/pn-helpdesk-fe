@@ -101,7 +101,7 @@ interface TimelineDetails {
     ioSendMessageResult: string;
 }
 
-interface TimelineElement {
+export interface TimelineElement {
     elementId: string;
     timestamp: string;
     ingestionTimestamp: string;
