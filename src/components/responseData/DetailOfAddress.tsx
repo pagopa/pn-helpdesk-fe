@@ -1,29 +1,11 @@
 import React from 'react';
 import { Typography } from '@mui/material';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
+import { PhysicalAddress } from '../../model/notification';
 
 type Props = {
-    normalizeAddress: {
-        at: null;
-        address: string;
-        addressDetails: string;
-        zip: string;
-        municipality: string;
-        municipalityDetails: string;
-        province: string;
-        foreignState: string;
-    } | null;
-
-    oldAddress: {
-        at: null;
-        address: string;
-        addressDetails: string | null;
-        zip: string;
-        municipality: string;
-        municipalityDetails: string | null;
-        province: string;
-        foreignState: string | null;
-    } | null;
+    normalizeAddress: PhysicalAddress | undefined;
+    oldAddress: PhysicalAddress | undefined;
 };
 
 const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress }) => {
