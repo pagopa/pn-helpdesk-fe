@@ -18,7 +18,8 @@ import NumberFieldComponent from '../textField/NumberFieldComponent';
 const MenuItems: { [key: string]: Array<string> } = {
   'Ottieni EncCF': ['ticketNumber', 'taxId', 'piva', 'recipientType'],
   'Ottieni CF': ['personId'],
-  'Ottieni notifica': ['ticketNumber', 'iun'],
+  'Ottieni notifica da scaricare': ['ticketNumber', 'iun'],
+  'Ottieni notifica visualizzabile': ['ticketNumber', 'iun'],
   // use case 9 dissabled for now
   // "Ottieni log completi + organizzazione": ["ticketNumber", "taxId", "Time interval"],
   'Ottieni log completi': ['ticketNumber', 'taxId', 'iun', 'personId'],
@@ -136,7 +137,7 @@ const FieldsProperties: { [key: string]: FieldsProps } = {
     label: 'Tipo Estrazione',
     hidden: false,
     selectItems: Object.keys(MenuItems),
-    size: 3,
+    size: 4,
   },
   'Ticket Number': {
     name: 'ticketNumber',
