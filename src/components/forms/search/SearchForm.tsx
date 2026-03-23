@@ -286,7 +286,6 @@ const SearchForm = () => {
         })
         .catch((error) => {
           updateSnackbar({ data: { error }, status: 500 });
-
           dispatch(spinnerActions.updateSpinnerOpened(false));
         });
     }

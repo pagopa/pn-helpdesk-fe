@@ -39,7 +39,6 @@
     "eslint-plugin-jest-dom": "^4.0.2",
     "eslint-plugin-testing-library": "^5.9.1",
     "fs": "^0.0.1-security",
-    "jest-sonar-reporter": "^2.0.0",
     "msw": "^0.47.4",
     "mui-tiptap": "^1.18.1",
     "react": "^18.1.0",
