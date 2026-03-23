@@ -16,6 +16,8 @@ import * as spinnerActions from '../../../redux/spinnerSlice';
 import { FieldsProperties, FieldsProps, FormField, MenuItems } from '../../formFields/FormFields';
 import ResponseData from '../../responseData/ResponseData';
 import { getConfiguration } from '../../../services/configuration.service';
+import NotificationData from '../../responseData/NotificationData';
+import { NotificationDataModel } from '../../../model/notification';
 
 /**
  * default values of the form fields
@@ -74,6 +76,8 @@ const SearchForm = () => {
    * helps for watching the touched field and handle changes of them in the Otteni log completi case
    */
   const [ricerca, setRicerca] = useState<boolean>(false);
+
+
 
   /**
    * dispatch redux actions
@@ -248,9 +252,10 @@ const SearchForm = () => {
     const payload = createPayload(data);
     if (selectedValue === 'Ottieni EncCF' || selectedValue === 'Ottieni CF') {
       createRequest(payload);
-    } else {
-      // downloadZip(JSON.stringify(payload));
+    } else if (selectedValue === 'Ottieni notifica visualizzabile') {
       await fetchNotification(JSON.stringify(payload));
+    } else {
+      downloadZip(JSON.stringify(payload));
     }
   };
 
@@ -314,8 +319,8 @@ const SearchForm = () => {
 
   const fetchNotification = async (payload: any) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
-    await apiRequests.getNotificationsInfo(payload)
-      .then((res) => {
+    await apiRequests.getNotificationsInfo(payload).
+      then((res: { status: number; data: NotificationDataModel }) => {
         if (res.status !== 200) {
           const msg =
             res.status === 204
@@ -326,7 +331,8 @@ const SearchForm = () => {
           dispatch(spinnerActions.updateSpinnerOpened(false));
           return;
         }
-        console.log('res :>> ', res);
+        dispatch(responseActions.updateNotificationData(res.data));
+        dispatch(spinnerActions.updateSpinnerOpened(false));
       }).catch(() => {
         updateSnackbar({
           data: { message: "Si è verificato un errore durante l'estrazione" },
@@ -337,81 +343,61 @@ const SearchForm = () => {
       });
   };
 
-  const downloadZip = (payload: any): any => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const url = API_ENDPOINT + getUrl();
 
+  const downloadZip = (payload: any): any => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion    
+    const url = API_ENDPOINT + getUrl();
     dispatch(spinnerActions.updateSpinnerOpened(true));
     const token = sessionStorage.getItem('token');
-
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        'x-pagopa-pn-uid': uuid(),
-        'x-pagopa-pn-cx-type': 'BO',
-      },
-      body: payload,
-    })
+    fetch(url,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', Authorization: `Bearer ${token}`, 'x-pagopa-pn-uid': uuid(), 'x-pagopa-pn-cx-type': 'BO',
+        },
+        body: payload,
+      })
       .then((res) => {
         if (res.status !== 200) {
-          const msg =
-            res.status === 204
-              ? 'Nessun dato disponibile'
-              : "Si è verificato un errore durante l'estrazione";
+          const msg = res.status === 204 ? 'Nessun dato disponibile' : "Si è verificato un errore durante l'estrazione";
           updateSnackbar({ data: { message: msg }, status: 500 });
-
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          return;
+          dispatch(spinnerActions.updateSpinnerOpened(false)); return;
         }
-
         void res.json().then((data) => {
-          const fileName = data?.message;
-          password = res.headers.get('password');
-
+          const fileName = data?.message; password = res.headers.get('password');
           updateResponse({ password });
           polling(fileName);
         });
-      })
-      .catch(() => {
-        updateSnackbar({
-          data: { message: "Si è verificato un errore durante l'estrazione" },
-          status: 500,
-        });
-
+      }).catch(() => {
+        updateSnackbar({ data: { message: "Si è verificato un errore durante l'estrazione" }, status: 500, });
         dispatch(spinnerActions.updateSpinnerOpened(false));
       });
   };
-
   let timerId: any;
 
   const polling = (data: any): any => {
-    if (!data || data === '') {
-      return;
-    }
-
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-
-    apiRequests
-      .getDownloadUrl(data)
-      .then((ret) => {
-        if (ret.data.message === 'notready') {
-          timerId = setTimeout(() => polling(data), 5000);
-        } else {
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          updateResponse({ password, downloadLink: ret.data.message });
-          updateSnackbar({ data: { message: infoMessages.OK_RESPONSE } });
-        }
-      })
-      .catch(() => {
+    if (!data || data === '') { return; }
+    if (timerId) { clearTimeout(timerId); }
+    apiRequests.getDownloadUrl(data).then((ret) => {
+      if (ret.data.message === 'notready') { timerId = setTimeout(() => polling(data), 5000); }
+      else {
         dispatch(spinnerActions.updateSpinnerOpened(false));
-        updateSnackbar({ data: { error: 'Error preparing download' }, status: 500 });
-      });
+        updateResponse({ password, downloadLink: ret.data.message });
+        updateSnackbar({ data: { message: infoMessages.OK_RESPONSE } });
+      }
+    }).catch(() => {
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      updateSnackbar({ data: { error: 'Error preparing download' }, status: 500 });
+    });
   };
-
+  /**
+   * update the response data component depending on the response
+   * @param response
+   */
+  const updateResponse = (response: any) => {
+    dispatch(responseActions.updateResponseOpened(true));
+    dispatch(responseActions.updateResponseData(response));
+  };
   /**
    * Formatting the data ready to be sent
    * @param data data that has to be formatted
@@ -464,14 +450,7 @@ const SearchForm = () => {
     }
   };
 
-  /**
-   * update the response data component depending on the response
-   * @param response
-   */
-  const updateResponse = (response: any) => {
-    dispatch(responseActions.updateResponseOpened(true));
-    dispatch(responseActions.updateResponseData(response));
-  };
+
 
   /**
    * reset the state of the redux store
@@ -621,6 +600,7 @@ const SearchForm = () => {
                 </form>
               </Grid>
               <ResponseData></ResponseData>
+              <NotificationData ></NotificationData>
             </Grid>
           </Card>
         </Grid>
