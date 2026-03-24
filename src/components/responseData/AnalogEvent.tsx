@@ -2,6 +2,7 @@ import { Accordion, AccordionSummary, Typography, AccordionDetails, Box } from '
 import React from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
+import { codiciStatusTimeline } from '../../model/notification';
 
 type AnalogEvent = {
     analogEvents: Array<{
@@ -19,6 +20,14 @@ type AnalogEvent = {
     }>;
 };
 
+type SendAnalog = {
+    serviceLevel: string;
+    deliveryDetailCode: string;
+    deliveryFailureCause: string;
+    responseStatus: string;
+    registeredLetterCode: string;
+} | null;
+
 const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
     <AccordionTimeline
         keyValue='analogEvent'
@@ -34,7 +43,7 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                         ? new Date(el.details.schedulingDate).toLocaleDateString()
                         : null;
 
-                const sendAnalog =
+                const sendAnalog: SendAnalog =
                     el.elementId.includes("SEND_ANALOG_PROGRESS") && el.details
                         ? {
                             serviceLevel: el.details.serviceLevel,
@@ -75,12 +84,12 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                                     <>
                                         {sendAnalog.deliveryDetailCode && (
                                             <Typography variant="body1">
-                                                Codice dettaglio: {sendAnalog.deliveryDetailCode}
+                                                Codice dettaglio: {`${sendAnalog.deliveryDetailCode} - ${codiciStatusTimeline[sendAnalog.deliveryDetailCode]}`}
                                             </Typography>
                                         )}
                                         {sendAnalog.deliveryFailureCause && (
                                             <Typography variant="body1">
-                                                Causa fallimento: {sendAnalog.deliveryFailureCause}
+                                                Causa fallimento: {`${sendAnalog.deliveryFailureCause} - ${codiciStatusTimeline[sendAnalog.deliveryFailureCause]}`}
                                             </Typography>
                                         )}
                                         {sendAnalog.serviceLevel && (
@@ -105,7 +114,7 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                                     <>
                                         {sendAnalogFeedback.deliveryDetailCode && (
                                             <Typography variant="body1">
-                                                Codice dettaglio: {sendAnalogFeedback.deliveryDetailCode}
+                                                Codice dettaglio: {`${sendAnalogFeedback.deliveryDetailCode} - ${codiciStatusTimeline[sendAnalogFeedback.deliveryDetailCode]}`}
                                             </Typography>
                                         )}
                                         {sendAnalogFeedback.serviceLevel && (
@@ -120,7 +129,7 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                                         )}
                                         {sendAnalogFeedback.deliveryFailureCause && (
                                             <Typography variant="body1">
-                                                Causa fallimento: {sendAnalogFeedback.deliveryFailureCause}
+                                                Causa fallimento: {`${sendAnalogFeedback.deliveryFailureCause} - ${codiciStatusTimeline[sendAnalogFeedback.deliveryFailureCause]}`}
                                             </Typography>
                                         )}
                                     </>
