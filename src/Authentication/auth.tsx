@@ -6,7 +6,7 @@ import { useCurrentUser } from '../hooks/useCurrentUser';
 import { getConfiguration } from '../services/configuration.service';
 import { setStorage, resetStorage, deleteStorage } from './storage';
 
-const CUSTOM_PERMISSION_KEY = 'custom:backoffice_tags';
+export const CUSTOM_PERMISSION_KEY = 'custom:backoffice_tags';
 
 type Props = {
   /**
