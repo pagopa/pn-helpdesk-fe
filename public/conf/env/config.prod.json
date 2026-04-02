@@ -2,5 +2,8 @@
   "AWS_USER_POOLS_ID": "${AWS_USER_POOLS_ID}",
   "AWS_USER_POOLS_WEB_CLIENT_ID": "${AWS_USER_POOLS_WEB_CLIENT_ID}",
   "API_DOMAIN": "api.bo.notifichedigitali.it",
-  "WEB_API_DOMAIN": "webapi.notifichedigitali.it"
+  "WEB_API_DOMAIN": "webapi.notifichedigitali.it",
+  "COGNITO_REDIRECT_URI": "https://helpdesk.notifichedigitali.it",
+  "COGNITO_DOMAIN": "<todo>",
+  "COGNITO_PROVIDER_NAME": "<todo>"
 }

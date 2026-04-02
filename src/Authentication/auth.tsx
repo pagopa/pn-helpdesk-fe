@@ -3,7 +3,10 @@ import { CognitoUser } from '@aws-amplify/auth';
 import { useCallback } from 'react';
 import { Permission, UserData } from '../model/user-permission';
 import { useCurrentUser } from '../hooks/useCurrentUser';
+import { getConfiguration } from '../services/configuration.service';
 import { setStorage, resetStorage, deleteStorage } from './storage';
+
+const CUSTOM_PERMISSION_KEY = 'custom:backoffice_tags';
 
 type Props = {
   /**
@@ -28,7 +31,7 @@ export async function initAmplify() {
 }
 
 function userDataForUser(user: any): UserData {
-  const rawPermissions: string | undefined | null = user.attributes['custom:backoffice_tags'];
+  const rawPermissions: string | undefined | null = user.attributes[CUSTOM_PERMISSION_KEY];
 
   // these are the permissions indicated in the Cognito state
   // rawPermissions could contain spaces after the commas, so we must trim the permission strings
@@ -49,6 +52,7 @@ function userDataForUser(user: any): UserData {
 
 export function useAuth() {
   const { setCurrentUser, clearCurrentUser } = useCurrentUser();
+  const COGNITO_PROVIDER_NAME = getConfiguration().COGNITO_PROVIDER_NAME;
 
   /**
    * Performs the login and set both the tokens (in session storage)
@@ -78,6 +82,14 @@ export function useAuth() {
           throw error;
         }),
     [setCurrentUser]
+  );
+
+  const loginWithSSO = useCallback(
+    (): Promise<any> =>
+      Auth.federatedSignIn({ customProvider: COGNITO_PROVIDER_NAME }).catch((error: any) => {
+        throw error;
+      }),
+    []
   );
 
   /**
@@ -149,14 +161,48 @@ export function useAuth() {
    * It's used on page reload, to obtain this data in a scenario in which
    * the webapp startup (including user data registration)
    * must be performed without passing through a login.
+   *
+   * The function handles two login flows:
+   * - Google (federated via Cognito Hosted UI): the user object returned by Amplify does not
+   *   expose attributes directly. Tokens are saved to session storage explicitly, and the
+   *   custom permissions tag is read from the ID token payload (where Cognito includes it
+   *   as a claim for federated users).
+   * - Email/password (standard Cognito): Amplify populates user.attributes normally,
+   *   so we delegate to currentAuthenticatedUser() and read attributes from there.
    */
   const getUserData = useCallback(
     (): Promise<UserData | null> =>
-      Auth.currentAuthenticatedUser()
-        .then((user) => userDataForUser(user))
+      Auth.currentSession()
+        .then(async (session) => {
+          const payload = session.getIdToken().decodePayload();
+          const isFederatedUser = payload.identities?.some(
+            (identity: any) => identity.providerName === COGNITO_PROVIDER_NAME
+          );
+          if (isFederatedUser) {
+            const token = session.getIdToken().getJwtToken();
+            const refreshToken = session.getRefreshToken().getToken();
+            const accessToken = session.getAccessToken().getJwtToken();
+            await Promise.allSettled([
+              setStorage('token', token),
+              setStorage('refreshToken', refreshToken),
+              setStorage('accessToken', accessToken),
+            ]);
+            return {
+              attributes: {
+                email: payload.email,
+                [CUSTOM_PERMISSION_KEY]: payload[CUSTOM_PERMISSION_KEY],
+              },
+            };
+          } else {
+            return Auth.currentAuthenticatedUser();
+          }
+        })
+        .then((userInfo: { attributes: { email: string; [CUSTOM_PERMISSION_KEY]: string } }) =>
+          userDataForUser(userInfo)
+        )
         .catch(() => null),
     []
   );
 
-  return { login, logout, refreshToken, changePassword, getUserData };
+  return { login, logout, refreshToken, changePassword, getUserData, loginWithSSO };
 }
