@@ -47,12 +47,24 @@ describe('NavigationMenu Component', () => {
 
   it('renders icon of the menu', () => {
     render(
+      <MockedUserContext>
+        <Router>
+          <NavigationMenu />
+        </Router>
+      </MockedUserContext>
+    );
+    const icon = screen.getByRole('button', { name: 'menu' });
+    expect(icon).toBeInTheDocument();
+  });
+
+  it("should not render the menu if the user doesn't have permissions", () => {
+    render(
       <Router>
         <NavigationMenu />
       </Router>
     );
-    const icon = screen.getByRole('button', { name: 'menu' });
-    expect(icon).toBeInTheDocument();
+    const icon = screen.queryByRole('button', { name: 'menu' });
+    expect(icon).not.toBeInTheDocument();
   });
 
   it('click button and show menu component', async () => {

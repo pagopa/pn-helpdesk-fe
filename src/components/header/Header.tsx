@@ -134,6 +134,7 @@ const Header = () => {
                     aria-label="menu"
                     onClick={handleOpenModal}
                     sx={{ ml: 0, pr: 0 }}
+                    data-testid="logout-button"
                   >
                     <LogoutIcon sx={{ color: 'white' }} />
                   </IconButton>

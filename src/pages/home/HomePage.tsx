@@ -12,7 +12,7 @@ const HomePage = () => {
   if (!availableItems.length) {
     return (
       <MainLayout>
-        <Typography variant="h5" align="center" mt={4}>
+        <Typography variant="h5" align="center" mt={4} data-testid="empty-state">
           Nessun elemento disponibile
         </Typography>
       </MainLayout>
