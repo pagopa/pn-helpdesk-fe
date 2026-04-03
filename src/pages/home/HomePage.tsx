@@ -1,6 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import { Box, Card, Grid, Paper, Typography } from '@mui/material';
 import { ArrowForward } from '@mui/icons-material';
+import { Box, Card, Grid, Paper, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { useNavigationItems } from '../../hooks/useNavigationItems';
 
 import MainLayout from '../mainLayout/MainLayout';
@@ -8,6 +8,16 @@ import MainLayout from '../mainLayout/MainLayout';
 const HomePage = () => {
   const navigate = useNavigate();
   const { availableItems } = useNavigationItems();
+
+  if (!availableItems.length) {
+    return (
+      <MainLayout>
+        <Typography variant="h5" align="center" mt={4}>
+          Nessun elemento disponibile
+        </Typography>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout>
@@ -29,7 +39,9 @@ const HomePage = () => {
                   flexDirection="column"
                   justifyContent="space-between"
                 >
-                  <Typography variant="h5" id={`cardTitle-${item.title}`}>{item.title}</Typography>
+                  <Typography variant="h5" id={`cardTitle-${item.title}`}>
+                    {item.title}
+                  </Typography>
                   <Box alignSelf="flex-end">
                     <ArrowForward id={`iconArrow-${item.id}`} color="primary" />
                   </Box>
