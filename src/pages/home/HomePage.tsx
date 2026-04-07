@@ -13,7 +13,10 @@ const HomePage = () => {
     return (
       <MainLayout>
         <Typography variant="h5" align="center" mt={4} data-testid="empty-state">
-          Nessun elemento disponibile
+          Non hai alcun permesso per utilizzare questa applicazione.
+        </Typography>
+        <Typography variant="body1" align="center" mt={1}>
+          Contatta il tuo amministratore per richiedere i permessi necessari.
         </Typography>
       </MainLayout>
     );
