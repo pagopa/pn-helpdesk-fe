@@ -7,6 +7,9 @@ interface AppConfigurationFromFile {
   AWS_USER_POOLS_WEB_CLIENT_ID: string;
   API_DOMAIN: string;
   WEB_API_DOMAIN: string;
+  COGNITO_REDIRECT_URI: string;
+  COGNITO_DOMAIN: string;
+  COGNITO_PROVIDER_NAME: string;
 }
 
 export interface AppConfiguration extends AppConfigurationFromFile {

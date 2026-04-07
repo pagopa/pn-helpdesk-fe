@@ -9,6 +9,7 @@ import { FieldsProperties, FormField } from '../../formFields/FormFields';
 import { useAuth } from '../../../Authentication/auth';
 import * as snackbarActions from '../../../redux/snackbarSlice';
 import * as spinnerActions from '../../../redux/spinnerSlice';
+import SSOLogin from '../../ssoLogin/SSOLogin';
 
 /**
  * default values of the form fields
@@ -164,6 +165,7 @@ const LoginForm = ({ setUser }: any) => {
             </Grid>
           </form>
         </Grid>
+        <SSOLogin />
       </Card>
     </Box>
   );

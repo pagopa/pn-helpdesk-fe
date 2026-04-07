@@ -1,34 +1,11 @@
-import React, { useCallback, useState } from 'react';
 import { screen } from '@testing-library/react';
-import { UserContext } from '../../../contexts/UserContext';
-import { Permission, UserData } from '../../../model/user-permission';
+import { renderWithProvidersAndPermissions } from '../../../mocks/mockReducer';
+import { Permission } from '../../../model/user-permission';
 import HomePage from '../HomePage';
-import { renderWithProviders } from '../../../mocks/mockReducer';
-
-const mockedUser = {
-  email: 'test@test.com',
-  permissions: Object.values(Permission),
-};
-
-const MockedUserContext = ({ children }: { children: React.ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState<UserData | null>(mockedUser);
-
-  const clearCurrentUser = useCallback(() => setCurrentUser(null), [setCurrentUser]);
-
-  return (
-    <UserContext.Provider value={{ currentUser, setCurrentUser, clearCurrentUser }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
 
 describe('HomePage test', () => {
   it('Checks that all elements are rendered', () => {
-    renderWithProviders(
-      <MockedUserContext>
-        <HomePage />
-      </MockedUserContext>
-    );
+    renderWithProvidersAndPermissions(<HomePage />, Object.values(Permission));
 
     const cards = screen.getAllByRole('heading');
 
@@ -38,5 +15,11 @@ describe('HomePage test', () => {
     expect(screen.getByText('Gestione gare')).toBeInTheDocument();
     expect(screen.getByText('Gestione Aggregazioni ApiKey')).toBeInTheDocument();
     expect(screen.getByText('Trasferimento di PA')).toBeInTheDocument();
+  });
+
+  it("Check that empty state is rendered when user doesn't have permissions", () => {
+    renderWithProvidersAndPermissions(<HomePage />, []);
+
+    expect(screen.getByTestId('empty-state')).toBeInTheDocument();
   });
 });

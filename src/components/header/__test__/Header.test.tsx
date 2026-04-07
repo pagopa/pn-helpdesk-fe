@@ -24,7 +24,7 @@ describe('Header Component', () => {
   it('renders header items', () => {
     expect(screen.getByText('PagoPA S.p.A.')).toBeInTheDocument();
     const buttons = screen.getAllByRole('button');
-    expect(buttons).toHaveLength(3);
+    expect(buttons).toHaveLength(2);
   });
 
   it('show tooltip', async () => {
@@ -39,7 +39,7 @@ describe('Header Component', () => {
   });
 
   it('simulate log out button click and Anulla after that', async () => {
-    const button = screen.getAllByRole('button')[2] as HTMLButtonElement;
+    const button = screen.getByTestId('logout-button');
     const user = userEvent.setup();
     await user.click(button);
 
@@ -56,7 +56,7 @@ describe('Header Component', () => {
   });
 
   it('simulate log out button click and Esci after that', async () => {
-    const button = screen.getAllByRole('button')[2];
+    const button = screen.getByTestId('logout-button');
     const user = userEvent.setup();
     await user.click(button);
 
