@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../../Authentication/auth';
 import * as snackbarActions from '../../redux/snackbarSlice';
 import GoogleIcon from './GoogleIcon';
@@ -9,10 +9,6 @@ const SSOLogin = () => {
   const { loginWithSSO } = useAuth();
   const dispatch = useDispatch();
   const [disabled, setDisabled] = useState(false);
-
-  useEffect(() => {
-    setDisabled(false);
-  }, []);
 
   const handleGoogleLogin = () => {
     setDisabled(true);
