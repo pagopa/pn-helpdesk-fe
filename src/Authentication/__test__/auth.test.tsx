@@ -89,4 +89,45 @@ describe('auth hook', () => {
     expect(sessionStorage.getItem('refreshToken')).toEqual('mock-refresh-token-federated');
     expect(sessionStorage.getItem('accessToken')).toEqual('mock-access-token-federated');
   });
+
+  it('loginWithSSO calls Auth.federatedSignIn with configured provider', async () => {
+    const mockFederatedSignIn = jest.fn().mockResolvedValue({});
+    (Auth as any).federatedSignIn = mockFederatedSignIn;
+
+    function FakeSSOApp() {
+      const { loginWithSSO } = useAuth();
+      return <button onClick={() => void loginWithSSO()}>SSO</button>;
+    }
+
+    const { getByRole } = render(<FakeSSOApp />);
+    await act(async () => {
+      getByRole('button').click();
+    });
+
+    expect(mockFederatedSignIn).toHaveBeenCalledWith({ customProvider: 'mock-provider-name' });
+  });
+
+  it('loginWithSSO propagates errors', async () => {
+    const error = new Error('federatedSignIn failed');
+    (Auth as any).federatedSignIn = jest.fn().mockRejectedValue(error);
+
+    // eslint-disable-next-line functional/no-let
+    let caughtError: Error | null = null;
+
+    function FakeSSOErrorApp() {
+      const { loginWithSSO } = useAuth();
+      return (
+        <button onClick={() => loginWithSSO().catch((e: any) => { caughtError = e; })}>
+          SSO
+        </button>
+      );
+    }
+
+    const { getByRole } = render(<FakeSSOErrorApp />);
+    await act(async () => {
+      getByRole('button').click();
+    });
+
+    expect(caughtError).toEqual(error);
+  });
 });
