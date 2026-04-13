@@ -1,8 +1,7 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { responseNotificationData } from "../../redux/responseSlice";
-import AccordionTimeline from "../accordionData/AccordionTimeline";
 import { TimelineElement } from "../../model/notification";
 import AnalogEvent from "./AnalogEvent";
 import CourtesyMessage from "./CourtesyMessage";
@@ -12,43 +11,51 @@ import DetailOfAddress from "./DetailOfAddress";
 const NotificationData = () => {
     const data = useSelector(responseNotificationData);
     const [countOfSendCourtesyMessage, setCountOfSendCourtesyMessage] = useState<number>(0);
-    const [dataGenerality, setDataGenerality] = useState<Array<string>>([]);
     const [analogEvents, setAnalogEvents] = useState<Array<TimelineElement>>([]);
+    const [statusOfNotification, setStatusOfNotification] = useState<string>('');
+    const [sentAtNotification, setSentAtNotification] = useState<string>('');
+    const [subjectOfNotification, setSubjectOfNotification] = useState<string>('');
+    const [protocolNumberOfNotification, setProtocolNumberNotification] = useState<string>('');
 
     useEffect(() => {
-        if (!data) { return; };
 
         const courtesyCount = data.timeline.filter((el: TimelineElement) =>
             el.elementId.includes('SEND_COURTESY_MESSAGE') ||
             el.elementId.includes('SEND_DIGITAL')
         ).length;
 
-        const formattedDate = new Date(data.sentAt).toLocaleDateString();
 
         setCountOfSendCourtesyMessage(courtesyCount);
-        setDataGenerality([
-            `IUN: ${data.iun}`,
-            `SENT AT: ${formattedDate}`,
-            `SUBJECT: ${data.subject}`,
-            `PAYMENTS: ${!!data.recipients?.[0]?.payments}`,
-        ]);
+
         setAnalogEvents(
             data.timeline.filter((el: TimelineElement) =>
                 el.elementId.includes("SEND_ANALOG_PROGRESS") ||
                 el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW") ||
-                el.elementId.includes("SCHEDULE_ANALOG_FEEDBACK")
+                el.elementId.includes("SCHEDULE_ANALOG_FEEDBACK") ||
+                el.elementId.includes("SEND_ANALOG_FEEDBACK") ||
+                el.elementId.includes("PREPARE_ANALOG_DOMICILE") ||
+                el.elementId.includes("SEND_ANALOG_DOMICILE") ||
+                el.elementId.includes("ANALOG_SUCCESS_WORKFLOW") ||
+                el.elementId.includes("ANALOG_FAILURE_WORKFLOW")
             )
         );
+        setSubjectOfNotification(data.subject);
+        setStatusOfNotification(data.notificationStatus);
+        setSentAtNotification(new Date(data.sentAt).toLocaleDateString());
+        setProtocolNumberNotification(data.paProtocolNumber);
     }, [data]);
 
+    if (!data.iun) { return null; }
 
 
-    return data && <Box sx={{ width: 'inherit' }}>
-        <AccordionTimeline keyValue='notifica'
-            accordionSummaryChild={<Typography component="span">Generalitá notifica</Typography>}
-            accordionDetailsChild={dataGenerality.map((el: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined, idx: React.Key | null | undefined) => (
-                <Typography key={idx}>{el}</Typography>
-            ))}></AccordionTimeline>
+    return <Box sx={{ width: 'inherit' }}>
+        <Stack direction={'row'}>
+            <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Creata: {sentAtNotification}</Typography>
+            <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Stato: {statusOfNotification}</Typography>
+            <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Numero protocollo: {protocolNumberOfNotification}</Typography>
+
+        </Stack>
+        <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Soggetto: {subjectOfNotification}</Typography>
 
         {data.timeline.map((el) => {
 

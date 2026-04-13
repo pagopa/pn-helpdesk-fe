@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
 import { PhysicalAddress } from '../../model/notification';
 
@@ -51,14 +51,14 @@ const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress }) => {
         <AccordionTimeline keyValue="address"
             accordionSummaryChild={<Typography component="span">Indirizzo normalizzato</Typography>
             }
-            accordionDetailsChild={<>
+            accordionDetailsChild={<Stack direction={'row'} justifyContent={'space-around'}>
                 <Typography variant="body1">
                     Indirizzo ente : {highlightDiff(oldAddressComplete, normalizeAddressComplete)}
                 </Typography>
                 <Typography variant="body1">
                     Indirizzo normalizzato : {highlightDiff(normalizeAddressComplete, oldAddressComplete)}
                 </Typography>
-            </>
+            </Stack>
             }
         ></AccordionTimeline>
     );

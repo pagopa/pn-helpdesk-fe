@@ -599,7 +599,7 @@ const SearchForm = () => {
                 </form>
               </Grid>
               <ResponseData></ResponseData>
-              <NotificationData ></NotificationData>
+              <NotificationData></NotificationData>
             </Grid>
           </Card>
         </Grid>

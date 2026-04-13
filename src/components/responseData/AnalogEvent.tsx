@@ -10,7 +10,6 @@ type AnalogEvent = {
         category: string;
         details?: {
             schedulingDate?: string | null;
-            serviceLevel?: string | null;
             deliveryDetailCode?: string | null;
             deliveryFailureCause?: string | null;
             responseStatus?: string | null;
@@ -21,128 +20,110 @@ type AnalogEvent = {
 };
 
 type SendAnalog = {
-    serviceLevel: string;
     deliveryDetailCode: string;
     deliveryFailureCause: string;
     responseStatus: string;
     registeredLetterCode: string;
 } | null;
 
+const PhysicalAddress: React.FC<{ address: any }> = ({ address }) => (
+    <>
+        {address.fullname && <Typography variant="body1">Nome: {address.fullname}</Typography>}
+        {address.address && <Typography variant="body1">Indirizzo: {address.address}</Typography>}
+        {address.addressDetails && <Typography variant="body1">Dettagli: {address.addressDetails}</Typography>}
+        {address.zip && <Typography variant="body1">CAP: {address.zip}</Typography>}
+        {address.municipality && <Typography variant="body1">Comune: {address.municipality}</Typography>}
+        {address.province && <Typography variant="body1">Provincia: {address.province}</Typography>}
+        {address.foreignState && <Typography variant="body1">Stato estero: {address.foreignState}</Typography>}
+    </>
+);
+
+const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog }) => (
+    <>
+        {sendAnalog?.responseStatus && <Typography variant="body1">Status risposta: {sendAnalog.responseStatus}</Typography>}
+        {sendAnalog?.registeredLetterCode && <Typography variant="body1">Raccomandata: {sendAnalog.registeredLetterCode}</Typography>}
+    </>
+);
+
+const SendAnalogFeedbackDetails: React.FC<{ feedback: any }> = ({ feedback }) => (
+    <>
+        {feedback?.responseStatus && <Typography variant="body1">Status risposta: {feedback.responseStatus}</Typography>}
+    </>
+);
+
+// Helper per il testo del summary
+function getSummaryText(sendAnalog: SendAnalog, sendAnalogFeedback: any): string {
+    if (sendAnalog) {
+        const code = sendAnalog.deliveryDetailCode || sendAnalog.deliveryFailureCause;
+        return code ? ` - ${code} - ${codiciStatusTimeline[code]}` : "";
+    }
+    if (sendAnalogFeedback?.deliveryDetailCode) {
+        return `- ${sendAnalogFeedback.deliveryDetailCode} - ${codiciStatusTimeline[sendAnalogFeedback.deliveryDetailCode]}`;
+    }
+    return "";
+}
+
+function parseAnalogElement(el: any) {
+    const schedulingDate =
+        el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW") && el.details?.schedulingDate
+            ? new Date(el.details.schedulingDate).toLocaleDateString()
+            : null;
+
+    const sendAnalog: SendAnalog =
+        el.elementId.includes("SEND_ANALOG_PROGRESS") && el.details
+            ? {
+                deliveryDetailCode: el.details.deliveryDetailCode,
+                deliveryFailureCause: el.details.deliveryFailureCause,
+                responseStatus: el.details.responseStatus,
+                registeredLetterCode: el.details.registeredLetterCode,
+            }
+            : null;
+
+    const sendAnalogFeedback =
+        el.elementId.includes("SEND_ANALOG_FEEDBACK") && el.details
+            ? {
+                deliveryDetailCode: el.details.deliveryDetailCode,
+                responseStatus: el.details.responseStatus,
+                deliveryFailureCause: el.details.deliveryFailureCause,
+            }
+            : null;
+
+    const physicalAddress =
+        (el.elementId.includes("ANALOG_SUCCESS_WORKFLOW") || el.elementId.includes("ANALOG_FAILURE_WORKFLOW"))
+            ? el.details?.physicalAddress
+            : null;
+
+    return { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress };
+}
+
+// Componente principale semplificato
 const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
     <AccordionTimeline
         keyValue='analogEvent'
-        accordionSummaryChild={<Typography variant="body1">
-            Workflow Analogico ({analogEvents.length} eventi)
-        </Typography>}
-        accordionDetailsChild={
-            analogEvents.map((el: any, i: number) => {
-                const isScheduled = el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW");
+        accordionSummaryChild={<Typography variant="body1">Workflow Analogico ({analogEvents.length} eventi)</Typography>}
+        accordionDetailsChild={analogEvents.map((el: any, i: number) => {
+            const { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress } = parseAnalogElement(el);
 
-                const schedulingDate =
-                    isScheduled && el.details?.schedulingDate
-                        ? new Date(el.details.schedulingDate).toLocaleDateString()
-                        : null;
-
-                const sendAnalog: SendAnalog =
-                    el.elementId.includes("SEND_ANALOG_PROGRESS") && el.details
-                        ? {
-                            serviceLevel: el.details.serviceLevel,
-                            deliveryDetailCode: el.details.deliveryDetailCode,
-                            deliveryFailureCause: el.details.deliveryFailureCause,
-                            responseStatus: el.details.responseStatus,
-                            registeredLetterCode: el.details.registeredLetterCode,
-                        }
-                        : null;
-
-                const sendAnalogFeedback =
-                    el.elementId.includes("SEND_ANALOG_FEEDBACK") && el.details
-                        ? {
-                            serviceLevel: el.details.serviceLevel,
-                            deliveryDetailCode: el.details.deliveryDetailCode,
-                            responseStatus: el.details.responseStatus,
-                            deliveryFailureCause: el.details.deliveryFailureCause,
-                        }
-                        : null;
-
-                return (
-                    <Accordion key={`analog-${i}`}>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography variant="body1">
-                                Evento {i + 1}: {el.category}
-                            </Typography>
-                        </AccordionSummary>
-
-                        <AccordionDetails>
-                            <Box component="div" display="flex" flexDirection="column" gap={1}>
-                                {schedulingDate && (
-                                    <Typography variant="body1">
-                                        Schedulato il: {schedulingDate}
-                                    </Typography>
-                                )}
-
-                                {sendAnalog && (
-                                    <>
-                                        {sendAnalog.deliveryDetailCode && (
-                                            <Typography variant="body1">
-                                                Codice dettaglio: {`${sendAnalog.deliveryDetailCode} - ${codiciStatusTimeline[sendAnalog.deliveryDetailCode]}`}
-                                            </Typography>
-                                        )}
-                                        {sendAnalog.deliveryFailureCause && (
-                                            <Typography variant="body1">
-                                                Causa fallimento: {`${sendAnalog.deliveryFailureCause} - ${codiciStatusTimeline[sendAnalog.deliveryFailureCause]}`}
-                                            </Typography>
-                                        )}
-                                        {sendAnalog.serviceLevel && (
-                                            <Typography variant="body1">
-                                                Livello servizio: {sendAnalog.serviceLevel}
-                                            </Typography>
-                                        )}
-                                        {sendAnalog.responseStatus && (
-                                            <Typography variant="body1">
-                                                Status risposta: {sendAnalog.responseStatus}
-                                            </Typography>
-                                        )}
-                                        {sendAnalog.registeredLetterCode && (
-                                            <Typography variant="body1">
-                                                Raccomandata: {sendAnalog.registeredLetterCode}
-                                            </Typography>
-                                        )}
-                                    </>
-                                )}
-
-                                {sendAnalogFeedback && (
-                                    <>
-                                        {sendAnalogFeedback.deliveryDetailCode && (
-                                            <Typography variant="body1">
-                                                Codice dettaglio: {`${sendAnalogFeedback.deliveryDetailCode} - ${codiciStatusTimeline[sendAnalogFeedback.deliveryDetailCode]}`}
-                                            </Typography>
-                                        )}
-                                        {sendAnalogFeedback.serviceLevel && (
-                                            <Typography variant="body1">
-                                                Livello servizio: {sendAnalogFeedback.serviceLevel}
-                                            </Typography>
-                                        )}
-                                        {sendAnalogFeedback.responseStatus && (
-                                            <Typography variant="body1">
-                                                Status risposta: {sendAnalogFeedback.responseStatus}
-                                            </Typography>
-                                        )}
-                                        {sendAnalogFeedback.deliveryFailureCause && (
-                                            <Typography variant="body1">
-                                                Causa fallimento: {`${sendAnalogFeedback.deliveryFailureCause} - ${codiciStatusTimeline[sendAnalogFeedback.deliveryFailureCause]}`}
-                                            </Typography>
-                                        )}
-                                    </>
-                                )}
-                            </Box>
-                        </AccordionDetails>
-                    </Accordion>
-                );
-            })
-        }
+            return (
+                <Accordion key={`analog-${i}`}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography variant="body1">
+                            {i + 1}: {el.category}{getSummaryText(sendAnalog, sendAnalogFeedback)}
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Box component="div" display="flex" flexDirection="column" gap={1}>
+                            {schedulingDate && <Typography variant="body1">Schedulato il: {schedulingDate}</Typography>}
+                            {physicalAddress && <PhysicalAddress address={physicalAddress} />}
+                            {sendAnalog && <SendAnalogDetails sendAnalog={sendAnalog} />}
+                            {sendAnalogFeedback && <SendAnalogFeedbackDetails feedback={sendAnalogFeedback} />}
+                        </Box>
+                    </AccordionDetails>
+                </Accordion>
+            );
+        })}
         sxDetails={{ display: "flex", flexDirection: "column", gap: 2 }}
-    ></AccordionTimeline>
+    />
 );
-
 
 export default AnalogEvent;
