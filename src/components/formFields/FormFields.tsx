@@ -18,8 +18,8 @@ import NumberFieldComponent from '../textField/NumberFieldComponent';
 const MenuItems: { [key: string]: Array<string> } = {
   'Ottieni EncCF': ['ticketNumber', 'taxId', 'piva', 'recipientType'],
   'Ottieni CF': ['personId'],
-  'Ottieni notifica da scaricare': ['ticketNumber', 'iun'],
-  'Ottieni notifica visualizzabile': ['ticketNumber', 'iun'],
+  'Scarica notifica': ['ticketNumber', 'iun'],
+  'Visualizza notifica': ['ticketNumber', 'iun'],
   // use case 9 dissabled for now
   // "Ottieni log completi + organizzazione": ["ticketNumber", "taxId", "Time interval"],
   'Ottieni log completi': ['ticketNumber', 'taxId', 'iun', 'personId'],

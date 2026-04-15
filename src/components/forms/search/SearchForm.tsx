@@ -299,7 +299,7 @@ const SearchForm = () => {
       // case "Ottieni CF":
       //   return '/persons/v1/tax-id';
       //   break;
-      case 'Ottieni notifica':
+      case 'Scarica notifica':
         return '/logs/v1/notifications/info';
       case 'Ottieni notifiche di una PA':
         return '/logs/v1/notifications/monthly';
