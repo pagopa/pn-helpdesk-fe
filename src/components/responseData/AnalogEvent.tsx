@@ -96,7 +96,6 @@ function parseAnalogElement(el: any) {
     return { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress };
 }
 
-// Componente principale semplificato
 const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
     <AccordionTimeline
         keyValue='analogEvent'
@@ -108,7 +107,10 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                 <Accordion key={`analog-${i}`}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography variant="body1">
-                            {i + 1}: {el.category}{getSummaryText(sendAnalog, sendAnalogFeedback)}
+                            {i + 1}: {el.category}
+                        </Typography>
+                        <Typography variant="body1">
+                            {getSummaryText(sendAnalog, sendAnalogFeedback)}
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>

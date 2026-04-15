@@ -1,21 +1,38 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Box, Stack, Typography } from "@mui/material";
+
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { collapseAll, expandAll, selectExpanded } from "../../redux/accordionSlice";
 import { responseNotificationData } from "../../redux/responseSlice";
-import { TimelineElement } from "../../model/notification";
+import { notificationStatus, TimelineElement } from "../../model/notification";
 import AnalogEvent from "./AnalogEvent";
 import CourtesyMessage from "./CourtesyMessage";
 import DetailOfAddress from "./DetailOfAddress";
 
+const ACCORDION_KEYS = ['notifica', 'courtesy', 'address', 'analogEvent'];
+
 
 const NotificationData = () => {
     const data = useSelector(responseNotificationData);
+    const dispatch = useDispatch();
+    const expanded = useSelector(selectExpanded);
+
     const [countOfSendCourtesyMessage, setCountOfSendCourtesyMessage] = useState<number>(0);
     const [analogEvents, setAnalogEvents] = useState<Array<TimelineElement>>([]);
     const [statusOfNotification, setStatusOfNotification] = useState<string>('');
     const [sentAtNotification, setSentAtNotification] = useState<string>('');
     const [subjectOfNotification, setSubjectOfNotification] = useState<string>('');
     const [protocolNumberOfNotification, setProtocolNumberNotification] = useState<string>('');
+
+    const allExpanded = ACCORDION_KEYS.every(k => expanded[k]);
+
+    const handleExpandAll = () => {
+        if (allExpanded) {
+            dispatch(collapseAll(ACCORDION_KEYS));
+        } else {
+            dispatch(expandAll(ACCORDION_KEYS));
+        }
+    };
 
     useEffect(() => {
 
@@ -47,15 +64,24 @@ const NotificationData = () => {
 
     if (!data.iun) { return null; }
 
-
     return <Box sx={{ width: 'inherit' }}>
         <Stack direction={'row'}>
             <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Creata: {sentAtNotification}</Typography>
-            <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Stato: {statusOfNotification}</Typography>
+            <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Stato: {notificationStatus[statusOfNotification.toLocaleLowerCase()]}</Typography>
             <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Numero protocollo: {protocolNumberOfNotification}</Typography>
-
         </Stack>
-        <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Soggetto: {subjectOfNotification}</Typography>
+        <Stack direction={'row'} justifyContent={'space-between'}>
+            <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Soggetto: {subjectOfNotification}</Typography>
+            <Button
+                onClick={handleExpandAll}
+                variant='contained'
+                sx={{
+                    backgroundColor: 'primary.main',
+                    '&:hover': { backgroundColor: 'primary.dark' },
+                }}>
+                {allExpanded ? "Chiudi tutti" : "Espandi tutti"}
+            </Button>
+        </Stack>
 
         {data.timeline.map((el) => {
 

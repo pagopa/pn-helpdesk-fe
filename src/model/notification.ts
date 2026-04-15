@@ -166,6 +166,23 @@ export const emptyNotification: NotificationDataModel = {
     timeline: [],
 };
 
+export const notificationStatus: Record<string, string> = {
+    "delivered": "Consegnata",
+    "delivering": "Invio in corso",
+    "unreachable": "Destinatario irreperibile",
+    "unreachable-multirecipient": "Destinatari irreperibili",
+    "paid": "Pagata",
+    "accepted": "Depositata",
+    "effective-date": "Perfezionata per decorrenza termini",
+    "effective-date-multirecipient": "Perfezionata per decorrenza termini",
+    "viewed": "Avvenuto accesso",
+    "viewed-multirecipient": "Avvenuto accesso",
+    "canceled": "Annullata",
+    "canceled-tooltip": "L'ente ha annullato l'invio della notifica",
+    "returned-to-sender": "Resa al mittente",
+    "notification-timeline-reworked": "Evento o più eventi aggiornati",
+};
+
 export const codiciStatusTimeline: Record<string, string> = {
     "M01": "perché il destinatario è irreperibile",
     "M02": "perché il destinatario è deceduto",

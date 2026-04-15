@@ -6,6 +6,7 @@ type Props = {
     sendCourtesyMessage: Array<string>;
     ioResult?: string;
     numberOfSendCourtesyMessage: number;
+
 };
 
 const CourtesyMessage: React.FC<Props> = ({ sendCourtesyMessage, ioResult, numberOfSendCourtesyMessage }) => (
