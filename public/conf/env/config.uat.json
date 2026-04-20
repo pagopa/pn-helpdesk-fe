@@ -4,6 +4,6 @@
   "API_DOMAIN": "api.bo.uat.notifichedigitali.it",
   "WEB_API_DOMAIN": "webapi.uat.notifichedigitali.it",
   "COGNITO_REDIRECT_URI": "https://helpdesk.uat.notifichedigitali.it",
-  "COGNITO_DOMAIN": "",
-  "COGNITO_PROVIDER_NAME": ""
+  "COGNITO_DOMAIN": "pn-helpdesk-uat.auth.eu-south-1.amazoncognito.com",
+  "COGNITO_PROVIDER_NAME": "GoogleSAML-uat"
 }

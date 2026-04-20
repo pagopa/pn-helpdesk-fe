@@ -4,6 +4,6 @@
   "API_DOMAIN": "api.bo.hotfix.notifichedigitali.it",
   "WEB_API_DOMAIN": "webapi.hotfix.notifichedigitali.it",
   "COGNITO_REDIRECT_URI": "https://helpdesk.hotfix.notifichedigitali.it",
-  "COGNITO_DOMAIN": "",
-  "COGNITO_PROVIDER_NAME": ""
+  "COGNITO_DOMAIN": "pn-helpdesk-hotfix.auth.eu-south-1.amazoncognito.com",
+  "COGNITO_PROVIDER_NAME": "GoogleSAML-hotfix"
 }

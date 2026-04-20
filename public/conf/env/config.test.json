@@ -4,6 +4,6 @@
   "API_DOMAIN": "api.bo.test.notifichedigitali.it",
   "WEB_API_DOMAIN": "webapi.test.notifichedigitali.it",
   "COGNITO_REDIRECT_URI": "https://helpdesk.test.notifichedigitali.it",
-  "COGNITO_DOMAIN": "",
-  "COGNITO_PROVIDER_NAME": ""
+  "COGNITO_DOMAIN": "pn-helpdesk-test.auth.eu-south-1.amazoncognito.com",
+  "COGNITO_PROVIDER_NAME": "GoogleSAML-test"
 }
