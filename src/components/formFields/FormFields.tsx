@@ -137,7 +137,7 @@ const FieldsProperties: { [key: string]: FieldsProps } = {
     label: 'Tipo Estrazione',
     hidden: false,
     selectItems: Object.keys(MenuItems),
-    size: 4,
+    size: 3,
   },
   'Ticket Number': {
     name: 'ticketNumber',

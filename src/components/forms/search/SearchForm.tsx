@@ -252,7 +252,7 @@ const SearchForm = () => {
     const payload = createPayload(data);
     if (selectedValue === 'Ottieni EncCF' || selectedValue === 'Ottieni CF') {
       createRequest(payload);
-    } else if (selectedValue === 'Ottieni notifica visualizzabile') {
+    } else if (selectedValue === 'Visualizza notifica') {
       await fetchNotification(JSON.stringify(payload));
     } else {
       downloadZip(JSON.stringify(payload));
