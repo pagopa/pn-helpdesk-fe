@@ -118,6 +118,8 @@
     "collectCoverageFrom": [
       "**/src/components/**",
       "**/src/pages/**",
+      "**/src/Authentication/**",
+      "**/src/services/**",
       "!**/src/components/formFields/**"
     ]
   },
