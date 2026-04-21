@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { collapseAll, expandAll, selectExpanded } from "../../redux/accordionSlice";
 import { responseNotificationData } from "../../redux/responseSlice";
@@ -8,6 +7,7 @@ import { notificationStatus, TimelineElement } from "../../model/notification";
 import AnalogEvent from "./AnalogEvent";
 import CourtesyMessage from "./CourtesyMessage";
 import DetailOfAddress from "./DetailOfAddress";
+import NotificationReport from "./NotificationReport";
 
 const ACCORDION_KEYS = ['notifica', 'courtesy', 'address', 'analogEvent'];
 
@@ -82,7 +82,6 @@ const NotificationData = () => {
                 {allExpanded ? "Chiudi tutti" : "Espandi tutti"}
             </Button>
         </Stack>
-
         {data.timeline.map((el) => {
 
             const addressFlag = el.elementId.includes('NORMALIZED_ADDRESS');
@@ -101,6 +100,7 @@ const NotificationData = () => {
                 {analogWorkflow && <AnalogEvent analogEvents={analogEvents}></AnalogEvent>}
             </>;
         })}
+        <NotificationReport data={data} />
     </Box >;
 
 };
