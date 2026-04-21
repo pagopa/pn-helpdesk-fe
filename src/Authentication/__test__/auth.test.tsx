@@ -1,9 +1,14 @@
 import { act, render } from '@testing-library/react';
 import { useEffect } from 'react';
-import { Auth } from 'aws-amplify';
+import { Auth, Amplify } from 'aws-amplify';
 import { Permission, UserData } from '../../model/user-permission';
 import { getConfiguration } from '../../services/configuration.service';
-import { useAuth, CUSTOM_PERMISSION_KEY } from '../auth';
+import { useAuth, CUSTOM_PERMISSION_KEY, initAmplify } from '../auth';
+
+jest.mock('../aws-exports', () => ({
+  __esModule: true,
+  default: { aws_project_region: 'eu-south-1' },
+}));
 
 jest.mock('aws-amplify', () => ({
   ...jest.requireActual('aws-amplify'),
@@ -129,5 +134,43 @@ describe('auth hook', () => {
     });
 
     expect(caughtError).toEqual(error);
+  });
+
+  it('getUserData returns null when currentSession fails', async () => {
+    jest.spyOn(Auth, 'currentSession').mockRejectedValueOnce(new Error('no session'));
+
+    // eslint-disable-next-line functional/no-let
+    let result: UserData | null | undefined;
+
+    function FakeNullApp() {
+      const { getUserData } = useAuth();
+      useEffect(() => {
+        void getUserData().then((data) => {
+          result = data;
+        });
+      }, [getUserData]);
+      return null;
+    }
+
+    await act(async () => void render(<FakeNullApp />));
+
+    expect(result).toBeNull();
+  });
+});
+
+describe('initAmplify', () => {
+  it('configures Amplify with aws-exports', async () => {
+    const configureSpy = jest.spyOn(Amplify, 'configure').mockReturnValue({});
+    await initAmplify();
+    expect(configureSpy).toHaveBeenCalledWith({ aws_project_region: 'eu-south-1' });
+    configureSpy.mockRestore();
+  });
+
+  it('throws when Amplify.configure fails', async () => {
+    jest.spyOn(Amplify, 'configure').mockImplementation(() => {
+      throw new Error('configure failed');
+    });
+    await expect(initAmplify()).rejects.toThrow();
+    jest.restoreAllMocks();
   });
 });
