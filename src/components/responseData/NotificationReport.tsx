@@ -3,6 +3,7 @@ import { Box, Button, Paper, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useState } from "react";
 import { NotificationDataModel } from "../../model/notification";
+import { buildTimelineText } from "../../helpers/timeline.utils";
 
 type Props = {
     data: NotificationDataModel;
@@ -68,15 +69,8 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push("Dettaglio del Workflow (Timeline)");
     lines.push("Di seguito riportiamo la cronologia degli eventi che tracciano il ciclo di vita della notifica:");
     lines.push("");
-
-    data.timeline.forEach((el) => {
-        const timeStamp = new Date(el.timestamp).toLocaleDateString("it-IT", {
-            day: "2-digit", month: "2-digit", year: "numeric",
-            hour: "2-digit", minute: "2-digit"
-        });
-        const eventId = el.elementId.split(".")[0];
-        lines.push(`* [${timeStamp}]: [${el.category}] - ${eventId}`);
-    });
+    lines.push("Dettaglio del Workflow (Timeline)");
+    lines.push(buildTimelineText(data.timeline));
     lines.push("");
 
     lines.push("Esito e Perfezionamento");

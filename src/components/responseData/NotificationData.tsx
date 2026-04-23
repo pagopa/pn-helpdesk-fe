@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Link, Stack, Typography } from "@mui/material";
 import { collapseAll, expandAll, selectExpanded } from "../../redux/accordionSlice";
 import { responseNotificationData } from "../../redux/responseSlice";
-import { notificationStatus, TimelineElement } from "../../model/notification";
+import { Document, notificationStatus, TimelineElement } from "../../model/notification";
 import AnalogEvent from "./AnalogEvent";
 import CourtesyMessage from "./CourtesyMessage";
 import DetailOfAddress from "./DetailOfAddress";
@@ -23,7 +23,7 @@ const NotificationData = () => {
     const [sentAtNotification, setSentAtNotification] = useState<string>('');
     const [subjectOfNotification, setSubjectOfNotification] = useState<string>('');
     const [protocolNumberOfNotification, setProtocolNumberNotification] = useState<string>('');
-
+    const [documents, setDocuments] = useState<Array<Document>>();
     const allExpanded = ACCORDION_KEYS.every(k => expanded[k]);
 
     const handleExpandAll = () => {
@@ -60,18 +60,19 @@ const NotificationData = () => {
         setStatusOfNotification(data.notificationStatus);
         setSentAtNotification(new Date(data.sentAt).toLocaleDateString());
         setProtocolNumberNotification(data.paProtocolNumber);
+        setDocuments(data.documents);
     }, [data]);
 
     if (!data.iun) { return null; }
 
     return <Box sx={{ width: 'inherit' }}>
         <Stack direction={'row'}>
-            <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Creata: {sentAtNotification}</Typography>
-            <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Stato: {notificationStatus[statusOfNotification.toLocaleLowerCase()]}</Typography>
-            <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Numero protocollo: {protocolNumberOfNotification}</Typography>
+            <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Creata: {sentAtNotification}</Typography>
+            <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Stato: {notificationStatus[statusOfNotification.toLocaleLowerCase()]}</Typography>
+            <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Numero protocollo: {protocolNumberOfNotification}</Typography>
         </Stack>
         <Stack direction={'row'} justifyContent={'space-between'}>
-            <Typography sx={{ px: 2, my: 2, fontWeight: 'bold' }}>Soggetto: {subjectOfNotification}</Typography>
+            <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Soggetto: {subjectOfNotification}</Typography>
             <Button
                 onClick={handleExpandAll}
                 variant='contained'
@@ -100,6 +101,24 @@ const NotificationData = () => {
                 {analogWorkflow && <AnalogEvent analogEvents={analogEvents}></AnalogEvent>}
             </>;
         })}
+        <Typography variant="h6" sx={{ mb: 2 }}>Documenti:</Typography>
+        {documents && documents.map((el, idx) => (
+            <Box key={idx} sx={{ width: "100%", minWidth: 0 }}>
+                <Link
+                    target="_blank"
+                    href={`${el.safeStorage?.download?.url}`}
+                    sx={{
+                        display: "block",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: "auto",
+                    }}
+                >
+                    {el.safeStorage?.download?.url}
+                </Link>
+            </Box>
+        ))}
         <NotificationReport data={data} />
     </Box >;
 

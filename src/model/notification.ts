@@ -44,11 +44,29 @@ interface Recipient {
     payments?: Array<Payment>;
 }
 
-interface Document {
+interface DownloadInfo {
+    url: string | null;
+    retryAfter: number | null;
+}
+
+
+export interface Document {
     digests: Digest;
     contentType: string;
     ref: Ref;
     docIdx: string;
+    safeStorage: {
+        key: string;
+        versionId: string | null;
+        documentType: string;
+        documentStatus: string;
+        contentType: string;
+        contentLength: number;
+        checksum: string;
+        retentionUntil: string;
+        tags: Record<string, string>;
+        download: DownloadInfo;
+    };
 }
 
 interface LegalFact {
@@ -63,7 +81,7 @@ interface TimelineAttachment {
     date: string;
 }
 
-interface TimelineDetails {
+export interface TimelineDetails {
     recIndex?: number;
     notificationRequestId?: string;
     paProtocolNumber?: string;
