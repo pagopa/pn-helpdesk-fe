@@ -2,7 +2,7 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useState } from "react";
-import { NotificationDataModel } from "../../model/notification";
+import { NotificationDataModel, notificationStatus } from "../../model/notification";
 import { buildTimelineText } from "../../helpers/timeline.utils";
 
 type Props = {
@@ -17,14 +17,14 @@ const buildReportText = (data: NotificationDataModel): string => {
 
     const lines: Array<string> = [];
 
-    lines.push(`La notifica con IUN [${data.iun}] inviata da [${data.senderDenomination}] (CF: [${data.senderTaxId}]) il [${sentAt}] avente`);
-    lines.push(`* Oggetto della Notifica: ${data.subject}`);
-    lines.push(`* Numero di protocollo: ${data.paProtocolNumber}`);
+    lines.push(`La notifica con IUN ${data.iun} inviata da ${data.senderDenomination}, CF: ${data.senderTaxId} il ${sentAt} avente`);
+    lines.push(`- Oggetto della Notifica: ${data.subject}`);
+    lines.push(`- Numero di protocollo: ${data.paProtocolNumber}`);
     lines.push("");
 
     lines.push("Destinatari:");
     data.recipients.forEach((recipient) => {
-        lines.push(`* ${recipient.denomination} (CF ${recipient.taxId})`);
+        lines.push(`- ${recipient.denomination} CF ${recipient.taxId}`);
 
         const addr = recipient.physicalAddress;
         const addrParts = [
@@ -36,40 +36,39 @@ const buildReportText = (data: NotificationDataModel): string => {
             addr.province,
             addr.foreignState,
         ].filter(Boolean).join(", ");
-        lines.push(`   * Indirizzo: ${addrParts}`);
+        lines.push(`- Indirizzo: ${addrParts}`);
 
         if (recipient.payments?.length) {
-            lines.push(`   * Pagamenti: (${data.paFee}/${data.vat}) - ${data.pagoPaIntMode}`);
+            lines.push(`- Pagamenti: ${data.paFee}/${data.vat} - ${data.pagoPaIntMode}`);
             recipient.payments.forEach((p) => {
                 if (p.pagoPa) {
-                    lines.push(`      * pagoPA: ${p.pagoPa.creditorTaxId} ${p.pagoPa.noticeCode} (cost: ${p.pagoPa.applyCost})`);
+                    lines.push(`- pagoPA: ${p.pagoPa.creditorTaxId} ${p.pagoPa.noticeCode}, costi applicati: ${p.pagoPa.applyCost}`);
                 }
             });
         }
     });
     lines.push("");
 
-    lines.push("* Allegati:");
+    lines.push("Allegati:");
     data.documents.forEach((doc) => {
-        lines.push(`   * ${doc.docIdx} - ${doc.ref.key} - ${doc.digests.sha256}`);
+        lines.push(`- ${doc.docIdx} - ${doc.ref.key} - ${doc.digests.sha256}`);
     });
     lines.push("");
-    lines.push("* Dettagli:");
-    lines.push(` notificationFeePolicy: ${data.notificationFeePolicy}`);
-    lines.push(` Tipo raccomandata:   ${data.physicalCommunicationType}`);
+    lines.push("Dettagli:");
+    lines.push(`- notificationFeePolicy: ${data.notificationFeePolicy}`);
+    lines.push(`- Tipo raccomandata:   ${data.physicalCommunicationType}`);
     if (data.group) {
-        lines.push(` Gruppo/i  * ${data.group}`);
+        lines.push(`- Gruppo/i  * ${data.group}`);
     }
-    lines.push(` Codice tassonomico ${data.taxonomyCode}`);
+    lines.push(`- Codice tassonomico ${data.taxonomyCode}`);
     lines.push("");
 
-    lines.push(`* Stato attuale della notifica: [${data.notificationStatus}]`);
+    lines.push(`Stato attuale della notifica: ${data.notificationStatus} - ${notificationStatus[data.notificationStatus.toLowerCase()]}`);
     lines.push("");
 
-    lines.push("Dettaglio del Workflow (Timeline)");
     lines.push("Di seguito riportiamo la cronologia degli eventi che tracciano il ciclo di vita della notifica:");
     lines.push("");
-    lines.push("Dettaglio del Workflow (Timeline)");
+    lines.push("Timeline)");
     lines.push(buildTimelineText(data.timeline));
     lines.push("");
 
