@@ -12,14 +12,19 @@ import { DeliveryDriverDTO, TenderDTO } from '../api/paperChannel';
 import { RootState, store as realStore } from '../../src/redux/store';
 import { Permission, UserData } from '../model/user-permission';
 import { UserContext } from '../contexts/UserContext';
+import { NotificationDataModel } from '../model/notification';
 
 function reducer(ui: any, { ...renderOptions }: any = {}) {
   function Wrapper({ children }: any) {
     const mockStore = configureMockStore([]);
     const store = mockStore({
+      accordion: {
+        expanded: {}
+      },
       response: {
         opened: false,
         responseData: {},
+        notificationData: {} as NotificationDataModel
       },
       snackbar: {
         opened: false,
@@ -130,8 +135,8 @@ export function renderWithProvidersAndPermissions(
     email: 'test@test.com',
     permissions,
   };
-  const setCurrentUser = () => {};
-  const clearCurrentUser = () => {};
+  const setCurrentUser = () => { };
+  const clearCurrentUser = () => { };
 
   function Wrapper({ children }: PropsWithChildren<any>): JSX.Element {
     return (

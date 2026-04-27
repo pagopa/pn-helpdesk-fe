@@ -35,6 +35,7 @@ const NotificationData = () => {
     };
 
     useEffect(() => {
+        if (!data || !data.timeline) return;
 
         const courtesyCount = data.timeline.filter((el: TimelineElement) =>
             el.elementId.includes('SEND_COURTESY_MESSAGE') ||
