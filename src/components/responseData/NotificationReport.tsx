@@ -51,14 +51,14 @@ const buildReportText = (data: NotificationDataModel): string => {
 
     lines.push("Allegati:");
     data.documents.forEach((doc) => {
-        lines.push(`- ${doc.docIdx} - ${doc.ref.key} - ${doc.digests.sha256}`);
+        lines.push(`- ${doc.docIdx}: ${doc.ref.key} - ${doc.digests.sha256}`);
     });
     lines.push("");
     lines.push("Dettagli:");
-    lines.push(`- notificationFeePolicy: ${data.notificationFeePolicy}`);
+    lines.push(`- Tipo tariffa: ${data.notificationFeePolicy}`);
     lines.push(`- Tipo raccomandata:   ${data.physicalCommunicationType}`);
     if (data.group) {
-        lines.push(`- Gruppo/i  * ${data.group}`);
+        lines.push(`- Gruppo/i : ${data.group}`);
     }
     lines.push(`- Codice tassonomico ${data.taxonomyCode}`);
     lines.push("");
@@ -68,7 +68,7 @@ const buildReportText = (data: NotificationDataModel): string => {
 
     lines.push("Di seguito riportiamo la cronologia degli eventi che tracciano il ciclo di vita della notifica:");
     lines.push("");
-    lines.push("Timeline)");
+    lines.push("Timeline");
     lines.push(buildTimelineText(data.timeline));
     lines.push("");
 

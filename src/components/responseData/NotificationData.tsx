@@ -101,7 +101,7 @@ const NotificationData = () => {
                 {analogWorkflow && <AnalogEvent analogEvents={analogEvents}></AnalogEvent>}
             </>;
         })}
-        <Typography variant="h6" sx={{ mb: 2 }}>Documenti:</Typography>
+        <Typography sx={{ mb: 2, fontWeight: 'bold' }}>Documenti:</Typography>
         {documents && documents.map((el, idx) => (
             <Box key={idx} sx={{ width: "100%", minWidth: 0 }}>
                 <Link
