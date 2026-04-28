@@ -34,6 +34,10 @@ const NavigationMenu = () => {
     setOpen(true);
   };
 
+  if (!availableItems.length) {
+    return null;
+  }
+
   return (
     <div>
       <IconButton

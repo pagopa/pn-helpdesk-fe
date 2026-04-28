@@ -2,10 +2,11 @@ import { AppConfiguration, Configuration } from '../model/configuration';
 
 export function getConfiguration(): AppConfiguration {
   const configurationFromFile = Configuration.get();
+  const region = 'eu-south-1';
   return {
     ...configurationFromFile,
-    AWS_PROJECT_REGION: 'eu-south-1',
-    AWS_COGNITO_REGION: 'eu-south-1',
+    AWS_PROJECT_REGION: region,
+    AWS_COGNITO_REGION: region,
     API_ENDPOINT: `https://${configurationFromFile.API_DOMAIN}/log-extractor`,
     API_ENDPOINT_BFHD: `https://${configurationFromFile.API_DOMAIN}/bfhd`,
     API_AGGREGATE_ENDPOINT: `https://${configurationFromFile.WEB_API_DOMAIN}/api-key-bo`,
