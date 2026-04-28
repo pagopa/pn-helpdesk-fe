@@ -51,7 +51,8 @@ const buildReportText = (data: NotificationDataModel): string => {
 
     lines.push("Allegati:");
     data.documents.forEach((doc) => {
-        lines.push(`- ${doc.docIdx}: ${doc.ref.key} - ${doc.digests.sha256}`);
+        lines.push(`- Documento ${doc.docIdx}: ${doc.ref.key} `);
+        lines.push(`- sha256: ${doc.digests.sha256}`);
     });
     lines.push("");
     lines.push("Dettagli:");
@@ -68,7 +69,6 @@ const buildReportText = (data: NotificationDataModel): string => {
 
     lines.push("Di seguito riportiamo la cronologia degli eventi che tracciano il ciclo di vita della notifica:");
     lines.push("");
-    lines.push("Timeline");
     lines.push(buildTimelineText(data.timeline));
     lines.push("");
 
