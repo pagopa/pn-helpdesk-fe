@@ -116,7 +116,7 @@ const NotificationData = () => {
                         maxWidth: "auto",
                     }}
                 >
-                    {el.safeStorage?.download?.url}
+                    {`PN-ATTACHMENT-${idx + 1}`}
                 </Link>
             </Box>
         ))}
