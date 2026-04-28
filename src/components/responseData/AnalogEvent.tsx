@@ -38,6 +38,22 @@ const PhysicalAddress: React.FC<{ address: any }> = ({ address }) => (
     </>
 );
 
+const PrepareAnalogDomicile: React.FC<{ domicile: any }> = ({ domicile }) => (<>
+    {domicile.at && <Typography variant="body1">Domicilio presso: {domicile.at}</Typography>}
+    {domicile.address && <Typography variant="body1">Indirizzo: {domicile.address}</Typography>}
+    {domicile.addressDetails && <Typography variant="body1">Dettagli: {domicile.addressDetails}</Typography>}
+    {domicile.zip && <Typography variant="body1">CAP: {domicile.zip}</Typography>}
+    {domicile.municipality && <Typography variant="body1">Comune: {domicile.municipality}</Typography>}
+    {domicile.province && <Typography variant="body1">Provincia: {domicile.province}</Typography>}
+    {domicile.foreignState && <Typography variant="body1">Stato estero: {domicile.foreignState}</Typography>}
+
+</>);
+
+const SendAnalogDomicile: React.FC<{ analogCost: any }> = ({ analogCost }) => (<>
+    {analogCost.analogCost && <Typography variant="body1">Costo del workflow analogico: {analogCost.analogCost}€</Typography>}
+    {analogCost.sendDate && <Typography variant="body1">Data di invio: {new Date(analogCost.sendDate).toLocaleDateString()}</Typography>}
+</>);
+
 const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog }) => (
     <>
         {sendAnalog?.responseStatus && <Typography variant="body1">Status risposta: {sendAnalog.responseStatus}</Typography>}
@@ -51,7 +67,6 @@ const SendAnalogFeedbackDetails: React.FC<{ feedback: any }> = ({ feedback }) =>
     </>
 );
 
-// Helper per il testo del summary
 function getSummaryText(sendAnalog: SendAnalog, sendAnalogFeedback: any): string {
     if (sendAnalog) {
         const code = sendAnalog.deliveryDetailCode || sendAnalog.deliveryFailureCause;
@@ -88,12 +103,35 @@ function parseAnalogElement(el: any) {
             }
             : null;
 
+    const prepareAnalogDomicile =
+        el.elementId.includes("PREPARE_ANALOG_DOMICILE") && el.details
+            ? {
+                at: el.details.physicalAddress.at,
+                address: el.details.physicalAddress.address,
+                addressDetails: el.details.physicalAddress.addressDetails,
+                zip: el.details.physicalAddress.zip,
+                municipality: el.details.physicalAddress.municipality,
+                mucipalityDetails: el.details.physicalAddress.municipalityDetails,
+                province: el.details.physicalAddress.province,
+                foreignState: el.details.physicalAddress.foreignState,
+            }
+            : null;
+
+    const sendAnalogDomicile =
+        el.elementId.includes("SEND_ANALOG_DOMICILE") && el.details
+            ? {
+                analogCost: el.details.analogCost,
+                sendDate: el.details.sendDate,
+            }
+            : null;
+
+
     const physicalAddress =
         (el.elementId.includes("ANALOG_SUCCESS_WORKFLOW") || el.elementId.includes("ANALOG_FAILURE_WORKFLOW"))
             ? el.details?.physicalAddress
             : null;
 
-    return { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress };
+    return { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, sendAnalogDomicile };
 }
 
 const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
@@ -101,7 +139,7 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
         keyValue='analogEvent'
         accordionSummaryChild={<Typography variant="body1">Workflow Analogico ({analogEvents.length} eventi)</Typography>}
         accordionDetailsChild={analogEvents.map((el: any, i: number) => {
-            const { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress } = parseAnalogElement(el);
+            const { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, sendAnalogDomicile } = parseAnalogElement(el);
 
             return (
                 <Accordion key={`analog-${i}`}>
@@ -119,6 +157,8 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                             {physicalAddress && <PhysicalAddress address={physicalAddress} />}
                             {sendAnalog && <SendAnalogDetails sendAnalog={sendAnalog} />}
                             {sendAnalogFeedback && <SendAnalogFeedbackDetails feedback={sendAnalogFeedback} />}
+                            {prepareAnalogDomicile && <PrepareAnalogDomicile domicile={prepareAnalogDomicile} />}
+                            {sendAnalogDomicile && <SendAnalogDomicile analogCost={sendAnalogDomicile} />}
                         </Box>
                     </AccordionDetails>
                 </Accordion>

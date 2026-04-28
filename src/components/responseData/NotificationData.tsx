@@ -35,7 +35,7 @@ const NotificationData = () => {
     };
 
     useEffect(() => {
-        if (!data || !data.timeline) return;
+        if (!data || !data.timeline) { return; }
 
         const courtesyCount = data.timeline.filter((el: TimelineElement) =>
             el.elementId.includes('SEND_COURTESY_MESSAGE') ||
@@ -89,7 +89,7 @@ const NotificationData = () => {
             const addressFlag = el.elementId.includes('NORMALIZED_ADDRESS');
             const checkCourtesyMessage = el.elementId.includes('SEND_COURTESY_MESSAGE') || (el.elementId.includes('SEND_DIGITAL') && !el.elementId.includes('SEND_DIGITAL_FEEDBACK')) || el.elementId.includes('SEND_DIGITAL_FEEDBACK') || el.elementId.includes('DIGITAL_PROG');
             const sendCourtesyMessage = checkCourtesyMessage ?
-                [`Type : ${el.details.digitalAddress?.type}`, ` Address : ${el.details.digitalAddress?.address}`, ` SendAt: ${el.details.sendDate ? new Date(el.details.sendDate).toLocaleDateString() : ""}`, `Source: ${el.details.digitalAddressSource}`, `Response: ${el.details.responseStatus}`, `Detail code: ${el.details.deliveryDetailCode}`, `Failure cause: ${el.details.deliveryFailureCause}`]
+                [`Type : ${el.details.digitalAddress?.type}`, ` Address : ${el.details.digitalAddress?.address}`, ` SendAt: ${el.details.sendDate ? new Date(el.details.sendDate).toLocaleDateString() : ""}`, `IoSendMessageResult : ${el.details.ioSendMessageResult ? el.details.ioSendMessageResult : "-"}`]
                 : [];
             const isIosendCourtesyMessage = el.details.digitalAddress?.type === "APPIO";
             const ioResult = isIosendCourtesyMessage ? `AppIo-Result: ${el.details.ioSendMessageResult}` : undefined;
