@@ -77,8 +77,6 @@ const SearchForm = () => {
    */
   const [ricerca, setRicerca] = useState<boolean>(false);
 
-
-
   /**
    * dispatch redux actions
    */
@@ -448,8 +446,6 @@ const SearchForm = () => {
       dispatch(snackbarActions.updateAutoHideDuration(duration));
     }
   };
-
-
 
   /**
    * reset the state of the redux store

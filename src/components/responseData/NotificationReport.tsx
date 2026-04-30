@@ -99,15 +99,6 @@ const NotificationReport: React.FC<Props> = ({ data }) => {
 
     return (
         <Box sx={{ mt: 2 }}>
-            <Box display="flex" justifyContent="flex-end" mb={1}>
-                <Button
-                    variant="outlined"
-                    startIcon={<ContentCopyIcon />}
-                    onClick={handleCopy}
-                >
-                    {copied ? "Copiato!" : "Copia testo"}
-                </Button>
-            </Box>
             <Paper variant="outlined" sx={{ p: 2, backgroundColor: "#f9f9f9" }}>
                 <Typography
                     component="pre"
@@ -117,6 +108,15 @@ const NotificationReport: React.FC<Props> = ({ data }) => {
                     {text}
                 </Typography>
             </Paper>
+            <Box display="flex" justifyContent="flex-end" mt={1}>
+                <Button
+                    variant="outlined"
+                    startIcon={<ContentCopyIcon />}
+                    onClick={handleCopy}
+                >
+                    {copied ? "Copiato!" : "Copia testo"}
+                </Button>
+            </Box>
         </Box>
     );
 };

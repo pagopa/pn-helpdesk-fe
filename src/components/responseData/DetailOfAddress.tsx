@@ -6,9 +6,10 @@ import { PhysicalAddress } from '../../model/notification';
 type Props = {
     normalizeAddress: PhysicalAddress | undefined;
     oldAddress: PhysicalAddress | undefined;
+    key: string;
 };
 
-const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress }) => {
+const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, key }) => {
     const highlightDiff = (
         arrA: Array<string | null | undefined>,
         arrB: Array<string | null | undefined>
@@ -48,7 +49,7 @@ const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress }) => {
     ] as Array<string | undefined>;
 
     return (
-        <AccordionTimeline keyValue="address"
+        <AccordionTimeline keyValue={key}
             accordionSummaryChild={<Typography component="span">Indirizzo normalizzato</Typography>
             }
             accordionDetailsChild={<Stack direction={'row'} justifyContent={'space-around'}>
