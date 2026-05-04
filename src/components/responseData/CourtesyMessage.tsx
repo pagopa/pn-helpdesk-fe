@@ -6,12 +6,12 @@ type Props = {
     sendCourtesyMessage: Array<string>;
     ioResult?: string;
     numberOfSendCourtesyMessage: number;
-    key: string;
+    accordionKey: string;
 
 };
 
-const CourtesyMessage: React.FC<Props> = ({ key, sendCourtesyMessage, ioResult, numberOfSendCourtesyMessage }) => (
-    <AccordionTimeline keyValue={key}
+const CourtesyMessage: React.FC<Props> = ({ accordionKey, sendCourtesyMessage, ioResult, numberOfSendCourtesyMessage }) => (
+    <AccordionTimeline keyValue={accordionKey}
         accordionSummaryChild={<Typography component="span">Messaggio di cortesia</Typography>}
         accordionDetailsChild={<>
             <Typography variant="body1">

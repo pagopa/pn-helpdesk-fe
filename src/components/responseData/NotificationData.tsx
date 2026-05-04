@@ -97,9 +97,9 @@ const NotificationData = () => {
             const analogWorkflow = el.elementId.includes('SCHEDULE_ANALOG_WORKFLOW');
 
             return <>
-                {addressFlag && <DetailOfAddress key={el.elementId} oldAddress={el.details.oldAddress} normalizeAddress={el.details.normalizedAddress}></DetailOfAddress>}
-                {checkCourtesyMessage && <CourtesyMessage key={el.elementId} sendCourtesyMessage={sendCourtesyMessage} ioResult={ioResult} numberOfSendCourtesyMessage={countOfSendCourtesyMessage}></CourtesyMessage>}
-                {analogWorkflow && <AnalogEvent key={el.elementId} analogEvents={analogEvents}></AnalogEvent>}
+                {addressFlag && <DetailOfAddress accordionKey={el.elementId} oldAddress={el.details.oldAddress} normalizeAddress={el.details.normalizedAddress}></DetailOfAddress>}
+                {checkCourtesyMessage && <CourtesyMessage accordionKey={el.elementId} sendCourtesyMessage={sendCourtesyMessage} ioResult={ioResult} numberOfSendCourtesyMessage={countOfSendCourtesyMessage}></CourtesyMessage>}
+                {analogWorkflow && <AnalogEvent accordionKey={el.elementId} analogEvents={analogEvents}></AnalogEvent>}
             </>;
         })}
         <Typography sx={{ mb: 2, fontWeight: 'bold' }}>Documenti:</Typography>

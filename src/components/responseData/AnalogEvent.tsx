@@ -5,7 +5,7 @@ import AccordionTimeline from '../accordionData/AccordionTimeline';
 import { codiciStatusTimeline } from '../../model/notification';
 
 type AnalogEvent = {
-    key: string;
+    accordionKey: string;
     analogEvents: Array<{
         elementId: string;
         category: string;
@@ -135,9 +135,9 @@ function parseAnalogElement(el: any) {
     return { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, sendAnalogDomicile };
 }
 
-const AnalogEvent: React.FC<AnalogEvent> = ({ key, analogEvents }) => (
+const AnalogEvent: React.FC<AnalogEvent> = ({ accordionKey, analogEvents }) => (
     <AccordionTimeline
-        keyValue={key}
+        keyValue={accordionKey}
         accordionSummaryChild={<Typography variant="body1">Workflow Analogico ({analogEvents.length} eventi)</Typography>}
         accordionDetailsChild={analogEvents.map((el: any, i: number) => {
             const { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, sendAnalogDomicile } = parseAnalogElement(el);
