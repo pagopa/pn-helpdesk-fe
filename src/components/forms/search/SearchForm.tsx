@@ -16,6 +16,8 @@ import * as spinnerActions from '../../../redux/spinnerSlice';
 import { FieldsProperties, FieldsProps, FormField, MenuItems } from '../../formFields/FormFields';
 import ResponseData from '../../responseData/ResponseData';
 import { getConfiguration } from '../../../services/configuration.service';
+import NotificationData from '../../responseData/NotificationData';
+import { NotificationDataModel } from '../../../model/notification';
 
 /**
  * default values of the form fields
@@ -217,7 +219,7 @@ const SearchForm = () => {
         if (
           selectedValue === 'Ottieni log completi' &&
           [...neededFields].sort().join('') ===
-            [...MenuItems['Ottieni log completi']].sort().join('') &&
+          [...MenuItems['Ottieni log completi']].sort().join('') &&
           field.name !== 'ticketNumber'
         ) {
           return { ...field, required: false };
@@ -242,12 +244,14 @@ const SearchForm = () => {
    * handling form submit
    * @param data values from the form
    */
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     resetStore();
     dispatch(spinnerActions.updateSpinnerOpened(true));
     const payload = createPayload(data);
     if (selectedValue === 'Ottieni EncCF' || selectedValue === 'Ottieni CF') {
       createRequest(payload);
+    } else if (selectedValue === 'Visualizza notifica') {
+      await fetchNotification(JSON.stringify(payload));
     } else {
       downloadZip(JSON.stringify(payload));
     }
@@ -293,7 +297,7 @@ const SearchForm = () => {
       // case "Ottieni CF":
       //   return '/persons/v1/tax-id';
       //   break;
-      case 'Ottieni notifica':
+      case 'Scarica notifica':
         return '/logs/v1/notifications/info';
       case 'Ottieni notifiche di una PA':
         return '/logs/v1/notifications/monthly';
@@ -310,24 +314,10 @@ const SearchForm = () => {
     }
   };
 
-  const downloadZip = (payload: any): any => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const url = API_ENDPOINT + getUrl();
-
+  const fetchNotification = async (payload: any) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
-    const token = sessionStorage.getItem('token');
-
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        'x-pagopa-pn-uid': uuid(),
-        'x-pagopa-pn-cx-type': 'BO',
-      },
-      body: payload,
-    })
-      .then((res) => {
+    await apiRequests.getNotificationsInfo(payload).
+      then((res: { status: number; data: NotificationDataModel }) => {
         if (res.status !== 200) {
           const msg =
             res.status === 204
@@ -338,16 +328,9 @@ const SearchForm = () => {
           dispatch(spinnerActions.updateSpinnerOpened(false));
           return;
         }
-
-        void res.json().then((data) => {
-          const fileName = data?.message;
-          password = res.headers.get('password');
-
-          updateResponse({ password });
-          polling(fileName);
-        });
-      })
-      .catch(() => {
+        dispatch(responseActions.updateNotificationData(res.data));
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+      }).catch(() => {
         updateSnackbar({
           data: { message: "Si è verificato un errore durante l'estrazione" },
           status: 500,
@@ -357,34 +340,61 @@ const SearchForm = () => {
       });
   };
 
+
+  const downloadZip = (payload: any): any => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion    
+    const url = API_ENDPOINT + getUrl();
+    dispatch(spinnerActions.updateSpinnerOpened(true));
+    const token = sessionStorage.getItem('token');
+    fetch(url,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', Authorization: `Bearer ${token}`, 'x-pagopa-pn-uid': uuid(), 'x-pagopa-pn-cx-type': 'BO',
+        },
+        body: payload,
+      })
+      .then((res) => {
+        if (res.status !== 200) {
+          const msg = res.status === 204 ? 'Nessun dato disponibile' : "Si è verificato un errore durante l'estrazione";
+          updateSnackbar({ data: { message: msg }, status: 500 });
+          dispatch(spinnerActions.updateSpinnerOpened(false)); return;
+        }
+        void res.json().then((data) => {
+          const fileName = data?.message; password = res.headers.get('password');
+          updateResponse({ password });
+          polling(fileName);
+        });
+      }).catch(() => {
+        updateSnackbar({ data: { message: "Si è verificato un errore durante l'estrazione" }, status: 500, });
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+      });
+  };
   let timerId: any;
 
   const polling = (data: any): any => {
-    if (!data || data === '') {
-      return;
-    }
-
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-
-    apiRequests
-      .getDownloadUrl(data)
-      .then((ret) => {
-        if (ret.data.message === 'notready') {
-          timerId = setTimeout(() => polling(data), 5000);
-        } else {
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          updateResponse({ password, downloadLink: ret.data.message });
-          updateSnackbar({ data: { message: infoMessages.OK_RESPONSE } });
-        }
-      })
-      .catch(() => {
+    if (!data || data === '') { return; }
+    if (timerId) { clearTimeout(timerId); }
+    apiRequests.getDownloadUrl(data).then((ret) => {
+      if (ret.data.message === 'notready') { timerId = setTimeout(() => polling(data), 5000); }
+      else {
         dispatch(spinnerActions.updateSpinnerOpened(false));
-        updateSnackbar({ data: { error: 'Error preparing download' }, status: 500 });
-      });
+        updateResponse({ password, downloadLink: ret.data.message });
+        updateSnackbar({ data: { message: infoMessages.OK_RESPONSE } });
+      }
+    }).catch(() => {
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      updateSnackbar({ data: { error: 'Error preparing download' }, status: 500 });
+    });
   };
-
+  /**
+   * update the response data component depending on the response
+   * @param response
+   */
+  const updateResponse = (response: any) => {
+    dispatch(responseActions.updateResponseOpened(true));
+    dispatch(responseActions.updateResponseData(response));
+  };
   /**
    * Formatting the data ready to be sent
    * @param data data that has to be formatted
@@ -435,15 +445,6 @@ const SearchForm = () => {
     if (duration) {
       dispatch(snackbarActions.updateAutoHideDuration(duration));
     }
-  };
-
-  /**
-   * update the response data component depending on the response
-   * @param response
-   */
-  const updateResponse = (response: any) => {
-    dispatch(responseActions.updateResponseOpened(true));
-    dispatch(responseActions.updateResponseData(response));
   };
 
   /**
@@ -531,7 +532,7 @@ const SearchForm = () => {
                                     />
                                     <FormHelperText error>
                                       {errors[field?.name] &&
-                                      field.componentType !== 'dateRangePicker'
+                                        field.componentType !== 'dateRangePicker'
                                         ? (errors[field?.name]?.message as string)
                                         : ' '}
                                     </FormHelperText>
@@ -594,6 +595,7 @@ const SearchForm = () => {
                 </form>
               </Grid>
               <ResponseData></ResponseData>
+              <NotificationData></NotificationData>
             </Grid>
           </Card>
         </Grid>

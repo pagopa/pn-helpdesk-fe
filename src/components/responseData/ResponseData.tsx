@@ -1,5 +1,6 @@
 import { Divider, Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
+
 import { opened, responseData } from '../../redux/responseSlice';
 
 /**
@@ -14,6 +15,7 @@ enum ResponseType {
   internalId = 'Codice Univoco',
   downloadLink = 'Download',
 }
+
 
 /**
  * General component presenting the response data in the app: password or code.
@@ -40,9 +42,8 @@ const ResponseData = () => {
       <Grid item container>
         <Grid item>
           <Typography align="center" color="text.primary" id="response">
-            {`${ResponseType[Object.keys(response)[0] as keyof typeof ResponseType]}: ${
-              Object.values(response)[0]
-            }`}
+            {`${ResponseType[Object.keys(response)[0] as keyof typeof ResponseType]}: ${Object.values(response)[0]
+              }`}
           </Typography>
         </Grid>
         {(Object.values(response)[1] as keyof typeof ResponseType) && (
@@ -68,7 +69,9 @@ const ResponseData = () => {
         )}
       </Grid>
     </Grid>
+
   ) : null;
 };
+
 
 export default ResponseData;

@@ -4,6 +4,7 @@ import responseReducer from './responseSlice';
 import spinnerReducer from './spinnerSlice';
 import aggregateReducer from './aggregateSlice';
 import tenderSlice from './tender/reducers';
+import accordionReducer from './accordionSlice';
 import formTenderSlice from './formTender/reducers';
 import uploadingDownloadingSlice from './uploading/reducers';
 import deliveriesDriverSlice from './deliveriesDrivers/reducers';
@@ -20,6 +21,7 @@ export const store = configureStore({
     deliveries: deliveriesDriverSlice.reducer,
     costs: costSlice.reducer,
     aggregate: aggregateReducer,
+    accordion: accordionReducer,
   },
 });
 

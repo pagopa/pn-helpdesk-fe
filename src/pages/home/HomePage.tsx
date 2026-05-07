@@ -27,7 +27,7 @@ const HomePage = () => {
       <Box px={2}>
         <Grid container mx="auto" maxWidth={1200} spacing={2}>
           {availableItems.map((item) => (
-            <Grid key={item.title} item width="25%">
+            <Grid key={item.id} item width="25%">
               <Card
                 id={item.id}
                 component={Paper}
@@ -42,7 +42,7 @@ const HomePage = () => {
                   flexDirection="column"
                   justifyContent="space-between"
                 >
-                  <Typography variant="h5" id={`cardTitle-${item.title}`}>
+                  <Typography variant="h5" id={`cardTitle-${item.id}`}>
                     {item.title}
                   </Typography>
                   <Box alignSelf="flex-end">
