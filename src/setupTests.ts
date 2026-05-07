@@ -15,6 +15,9 @@ beforeAll(() => {
     AWS_USER_POOLS_WEB_CLIENT_ID: '123abc',
     API_DOMAIN: 'api.bo.dev.notifichedigitali.it',
     WEB_API_DOMAIN: 'webapi.dev.notifichedigitali.it',
+    COGNITO_REDIRECT_URI: 'http://localhost:3000',
+    COGNITO_DOMAIN: 'mock.auth.eu-south-1.amazoncognito.com',
+    COGNITO_PROVIDER_NAME: 'mock-provider-name',
   });
 });
 // Reset any request handlers that we may add during the tests,

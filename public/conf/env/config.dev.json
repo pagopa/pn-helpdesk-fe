@@ -2,5 +2,8 @@
   "AWS_USER_POOLS_ID": "${AWS_USER_POOLS_ID}",
   "AWS_USER_POOLS_WEB_CLIENT_ID": "${AWS_USER_POOLS_WEB_CLIENT_ID}",
   "API_DOMAIN": "api.bo.dev.notifichedigitali.it",
-  "WEB_API_DOMAIN": "webapi.dev.notifichedigitali.it"
+  "WEB_API_DOMAIN": "webapi.dev.notifichedigitali.it",
+  "COGNITO_REDIRECT_URI": "https://helpdesk.dev.notifichedigitali.it",
+  "COGNITO_DOMAIN": "pn-helpdesk-dev.auth.eu-south-1.amazoncognito.com",
+  "COGNITO_PROVIDER_NAME": "GoogleSAML-dev"
 }
