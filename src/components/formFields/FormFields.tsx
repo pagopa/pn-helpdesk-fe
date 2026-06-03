@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel, Grid, InputAdornment, Tooltip } from '@mui/material';
 import { CalendarPickerView } from '@mui/lab';
 import { format, isSameDay, isBefore, subMonths, isAfter } from 'date-fns';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import TextFieldComponent from '../textField/TextFieldComponent';
 import RadioButtonsGroup from '../radioButtonsGroup/RadioButtonsGroup';
 import SelectField from '../selectField/SelectField';
@@ -29,7 +29,7 @@ const MenuItems: { [key: string]: Array<string> } = {
 
 const HelpIconWithTooltip = ({ title }: any) => (
   <Tooltip title={title}>
-    <HelpOutlineIcon />
+    <HelpOutlineOutlinedIcon />
   </Tooltip>
 );
 
