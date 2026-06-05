@@ -17,34 +17,34 @@ const AuthApikeyPage = ({ email }: any) => {
 
   return (
     <MainLayout email={email}>
-      <Box px={3}>
-        <Grid container marginBottom={3}>
+      <Box sx={{ px: 3 }}>
+        <Grid container sx={{ mb: 3 }}>
           <Typography gutterBottom variant="h4" component="div">
             Gestione Autorizzazioni Apikey
           </Typography>
         </Grid>
         <Grid container spacing={6}>
-          <Grid item xs={4} style={{ alignItems: 'left', textAlign: 'center' }}>
+          <Box sx={{ alignItems: 'left', textAlign: 'center' }}>
             <Typography gutterBottom variant="h6" component="div">
               Seleziona una PA
             </Typography>
-            <Box marginTop={4.4}>
+            <Box sx={{ marginTop: 4.4 }}>
               <PaSection onSelect={handleSelect} selectedPa={selectedPa} />
             </Box>
-          </Grid>
-          <Grid item xs={8} justifyContent={'flex-start'}>
-            <Grid style={{ textAlign: 'center' }}>
+          </Box>
+          <Box sx={{ justifyContent: 'flex-start' }}>
+            <Grid sx={{ textAlign: 'center' }}>
               <Typography gutterBottom variant="h6" component="div">
                 Virtual Keys
               </Typography>
             </Grid>
-            <Box marginTop={1}>
+            <Box sx={{ marginTop: 1 }}>
               <VirtualKeyTable id={selectedPa} />
             </Box>
-          </Grid>
+          </Box>
         </Grid>
       </Box>
-    </MainLayout>
+    </MainLayout >
   );
 };
 export default AuthApikeyPage;

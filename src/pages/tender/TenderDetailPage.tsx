@@ -40,15 +40,15 @@ export function TenderDetailPage() {
     <MainLayout>
       <Container>
         <Grid container direction="row" rowSpacing={3}>
-          <Grid item container>
+          <Grid container>
             <Breadcrumbs currentLocationLabel={'Dettaglio Gara'} links={breadcrumbsLinks} />
           </Grid>
-          <Grid item container>
+          <Grid container>
             <Typography variant="h4" color="text.primary" data-testid={'title-tender'}>
               {tenderState?.name}
             </Typography>
           </Grid>
-          <Grid item container>
+          <Grid container>
             <Card
               elevation={24}
               sx={{
@@ -59,14 +59,14 @@ export function TenderDetailPage() {
               }}
             >
               <Stack sx={{ width: 1 }} spacing={2}>
-                <Grid item container>
+                <Grid container>
                   <Typography variant="h5">Informazioni</Typography>
                 </Grid>
                 <DataInfo data={tenderState} rows={tenderRowsInfo} />
               </Stack>
             </Card>
           </Grid>
-          <Grid item container direction="row" justifyContent="space-between">
+          <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
             <Card
               elevation={24}
               sx={{
@@ -76,7 +76,7 @@ export function TenderDetailPage() {
                 backgroundColor: 'background.paper',
               }}
             >
-              <Grid item container>
+              <Grid container>
                 <Typography variant="h5">Recapitisti</Typography>
               </Grid>
               <div data-testid="datagrid">
@@ -84,7 +84,7 @@ export function TenderDetailPage() {
               </div>
             </Card>
           </Grid>
-          <Grid item container direction="row" justifyContent="space-between">
+          <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
             <Button
               variant={'outlined'}
               data-testid={'back-button-tenders'}

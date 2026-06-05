@@ -108,53 +108,50 @@ export function CreateMalfunctionDialog({
         Inserisci evento | {functionalityName}
       </DialogTitle>
       <DialogContent>
-        <Grid container spacing={3} direction="column">
-          <Grid item>
-            <DialogContentText>
-              Inserisci un malfunzionamento legato all’area di {functionalityName}
-            </DialogContentText>
-          </Grid>
-          <Grid item>
-            <Typography variant="body2" sx={{ fontWeight: 600, mb: 2 }}>
-              Data e ora inizio dell’evento
-            </Typography>
-            <DateTimePicker
-              disableFuture
-              maxDateTime={new Date()}
-              label="Data e ora evento"
-              value={modalEventDate}
-              onChange={(date: Date | null) => handleDateChange(date)}
-              renderInput={(params: any) => (
-                <TextField
-                  onKeyDown={(e) => e.preventDefault()}
-                  {...params}
-                  error={dateError ? true : false}
-                />
-              )}
-            />
-            <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
-          </Grid>
-          <Grid item>
-            <FormControl error={checkboxError}>
-              <FormGroup data-testid="create-event-label">
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      data-testid="checkbox"
-                      checked={isChecked}
-                      onChange={handleConfirmCheckChange}
-                    />
-                  }
-                  label="Sono consapevole che inserire un evento di malfunzionamento 
-  richiede una successiva risoluzione, che produce un’attestazione dedicata."
-                />
-              </FormGroup>
+        <Grid container spacing={3}>
 
-              {checkboxError && (
-                <FormHelperText color="error">Questo campo è obbligatorio</FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
+          <DialogContentText>
+            Inserisci un malfunzionamento legato all’area di {functionalityName}
+          </DialogContentText>
+
+          <Typography variant="body2" sx={{ fontWeight: 600, mb: 2 }}>
+            Data e ora inizio dell’evento
+          </Typography>
+          <DateTimePicker
+            disableFuture
+            maxDateTime={new Date()}
+            label="Data e ora evento"
+            value={modalEventDate}
+            onChange={(date: Date | null) => handleDateChange(date)}
+            renderInput={(params: any) => (
+              <TextField
+                onKeyDown={(e) => e.preventDefault()}
+                {...params}
+                error={dateError ? true : false}
+              />
+            )}
+          />
+          <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
+
+          <FormControl error={checkboxError}>
+            <FormGroup data-testid="create-event-label">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    data-testid="checkbox"
+                    checked={isChecked}
+                    onChange={handleConfirmCheckChange}
+                  />
+                }
+                label="Sono consapevole che inserire un evento di malfunzionamento 
+  richiede una successiva risoluzione, che produce un’attestazione dedicata."
+              />
+            </FormGroup>
+
+            {checkboxError && (
+              <FormHelperText color="error">Questo campo è obbligatorio</FormHelperText>
+            )}
+          </FormControl>
         </Grid>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'end', p: '0 24px 20px 0' }}>

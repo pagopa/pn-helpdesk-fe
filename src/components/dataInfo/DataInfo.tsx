@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import React, { ReactNode } from 'react';
 
 export interface RowDataInfo {
@@ -14,15 +14,15 @@ export interface DataInfoProps {
 
 export function DataInfo(props: DataInfoProps) {
   return (
-    <Grid item container spacing={1} data-testid={'dataInfo'}>
+    <Grid container spacing={1} data-testid={'dataInfo'}>
       {props.rows.map((row) => (
-        <Grid key={row.id} item container direction="row" width="1">
-          <Grid item width="50%">
+        <Grid key={row.id} container direction="row" sx={{ width: 1 }} spacing={1}>
+          <Box sx={{ width: '50%' }}>
             <Typography>{row.label}</Typography>
-          </Grid>
-          <Grid item width="50%">
+          </Box>
+          <Box sx={{ width: '50%' }}>
             {row.render(props.data)}
-          </Grid>
+          </Box>
         </Grid>
       ))}
     </Grid>

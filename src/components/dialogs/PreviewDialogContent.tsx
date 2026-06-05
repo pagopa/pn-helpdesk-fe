@@ -19,31 +19,30 @@ export function PreviewDialogContent({
   handleConfirmCheckChange,
 }: PreviewDialogContentProps) {
   return (
-    <Grid item>
-      <Box sx={{ borderRadius: '4px' }}>
-        <Grid container>
-          <Grid item width="100%">
-            <PDFViewer base64={preview} />
-          </Grid>
-          <Grid item>
-            <FormControl error={checkboxError}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={isChecked}
-                      onChange={handleConfirmCheckChange}
-                      data-testid="checkbox"
-                    />
-                  }
-                  label="Il testo è corretto e verrà pubblicato."
+
+    <Box sx={{ borderRadius: '4px' }}>
+      <Grid container>
+        <Box sx={{ width: "100%" }}>
+          <PDFViewer base64={preview} />
+        </Box>
+
+        <FormControl error={checkboxError}>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isChecked}
+                  onChange={handleConfirmCheckChange}
+                  data-testid="checkbox"
                 />
-              </FormGroup>
-            </FormControl>
-          </Grid>
-        </Grid>
-      </Box>
+              }
+              label="Il testo è corretto e verrà pubblicato."
+            />
+          </FormGroup>
+        </FormControl>
+      </Grid>
       {checkboxError && <FormHelperText error>Questo campo è obbligatorio</FormHelperText>}
-    </Grid>
+    </Box >
+
   );
 }

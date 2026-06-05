@@ -96,7 +96,7 @@ const PaAssociation = ({ idAggregate }: Props) => {
       title: 'Conferma salvataggio',
     })
       .then(() => callAddPa())
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const callAddPa = () => {
@@ -138,7 +138,7 @@ const PaAssociation = ({ idAggregate }: Props) => {
   return (
     <>
       <Grid container spacing={2} sx={{ marginTop: 1 }}>
-        <Grid item xs={3}>
+        <Grid size={{ xs: 3 }}>
           <CustomCard
             cardId="selected-pa-card"
             cardHeader={selectedPaCardHeader}
@@ -146,7 +146,7 @@ const PaAssociation = ({ idAggregate }: Props) => {
             cardActions={selectedPaCardAction}
           />
         </Grid>
-        <Grid item xs={9}>
+        <Grid size={{ xs: 9 }}>
           <CustomCard
             cardId="associable-pa-card"
             cardHeader={associablePaCardHeader}

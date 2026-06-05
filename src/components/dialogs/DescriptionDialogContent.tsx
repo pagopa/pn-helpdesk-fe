@@ -60,61 +60,58 @@ export function DescriptionDialogContent({
   };
   return (
     <>
-      <Grid item>
-        <Typography variant="body2" sx={{ fontWeight: 600, mb: 2 }}>
-          Data e ora {functionalityStatus === 'OK' ? 'fine' : 'inizio'} dell’evento
-        </Typography>
-        <DateTimePicker
-          disableFuture
-          maxDateTime={new Date()}
-          label="Data e ora evento"
-          value={modalEventDate}
-          onChange={(date: Date | null) => handleDateChange(date)}
-          renderInput={(params: any) => (
-            <TextField
-              onKeyDown={(e) => e.preventDefault()}
-              {...params}
-              error={dateError ? true : false}
-            />
-          )}
-        />
-        <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
-      </Grid>
-      <Grid item>
-        <Typography variant="body2" sx={{ fontWeight: 600 }}>
-          Informazioni aggiuntive
-        </Typography>
-        <Typography variant="body2" sx={{ mb: 2 }}>
-          Inserire casistiche specifiche di malfunzionamento
-        </Typography>
-        <Box
-          sx={{
-            border: htmlDescriptionError ? '1px solid rgba(216, 87, 87, 1)' : 'none',
-            borderRadius: '4px',
-          }}
-          data-testid="rich-text-description"
-        >
-          <StyledRichTextEditor
-            onUpdate={({ editor }) => {
-              const html = editor?.getHTML();
-              handleDescriptionChange(html);
-            }}
-            ref={rteRef}
-            extensions={[StarterKit, Underline]}
-            renderControls={() => (
-              <MenuControlsContainer>
-                <MenuButtonBold />
-                <MenuButtonItalic />
-                <MenuButtonUnderline />
-                <MenuDivider />
-                <MenuButtonBulletedList />
-              </MenuControlsContainer>
-            )}
-            content={modalEventHtmlDescription}
+      <Typography variant="body2" sx={{ fontWeight: 600, mb: 2 }}>
+        Data e ora {functionalityStatus === 'OK' ? 'fine' : 'inizio'} dell’evento
+      </Typography>
+      <DateTimePicker
+        disableFuture
+        maxDateTime={new Date()}
+        label="Data e ora evento"
+        value={modalEventDate}
+        onChange={(date: Date | null) => handleDateChange(date)}
+        renderInput={(params: any) => (
+          <TextField
+            onKeyDown={(e) => e.preventDefault()}
+            {...params}
+            error={dateError ? true : false}
           />
-        </Box>
-        <FormHelperText error>{htmlDescriptionError}</FormHelperText>
-      </Grid>
+        )}
+      />
+      <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
+
+      <Typography variant="body2" sx={{ fontWeight: 600 }}>
+        Informazioni aggiuntive
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 2 }}>
+        Inserire casistiche specifiche di malfunzionamento
+      </Typography>
+      <Box
+        sx={{
+          border: htmlDescriptionError ? '1px solid rgba(216, 87, 87, 1)' : 'none',
+          borderRadius: '4px',
+        }}
+        data-testid="rich-text-description"
+      >
+        <StyledRichTextEditor
+          onUpdate={({ editor }) => {
+            const html = editor?.getHTML();
+            handleDescriptionChange(html);
+          }}
+          ref={rteRef}
+          extensions={[StarterKit, Underline]}
+          renderControls={() => (
+            <MenuControlsContainer>
+              <MenuButtonBold />
+              <MenuButtonItalic />
+              <MenuButtonUnderline />
+              <MenuDivider />
+              <MenuButtonBulletedList />
+            </MenuControlsContainer>
+          )}
+          content={modalEventHtmlDescription}
+        />
+      </Box>
+      <FormHelperText error>{htmlDescriptionError}</FormHelperText>
     </>
   );
 }

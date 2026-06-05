@@ -180,7 +180,7 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
       .then(() => {
         handleCreate();
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const handleSaveClick = () => {
@@ -188,7 +188,7 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
       .then(() => {
         handleSave();
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const handleDeleteClick = () => {
@@ -199,7 +199,7 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
       .then(() => {
         handleDelete();
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const CreateButton = (
@@ -229,17 +229,14 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
   return (
     <>
       <form data-testid="aggregate-form">
-        <Grid item container>
-          <Grid item container spacing={2} alignItems="center">
+        <Grid container>
+          <Grid container spacing={2} sx={{ alignItems: 'center' }}>
             {fields.map(
               (field) =>
                 !field.hidden && (
                   <Grid
-                    item
                     key={field.name + 'Item'}
-                    xs={12}
-                    lg={field.size ? field.size : 3}
-                    xl={field.size ? field.size : 3}
+                    sx={{ xs: { span: 12 }, lg: { span: field.size ? field.size : 3 }, xl: { span: field.size ? field.size : 3 } }}
                   >
                     <Controller
                       control={control}
@@ -275,13 +272,13 @@ const AggregateForm = ({ aggregate, isCreate, isUserWriter, usagePlans }: Props)
         </Grid>
       </form>
       {isUserWriter && (
-        <Grid item container spacing={2}>
+        <Grid container spacing={2}>
           {isCreate ? (
-            <Grid item>{CreateButton}</Grid>
+            <>{CreateButton}</>
           ) : (
             <>
-              <Grid item>{UpdateButton}</Grid>
-              <Grid item>{DeleteButton}</Grid>
+              <>{UpdateButton}</>
+              <>{DeleteButton}</>
             </>
           )}
         </Grid>

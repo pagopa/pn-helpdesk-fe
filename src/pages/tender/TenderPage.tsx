@@ -16,14 +16,14 @@ export default function TenderPage({ email = '' }: any) {
     <MainLayout email={email}>
       <Container>
         <Grid container direction="row" rowSpacing={3}>
-          <Grid item container>
+          <Grid container>
             <Box>
               <Typography variant="h4" color="text.primary">
                 Gare dei recapitisti
               </Typography>
             </Box>
           </Grid>
-          <Grid item container direction="row" justifyContent="space-between">
+          <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
             <Card
               elevation={24}
               sx={{
@@ -34,7 +34,7 @@ export default function TenderPage({ email = '' }: any) {
               }}
             >
               {canWrite ? (
-                <Grid item container justifyContent="right">
+                <Grid container sx={{ justifyContent: "right" }}>
                   <Button
                     data-testid={'button-added-tender'}
                     variant="outlined"
@@ -49,7 +49,7 @@ export default function TenderPage({ email = '' }: any) {
                 </Grid>
               ) : null}
 
-              <Grid item container>
+              <Grid container>
                 <TenderTable />
               </Grid>
             </Card>

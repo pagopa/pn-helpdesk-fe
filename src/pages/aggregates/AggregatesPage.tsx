@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import AggregatesTable from '../../components/aggregates/AggregatesTable';
 import MainLayout from '../mainLayout/MainLayout';
@@ -26,15 +26,15 @@ const AggregatesPage = ({ email }: any) => {
     </Typography>
   );
 
-  const titleWithoutWritePermission = <Grid item>{title}</Grid>;
+  const titleWithoutWritePermission = <>{title}</>;
 
   const titleWithWritePermission = (
     <>
-      <Grid item xs={8}>
+      <Box>
         {title}
-      </Grid>
-      <Grid item xs={4}>
-        <Box display="flex" justifyContent="flex-end">
+      </Box>
+      <Box >
+        <Stack sx={{ justifyContent: "flex-end" }}>
           <Button
             variant="contained"
             type="submit"
@@ -44,15 +44,15 @@ const AggregatesPage = ({ email }: any) => {
           >
             Nuova aggregazione
           </Button>
-        </Box>
-      </Grid>
+        </Stack>
+      </Box>
     </>
   );
 
   return (
     <MainLayout email={email}>
-      <Box px={2}>
-        <Grid container marginBottom={3}>
+      <Box sx={{ px: 2 }}>
+        <Grid container sx={{ mb: 3 }}>
           {isUserWriter ? titleWithWritePermission : titleWithoutWritePermission}
         </Grid>
 

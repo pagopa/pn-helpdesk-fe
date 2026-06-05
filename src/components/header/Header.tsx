@@ -91,56 +91,50 @@ const Header = () => {
             },
           }}
         >
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item xs={3} md={3}>
-              <Grid container alignItems="center">
+          <Grid container sx={{ justifyContent: "space-between", alignItems: "center" }}>
+            <Grid size={{ xs: 3, md: 3 }}>
+              <Grid container sx={{ alignItems: "center" }}>
                 <NavigationMenu />
               </Grid>
             </Grid>
-            <Grid item xs={3} md={6}>
+            <Grid size={{ xs: 3, md: 6 }}>
               <Typography align="center" color="primary.contrastText">
                 PagoPA S.p.A.
               </Typography>
             </Grid>
-            <Grid container item xs={6} md={3} justifyContent="flex-end" alignItems="center">
-              {/* <Grid container justifyContent="flex-end" alignItems="center"> */}
-              <Grid item>
-                {/* <Typography align="right">{email}</Typography> */}
-                <Tooltip title={email} placement="bottom">
-                  <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    id="profile"
-                    aria-label="menu"
-                  >
-                    <PermIdentityIcon sx={{ color: 'white' }} />
-                  </IconButton>
-                </Tooltip>
-              </Grid>
+            <Grid container size={{ xs: 6, md: 3 }} sx={{ justifyContent: "flex-end", alignItems: "center" }}>
+
+              <Tooltip title={email} placement="bottom">
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  id="profile"
+                  aria-label="menu"
+                >
+                  <PermIdentityIcon sx={{ color: 'white' }} />
+                </IconButton>
+              </Tooltip>
               <Divider
                 style={{ background: 'white' }}
                 orientation="vertical"
                 variant="middle"
                 flexItem
               />
-              <Grid item>
-                <Tooltip title="Log out">
-                  <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    id="logout"
-                    aria-label="menu"
-                    onClick={handleOpenModal}
-                    sx={{ ml: 0, pr: 0 }}
-                    data-testid="logout-button"
-                  >
-                    <LogoutIcon sx={{ color: 'white' }} />
-                  </IconButton>
-                </Tooltip>
-              </Grid>
-              {/* </Grid> */}
+              <Tooltip title="Log out">
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  id="logout"
+                  aria-label="menu"
+                  onClick={handleOpenModal}
+                  sx={{ ml: 0, pr: 0 }}
+                  data-testid="logout-button"
+                >
+                  <LogoutIcon sx={{ color: 'white' }} />
+                </IconButton>
+              </Tooltip>
             </Grid>
           </Grid>
         </Toolbar>

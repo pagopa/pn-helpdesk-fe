@@ -19,39 +19,23 @@ const AggregateAccordion = ({ aggregate }: Props) => (
       </Typography>
     </AccordionSummary>
     <AccordionDetails>
-      <Grid container direction={'column'} spacing={2}>
-        <Grid item>
-          <Typography>
-            <strong>Nome aggregazione: </strong>
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography>{aggregate?.name}</Typography>
-        </Grid>
-        <Grid item>
-          <Typography>
-            <strong>Descrizione aggregazione: </strong>
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography>{aggregate?.description}</Typography>
-        </Grid>
-        <Grid item>
-          <Typography>
-            <strong>Usage plan: </strong>
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography>{aggregate?.usagePlan?.name}</Typography>
-        </Grid>
-        <Grid item>
-          <Typography>
-            <strong>PA Associate: </strong>
-          </Typography>
-        </Grid>
-        <Grid item>
-          <PaginatedPaList items={aggregate?.associatedPa ?? []} />
-        </Grid>
+      <Grid container spacing={2}>
+        <Typography>
+          <strong>Nome aggregazione: </strong>
+        </Typography>
+        <Typography>{aggregate?.name}</Typography>
+        <Typography>
+          <strong>Descrizione aggregazione: </strong>
+        </Typography>
+        <Typography>{aggregate?.description}</Typography>
+        <Typography>
+          <strong>Usage plan: </strong>
+        </Typography>
+        <Typography>{aggregate?.usagePlan?.name}</Typography>
+        <Typography>
+          <strong>PA Associate: </strong>
+        </Typography>
+        <PaginatedPaList items={aggregate?.associatedPa ?? []} />
       </Grid>
     </AccordionDetails>
   </Accordion>

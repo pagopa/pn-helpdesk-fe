@@ -71,11 +71,9 @@ export function UploadBox() {
       }}
     >
       <Grid container rowSpacing={2}>
-        <Grid item>
-          <Typography variant="h4">Upload</Typography>
-        </Grid>
+        <Typography variant="h4">Upload</Typography>
         <Grid container spacing={1}>
-          <Grid item container xs={12} sm={6}>
+          <Grid container size={{ xs: 12, sm: 6 }}>
             <Stack direction={'column'} spacing={2}>
               <Typography variant="subtitle1">Carica file xlsx dei recapitisti</Typography>
               <Typography variant="body1" data-testid={'status-description-upload'}>
@@ -83,7 +81,7 @@ export function UploadBox() {
               </Typography>
             </Stack>
           </Grid>
-          <Grid item container xs={12} sm={6}>
+          <Grid container size={{ xs: 12, sm: 6 }}>
             <SingleFileInput
               data-testid={'file-input'}
               label="Documento (richiesto)"

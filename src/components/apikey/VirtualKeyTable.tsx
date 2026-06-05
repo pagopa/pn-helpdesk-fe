@@ -160,8 +160,9 @@ const VirtualKeyTable = ({ id }: Props) => {
             onChange={() => {
               handleChange(row);
             }}
-            inputProps={{ 'aria-label': 'controlled' }}
-            data-testid={`vkTable-row-checkbox-${row.id}`}
+            slotProps={{
+              input: { 'aria-label': 'controlled' }
+            }} data-testid={`vkTable-row-checkbox-${row.id}`}
           />
         );
       },
@@ -234,7 +235,7 @@ const VirtualKeyTable = ({ id }: Props) => {
       ),
     })
       .then(handleSave)
-      .catch(() => {});
+      .catch(() => { });
   };
 
   return (
@@ -243,8 +244,8 @@ const VirtualKeyTable = ({ id }: Props) => {
         {(slicedList) => <ItemsTable columns={COLUMNS} rows={slicedList} />}
       </PaginatedComponent>
 
-      <Box paddingTop={3}>
-        <Grid direction={'row-reverse'} container marginTop={0.1}>
+      <Box sx={{ pt: 3 }}>
+        <Grid direction="row-reverse" container sx={{ mt: 0.1 }}>
           <Button
             variant="outlined"
             type="submit"

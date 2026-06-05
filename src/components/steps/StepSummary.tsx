@@ -35,8 +35,8 @@ export function StepSummary() {
   }
 
   return (
-    <Grid item container rowSpacing={3}>
-      <Grid item container>
+    <Grid container rowSpacing={3}>
+      <Grid container>
         <Card
           elevation={24}
           sx={{
@@ -47,14 +47,14 @@ export function StepSummary() {
           }}
         >
           <Stack sx={{ width: 1 }} spacing={2}>
-            <Grid item container>
+            <Grid container>
               <Typography variant="h5">Informazioni</Typography>
             </Grid>
             <DataInfo data={stepStore.formTender} rows={tenderRowsInfo} />
           </Stack>
         </Card>
       </Grid>
-      <Grid item container direction="row" justifyContent="space-between">
+      <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
         <Card
           elevation={24}
           sx={{
@@ -64,13 +64,13 @@ export function StepSummary() {
             backgroundColor: 'background.paper',
           }}
         >
-          <Grid item container>
+          <Grid container>
             <Typography variant="h5">Recapitisti</Typography>
           </Grid>
           <DeliveriesDriverTable tenderCode={stepStore.formTender.code} withActions={false} />
         </Card>
       </Grid>
-      <Grid item container direction="row" justifyContent="space-between">
+      <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
         <Button
           variant={'outlined'}
           data-testid={'btn-back-step'}

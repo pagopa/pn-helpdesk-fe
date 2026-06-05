@@ -545,7 +545,7 @@ const checkDt = (dates: Array<any>) => {
 const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
   const componentType: string = field.componentType;
   return (
-    <Grid item container>
+    <Grid container>
       {componentType === 'textfield' && (
         <TextFieldComponent
           error={error}

@@ -52,19 +52,17 @@ export function DriverAndCostForm(props: DriverAndCostFormProps) {
   }, [driverStore.detail]);
 
   return (
-    <Grid item container rowSpacing={2}>
-      <Grid item>
-        <DeliveryDriverForm
-          fsu={props.fsu}
-          key={`DRIVER_${driverStore?.detail?.taxId}`}
-          onChanged={(data: DeliveryDriver) => dispatch(setDetailDriver(data))}
-          tenderCode={props.tenderCode}
-          initialValue={driverStore.detail}
-        />
-      </Grid>
+    <Grid container rowSpacing={2}>
+      <DeliveryDriverForm
+        fsu={props.fsu}
+        key={`DRIVER_${driverStore?.detail?.taxId}`}
+        onChanged={(data: DeliveryDriver) => dispatch(setDetailDriver(data))}
+        tenderCode={props.tenderCode}
+        initialValue={driverStore.detail}
+      />
       {driverStore.detail?.taxId ? (
         <>
-          <Grid item container>
+          <Grid container>
             <Card
               elevation={24}
               sx={{
@@ -74,21 +72,18 @@ export function DriverAndCostForm(props: DriverAndCostFormProps) {
                 backgroundColor: 'background.paper',
               }}
             >
-              <Grid container rowSpacing={2} alignItems={'center'} justifyContent="space-between">
-                <Grid item>
-                  <Typography variant="h5" component="div">
-                    Costi
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant={'outlined'}
-                    onClick={() => dispatch(setSelectedCost({} as Cost))}
-                    startIcon={<Add />}
-                  >
-                    Aggiungi
-                  </Button>
-                </Grid>
+              <Grid container rowSpacing={2} sx={{ alignItems: 'center', justifyContent: "space-between" }}>
+                <Typography variant="h5" component="div">
+                  Costi
+                </Typography>
+
+                <Button
+                  variant={'outlined'}
+                  onClick={() => dispatch(setSelectedCost({} as Cost))}
+                  startIcon={<Add />}
+                >
+                  Aggiungi
+                </Button>
               </Grid>
               <CostsTable
                 tenderCode={props.tenderCode}

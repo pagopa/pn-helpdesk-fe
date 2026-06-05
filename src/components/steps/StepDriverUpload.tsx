@@ -50,22 +50,22 @@ export function StepDriverUpload(props: { tenderCode: string }) {
   };
 
   return (
-    <Grid item container rowSpacing={2}>
-      <Grid item container>
+    <Grid container rowSpacing={2}>
+      <Grid container>
         <DownloadBox tenderCode={props.tenderCode} />
       </Grid>
 
-      <Grid item container>
+      <Grid container>
         <UploadBox />
       </Grid>
 
       {stateUpload.status === UPLOAD_STATUS_ENUM.ERROR_VALIDATION_EXCEL ? (
-        <Grid item container data-testid={'error-log-box'}>
+        <Grid container data-testid={'error-log-box'}>
           <ErrorLog error={stateUpload.error as ErrorsNotify} />
         </Grid>
       ) : null}
 
-      <Grid item container direction="row" justifyContent="space-between">
+      <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
         <Button
           onClick={() => dispatch(changeKey({ key: 0 }))}
           data-testid={'btn-back-tender'}
@@ -111,11 +111,9 @@ function ErrorLog(props: { error: ErrorsNotify }) {
       }}
     >
       <Grid container rowSpacing={2}>
-        <Grid item>
-          <Typography variant="h4">Errore durante il caricamento del file</Typography>
-        </Grid>
+        <Typography variant="h4">Errore durante il caricamento del file</Typography>
         <Grid container spacing={1}>
-          <Grid item container>
+          <Grid container>
             <Stack direction={'column'} spacing={2}>
               <Typography variant="subtitle1" data-testid={'detail-error-message'}>
                 {props.error.detail}
@@ -125,7 +123,7 @@ function ErrorLog(props: { error: ErrorsNotify }) {
                   direction={'row'}
                   key={errorCell.message + errorCell.row + errorCell.col}
                   data-testid={'error-group'}
-                  alignItems={'center'}
+                  sx={{ alignItems: 'center' }}
                   spacing={3}
                 >
                   <Chip label="Errore" color="error" />

@@ -53,37 +53,33 @@ export function DownloadBox(props: DownloadBoxProps) {
       }}
     >
       <Grid container rowSpacing={2}>
-        <Grid item>
-          <Typography variant="h4">Download</Typography>
-        </Grid>
+        <Typography variant="h4">Download</Typography>
         <Grid
           container
           direction={'row'}
           spacing={1}
-          alignItems={'center'}
-          justifyContent={'space-around'}
+          sx={{ alignItems: 'center', justifyContent: 'space-around' }}
         >
-          <Grid item container xs={12} sm={6}>
+          <Grid container size={{ xs: 12, sm: 6 }}>
             <Typography variant={'subtitle1'}>Template/recapitisti attuali</Typography>
           </Grid>
-          <Grid item container xs={12} sm={6}>
+          <Grid container size={{ xs: 12, sm: 6 }}>
             {downloadState.download?.loading && downloadState.download.loading ? (
               <Box sx={{ width: '100%' }}>
                 <LinearProgress data-testid={'progress-bar-download'} />
               </Box>
+
             ) : downloadState.download?.data && downloadState.download.data ? (
-              <Grid container width={1} direction={'row'} alignItems={'center'}>
-                <Grid item>
-                  <Button
-                    onClick={() => {
-                      downloadFile(downloadState.download.data || '');
-                    }}
-                    data-testid={'button-download-exist-file'}
-                  >
-                    Scarica file
-                  </Button>
-                </Grid>
-                <Grid>
+              <Grid container direction={'row'} sx={{ alignItems: 'center', width: 1 }}>
+                <Button
+                  onClick={() => {
+                    downloadFile(downloadState.download.data || '');
+                  }}
+                  data-testid={'button-download-exist-file'}
+                >
+                  Scarica file
+                </Button>
+                <Grid size={{ xs: 12, sm: 6 }}>
                   <IconButton
                     data-testid={'button-cancel-state'}
                     onClick={() => {
@@ -109,6 +105,5 @@ export function DownloadBox(props: DownloadBoxProps) {
           </Grid>
         </Grid>
       </Grid>
-    </Card>
-  );
+    </Card>);
 }

@@ -38,20 +38,19 @@ const MainLayout = ({ children }: any) => {
   return (
     <Grid
       container
-      direction="column"
-      justifyItems="start"
-      justifyContent="space-around"
       rowSpacing={5}
-      wrap="nowrap"
-      sx={{ height: '100%' }}
+      sx={{
+        height: '100%', justifyItems: "start",
+        justifyContent: "space-around", wrap: "nowrap"
+      }}
     >
-      <Grid item>
+      <Grid>
         <Header />
       </Grid>
-      <Grid item sx={{ pb: '40px' }}>
+      <Grid sx={{ pb: '40px' }}>
         {children}
       </Grid>
-      <Grid item>
+      <Grid >
         <Footer />
       </Grid>
     </Grid>

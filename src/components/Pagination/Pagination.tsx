@@ -6,6 +6,7 @@ import {
   MenuItem,
   Pagination as MuiPagination,
   PaginationItem,
+  Stack,
   SxProps,
 } from '@mui/material';
 import ArrowDropDown from '@mui/icons-material/ArrowDropDown';
@@ -27,9 +28,12 @@ type Props = {
 
 const getA11yPaginationLabels = (
   type: A11yPaginationLabelsTypes,
-  page: number,
+  page: number | null,
   selected: boolean
 ): string => {
+  if (page === null) {
+    return '';
+  }
   // eslint-disable-next-line functional/no-let
   let ariaStr = '';
   switch (type) {
@@ -87,12 +91,8 @@ export default function Pagination({
 
   return (
     <Grid container sx={sx}>
-      <Grid
-        item
-        xs={4}
-        display="flex"
-        justifyContent="start"
-        alignItems={'center'}
+      <Stack
+        sx={{ justifyContent: "start", alignItems: 'center' }}
         data-testid="itemsPerPageSelector"
         className="items-per-page-selector"
       >
@@ -112,8 +112,10 @@ export default function Pagination({
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': 'Righe per pagina',
+          slotProps={{
+            list: {
+              'aria-labelledby': 'Righe per pagina',
+            },
           }}
         >
           {elementsPerPage.map((ep) => (
@@ -122,19 +124,18 @@ export default function Pagination({
             </MenuItem>
           ))}
         </Menu>
-      </Grid>
-      <Grid
-        item
-        xs={8}
-        display="flex"
-        justifyContent="end"
-        alignItems={'center'}
+      </Stack>
+      <Stack
+        sx={{
+          justifyContent: "end",
+          alignItems: 'center'
+        }}
         data-testid="pageSelector"
         className="page-selector"
       >
         <MuiPagination
           sx={{ display: 'flex' }}
-          aria-label={'Menu Paginazione'}
+          aria-label="Menu Paginazione"
           color="primary"
           variant="text"
           shape="circular"
@@ -150,16 +151,16 @@ export default function Pagination({
             ) {
               return null;
             }
-            return <PaginationItem {...props2} sx={{ border: 'none' }} />;
+            return <PaginationItem {...props2} />;
           }}
-          onChange={(_event: ChangeEvent<unknown>, value: number) =>
+          onChange={(_event, value) =>
             onPageRequest({
               ...paginationData,
               page: value - 1,
             })
           }
         />
-      </Grid>
-    </Grid>
+      </Stack>
+    </Grid >
   );
 }

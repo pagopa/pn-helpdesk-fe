@@ -1,4 +1,4 @@
-import { Grid, FormHelperText, Button, DialogContent, DialogActions } from '@mui/material';
+import { Grid, FormHelperText, Button, DialogContent, DialogActions, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { LoadingButton } from '@mui/lab';
@@ -87,13 +87,11 @@ export function CostsForm(props: CostFormProps) {
   return (
     <form id={'costForm'} onSubmit={handleSubmit((data) => onSubmit(data))}>
       <DialogContent>
-        <Grid item container spacing={1} sx={{ paddingTop: '1rem' }}>
+        <Grid container spacing={1} sx={{ paddingTop: '1rem' }}>
           {fields.map((item) => (
-            <Grid
-              item
+            <Box
               key={fieldsCosts[item].name + 'Item'}
-              width={fieldsCosts[item].size}
-              sx={{ paddingLeft: 0 }}
+              sx={{ paddingLeft: 0, width: fieldsCosts[item].size }}
             >
               <Controller
                 key={item}
@@ -117,7 +115,7 @@ export function CostsForm(props: CostFormProps) {
                   </>
                 )}
               />
-            </Grid>
+            </Box>
           ))}
         </Grid>
       </DialogContent>

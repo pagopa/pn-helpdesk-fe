@@ -153,13 +153,11 @@ export function ResolveMalfunctionDialog({
         {isSecondStep ? 'Anteprima documento' : 'Risolvi evento'} | {functionalityName}
       </DialogTitle>
       <DialogContent>
-        <Grid container spacing={3} direction="column">
-          <Grid item>
-            <DialogContentText>
-              {functionalityStatus === 'OK' ? 'Risolvi' : 'Inserisci'} un malfunzionamento legato
-              all’area di {functionalityName}
-            </DialogContentText>
-          </Grid>
+        <Grid container spacing={3} >
+          <DialogContentText>
+            {functionalityStatus === 'OK' ? 'Risolvi' : 'Inserisci'} un malfunzionamento legato
+            all’area di {functionalityName}
+          </DialogContentText>
           {isSecondStep === true ? (
             <PreviewDialogContent
               preview={preview}

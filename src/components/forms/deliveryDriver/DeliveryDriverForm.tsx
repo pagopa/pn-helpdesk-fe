@@ -1,4 +1,4 @@
-import { Card, FormHelperText, Grid, Typography } from '@mui/material';
+import { Box, Card, FormHelperText, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -79,25 +79,21 @@ export function DeliveryDriverForm(props: PropsDeliveryBox) {
         }}
       >
         <Grid container rowSpacing={2}>
-          <Grid item>
-            <Typography variant="h5" component="div">
-              {props.initialValue?.taxId
-                ? props.fsu
-                  ? 'Modifica FSU'
-                  : 'Modifica recapitista'
-                : props.fsu
+          <Typography variant="h5" component="div">
+            {props.initialValue?.taxId
+              ? props.fsu
+                ? 'Modifica FSU'
+                : 'Modifica recapitista'
+              : props.fsu
                 ? 'Nuovo FSU'
                 : 'Nuovo recapitista'}
-            </Typography>
-          </Grid>
-          <Grid item container>
-            <Grid item container spacing={1} alignItems="center">
+          </Typography>
+          <Grid container>
+            <Grid container spacing={1} sx={{ alignItems: "center" }}>
               {(Object.keys(fieldsDriver) as Array<FieldTypesDriver>).map((field) => (
-                <Grid
-                  item
+                <Box
                   key={fieldsDriver[field].name + 'Item'}
-                  width={fieldsDriver[field].size}
-                  sx={{ paddingLeft: 0 }}
+                  sx={{ paddingLeft: 0, width: fieldsDriver[field].size }}
                 >
                   <Controller
                     key={field}
@@ -119,12 +115,12 @@ export function DeliveryDriverForm(props: PropsDeliveryBox) {
                       </>
                     )}
                   />
-                </Grid>
+                </Box>
               ))}
             </Grid>
           </Grid>
         </Grid>
-        <Grid item container direction="row" justifyContent={'right'}>
+        <Grid container direction="row" sx={{ justifyContent: 'right' }}>
           <LoadingButton
             loading={loading}
             data-testid={'btn-save-driver'}

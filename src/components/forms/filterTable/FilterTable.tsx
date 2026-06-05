@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Grid, Button, FormHelperText } from '@mui/material';
+import { Grid, Button, FormHelperText, Stack } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import { FormField, FieldsProps } from '../../formFields/FormFields';
@@ -39,7 +39,7 @@ const FilterTable = memo(({ fields, onFiltersSubmit, applyFilterText = 'Filtra' 
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-      <Grid display={'flex'} justifyContent={'space-between'} gap={'10px'} marginBottom={'20px'}>
+      <Stack sx={{ gap: '10px', marginBottom: '20px', justifyContent: 'space-between' }}>
         {fields.map((field: FieldsProps) => (
           <Controller
             key={field.name}
@@ -62,30 +62,27 @@ const FilterTable = memo(({ fields, onFiltersSubmit, applyFilterText = 'Filtra' 
             )}
           />
         ))}
-        <Grid item display={'flex'} gap={'6px'}>
-          <Grid item>
-            <Button
-              variant="outlined"
-              type="submit"
-              style={{ height: '100%', display: 'flex', gap: '10px' }}
-              data-testid="apply-filters"
-            >
-              {applyFilterText} <FilterAltIcon aria-label="applica filtri" />
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              onClick={clearFilters}
-              type="submit"
-              disabled={!isFilterApplied}
-              style={{ height: '100%' }}
-              data-testid="clear-filters"
-            >
-              <FilterAltOffIcon aria-label="rimuovi filtri" />
-            </Button>
-          </Grid>
-        </Grid>
-      </Grid>
+        <Stack sx={{ gap: '6px' }}>
+          <Button
+            variant="outlined"
+            type="submit"
+            style={{ height: '100%', display: 'flex', gap: '10px' }}
+            data-testid="apply-filters"
+          >
+            {applyFilterText} <FilterAltIcon aria-label="applica filtri" />
+          </Button>
+
+          <Button
+            onClick={clearFilters}
+            type="submit"
+            disabled={!isFilterApplied}
+            style={{ height: '100%' }}
+            data-testid="clear-filters"
+          >
+            <FilterAltOffIcon aria-label="rimuovi filtri" />
+          </Button>
+        </Stack>
+      </Stack>
     </form>
   );
 });

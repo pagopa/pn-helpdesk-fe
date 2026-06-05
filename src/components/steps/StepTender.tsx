@@ -77,7 +77,7 @@ export function StepTender() {
         onChanged={handleChangeTenderData}
       />
 
-      <Grid item container direction="row" justifyContent="space-between">
+      <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
         <ButtonCancel />
 
         <Stack direction={'row'} spacing={3}>

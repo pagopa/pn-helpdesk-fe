@@ -41,14 +41,14 @@ export function StepDeliveriesDrivers() {
 
   if (driversStore.detail && !driversStore.detail.fsu) {
     return (
-      <Stack direction={'column'} spacing={2} width={'100%'}>
+      <Stack direction={'column'} spacing={2} sx={{ width: '100%' }}>
         <DriverAndCostForm
           fsu={false}
           tenderCode={formState.formTender.code as string}
           driverCode={driversStore.detail?.taxId}
         />
 
-        <Grid item container direction="row" justifyContent="space-between">
+        <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
           <Button
             onClick={handleBackOnDrivers}
             data-testid={'btn-back-on-drivers'}
@@ -62,7 +62,7 @@ export function StepDeliveriesDrivers() {
   }
 
   return (
-    <Stack direction={'column'} spacing={2} width={'100%'}>
+    <Stack direction={'column'} spacing={2} sx={{ width: '100%' }}>
       <Card
         elevation={24}
         sx={{
@@ -72,22 +72,18 @@ export function StepDeliveriesDrivers() {
           backgroundColor: 'background.paper',
         }}
       >
-        <Grid container rowSpacing={2} alignItems={'center'} justifyContent="space-between">
-          <Grid item>
-            <Typography variant="h5" component="div">
-              Recapitisti
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Button
-              variant={'outlined'}
-              data-testid={'btn-add-new-driver'}
-              onClick={() => dispatch(setDetailDriver({} as DeliveryDriver))}
-              startIcon={<Add />}
-            >
-              Aggiungi
-            </Button>
-          </Grid>
+        <Grid container rowSpacing={2} sx={{ alignItems: 'center', justifyContent: "space-between" }}>
+          <Typography variant="h5" component="div">
+            Recapitisti
+          </Typography>
+          <Button
+            variant={'outlined'}
+            data-testid={'btn-add-new-driver'}
+            onClick={() => dispatch(setDetailDriver({} as DeliveryDriver))}
+            startIcon={<Add />}
+          >
+            Aggiungi
+          </Button>
         </Grid>
         {formState?.formTender?.code ? (
           <DeliveriesDriverTable
@@ -98,7 +94,7 @@ export function StepDeliveriesDrivers() {
         ) : null}
       </Card>
 
-      <Grid item container direction="row" justifyContent="space-between">
+      <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
         <Button
           onClick={() => dispatch(goFSUStep())}
           data-testid={'btn-back-fsu'}

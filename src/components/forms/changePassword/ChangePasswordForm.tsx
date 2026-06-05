@@ -1,4 +1,4 @@
-import { Grid, Button, Box, Card, FormHelperText, Typography, InputAdornment } from '@mui/material';
+import { Grid, Button, Box, Card, FormHelperText, Typography, Stack, InputAdornment } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import LockIcon from '@mui/icons-material/Lock';
@@ -84,13 +84,14 @@ const ChangePasswordForm = ({ user }: any) => {
   };
 
   return (
-    <Box
+    <Stack
       data-testid="ChangePasswordForm"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      sx={{ backgroundColor: 'primary.main' }}
+      sx={{
+        backgroundColor: 'primary.main',
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh"
+      }}
     >
       <Card
         elevation={24}
@@ -101,21 +102,21 @@ const ChangePasswordForm = ({ user }: any) => {
           backgroundColor: 'background.paper',
         }}
       >
-        <Grid container direction="column" rowSpacing={2}>
-          <Grid item container justifyContent="center">
+        <Grid container rowSpacing={2}>
+          <Grid container sx={{ justifyContent: "center" }}>
             <LockIcon sx={{ height: '15%', width: '15%', color: '#0066CC' }} />
           </Grid>
-          <Grid item container alignItems="center" justifyContent="center">
-            <Grid item sx={{ paddingBottom: '2%' }}>
+          <Grid container sx={{ alignItems: "center", justifyContent: "center" }}>
+            <Box sx={{ paddingBottom: '2%' }}>
               <Typography color="text.primary" variant="h4">
                 Cambio password
               </Typography>
-            </Grid>
+            </Box>
           </Grid>
           <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-            <Grid item container direction="column" rowSpacing={3}>
+            <Grid container rowSpacing={3}>
               {fields.map((currentField) => (
-                <Grid item container key={currentField.name}>
+                <Grid container key={currentField.name}>
                   <Controller
                     control={control}
                     name={currentField.name}
@@ -163,25 +164,23 @@ const ChangePasswordForm = ({ user }: any) => {
                 </Grid>
               ))}
 
-              <Grid item>
-                <Button
-                  sx={{
-                    backgroundColor: 'primary.main',
-                    '&:hover': { backgroundColor: 'primary.dark' },
-                  }}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="outlined"
-                >
-                  <Typography sx={{ color: 'white' }}>Cambia password</Typography>
-                </Button>
-              </Grid>
+              <Button
+                sx={{
+                  backgroundColor: 'primary.main',
+                  '&:hover': { backgroundColor: 'primary.dark' },
+                }}
+                fullWidth
+                size="large"
+                type="submit"
+                variant="outlined"
+              >
+                <Typography sx={{ color: 'white' }}>Cambia password</Typography>
+              </Button>
             </Grid>
           </form>
         </Grid>
       </Card>
-    </Box>
+    </Stack>
   );
 };
 

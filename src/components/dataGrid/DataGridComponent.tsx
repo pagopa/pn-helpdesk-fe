@@ -22,14 +22,14 @@ type Props = {
 const DataGridComponent = (props: Props) => (
   <Container>
     <Grid container direction="row" rowSpacing={3}>
-      <Grid item container>
+      <Grid container>
         <Box>
           <Typography variant="h4" color="text.primary">
             Monitoraggio Piattaforma Notifiche
           </Typography>
         </Box>
       </Grid>
-      <Grid item container direction="row" justifyContent="space-between">
+      <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
         <Card
           elevation={24}
           sx={{
@@ -39,30 +39,28 @@ const DataGridComponent = (props: Props) => (
             backgroundColor: 'background.paper',
           }}
         >
-          <Grid item>
-            <DataGrid
-              rows={props.rows}
-              columns={props.columns}
-              disableSelectionOnClick
-              hideFooter={true}
-              experimentalFeatures={{ newEditingApi: true }}
-              disableVirtualization
-              sx={{
-                width: '100%',
-                height: '230px',
-                [`& .${gridClasses.row}`]: {
-                  bgcolor: () => 'background.default',
-                },
-                [`& .MuiDataGrid-cell--withRenderer.MuiDataGrid-cell.MuiDataGrid-cell--textLeft:focus`]:
-                  {
-                    outline: 'none',
-                  },
-                [`.MuiDataGrid-cell:focus-within`]: {
-                  outline: 'none',
-                },
-              }}
-            />
-          </Grid>
+          <DataGrid
+            rows={props.rows}
+            columns={props.columns}
+            disableSelectionOnClick
+            hideFooter={true}
+            experimentalFeatures={{ newEditingApi: true }}
+            disableVirtualization
+            sx={{
+              width: '100%',
+              height: '230px',
+              [`& .${gridClasses.row}`]: {
+                bgcolor: () => 'background.default',
+              },
+              [`& .MuiDataGrid-cell--withRenderer.MuiDataGrid-cell.MuiDataGrid-cell--textLeft:focus`]:
+              {
+                outline: 'none',
+              },
+              [`.MuiDataGrid-cell:focus-within`]: {
+                outline: 'none',
+              },
+            }}
+          />
         </Card>
       </Grid>
     </Grid>

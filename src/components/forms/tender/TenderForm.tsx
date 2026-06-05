@@ -89,7 +89,7 @@ export function TenderForm(props: TenderFormProps) {
             Informazione sulla Gara
           </Typography>
 
-          <Grid item container direction="column" rowSpacing={2}>
+          <Grid container rowSpacing={2}>
             {(Object.keys(fieldsTender) as Array<FieldTypesTender>).map((field) => (
               <Controller
                 key={field}
@@ -114,7 +114,7 @@ export function TenderForm(props: TenderFormProps) {
             ))}
           </Grid>
         </Stack>
-        <Grid item container direction="row" justifyContent={'right'}>
+        <Grid container direction="row" sx={{ justifyContent: 'right' }}>
           <LoadingButton
             data-testid={'btn-save-tender'}
             loading={loading}

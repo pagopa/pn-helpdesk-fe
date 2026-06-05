@@ -39,7 +39,7 @@ export function DeliveriesDriverTable(props: DeliveriesDriverTableProps) {
   };
 
   return (
-    <Grid item container data-testid={'delivery-driver-table'}>
+    <Grid container data-testid={'delivery-driver-table'}>
       <PaginationDataGrid<DeliveryDriver>
         data={driversStore?.allData ? driversStore?.allData : ({} as Page<DeliveryDriver>)}
         type={
@@ -60,7 +60,7 @@ export function DeliveriesDriverTable(props: DeliveriesDriverTableProps) {
             dispatch(setDialogCosts(undefined));
             dispatch(resetStateCost());
           }}
-          onClickPositive={() => {}}
+          onClickPositive={() => { }}
         />
       ) : null}
     </Grid>

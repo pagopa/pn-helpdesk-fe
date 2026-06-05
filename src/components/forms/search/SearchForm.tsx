@@ -1,6 +1,6 @@
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SearchIcon from '@mui/icons-material/Search';
-import { Button, Card, Container, FormHelperText, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, Container, FormHelperText, Grid, Typography } from '@mui/material';
 import { format, subMonths } from 'date-fns';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
@@ -475,15 +475,14 @@ const SearchForm = () => {
 
   return (
     <Container>
-      <Grid container direction="column" rowSpacing={3}>
-        <Grid item container>
-          <Grid item>
-            <Typography color="text.primary" variant="h4">
-              Ricerca ed Estrazione Dati
-            </Typography>
-          </Grid>
+      <Grid container rowSpacing={3}>
+        <Grid container>
+
+          <Typography color="text.primary" variant="h4">
+            Ricerca ed Estrazione Dati
+          </Typography>
         </Grid>
-        <Grid item container rowSpacing={2}>
+        <Grid container rowSpacing={2}>
           <Card
             elevation={24}
             sx={{
@@ -494,20 +493,20 @@ const SearchForm = () => {
             }}
           >
             <Grid container rowSpacing={2}>
-              <Grid item width={1}>
+              <Box sx={{ width: 1 }}>
                 <form onSubmit={handleSubmit((data) => onSubmit(data))} style={{ width: '100%' }}>
-                  <Grid item container>
-                    <Grid item container spacing={2} alignItems="flex-start">
+                  <Grid container>
+                    <Grid container spacing={2} sx={{ alignItems: "flex-start" }}>
                       {fields.map(
                         (field) =>
                           !field.hidden && (
-                            <Grid
-                              item
+                            <Box
                               key={field.name + 'Item'}
-                              xs={12}
-                              lg={field.size ? field.size : 3}
-                              xl={field.size ? field.size : 3}
-                              sx={{ pr: 0 }}
+                              sx={{
+                                pr: 0, xs: 12,
+                                lg: field.size ? field.size : 3,
+                                xl: field.size ? field.size : 3
+                              }}
                             >
                               <Controller
                                 control={control}
@@ -539,61 +538,58 @@ const SearchForm = () => {
                                   </>
                                 )}
                               />
-                            </Grid>
+                            </Box>
                           )
                       )}
                     </Grid>
                     <Grid
-                      item
+
                       container
-                      justifyContent="space-between"
                       rowSpacing={2}
                       sx={{
                         flexDirection: { xs: 'column', lg: 'row' },
+                        justifyContent: "space-between"
                       }}
                     >
-                      <Grid item>
-                        <Button
-                          id="resetFilter"
-                          size="large"
-                          fullWidth
-                          variant="outlined"
-                          startIcon={<RestartAltIcon />}
-                          sx={{
-                            '&:hover': { backgroundColor: 'action.hover' },
-                          }}
-                          onClick={() => {
-                            reset({
-                              ...defaultFormValues,
-                              'Tipo Estrazione': getValues('Tipo Estrazione'),
-                            });
-                            dispatch(responseActions.resetState());
-                          }}
-                        >
-                          Resetta filtri
-                        </Button>
-                      </Grid>
-                      <Grid item>
-                        <Button
-                          id="ricerca"
-                          size="large"
-                          fullWidth
-                          type="submit"
-                          variant="contained"
-                          sx={{
-                            backgroundColor: 'primary.main',
-                            '&:hover': { backgroundColor: 'primary.dark' },
-                          }}
-                          startIcon={<SearchIcon />}
-                          disabled={Object.keys(errors).length > 0 || ricerca}
-                        >
-                          Ricerca
-                        </Button>
-                      </Grid>
+
+                      <Button
+                        id="resetFilter"
+                        size="large"
+                        fullWidth
+                        variant="outlined"
+                        startIcon={<RestartAltIcon />}
+                        sx={{
+                          '&:hover': { backgroundColor: 'action.hover' },
+                        }}
+                        onClick={() => {
+                          reset({
+                            ...defaultFormValues,
+                            'Tipo Estrazione': getValues('Tipo Estrazione'),
+                          });
+                          dispatch(responseActions.resetState());
+                        }}
+                      >
+                        Resetta filtri
+                      </Button>
+                      <Button
+                        id="ricerca"
+                        size="large"
+                        fullWidth
+                        type="submit"
+                        variant="contained"
+                        sx={{
+                          backgroundColor: 'primary.main',
+                          '&:hover': { backgroundColor: 'primary.dark' },
+                        }}
+                        startIcon={<SearchIcon />}
+                        disabled={Object.keys(errors).length > 0 || ricerca}
+                      >
+                        Ricerca
+                      </Button>
                     </Grid>
                   </Grid>
                 </form>
-              </Grid>
+              </Box>
               <ResponseData></ResponseData>
               <NotificationData></NotificationData>
             </Grid>

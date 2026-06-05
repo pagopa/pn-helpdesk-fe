@@ -15,7 +15,7 @@ export function StepFSU() {
         <DriverAndCostForm key={'TENDER-FORM'} fsu={true} tenderCode={formState.formTender.code} />
       ) : null}
 
-      <Grid item container direction="row" justifyContent="space-between">
+      <Grid container direction="row" sx={{ justifyContent: "space-between" }}>
         <Button
           onClick={() => dispatch(backStep())}
           data-testid={'btn-back-fsu'}

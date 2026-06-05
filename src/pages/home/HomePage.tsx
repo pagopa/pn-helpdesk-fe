@@ -1,5 +1,5 @@
 import { ArrowForward } from '@mui/icons-material';
-import { Box, Card, Grid, Paper, Typography } from '@mui/material';
+import { Box, Card, Grid, Paper, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useNavigationItems } from '../../hooks/useNavigationItems';
 
@@ -12,10 +12,10 @@ const HomePage = () => {
   if (!availableItems.length) {
     return (
       <MainLayout>
-        <Typography variant="h5" align="center" mt={4} data-testid="empty-state">
+        <Typography variant="h5" sx={{ align: "center", mt: 4 }} data-testid="empty-state">
           Non hai alcun permesso per utilizzare questa applicazione.
         </Typography>
-        <Typography variant="body1" align="center" mt={1}>
+        <Typography variant="body1" sx={{ align: "center", mt: 1 }}>
           Contatta il tuo amministratore per richiedere i permessi necessari.
         </Typography>
       </MainLayout>
@@ -24,10 +24,10 @@ const HomePage = () => {
 
   return (
     <MainLayout>
-      <Box px={2}>
-        <Grid container mx="auto" maxWidth={1200} spacing={2}>
+      <Box sx={{ px: 2 }}>
+        <Grid container sx={{ mx: "auto", maxWidth: 1200 }} spacing={2}>
           {availableItems.map((item) => (
-            <Grid key={item.id} item width="25%">
+            <Grid key={item.id} sx={{ width: "25%" }}>
               <Card
                 id={item.id}
                 component={Paper}
@@ -35,20 +35,16 @@ const HomePage = () => {
                 onClick={() => navigate(item.link)}
                 sx={{ cursor: 'pointer' }}
               >
-                <Box
-                  minHeight="200px"
-                  p={3}
-                  display="flex"
-                  flexDirection="column"
-                  justifyContent="space-between"
+                <Stack
+                  sx={{ minHeight: "200px", p: 3, flexDirection: "column", justifyContent: "space-between" }}
                 >
                   <Typography variant="h5" id={`cardTitle-${item.id}`}>
                     {item.title}
                   </Typography>
-                  <Box alignSelf="flex-end">
+                  <Box sx={{ alignSelf: "flex-end" }}>
                     <ArrowForward id={`iconArrow-${item.id}`} color="primary" />
                   </Box>
-                </Box>
+                </Stack>
               </Card>
             </Grid>
           ))}

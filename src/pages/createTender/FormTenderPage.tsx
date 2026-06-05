@@ -63,21 +63,21 @@ export function FormTenderPage({ email = '' }: any) {
     <MainLayout email={email}>
       <Container>
         <Grid container direction="row" rowSpacing={3}>
-          <Grid item container rowSpacing={1}>
+          <Grid container rowSpacing={1}>
             <Grid>
               <Breadcrumbs
                 currentLocationLabel={tenderCode ? 'Modifica gara' : 'Nuova Gara'}
                 links={breadcrumbsLinks}
               />
             </Grid>
-            <Grid item container>
+            <Grid container>
               <Typography variant="h4" color="text.primary" data-testid={'title-page'}>
                 {!tenderCode ? 'Nuova Gara' : 'Modifica Gara'}
               </Typography>
             </Grid>
           </Grid>
 
-          <Grid item container>
+          <Grid container>
             <Stepper
               activeStep={tenderFormStepper.activeKey}
               alternativeLabel
@@ -90,7 +90,7 @@ export function FormTenderPage({ email = '' }: any) {
               ))}
             </Stepper>
           </Grid>
-          <Grid item container>
+          <Grid container>
             {steps[tenderFormStepper.activeKey].render()}
           </Grid>
         </Grid>

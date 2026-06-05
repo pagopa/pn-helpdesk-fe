@@ -1,4 +1,4 @@
-import { Grid, Button, Box, Card, FormHelperText, Link, Tooltip, Typography } from '@mui/material';
+import { Grid, Button, Box, Card, FormHelperText, Link, Tooltip, Typography, Stack } from '@mui/material';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -84,13 +84,13 @@ const LoginForm = ({ setUser }: any) => {
   };
 
   return (
-    <Box
+    <Stack
       data-testid="LoginForm"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      sx={{ backgroundColor: 'primary.main' }}
+      sx={{
+        backgroundColor: 'primary.main', justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh"
+      }}
     >
       <Card
         elevation={24}
@@ -101,16 +101,14 @@ const LoginForm = ({ setUser }: any) => {
           backgroundColor: 'background.paper',
         }}
       >
-        <Grid container direction="column" rowSpacing={2}>
-          <Grid item container alignItems="center" justifyContent="center">
-            <Grid item>
-              <MonogramPagoPACompany color="primary" shape="none" />
-            </Grid>
+        <Grid container rowSpacing={2}>
+          <Grid container sx={{ alignItems: "center", justifyContent: "center" }}>
+            <MonogramPagoPACompany color="primary" shape="none" />
           </Grid>
           <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-            <Grid item container direction="column" rowSpacing={3}>
+            <Grid container rowSpacing={3}>
               {fields.map((field) => (
-                <Grid item container key={field}>
+                <Grid container key={field}>
                   <Controller
                     control={control}
                     name={field}
@@ -131,7 +129,7 @@ const LoginForm = ({ setUser }: any) => {
                     )}
                   />
                   {field === 'password' && (
-                    <Grid item container justifyContent="flex-end">
+                    <Grid container sx={{ justifyContent: "flex-end" }}>
                       <Tooltip
                         onClose={() => setTooltipOpen(false)}
                         open={tooltipOpen}
@@ -146,28 +144,25 @@ const LoginForm = ({ setUser }: any) => {
                   )}
                 </Grid>
               ))}
-
-              <Grid item>
-                <Button
-                  id="buttonLogin"
-                  sx={{
-                    backgroundColor: 'primary.main',
-                    '&:hover': { backgroundColor: 'primary.dark' },
-                  }}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="outlined"
-                >
-                  <Typography sx={{ color: 'white' }}>LOGIN</Typography>
-                </Button>
-              </Grid>
+              <Button
+                id="buttonLogin"
+                sx={{
+                  backgroundColor: 'primary.main',
+                  '&:hover': { backgroundColor: 'primary.dark' },
+                }}
+                fullWidth
+                size="large"
+                type="submit"
+                variant="outlined"
+              >
+                <Typography sx={{ color: 'white' }}>LOGIN</Typography>
+              </Button>
             </Grid>
           </form>
         </Grid>
         <SSOLogin />
       </Card>
-    </Box>
+    </Stack>
   );
 };
 
