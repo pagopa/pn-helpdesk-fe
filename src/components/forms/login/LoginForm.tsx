@@ -1,4 +1,4 @@
-import { Grid, Button, Card, FormHelperText, Link, Tooltip, Typography, Stack } from '@mui/material';
+import { Button, Card, FormHelperText, Link, Tooltip, Stack, Box } from '@mui/material';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -101,35 +101,39 @@ const LoginForm = ({ setUser }: any) => {
           backgroundColor: 'background.paper',
         }}
       >
-        <Grid container rowSpacing={2}>
-          <Grid container sx={{ alignItems: "center", justifyContent: "center" }}>
+        <Stack direction="column" spacing={3}>
+
+          {/* Contenitore Logo - Centrato */}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <MonogramPagoPACompany color="primary" shape="none" />
-          </Grid>
+          </Box>
+
           <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-            <Grid container rowSpacing={3}>
+            {/* Stack principale che tiene in colonna tutti gli input e il bottone */}
+            <Stack direction="column" spacing={1} sx={{ width: '100%' }}>
+
               {fields.map((field) => (
-                <Grid container key={field}>
+                <Stack direction="column" key={field} sx={{ width: '100%' }}>
                   <Controller
                     control={control}
                     name={field}
                     rules={FieldsProperties[field].rules}
                     render={({ field: { onChange, value }, fieldState: { error } }) => (
-                      <>
+                      <Box sx={{ width: '100%' }}>
                         <FormField
                           error={error}
-                          key={field}
                           field={FieldsProperties[field]}
                           onChange={onChange}
                           value={value}
                         />
-                        <FormHelperText error>
+                        <FormHelperText error={!!errors[field]}>
                           {errors[field] ? errors[field]?.message : ' '}
                         </FormHelperText>
-                      </>
+                      </Box>
                     )}
                   />
                   {field === 'password' && (
-                    <Grid container sx={{ justifyContent: "flex-end" }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: -0.5 }}>
                       <Tooltip
                         onClose={() => setTooltipOpen(false)}
                         open={tooltipOpen}
@@ -140,26 +144,29 @@ const LoginForm = ({ setUser }: any) => {
                           Password dimenticata?
                         </Link>
                       </Tooltip>
-                    </Grid>
+                    </Box>
                   )}
-                </Grid>
+                </Stack>
               ))}
+
+              {/* Bottone di Login */}
               <Button
                 id="buttonLogin"
-                sx={{
-                  backgroundColor: 'primary.main',
-                  '&:hover': { backgroundColor: 'primary.dark' },
-                }}
                 fullWidth
                 size="large"
                 type="submit"
-                variant="outlined"
+                variant="contained" // In MUI v9 si usa 'contained' se vuoi lo sfondo colorato di default
+                sx={{
+                  mt: 1,
+                  // Nota: se usi variant="contained" non serve forzare il background e il colore bianco del testo, fa tutto MUI
+                }}
               >
-                <Typography sx={{ color: 'white' }}>LOGIN</Typography>
+                LOGIN
               </Button>
-            </Grid>
+            </Stack>
           </form>
-        </Grid>
+
+        </Stack>
         <SSOLogin />
       </Card>
     </Stack>
