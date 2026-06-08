@@ -104,7 +104,9 @@ const SnackbarComponent = () => {
       autoHideDuration={autoHide}
       sx={{ '@media (min-width: 630px)': { top: '75px' } }}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      TransitionComponent={TransitionDown}
+      slots={{
+        transition: TransitionDown
+      }}
       onClose={(e: Event | SyntheticEvent<any, Event>, r: SnackbarCloseReason) => handleClose(e, r)}
     >
       <Alert

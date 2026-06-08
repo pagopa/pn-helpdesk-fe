@@ -19,20 +19,20 @@ const NumberFieldComponent = (props: Props) => {
       required={field.required}
       fullWidth
       type={field.type}
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      hidden={field.hidden!}
+      sx={field.hidden ? { display: 'none' } : {}}
       value={props.value}
       id={field.label}
       label={field.label}
       variant="outlined"
       error={!!props.error}
-      onBlur={props.value && props.value.length ? props.onBlur : () => {}}
-      // onChange={(e) => props.onChange(e)}
-      InputProps={{
-        inputComponent: NumericFormatCustom as any,
-        inputProps: { ...props },
-      }}
+      onBlur={props.value && props.value.length ? props.onBlur : undefined}
       disabled={props.field.disabled}
+      slots={{
+        input: NumericFormatCustom,
+      }}
+      slotProps={{
+        htmlInput: { ...props },
+      }}
     />
   );
 };

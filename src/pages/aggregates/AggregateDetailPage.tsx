@@ -158,16 +158,16 @@ const AggregateDetailPage = ({ email }: any) => {
 
   return (
     <MainLayout email={email}>
-      <Box px={3}>
+      <Box sx={{ px: 3 }}>
         <Breadcrumbs currentLocationLabel="Dettaglio aggregazione" links={breadcrumbsLinks} />
       </Box>
 
-      <Box px={3} mt={2}>
+      <Box sx={{ px: 3, mt: 2 }}>
         <CustomCard cardId="form-card" cardHeader={formCardHeader} cardBody={formCardBody} />
       </Box>
 
       {!isCreate && (
-        <Box px={3} mt={2}>
+        <Box sx={{ px: 3, mt: 2 }}>
           <CustomCard
             cardId="associated-pa-card"
             cardHeader={associatedPasCardHeader}

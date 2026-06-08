@@ -1,4 +1,4 @@
-import { Accordion, AccordionSummary, Typography, AccordionDetails, Box } from '@mui/material';
+import { Accordion, AccordionSummary, Typography, AccordionDetails, Stack } from '@mui/material';
 import React from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
@@ -153,14 +153,14 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ accordionKey, analogEvents }) => (
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Box component="div" display="flex" flexDirection="column" gap={1}>
+                        <Stack direction="column" spacing={1}>
                             {schedulingDate && <Typography variant="body1">Schedulato il: {schedulingDate}</Typography>}
                             {physicalAddress && <PhysicalAddress address={physicalAddress} />}
                             {sendAnalog && <SendAnalogDetails sendAnalog={sendAnalog} />}
                             {sendAnalogFeedback && <SendAnalogFeedbackDetails feedback={sendAnalogFeedback} />}
                             {prepareAnalogDomicile && <PrepareAnalogDomicile domicile={prepareAnalogDomicile} />}
                             {sendAnalogDomicile && <SendAnalogDomicile analogCost={sendAnalogDomicile} />}
-                        </Box>
+                        </Stack>
                     </AccordionDetails>
                 </Accordion>
             );

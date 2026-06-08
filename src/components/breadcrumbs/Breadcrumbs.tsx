@@ -27,9 +27,11 @@ const BreadcrumbsLink = ({ linkLabel, linkRoute }: BreadcrumbsLinkProps) => (
 
 const CustomBreadcrumbs = ({ links, currentLocationLabel }: BreadcrumbsProps) => (
   <Stack
-    direction={{ xs: 'column', sm: 'row' }}
-    alignItems={{ xs: 'start', sm: 'center' }}
-    justifyContent="start"
+    sx={{
+      direction: { xs: 'column', sm: 'row' },
+      alignItems: { xs: 'start', sm: 'center' },
+      justifyContent: "start"
+    }}
     spacing={3}
   >
     <Breadcrumbs aria-label="breadcrumb">

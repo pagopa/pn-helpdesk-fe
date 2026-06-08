@@ -52,7 +52,7 @@ const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accord
         <AccordionTimeline keyValue={accordionKey}
             accordionSummaryChild={<Typography component="span">Indirizzo normalizzato</Typography>
             }
-            accordionDetailsChild={<Stack direction={'row'} justifyContent={'space-around'}>
+            accordionDetailsChild={<Stack direction='row' sx={{ justifyContent: 'space-around' }}>
                 <Typography variant="body1">
                     Indirizzo ente : {highlightDiff(oldAddressComplete, normalizeAddressComplete)}
                 </Typography>

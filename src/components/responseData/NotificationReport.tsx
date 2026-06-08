@@ -1,5 +1,5 @@
 // NotificationReport.tsx
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useState } from "react";
 import { NotificationDataModel, notificationStatus } from "../../model/notification";
@@ -108,7 +108,7 @@ const NotificationReport: React.FC<Props> = ({ data }) => {
                     {text}
                 </Typography>
             </Paper>
-            <Box display="flex" justifyContent="flex-end" mt={1}>
+            <Stack sx={{ justifyContent: "flex-end", mt: 1 }}>
                 <Button
                     variant="outlined"
                     startIcon={<ContentCopyIcon />}
@@ -116,7 +116,7 @@ const NotificationReport: React.FC<Props> = ({ data }) => {
                 >
                     {copied ? "Copiato!" : "Copia testo"}
                 </Button>
-            </Box>
+            </Stack>
         </Box>
     );
 };

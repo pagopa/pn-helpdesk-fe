@@ -72,7 +72,7 @@ const NotificationData = () => {
             <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Stato: {notificationStatus[statusOfNotification.toLocaleLowerCase()]}</Typography>
             <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Numero protocollo: {protocolNumberOfNotification}</Typography>
         </Stack>
-        <Stack direction={'row'} justifyContent={'space-between'}>
+        <Stack direction='row' sx={{ justifyContent: 'space-between' }}>
             <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Soggetto: {subjectOfNotification}</Typography>
             <Button
                 onClick={handleExpandAll}

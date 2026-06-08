@@ -145,16 +145,16 @@ const PaTransferListPage = ({ email }: any) => {
 
   const breadcrumbsLinks = aggParam
     ? [
-        {
-          linkLabel: 'Gestione Aggregazioni ApiKey',
-          linkRoute: routes.AGGREGATES_LIST,
-        },
-        {
-          linkLabel: 'Dettaglio Aggregazione',
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          linkRoute: routes.GET_UPDATE_AGGREGATE_PATH(aggParam.id!),
-        },
-      ]
+      {
+        linkLabel: 'Gestione Aggregazioni ApiKey',
+        linkRoute: routes.AGGREGATES_LIST,
+      },
+      {
+        linkLabel: 'Dettaglio Aggregazione',
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        linkRoute: routes.GET_UPDATE_AGGREGATE_PATH(aggParam.id!),
+      },
+    ]
     : [];
 
   const list2 = useMemo(
@@ -210,8 +210,9 @@ const PaTransferListPage = ({ email }: any) => {
                   edge="start"
                   tabIndex={-1}
                   disableRipple
-                  inputProps={{ 'aria-labelledby': pa.id }}
-                />
+                  slotProps={{
+                    input: { 'aria-labelledby': pa.id }
+                  }} />
               </ListItemIcon>
               <ListItemText id={pa.id} primary={pa.name} />
             </ListItem>
@@ -273,10 +274,10 @@ const PaTransferListPage = ({ email }: any) => {
             }}
           >
             {isInput2Disabled ||
-            areInputsEqual ||
-            !input1Value ||
-            !input2Value ||
-            checked?.length < 1 ? (
+              areInputsEqual ||
+              !input1Value ||
+              !input2Value ||
+              checked?.length < 1 ? (
               <Button variant="contained" disabled>
                 Trasferisci
                 <SendIcon fontSize="small" style={{ marginLeft: 10 }} />

@@ -28,18 +28,18 @@ const PaAssociationPage = ({ email }: any) => {
 
   return (
     <MainLayout email={email}>
-      <Box px={3}>
+      <Box sx={{ px: 3 }}>
         <Breadcrumbs currentLocationLabel="Associa PA" links={breadcrumbsLinks} />
       </Box>
 
-      <Box px={3} mt={2}>
+      <Box sx={{ px: 3, mt: 2 }}>
         <Typography gutterBottom variant="h5" component="div">
           Associa PA
         </Typography>
 
         <AggregateAccordion aggregate={aggregate} />
 
-        <Box mt={2}>
+        <Box sx={{ mt: 2 }}>
           <PaAssociation idAggregate={aggregate?.id} />
         </Box>
       </Box>

@@ -2,7 +2,7 @@ import TextField from '@mui/material/TextField';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { CalendarPickerView } from '@mui/lab';
 import { useState } from 'react';
-import { Box, FormHelperText, Grid } from '@mui/material';
+import { FormHelperText, Grid } from '@mui/material';
 import { format } from 'date-fns';
 import { FieldsProps } from '../formFields/FormFields';
 
