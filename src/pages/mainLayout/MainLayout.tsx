@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import Header from '../../components/header/Header';
-
 import Footer from '../../components/footer/Footer';
 import { useAuth } from '../../Authentication/auth';
 
@@ -16,8 +15,7 @@ const MainLayout = ({ children }: any) => {
 
   useEffect(() => {
     const idTokenInterval = setInterval(refreshToken, 3540000);
-    // 300000 = 5 minutes
-    // 3 540 000 = 59 minutes
+
     const refreshTokenInterval = setInterval(async () => {
       await logout()
         .then(() => {
@@ -27,7 +25,7 @@ const MainLayout = ({ children }: any) => {
           throw error;
         });
     }, 36000000);
-    // 36 000 000 = 10 hours
+
     return () => {
       clearInterval(idTokenInterval);
       clearInterval(refreshTokenInterval);
@@ -36,24 +34,33 @@ const MainLayout = ({ children }: any) => {
   }, []);
 
   return (
-    <Grid
-      container
-      rowSpacing={5}
+    <Stack
+      direction="column"
       sx={{
-        height: '100%', justifyItems: "start",
-        justifyContent: "space-around", wrap: "nowrap"
+        minHeight: '100vh',
+        width: '100%'
       }}
     >
-      <Grid>
+      <Box component="header" sx={{ width: '100%' }}>
         <Header />
-      </Grid>
-      <Grid sx={{ pb: '40px' }}>
+      </Box>
+
+      <Box
+        component="main"
+        sx={{
+          flex: 1,
+          width: '100%',
+          pt: 5,
+          pb: '40px'
+        }}
+      >
         {children}
-      </Grid>
-      <Grid >
+      </Box>
+
+      <Box component="footer" sx={{ width: '100%' }}>
         <Footer />
-      </Grid>
-    </Grid>
+      </Box>
+    </Stack>
   );
 };
 

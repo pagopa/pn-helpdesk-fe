@@ -12,9 +12,10 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
-  Grid,
   Tooltip,
   Typography,
+  Box,
+  Stack,
 } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -25,45 +26,17 @@ import * as spinnerActions from '../../redux/spinnerSlice';
 import NavigationMenu from '../navigationMenu/NavigationMenu';
 import { useCurrentUser } from '../../hooks/useCurrentUser';
 
-/**
- * General component presenting the header of the app.
- */
 const Header = () => {
-  /**
-   * the state of the confirmation modal
-   */
   const [open, setOpen] = useState(false);
-
   const { currentUser } = useCurrentUser();
-
   const email = useMemo(() => currentUser?.email || 'no email', [currentUser]);
-
   const navigate = useNavigate();
-
   const { logout } = useAuth();
-
-  /**
-   * dispatch redux actions
-   */
   const dispatch = useDispatch();
 
-  /**
-   * Function closing the confirmation modal
-   */
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
+  const handleCloseModal = () => setOpen(false);
+  const handleOpenModal = () => setOpen(true);
 
-  /**
-   * Function opening the confirmation modal after the log out button is click
-   */
-  const handleOpenModal = () => {
-    setOpen(true);
-  };
-
-  /**
-   * Function handling the logging out
-   */
   const handleLogOut = () => {
     setOpen(false);
     dispatch(spinnerActions.updateSpinnerOpened(true));
@@ -79,66 +52,71 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="sticky" sx={{ bgcolor: 'primary.main' }}>
-      <Container>
+    <AppBar position="sticky" sx={{ bgcolor: 'primary.main', backgroundImage: 'none' }}>
+      <Container maxWidth="lg">
         <Toolbar
+          disableGutters
           sx={{
-            paddingRight: '0px',
-            paddingLeft: '0px',
-            '@media (min-width: 640px)': {
-              paddingRight: '0px',
-              paddingLeft: '0px',
-            },
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
-          <Grid container sx={{ justifyContent: "space-between", alignItems: "center" }}>
-            <Grid size={{ xs: 3, md: 3 }}>
-              <Grid container sx={{ alignItems: "center" }}>
-                <NavigationMenu />
-              </Grid>
-            </Grid>
-            <Grid size={{ xs: 3, md: 6 }}>
-              <Typography align="center" color="primary.contrastText">
-                PagoPA S.p.A.
-              </Typography>
-            </Grid>
-            <Grid container size={{ xs: 6, md: 3 }} sx={{ justifyContent: "flex-end", alignItems: "center" }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, justifyContent: 'flex-start' }}>
+            <NavigationMenu />
+          </Box>
 
-              <Tooltip title={email} placement="bottom">
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  id="profile"
-                  aria-label="menu"
-                >
-                  <PermIdentityIcon sx={{ color: 'white' }} />
-                </IconButton>
-              </Tooltip>
-              <Divider
-                style={{ background: 'white' }}
-                orientation="vertical"
-                variant="middle"
-                flexItem
-              />
-              <Tooltip title="Log out">
-                <IconButton
-                  size="large"
-                  edge="start"
-                  color="inherit"
-                  id="logout"
-                  aria-label="menu"
-                  onClick={handleOpenModal}
-                  sx={{ ml: 0, pr: 0 }}
-                  data-testid="logout-button"
-                >
-                  <LogoutIcon sx={{ color: 'white' }} />
-                </IconButton>
-              </Tooltip>
-            </Grid>
-          </Grid>
+          <Box sx={{ display: 'flex', justifyContent: 'center', flex: 2 }}>
+            <Typography
+              variant="h6"
+              component="h1"
+              align="center"
+              color='primary.contrastText'
+              sx={{ fontWeight: 500, fontSize: { xs: '1rem', sm: '1.25rem' } }}
+            >
+              PagoPA S.p.A.
+            </Typography>
+          </Box>
+
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end' }}
+          >
+            <Tooltip title={email} placement="bottom">
+              <IconButton
+                size="large"
+                color="inherit"
+                id="profile"
+                aria-label="profilo utente"
+              >
+                <PermIdentityIcon sx={{ color: 'primary.contrastText' }} />
+              </IconButton>
+            </Tooltip>
+
+            <Divider
+              orientation="vertical"
+              variant="middle"
+              flexItem
+              sx={{ borderColor: 'rgba(255, 255, 255, 0.3)', my: 1 }}
+            />
+
+            <Tooltip title="Log out">
+              <IconButton
+                size="large"
+                color="inherit"
+                id="logout"
+                aria-label="effettua il log out"
+                onClick={handleOpenModal}
+                data-testid="logout-button"
+              >
+                <LogoutIcon sx={{ color: 'primary.contrastText' }} />
+              </IconButton>
+            </Tooltip>
+          </Stack>
         </Toolbar>
       </Container>
+
       <Dialog
         open={open}
         onClose={handleCloseModal}
@@ -152,10 +130,10 @@ const Header = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'space-between' }}>
-          <Button id="cancelLogout" onClick={handleCloseModal} sx={{ padding: '0 18px' }}>
+          <Button id="cancelLogout" onClick={handleCloseModal} variant="text">
             Annulla
           </Button>
-          <Button id="doLogout" onClick={handleLogOut} autoFocus>
+          <Button id="doLogout" onClick={handleLogOut} variant="text" autoFocus>
             Esci
           </Button>
         </DialogActions>
