@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
-  Autocomplete,
   TextField,
   List,
   ListItem,
@@ -21,6 +20,7 @@ import * as spinnerActions from '../../redux/spinnerSlice';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
 import * as routes from '../../navigation/router.const';
 import { Pa } from '../../api/apiRequestTypes';
+import { Autocomplete } from '@pagopa/mui-italia';
 
 const PaTransferListPage = ({ email }: any) => {
   const location: any = useLocation();
@@ -145,16 +145,16 @@ const PaTransferListPage = ({ email }: any) => {
 
   const breadcrumbsLinks = aggParam
     ? [
-        {
-          linkLabel: 'Gestione Aggregazioni ApiKey',
-          linkRoute: routes.AGGREGATES_LIST,
-        },
-        {
-          linkLabel: 'Dettaglio Aggregazione',
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          linkRoute: routes.GET_UPDATE_AGGREGATE_PATH(aggParam.id!),
-        },
-      ]
+      {
+        linkLabel: 'Gestione Aggregazioni ApiKey',
+        linkRoute: routes.AGGREGATES_LIST,
+      },
+      {
+        linkLabel: 'Dettaglio Aggregazione',
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        linkRoute: routes.GET_UPDATE_AGGREGATE_PATH(aggParam.id!),
+      },
+    ]
     : [];
 
   const list2 = useMemo(
@@ -235,22 +235,22 @@ const PaTransferListPage = ({ email }: any) => {
       <Container style={{ marginTop: 20 }}>
         <Box className="agg-selection" style={{ display: 'flex', gap: 350 }}>
           <Autocomplete
-            onChange={handleChangeInput1}
+            onChange={() => handleChangeInput1}
             options={renderedAggList?.items || [{ id: 'Caricamento', name: 'Caricamento' }]}
             sx={{ width: 500 }}
             defaultValue={aggParam || null}
             getOptionLabel={(option: any) => option.name}
-            renderInput={(params) => <TextField {...params} label="Aggregazione di partenza" />}
+            renderOption={(params: any) => <TextField {...params} label="Aggregazione di partenza" />}
             isOptionEqualToValue={(opt, value) => value.id === opt.id}
             data-testid="sender-agg-autocomplete"
           />
           <Autocomplete
-            onChange={handleChangeInput2}
+            onChange={() => handleChangeInput2}
             options={renderedAggList?.items || [{ id: 'Caricamento', name: 'Caricamento' }]}
             sx={{ width: 500 }}
             disabled={isInput2Disabled}
             getOptionLabel={(option: any) => option.name}
-            renderInput={(params) => (
+            renderOption={(params: any) => (
               <TextField
                 error={areInputsEqual}
                 helperText={areInputsEqual ? 'Scegli una lista di aggregazione diversa' : null}
@@ -273,10 +273,10 @@ const PaTransferListPage = ({ email }: any) => {
             }}
           >
             {isInput2Disabled ||
-            areInputsEqual ||
-            !input1Value ||
-            !input2Value ||
-            checked?.length < 1 ? (
+              areInputsEqual ||
+              !input1Value ||
+              !input2Value ||
+              checked?.length < 1 ? (
               <Button variant="contained" disabled>
                 Trasferisci
                 <SendIcon fontSize="small" style={{ marginLeft: 10 }} />

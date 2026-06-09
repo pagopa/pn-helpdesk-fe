@@ -1,7 +1,8 @@
-import { Autocomplete, createFilterOptions, TextField } from '@mui/material';
+import { createFilterOptions, TextField } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FieldsProps } from '../formFields/FormFields';
 import { retrieveCaps } from '../../api/paperChannelApi';
+import { Autocomplete } from '@pagopa/mui-italia';
 
 const filter = createFilterOptions<string>();
 
@@ -48,15 +49,13 @@ export function CapAutocompleteField(props: Props) {
       data-testid={'caps-autocomplete'}
       options={cap}
       value={props.value}
-      fullWidth={true}
-      limitTags={3}
       onInputChange={(event, newInputValue) => {
         // console.log(event, newInputValue)
         setInputText(newInputValue);
       }}
-      onChange={handleOnChange}
+      onChange={() => handleOnChange}
       getOptionLabel={(option) => option}
-      filterOptions={(options, params) => {
+      handleFiltering={(options, params) => {
         const filtered = filter(options, params);
 
         const { inputValue } = params;
@@ -72,7 +71,7 @@ export function CapAutocompleteField(props: Props) {
 
         return filtered;
       }}
-      renderInput={(params) => (
+      renderOption={(params: any) => (
         <TextField
           {...params}
           data-testid={'input-text-cap'}
