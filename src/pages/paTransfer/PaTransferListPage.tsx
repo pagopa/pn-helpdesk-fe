@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Autocomplete } from '@pagopa/mui-italia';
 import {
   TextField,
   List,
@@ -20,7 +21,6 @@ import * as spinnerActions from '../../redux/spinnerSlice';
 import Breadcrumbs from '../../components/breadcrumbs/Breadcrumbs';
 import * as routes from '../../navigation/router.const';
 import { Pa } from '../../api/apiRequestTypes';
-import { Autocomplete } from '@pagopa/mui-italia';
 
 const PaTransferListPage = ({ email }: any) => {
   const location: any = useLocation();

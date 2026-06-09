@@ -1,8 +1,8 @@
 import { createFilterOptions, TextField } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
+import { Autocomplete } from '@pagopa/mui-italia';
 import { FieldsProps } from '../formFields/FormFields';
 import { retrieveCaps } from '../../api/paperChannelApi';
-import { Autocomplete } from '@pagopa/mui-italia';
 
 const filter = createFilterOptions<string>();
 
