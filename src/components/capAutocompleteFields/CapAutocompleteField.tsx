@@ -38,7 +38,7 @@ export function CapAutocompleteField(props: Props) {
     void fetch();
   }, [fetch]);
 
-  const handleOnChange = (event: React.SyntheticEvent, value: Array<string>) => {
+  const handleOnChange = (value: Array<string>) => {
     props.onChange?.(value);
   };
 
@@ -49,17 +49,19 @@ export function CapAutocompleteField(props: Props) {
       data-testid={'caps-autocomplete'}
       options={cap}
       value={props.value}
-      onInputChange={(event, newInputValue) => {
-        // console.log(event, newInputValue)
+      label={props.field.label}
+      placeholder={props.field.placeholder}
+      required={props.required}
+      error={props.error}
+      onInputChange={(newInputValue) => {
         setInputText(newInputValue);
       }}
-      onChange={() => handleOnChange}
+      onChange={handleOnChange}
       getOptionLabel={(option) => option}
       handleFiltering={(options, params) => {
         const filtered = filter(options, params);
-
         const { inputValue } = params;
-        // Suggest the creation of a new value
+
         if (inputValue === '99999' && !props.field.fsu) {
           return filtered;
         }
@@ -71,14 +73,6 @@ export function CapAutocompleteField(props: Props) {
 
         return filtered;
       }}
-      renderOption={(params: any) => (
-        <TextField
-          {...params}
-          data-testid={'input-text-cap'}
-          label={props.field.label}
-          placeholder={props.field.placeholder}
-        />
-      )}
     />
   );
 }
