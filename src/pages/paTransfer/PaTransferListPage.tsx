@@ -55,23 +55,23 @@ const PaTransferListPage = ({ email }: any) => {
 
     if (aggParam) {
       setInput1Value(aggParam);
-      getPas1(null, aggParam);
+      getPas1(aggParam);
     }
   }, [dispatch, aggParam]);
 
-  const handleChangeInput1 = (e: any, value: any) => {
+  const handleChangeInput1 = (value: any) => {
     setInput1Value(value);
     setPaList1(undefined);
-    value && getPas1(e, value);
+    value && getPas1(value);
   };
 
-  const handleChangeInput2 = (e: any, value: any) => {
+  const handleChangeInput2 = (value: any) => {
     setInput2Value(value);
     setPaList2(undefined);
-    value && getPas2(e, value);
+    value && getPas2(value);
   };
 
-  const getPas1 = (e: any, value: any) => {
+  const getPas1 = (value: any) => {
     const idAggregation = value?.id;
     const request = apiRequests.getAssociatedPaList(idAggregation);
     if (request) {
@@ -86,7 +86,7 @@ const PaTransferListPage = ({ email }: any) => {
     }
   };
 
-  const getPas2 = (e: any, value: any) => {
+  const getPas2 = (value: any) => {
     const idAggregation = value?.id;
     const request = apiRequests.getAssociatedPaList(idAggregation);
     if (request) {
@@ -129,8 +129,8 @@ const PaTransferListPage = ({ email }: any) => {
         dispatch(snackbarActions.updateSnackbarOpened(true));
 
         // Refresh lists
-        getPas1(undefined, input1Value);
-        getPas2(undefined, input2Value);
+        getPas1(input1Value);
+        getPas2(input2Value);
       })
       .catch((err) => {
         dispatch(snackbarActions.updateSnackbarOpened(true));
@@ -235,7 +235,8 @@ const PaTransferListPage = ({ email }: any) => {
       <Container style={{ marginTop: 20 }}>
         <Box className="agg-selection" style={{ display: 'flex', gap: 350 }}>
           <Autocomplete
-            onChange={() => handleChangeInput1}
+            id="sender-agg-autocomplete-id"
+            onChange={handleChangeInput1}
             options={renderedAggList?.items || [{ id: 'Caricamento', name: 'Caricamento' }]}
             sx={{ width: 500 }}
             defaultValue={aggParam || null}
@@ -245,7 +246,8 @@ const PaTransferListPage = ({ email }: any) => {
             data-testid="sender-agg-autocomplete"
           />
           <Autocomplete
-            onChange={() => handleChangeInput2}
+            id="receiver-agg-autocomplete-id"
+            onChange={handleChangeInput2}
             options={renderedAggList?.items || [{ id: 'Caricamento', name: 'Caricamento' }]}
             sx={{ width: 500 }}
             disabled={isInput2Disabled}
