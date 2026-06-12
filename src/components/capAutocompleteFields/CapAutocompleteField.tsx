@@ -1,5 +1,6 @@
-import { Autocomplete, createFilterOptions, TextField } from '@mui/material';
+import { createFilterOptions, TextField } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
+import { Autocomplete } from '@pagopa/mui-italia';
 import { FieldsProps } from '../formFields/FormFields';
 import { retrieveCaps } from '../../api/paperChannelApi';
 
@@ -37,7 +38,7 @@ export function CapAutocompleteField(props: Props) {
     void fetch();
   }, [fetch]);
 
-  const handleOnChange = (event: React.SyntheticEvent, value: Array<string>) => {
+  const handleOnChange = (value: Array<string>) => {
     props.onChange?.(value);
   };
 
@@ -48,19 +49,19 @@ export function CapAutocompleteField(props: Props) {
       data-testid={'caps-autocomplete'}
       options={cap}
       value={props.value}
-      fullWidth={true}
-      limitTags={3}
-      onInputChange={(event, newInputValue) => {
-        // console.log(event, newInputValue)
+      label={props.field.label}
+      placeholder={props.field.placeholder}
+      required={props.required}
+      error={props.error}
+      onInputChange={(newInputValue) => {
         setInputText(newInputValue);
       }}
       onChange={handleOnChange}
       getOptionLabel={(option) => option}
-      filterOptions={(options, params) => {
+      handleFiltering={(options, params) => {
         const filtered = filter(options, params);
-
         const { inputValue } = params;
-        // Suggest the creation of a new value
+
         if (inputValue === '99999' && !props.field.fsu) {
           return filtered;
         }
@@ -72,14 +73,6 @@ export function CapAutocompleteField(props: Props) {
 
         return filtered;
       }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          data-testid={'input-text-cap'}
-          label={props.field.label}
-          placeholder={props.field.placeholder}
-        />
-      )}
     />
   );
 }

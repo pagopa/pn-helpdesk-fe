@@ -28,7 +28,7 @@ describe('Cap Autocomplete Test', () => {
           value={[]}
           required={true}
           error={false}
-          onChange={() => {}}
+          onChange={() => { }}
         />
       );
     });
@@ -55,7 +55,7 @@ describe('Cap Autocomplete Test', () => {
           value={[]}
           required={true}
           error={false}
-          onChange={() => {}}
+          onChange={() => { }}
         />
       );
     });
@@ -74,26 +74,24 @@ describe('Cap Autocomplete Test', () => {
   });
 
   it('whenInputChangeWithNewCap', async () => {
-    await act(async () => {
-      render(
-        <CapAutocompleteField
-          field={{ ...fieldsProps }}
-          value={[]}
-          required={true}
-          error={false}
-          onChange={() => {}}
-        />
-      );
-    });
+    render(
+      <CapAutocompleteField
+        field={{ ...fieldsProps }}
+        value={[]}
+        required={true}
+        error={false}
+        onChange={() => { }}
+      />
+    );
 
     expect(screen.getByTestId('caps-autocomplete')).toBeInTheDocument();
-    const [inputBox] = screen.getAllByRole('combobox');
+    const inputBox = screen.getByRole('combobox');
     expect(inputBox).toBeInTheDocument();
 
     await userEvent.type(inputBox, '12345');
 
-    await waitFor(async () => {
-      expect(screen.getByText('12345')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByRole('option', { name: '12345' })).toBeInTheDocument();
     });
   });
 
@@ -105,7 +103,7 @@ describe('Cap Autocomplete Test', () => {
           value={[]}
           required={true}
           error={false}
-          onChange={() => {}}
+          onChange={() => { }}
         />
       );
     });
