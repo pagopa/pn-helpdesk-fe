@@ -96,7 +96,6 @@ export function UploadBox() {
               ]}
               onFileSelected={handleSelect}
               onFileRemoved={handleRemove}
-              dropzoneButton="Caricamento file"
               dropzoneLabel="Trascinare e rilasciare un file .xlsx o fare click per selezionarne uno"
               rejectedLabel="Tipo di file non supportato"
             />
