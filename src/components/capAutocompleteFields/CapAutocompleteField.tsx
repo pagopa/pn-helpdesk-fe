@@ -1,4 +1,5 @@
-import { Autocomplete, createFilterOptions, TextField } from '@mui/material';
+import { createFilterOptions, FilterOptionsState, FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps, TextField, TextFieldVariants } from '@mui/material';
+import { Autocomplete } from '@pagopa/mui-italia';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FieldsProps } from '../formFields/FormFields';
 import { retrieveCaps } from '../../api/paperChannelApi';
@@ -37,7 +38,7 @@ export function CapAutocompleteField(props: Props) {
     void fetch();
   }, [fetch]);
 
-  const handleOnChange = (event: React.SyntheticEvent, value: Array<string>) => {
+  const handleOnChange = (value: Array<string>) => {
     props.onChange?.(value);
   };
 
@@ -48,15 +49,12 @@ export function CapAutocompleteField(props: Props) {
       data-testid={'caps-autocomplete'}
       options={cap}
       value={props.value}
-      fullWidth={true}
-      limitTags={3}
       onInputChange={(event, newInputValue) => {
-        // console.log(event, newInputValue)
         setInputText(newInputValue);
       }}
       onChange={handleOnChange}
       getOptionLabel={(option) => option}
-      filterOptions={(options, params) => {
+      handleFiltering={(options: any[], params: FilterOptionsState<string>) => {
         const filtered = filter(options, params);
 
         const { inputValue } = params;
@@ -65,19 +63,18 @@ export function CapAutocompleteField(props: Props) {
           return filtered;
         }
 
-        const isExisting = options.some((option) => inputValue === option);
+        const isExisting = options.some((option: any) => inputValue === option);
         if (inputValue !== '' && !isExisting) {
           filtered.push(inputValue);
         }
 
         return filtered;
       }}
-      renderInput={(params) => (
+      renderOption={(value, index) => (
         <TextField
-          {...params}
           data-testid={'input-text-cap'}
-          label={props.field.label}
-          placeholder={props.field.placeholder}
+          label={value}
+          placeholder={value}
         />
       )}
     />
