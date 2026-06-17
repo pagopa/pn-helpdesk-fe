@@ -17,5 +17,5 @@ export function getConfiguration(): AppConfiguration {
 
 export async function loadConfiguration(): Promise<void> {
   await Configuration.load();
-  process.env.NODE_ENV === 'development' && console.log(getConfiguration());
+  import.meta.env.NODE_ENV === 'development' && console.log(getConfiguration());
 }

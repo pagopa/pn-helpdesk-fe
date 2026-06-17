@@ -1,7 +1,6 @@
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+
 import ClearIcon from '@mui/icons-material/Clear';
-import IconButton from '@mui/material/IconButton';
+import { IconButton, ListItemText, ListItem } from '@mui/material';
 import { Pa } from '../../api/apiRequestTypes';
 import PaginatedComponent from '../paginatedComponent/PaginatedComponent';
 import PaList from './PaList';

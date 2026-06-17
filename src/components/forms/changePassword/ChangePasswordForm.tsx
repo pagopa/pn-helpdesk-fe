@@ -1,9 +1,8 @@
-import { Grid, Button, Box, Card, FormHelperText, Typography, InputAdornment } from '@mui/material';
+import { Tooltip, Grid, Button, Box, Card, FormHelperText, Typography, InputAdornment } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import LockIcon from '@mui/icons-material/Lock';
 import HelpIcon from '@mui/icons-material/Help';
-import Tooltip from '@mui/material/Tooltip';
 import { useDispatch } from 'react-redux';
 import { useAuth } from '../../../Authentication/auth';
 import { errorMessages, infoMessages } from '../../../helpers/messagesConstants';

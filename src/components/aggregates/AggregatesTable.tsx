@@ -1,5 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
+import { IconButton } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -118,7 +118,7 @@ const AggregatesTable = () => {
       message: "Sicuro di voler effettuare l'operazione?",
     })
       .then(() => callDelete(id))
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const pagesToShow: Array<number> = calculatePages(

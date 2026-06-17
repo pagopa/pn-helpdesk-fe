@@ -13,7 +13,7 @@ export async function fetchConfiguration(): Promise<any> {
     });
     return await res.json();
   } catch (e) {
-    if (process.env.NODE_ENV !== 'test') {
+    if (import.meta.env.NODE_ENV !== 'test') {
       console.error(e);
     }
     throw e;

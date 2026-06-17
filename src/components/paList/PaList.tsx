@@ -1,6 +1,4 @@
-import List from '@mui/material/List';
-import { ListItemButton, ListItem } from '@mui/material';
-import ListItemText from '@mui/material/ListItemText';
+import { ListItemText, ListItemButton, ListItem, List } from '@mui/material';
 import { Pa } from '../../api/apiRequestTypes';
 
 type DefaultPaItemProps = {

@@ -1,9 +1,8 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
-import Alert from '@mui/material/Alert';
-import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
+import { SnackbarCloseReason } from '@mui/material/Snackbar';
 import { useDispatch, useSelector } from 'react-redux';
-import Slide, { SlideProps } from '@mui/material/Slide';
-import { Typography } from '@mui/material';
+import { SlideProps } from '@mui/material/Slide';
+import { Slide, Snackbar, Alert, Typography } from '@mui/material';
 import { infoMessages } from '../../helpers/messagesConstants';
 import {
   updateSnackbarOpened,

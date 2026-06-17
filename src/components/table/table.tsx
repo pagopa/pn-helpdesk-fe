@@ -7,8 +7,8 @@ import {
   TableRow,
   TableSortLabel,
   Box,
+  styled,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { visuallyHidden } from '@mui/utils';
 
 import { Column, Item, Sort } from './tableTypes';
@@ -101,23 +101,23 @@ function CustomTable<ColumnId extends string>({
           <TableBody sx={{ backgroundColor: 'background.paper' }}>
             {rows.length > 0
               ? rows.map((row) => (
-                  <TableRow key={row.id}>
-                    {columns.map((column) => (
-                      <TableCell
-                        key={column.id}
-                        sx={{
-                          width: column.width,
-                          borderBottom: 'none',
-                          cursor: column.onClick ? 'pointer' : 'auto',
-                        }}
-                        align={column.align}
-                        onClick={() => column.onClick && column.onClick(row, column)}
-                      >
-                        {column.getCellLabel(row[column.id], row)}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
+                <TableRow key={row.id}>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      sx={{
+                        width: column.width,
+                        borderBottom: 'none',
+                        cursor: column.onClick ? 'pointer' : 'auto',
+                      }}
+                      align={column.align}
+                      onClick={() => column.onClick && column.onClick(row, column)}
+                    >
+                      {column.getCellLabel(row[column.id], row)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
               : emptyRow}
           </TableBody>
         </Table>

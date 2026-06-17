@@ -20,7 +20,7 @@ function base64ToArrayBuffer(base64: string) {
 
 export const calcSha256String = (file: File): Promise<{ hashHex: string; hashBase64: string }> => {
   // this is because in jest crypto is undefined and test fails due to resolve in onload function
-  if (process.env.NODE_ENV === 'test') {
+  if (import.meta.env.NODE_ENV === 'test') {
     return Promise.resolve({ hashHex: 'mocked-hashHex', hashBase64: 'mocked-hasBase64' });
   }
   return new Promise((resolve, reject) => {
