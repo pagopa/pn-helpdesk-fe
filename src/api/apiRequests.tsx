@@ -15,6 +15,7 @@ import {
   searchPaType,
   updatePdndRequest,
   postEventType,
+  getNotificationsVisualizationLogsType,
 } from './apiRequestTypes';
 import { http as logExtractoraggregateApiClient } from './logExtractorAxiosClient';
 import { bfhdClient } from './bfhdAxiosClient'
@@ -86,9 +87,9 @@ const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
 
 /**
  * Take the json response of notification from bfhd
- * @param {getNotificationsInfoLogsType} data
+ * @param {getNotificationsVisualizationLogsType} data
  */
-const getNotificationsInfo = async (data: getNotificationsInfoLogsType) => {
+const getNotificationsInfo = async (data: getNotificationsVisualizationLogsType) => {
   return await bfhdClient
     .getNotificationInfo(data)
     .then((result: any) => {

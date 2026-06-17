@@ -251,7 +251,11 @@ const SearchForm = () => {
     if (selectedValue === 'Ottieni EncCF' || selectedValue === 'Ottieni CF') {
       createRequest(payload);
     } else if (selectedValue === 'Visualizza notifica') {
-      await fetchNotification(JSON.stringify(payload));
+      const notificationPayload = {
+        iuns: payload.iun ? [payload.iun] : [],
+        ticketsNumber: payload.ticketNumber ? [payload.ticketNumber] : []
+      };
+      await fetchNotification(JSON.stringify(notificationPayload));
     } else {
       downloadZip(JSON.stringify(payload));
     }
