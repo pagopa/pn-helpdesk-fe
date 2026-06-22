@@ -12,12 +12,20 @@ export default defineConfig({
 
     resolve: {
         alias: {
-            // Centralizza ed unifica tutti i motori grafici e stilistici
+            // Centralizza i motori di stile
             '@emotion/react': require.resolve('@emotion/react'),
             '@emotion/styled': require.resolve('@emotion/styled'),
             '@mui/styled-engine': require.resolve('@mui/styled-engine'),
-            // Forza anche la risoluzione della cartella principale di MUI materiale
+
+            // Mappatura per @mui/material (singoli componenti e radice)
+            '^@mui/material/(.+)': require.resolve('@mui/material'),
             '@mui/material': require.resolve('@mui/material'),
+
+            // FIX PER PAGOPA: 
+            // Se viene cercato "@pagopa/mui-italia/Qualcosa", lo reindirizza alla radice del pacchetto
+            '^@pagopa/mui-italia/(.+)': require.resolve('@pagopa/mui-italia'),
+            // Mantiene la mappatura della radice semplice
+            '@pagopa/mui-italia': require.resolve('@pagopa/mui-italia'),
         },
     },
 
