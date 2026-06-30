@@ -577,21 +577,22 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
         <DateRangePickerComponent
           field={field}
           onBlur={onBlur}
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          // eslint-disable-next-line
           required={field.required!}
           onChange={onChange}
           intervalLimit={field.intervalLimit}
           error={error}
+          value={Array.isArray(value) ? value : ['', '']}
           datePickers={[
             {
               label: 'Dal',
               view: ['day'],
-              value: value[0],
+              value: Array.isArray(value) ? value[0] : '',
             },
             {
               label: 'Al',
               view: ['day'],
-              value: value[1],
+              value: Array.isArray(value) ? value[1] : '',
             },
           ]}
         />
