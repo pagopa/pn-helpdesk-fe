@@ -23,7 +23,7 @@ const NotificationData = () => {
     const [sentAtNotification, setSentAtNotification] = useState<string>('');
     const [subjectOfNotification, setSubjectOfNotification] = useState<string>('');
     const [protocolNumberOfNotification, setProtocolNumberNotification] = useState<string>('');
-    const [documents, setDocuments] = useState<Array<Document>>();
+    const [documents, setDocuments] = useState<Array<Document> | Array<string>>([]);
     const allExpanded = ACCORDION_KEYS.every(k => expanded[k]);
 
     const handleExpandAll = () => {
@@ -36,12 +36,10 @@ const NotificationData = () => {
 
     useEffect(() => {
         if (!data || !data.timeline) { return; }
-
         const courtesyCount = data.timeline.filter((el: TimelineElement) =>
             el.elementId.includes('SEND_COURTESY_MESSAGE') ||
             el.elementId.includes('SEND_DIGITAL')
         ).length;
-
 
         setCountOfSendCourtesyMessage(courtesyCount);
 
@@ -103,21 +101,38 @@ const NotificationData = () => {
             </>;
         })}
         <Typography sx={{ mb: 2, fontWeight: 'bold' }}>Documenti:</Typography>
-        {documents && documents.map((el, idx) => (
+        {documents && documents.map((el: string | Document, idx: number) => (
             <Box key={idx} sx={{ width: "100%", minWidth: 0 }}>
-                <Link
-                    target="_blank"
-                    href={`${el.safeStorage?.download?.url}`}
-                    sx={{
-                        display: "block",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        maxWidth: "auto",
-                    }}
-                >
-                    {`PN-ATTACHMENT-${idx + 1}`}
-                </Link>
+                {typeof el === 'string' ? (
+                    // Se el è una stringa, mostriamo il messaggio di errore
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            color: "text.secondary",
+                            fontStyle: "italic",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis"
+                        }}
+                    >
+                        {el}
+                    </Typography>
+                ) : (
+                    // Se el è un oggetto Document, mostriamo il link
+                    <Link
+                        target="_blank"
+                        href={`${el.safeStorage?.download?.url}`}
+                        sx={{
+                            display: "block",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            maxWidth: "auto",
+                        }}
+                    >
+                        {`PN-ATTACHMENT-${idx + 1}`}
+                    </Link>
+                )}
             </Box>
         ))}
         <NotificationReport data={data} />
