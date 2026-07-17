@@ -42,6 +42,7 @@ interface Recipient {
     denomination: string;
     physicalAddress: PhysicalAddress;
     payments?: Array<Payment>;
+    timeline: Array<TimelineElement>;
 }
 
 interface DownloadInfo {
@@ -183,6 +184,13 @@ export const emptyNotification: NotificationDataModel = {
     notificationStatusHistory: [],
     timeline: [],
 };
+
+export interface RecipientWithTimeline {
+    denomination: string;
+    taxId: string;
+    recipientType: string;
+    timeline: Array<TimelineElement>;
+}
 
 export const notificationStatus: Record<string, string> = {
     "delivered": "Consegnata",
