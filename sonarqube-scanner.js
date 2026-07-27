@@ -1,4 +1,4 @@
-const scanner = require('sonarqube-scanner');
+const scanner = require('sonarqube-scanner').default;
 
 const options = {
   'sonar.organization': 'pagopa',
@@ -17,8 +17,13 @@ if (typeof process.env.PR_NUM !== 'undefined') {
 scanner(
   {
     serverUrl: 'https://sonarcloud.io',
-    token: process.env.SONAR_TOKEN,
     options,
   },
-  () => process.exit()
+  (error) => {
+    if (error) {
+      console.error(error);
+      process.exit(1);
+    }
+    process.exit();
+  }
 );
