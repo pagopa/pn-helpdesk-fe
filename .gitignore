@@ -6,6 +6,9 @@
 /generated
 .pnp.js
 
+# questo progetto usa yarn: package-lock.json non va committato
+package-lock.json
+
 # testing
 /coverage
 test-report.xml
