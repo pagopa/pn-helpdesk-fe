@@ -141,7 +141,7 @@ export interface NotificationDataModel {
     paProtocolNumber: string;
     subject: string;
     recipients: Array<Recipient>;
-    documents: Array<Document>;
+    documents: Array<Document> | Array<string>;
     notificationFeePolicy: string;
     physicalCommunicationType: string;
     senderDenomination: string;
