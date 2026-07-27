@@ -184,7 +184,7 @@ const SearchForm = () => {
         if (piva) {
           piva.hidden = values.recipientType === 'PF';
           if (piva.hidden) {
-            clearErrors();
+            clearErrors('piva');
           }
         }
       }

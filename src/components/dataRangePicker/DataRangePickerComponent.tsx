@@ -8,7 +8,7 @@ import { FieldsProps } from '../formFields/FormFields';
 type DatePickerType = {
   label: string;
   view: Array<CalendarPickerView>;
-  value: string; // Manteniamo la stringa come formato di scambio dati
+  value: string;
 };
 
 type Props = {
@@ -19,7 +19,6 @@ type Props = {
   onBlur: any;
   field: FieldsProps;
   error?: any;
-  value?: Array<string>; // Riceve l'array dal FormField
 };
 
 const DateRangePickerComponent = (props: Props) => {
