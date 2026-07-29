@@ -22,32 +22,9 @@ import { NotificationDataModel } from '../../../model/notification';
 /**
  * default values of the form fields
  */
-const defaultFormValues: { [key: string]: any } = {
-  ticketNumber: '',
-  taxId: '',
-  personId: '',
-  iun: '',
-  publicAuthorityName: '',
-  'Tipo Estrazione': 'Ottieni EncCF',
-  recipientType: 'PF',
-  deanonimization: false,
-  'Date Picker': format(new Date(), 'yyyy-MM-dd'),
-  'Time interval': [
-    format(subMonths(new Date(), 3), 'yyyy-MM-dd'),
-    format(new Date(), 'yyyy-MM-dd'),
-  ],
-  traceId: '',
-  monthInterval: [
-    format(
-      new Date(new Date(new Date().setUTCDate(1)).setHours(0, 0, 0, 0)),
-      "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
-    ),
-    format(new Date(new Date().setHours(0, 0, 0, 0)), "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"),
-  ],
-  jti: '',
-};
 
-const getDynamicDefaultValues = () => ({
+
+const getDynamicDefaultValues = (): { [key: string]: any } => ({
   ticketNumber: '',
   taxId: '',
   personId: '',
@@ -123,7 +100,7 @@ const SearchForm = () => {
   } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
-    defaultValues: defaultFormValues,
+    defaultValues: getDynamicDefaultValues(),
   });
 
   /**
@@ -145,7 +122,7 @@ const SearchForm = () => {
   useEffect(() => {
     const values = getValues();
     reset({
-      ...defaultFormValues,
+      ...getDynamicDefaultValues(),
       'Tipo Estrazione': values['Tipo Estrazione'],
     });
     setSelectedValue(values['Tipo Estrazione'].toString());

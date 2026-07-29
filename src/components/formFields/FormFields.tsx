@@ -582,7 +582,6 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
           onChange={onChange}
           intervalLimit={field.intervalLimit}
           error={error}
-          value={Array.isArray(value) ? value : ['', '']}
           datePickers={[
             {
               label: 'Dal',
