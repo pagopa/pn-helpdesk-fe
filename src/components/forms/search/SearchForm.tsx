@@ -22,7 +22,9 @@ import { NotificationDataModel } from '../../../model/notification';
 /**
  * default values of the form fields
  */
-const defaultFormValues: { [key: string]: any } = {
+
+
+const getDynamicDefaultValues = (): { [key: string]: any } => ({
   ticketNumber: '',
   taxId: '',
   personId: '',
@@ -45,7 +47,9 @@ const defaultFormValues: { [key: string]: any } = {
     format(new Date(new Date().setHours(0, 0, 0, 0)), "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"),
   ],
   jti: '',
-};
+});
+
+
 
 /**
  * Generating the app form using the form fields
@@ -96,7 +100,7 @@ const SearchForm = () => {
   } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
-    defaultValues: defaultFormValues,
+    defaultValues: getDynamicDefaultValues(),
   });
 
   /**
@@ -118,7 +122,7 @@ const SearchForm = () => {
   useEffect(() => {
     const values = getValues();
     reset({
-      ...defaultFormValues,
+      ...getDynamicDefaultValues(),
       'Tipo Estrazione': values['Tipo Estrazione'],
     });
     setSelectedValue(values['Tipo Estrazione'].toString());
@@ -344,6 +348,21 @@ const SearchForm = () => {
       });
   };
 
+  const handleResetForm = () => {
+    const currentTipoEstrazione = getValues('Tipo Estrazione');
+    const freshDefaults = getDynamicDefaultValues();
+
+    reset({
+      ...freshDefaults,
+      'Tipo Estrazione': currentTipoEstrazione,
+    }, {
+      keepDefaultValues: false,
+      keepDirty: false,
+    });
+
+    clearErrors();
+    dispatch(responseActions.resetState());
+  };
 
   const downloadZip = (payload: any): any => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion    
@@ -524,19 +543,18 @@ const SearchForm = () => {
                                   <>
                                     <FormField
                                       field={field}
-                                      value={value}
+                                      value={value ?? (field.componentType === 'dateRangePicker' ? [] : '')}
                                       onBlur={onBlur}
                                       error={error}
-                                      onChange={(value: any) => {
-                                        onChange(value);
-                                        value.nativeEvent &&
-                                          value.nativeEvent.data === null &&
+                                      onChange={(newValue: any) => {
+                                        onChange(newValue);
+                                        newValue?.nativeEvent &&
+                                          newValue.nativeEvent.data === null &&
                                           clearErrors(name);
                                       }}
                                     />
                                     <FormHelperText error>
-                                      {errors[field?.name] &&
-                                        field.componentType !== 'dateRangePicker'
+                                      {errors[field?.name] && field.componentType !== 'dateRangePicker'
                                         ? (errors[field?.name]?.message as string)
                                         : ' '}
                                     </FormHelperText>
@@ -566,13 +584,7 @@ const SearchForm = () => {
                           sx={{
                             '&:hover': { backgroundColor: 'action.hover' },
                           }}
-                          onClick={() => {
-                            reset({
-                              ...defaultFormValues,
-                              'Tipo Estrazione': getValues('Tipo Estrazione'),
-                            });
-                            dispatch(responseActions.resetState());
-                          }}
+                          onClick={handleResetForm}
                         >
                           Resetta filtri
                         </Button>

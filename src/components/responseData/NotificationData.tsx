@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { Box, Button, Link, Stack, Typography, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { collapseAll, expandAll, selectExpanded } from "../../redux/accordionSlice";
@@ -45,14 +44,12 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                         const isAddress = el.elementId.includes('NORMALIZED_ADDRESS');
                         const isAnalog = el.elementId.includes('SCHEDULE_ANALOG_WORKFLOW');
 
-                        // Separazione dei concetti:
                         const isCourtesyOnly = el.elementId.includes('SEND_COURTESY_MESSAGE');
 
                         const isLegalDigital = el.elementId.includes('SEND_DIGITAL') ||
                             el.elementId.includes('DIGITAL_PROG') ||
                             el.elementId.includes('DIGITAL_DELIVERY_CREATION_REQUEST');
 
-                        // Logica solo ed esclusivamente per il messaggio di cortesia (APPIO / SMS)
                         const courtesyDetails = isCourtesyOnly ? [
                             `Canale: ${el.details.digitalAddress?.type || "-"}`,
                             `Destinazione: ${el.details.digitalAddress?.address || "-"}`,
@@ -72,7 +69,6 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                                     />
                                 )}
 
-                                {/* Gestione Unica Messaggio di cortesia */}
                                 {isCourtesyOnly && (
                                     <CourtesyMessage
                                         accordionKey={el.elementId}
@@ -82,7 +78,6 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                                     />
                                 )}
 
-                                {/* Gestione Nuovo Componente Messaggio Legale / PEC */}
                                 {isLegalDigital && (
                                     <LegalMessage
                                         accordionKey={el.elementId}
@@ -114,13 +109,8 @@ const NotificationData = () => {
     const data = useSelector(responseNotificationData);
     const dispatch = useDispatch();
     const expanded = useSelector(selectExpanded);
-
-    const [statusOfNotification, setStatusOfNotification] = useState<string>('');
-    const [sentAtNotification, setSentAtNotification] = useState<string>('');
-    const [subjectOfNotification, setSubjectOfNotification] = useState<string>('');
-    const [protocolNumberOfNotification, setProtocolNumberNotification] = useState<string>('');
-    const [documents, setDocuments] = useState<Array<Document | string>>([]);
     const allExpanded = ACCORDION_KEYS.every(k => expanded[k]);
+    if (!data || !data.timeline) { return null; }
 
     const handleExpandAll = () => {
         if (allExpanded) {
@@ -130,14 +120,11 @@ const NotificationData = () => {
         }
     };
 
-    useEffect(() => {
-        if (!data) { return; }
-        setSubjectOfNotification(data.subject);
-        setStatusOfNotification(data.notificationStatus);
-        setSentAtNotification(new Date(data.sentAt).toLocaleDateString());
-        setProtocolNumberNotification(data.paProtocolNumber);
-        setDocuments(data.documents || []);
-    }, [data]);
+    const subjectOfNotification = data.subject;
+    const statusOfNotification = data.notificationStatus;
+    const sentAtNotification = new Date(data.sentAt).toLocaleDateString();
+    const protocolNumberOfNotification = data.paProtocolNumber;
+    const documents = data.documents || [];
 
     if (!data?.iun) { return null; }
 
