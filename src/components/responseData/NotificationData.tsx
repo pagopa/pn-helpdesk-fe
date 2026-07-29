@@ -3,10 +3,11 @@ import { Box, Button, Link, Stack, Typography, Accordion, AccordionSummary, Acco
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { collapseAll, expandAll, selectExpanded } from "../../redux/accordionSlice";
 import { responseNotificationData } from "../../redux/responseSlice";
-import { Document, notificationStatus, TimelineElement, RecipientWithTimeline } from "../../model/notification";
+import { notificationStatus, TimelineElement, RecipientWithTimeline } from "../../model/notification";
 import AnalogEvent from "./AnalogEvent";
 import CourtesyMessage from "./CourtesyMessage";
-import LegalMessage from "./LegalMessage"; // <--- Nuovo Import
+import LegalMessage from "./LegalMessage";
+
 import DetailOfAddress from "./DetailOfAddress";
 import NotificationReport from "./NotificationReport";
 
