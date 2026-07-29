@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { Box, Button, Link, Stack, Typography } from "@mui/material";
 import { collapseAll, expandAll, selectExpanded } from "../../redux/accordionSlice";
 import { responseNotificationData } from "../../redux/responseSlice";
@@ -14,16 +13,9 @@ const ACCORDION_KEYS = ['notifica', 'courtesy', 'address', 'analogEvent'];
 
 const NotificationData = () => {
     const data = useSelector(responseNotificationData);
+    if (!data || !data.timeline) { return null; }
     const dispatch = useDispatch();
     const expanded = useSelector(selectExpanded);
-
-    const [countOfSendCourtesyMessage, setCountOfSendCourtesyMessage] = useState<number>(0);
-    const [analogEvents, setAnalogEvents] = useState<Array<TimelineElement>>([]);
-    const [statusOfNotification, setStatusOfNotification] = useState<string>('');
-    const [sentAtNotification, setSentAtNotification] = useState<string>('');
-    const [subjectOfNotification, setSubjectOfNotification] = useState<string>('');
-    const [protocolNumberOfNotification, setProtocolNumberNotification] = useState<string>('');
-    const [documents, setDocuments] = useState<Array<Document> | Array<string>>([]);
     const allExpanded = ACCORDION_KEYS.every(k => expanded[k]);
 
     const handleExpandAll = () => {
@@ -34,37 +26,31 @@ const NotificationData = () => {
         }
     };
 
-    useEffect(() => {
-        if (!data || !data.timeline) { return; }
-        const courtesyCount = data.timeline.filter((el: TimelineElement) =>
-            el.elementId.includes('SEND_COURTESY_MESSAGE') ||
-            el.elementId.includes('SEND_DIGITAL')
-        ).length;
+    const countOfSendCourtesyMessage = data.timeline.filter((el: TimelineElement) =>
+        el.elementId.includes('SEND_COURTESY_MESSAGE') ||
+        el.elementId.includes('SEND_DIGITAL')
+    ).length;
 
-        setCountOfSendCourtesyMessage(courtesyCount);
+    const analogEvents =
+        data.timeline.filter((el: TimelineElement) =>
+            el.elementId.includes("SEND_ANALOG_PROGRESS") ||
+            el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW") ||
+            el.elementId.includes("SCHEDULE_ANALOG_FEEDBACK") ||
+            el.elementId.includes("SEND_ANALOG_FEEDBACK") ||
+            el.elementId.includes("PREPARE_ANALOG_DOMICILE") ||
+            el.elementId.includes("SEND_ANALOG_DOMICILE") ||
+            el.elementId.includes("ANALOG_SUCCESS_WORKFLOW") ||
+            el.elementId.includes("ANALOG_FAILURE_WORKFLOW"));
+    const subjectOfNotification = data.subject;
+    const statusOfNotification = data.notificationStatus;
+    const sentAtNotification = new Date(data.sentAt).toLocaleDateString();
+    const protocolNumberOfNotification = data.paProtocolNumber;
+    const documents = data.documents;
 
-        setAnalogEvents(
-            data.timeline.filter((el: TimelineElement) =>
-                el.elementId.includes("SEND_ANALOG_PROGRESS") ||
-                el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW") ||
-                el.elementId.includes("SCHEDULE_ANALOG_FEEDBACK") ||
-                el.elementId.includes("SEND_ANALOG_FEEDBACK") ||
-                el.elementId.includes("PREPARE_ANALOG_DOMICILE") ||
-                el.elementId.includes("SEND_ANALOG_DOMICILE") ||
-                el.elementId.includes("ANALOG_SUCCESS_WORKFLOW") ||
-                el.elementId.includes("ANALOG_FAILURE_WORKFLOW")
-            )
-        );
-        setSubjectOfNotification(data.subject);
-        setStatusOfNotification(data.notificationStatus);
-        setSentAtNotification(new Date(data.sentAt).toLocaleDateString());
-        setProtocolNumberNotification(data.paProtocolNumber);
-        setDocuments(data.documents);
-    }, [data]);
 
     if (!data.iun) { return null; }
 
-    return <Box sx={{ width: 'inherit' }}>
+    return <Box key={data.iun} sx={{ width: 'inherit' }}>
         <Stack direction={'row'}>
             <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Creata: {sentAtNotification}</Typography>
             <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Stato: {notificationStatus[statusOfNotification.toLocaleLowerCase()]}</Typography>
@@ -104,7 +90,6 @@ const NotificationData = () => {
         {documents && documents.map((el: string | Document, idx: number) => (
             <Box key={idx} sx={{ width: "100%", minWidth: 0 }}>
                 {typeof el === 'string' ? (
-                    // Se el è una stringa, mostriamo il messaggio di errore
                     <Typography
                         variant="body2"
                         sx={{
@@ -118,7 +103,6 @@ const NotificationData = () => {
                         {el}
                     </Typography>
                 ) : (
-                    // Se el è un oggetto Document, mostriamo il link
                     <Link
                         target="_blank"
                         href={`${el.safeStorage?.download?.url}`}
