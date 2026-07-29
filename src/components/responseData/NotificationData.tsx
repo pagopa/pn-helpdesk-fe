@@ -13,10 +13,10 @@ const ACCORDION_KEYS = ['notifica', 'courtesy', 'address', 'analogEvent'];
 
 const NotificationData = () => {
     const data = useSelector(responseNotificationData);
-    if (!data || !data.timeline) { return null; }
     const dispatch = useDispatch();
     const expanded = useSelector(selectExpanded);
     const allExpanded = ACCORDION_KEYS.every(k => expanded[k]);
+    if (!data || !data.timeline) { return null; }
 
     const handleExpandAll = () => {
         if (allExpanded) {
