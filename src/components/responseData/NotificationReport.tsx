@@ -51,8 +51,12 @@ const buildReportText = (data: NotificationDataModel): string => {
 
     lines.push("Allegati:");
     data.documents.forEach((doc) => {
-        lines.push(`- Documento ${doc.docIdx}: ${doc.ref.key} `);
-        lines.push(`- sha256: ${doc.digests.sha256}`);
+        if (typeof doc === "object") {
+            lines.push(`- Documento ${doc.docIdx}: ${doc.ref.key} `);
+            lines.push(`- sha256: ${doc.digests.sha256}`);
+        } else {
+            lines.push(`- Documento: ${doc}`);
+        }
     });
     lines.push("");
     lines.push("Dettagli:");
