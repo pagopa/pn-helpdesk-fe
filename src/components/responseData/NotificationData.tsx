@@ -1,7 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Box, Button, Link, Stack, Typography, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { useSelector } from "react-redux";
+import { Box, Stack, Typography, Accordion, AccordionSummary, AccordionDetails, Link } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { collapseAll, expandAll, selectExpanded } from "../../redux/accordionSlice";
 import { responseNotificationData } from "../../redux/responseSlice";
 import { notificationStatus, TimelineElement, RecipientWithTimeline } from "../../model/notification";
 import AnalogEvent from "./AnalogEvent";
@@ -10,8 +9,6 @@ import LegalMessage from "./LegalMessage";
 
 import DetailOfAddress from "./DetailOfAddress";
 import NotificationReport from "./NotificationReport";
-
-const ACCORDION_KEYS = ['notifica', 'courtesy', 'address', 'analogEvent'];
 
 const getCourtesyCount = (timeline: Array<TimelineElement>) =>
     timeline.filter((el) => el.elementId.includes('SEND_COURTESY_MESSAGE')).length;
@@ -108,26 +105,14 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
 
 const NotificationData = () => {
     const data = useSelector(responseNotificationData);
-    const dispatch = useDispatch();
-    const expanded = useSelector(selectExpanded);
-    const allExpanded = ACCORDION_KEYS.every(k => expanded[k]);
-    if (!data || !data.timeline) { return null; }
 
-    const handleExpandAll = () => {
-        if (allExpanded) {
-            dispatch(collapseAll(ACCORDION_KEYS));
-        } else {
-            dispatch(expandAll(ACCORDION_KEYS));
-        }
-    };
+    if (!data || !data.timeline || !data?.iun) { return null; }
 
     const subjectOfNotification = data.subject;
     const statusOfNotification = data.notificationStatus;
     const sentAtNotification = new Date(data.sentAt).toLocaleDateString();
     const protocolNumberOfNotification = data.paProtocolNumber;
     const documents = data.documents || [];
-
-    if (!data?.iun) { return null; }
 
     return (
         <Box sx={{ width: 'inherit' }}>
@@ -139,15 +124,6 @@ const NotificationData = () => {
 
             <Stack direction={'row'} justifyContent={'space-between'} sx={{ mb: 3 }}>
                 <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Soggetto: {subjectOfNotification}</Typography>
-                <Button
-                    onClick={handleExpandAll}
-                    variant='contained'
-                    sx={{
-                        backgroundColor: 'primary.main',
-                        '&:hover': { backgroundColor: 'primary.dark' },
-                    }}>
-                    {allExpanded ? "Chiudi tutti" : "Espandi tutti"}
-                </Button>
             </Stack>
 
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>Destinatari e Timeline:</Typography>
