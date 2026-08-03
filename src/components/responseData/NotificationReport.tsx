@@ -9,7 +9,6 @@ type Props = {
     data: NotificationDataModel;
 };
 
-// Helper 1: Gestisce l'intestazione generale dei pagamenti (Complessità: 2)
 const getPaymentHeaderLine = (data: any): string => {
     const feeInfo = [
         data?.paFee ? `Commissione PA: ${data.paFee}` : "Commissione PA: 0",
@@ -22,7 +21,6 @@ const getPaymentHeaderLine = (data: any): string => {
         : '- Pagamenti presenti';
 };
 
-// Helper 2: Formatta una singola voce pagoPA (Complessità: 3)
 const formatSinglePagoPa = (pagoPa: any): string | null => {
     if (!pagoPa) { return null; }
 
@@ -40,7 +38,6 @@ const formatSinglePagoPa = (pagoPa: any): string | null => {
     return line;
 };
 
-// FUNZIONE PRINCIPALE: Ora ha una complessità bassissima (Complessità: ~3)
 export const formatPaymentLines = (recipient: any, data: any): Array<string> => {
     const payments = recipient?.payments;
     if (!payments?.length) { return []; }
