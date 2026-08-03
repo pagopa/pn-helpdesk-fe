@@ -1,4 +1,3 @@
-
 import { TimelineElement, TimelineDetails } from "../model/notification";
 import { codiciStatusTimeline } from "../model/notification";
 
@@ -17,7 +16,7 @@ const CATEGORIE_ESCLUSE = new Set([
 const TRADUZIONI_CATEGORIA: Record<string, string> = {
     "REQUEST_ACCEPTED": "Notifica presa in carico dalla piattaforma",
     "NORMALIZED_ADDRESS": "Indirizzo del destinatario normalizzato",
-    "GET_ADDRESS": "Ricerca indirizzo digitale",
+    "GET_ADDRESS": "Ricerca indirizzo",
     "SEND_COURTESY_MESSAGE": "Invio messaggio di cortesia",
     "PREPARE_ANALOG_DOMICILE": "Preparazione invio raccomandata",
     "SEND_ANALOG_DOMICILE": "Invio raccomandata analogica",
@@ -39,7 +38,7 @@ const TRADUZIONI_CATEGORIA: Record<string, string> = {
 const TRADUZIONI_SOURCE: Record<string, string> = {
     "PLATFORM": "piattaforma",
     "SPECIAL": "domicilio speciale",
-    "GENERAL": "registro generale (ANPR/INAD)",
+    "GENERAL": "registro generale",
 };
 
 const TRADUZIONI_DIGITAL_TYPE: Record<string, string> = {
@@ -58,10 +57,24 @@ function formatTimestamp(ts: string): string {
     });
 }
 
+const getGeneralRegistryName = (details: TimelineDetails): string => {
+    if (details.physicalAddress) {
+        return "registro generale (ANPR)";
+    }
+    return "registro generale (INAD)";
+};
+
 const describeGetAddress = (details: TimelineDetails): string => {
-    const source = TRADUZIONI_SOURCE[details.digitalAddressSource ?? ""] ?? details.digitalAddressSource;
+    let source = TRADUZIONI_SOURCE[details.digitalAddressSource ?? ""] ?? details.digitalAddressSource;
+
+    if (details.digitalAddressSource === "GENERAL") {
+        source = getGeneralRegistryName(details);
+    }
+
     const disponibile = details.isAvailable ? "trovato" : "non trovato";
-    return `Indirizzo digitale ${disponibile} - fonte: ${source}`;
+    const tipoIndirizzo = details.physicalAddress ? "fisico" : "digitale";
+
+    return `Indirizzo ${tipoIndirizzo} ${disponibile} - fonte: ${source}`;
 };
 
 const describeCourtesyMessage = (details: TimelineDetails): string => {
