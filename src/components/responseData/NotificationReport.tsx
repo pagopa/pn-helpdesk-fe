@@ -9,6 +9,54 @@ type Props = {
     data: NotificationDataModel;
 };
 
+// Helper 1: Gestisce l'intestazione generale dei pagamenti (Complessità: 2)
+const getPaymentHeaderLine = (data: any): string => {
+    const feeInfo = [
+        data?.paFee ? `Commissione PA: ${data.paFee}` : "Commissione PA: 0",
+        data?.vat ? `IVA: ${data.vat}` : "IVA: 0",
+        data?.pagoPaIntMode ? `Modalità: ${data.pagoPaIntMode}` : "Modalità: 0"
+    ].filter(Boolean);
+
+    return feeInfo.length > 0
+        ? `- Pagamenti: ${feeInfo.join(' - ')}`
+        : '- Pagamenti presenti';
+};
+
+// Helper 2: Formatta una singola voce pagoPA (Complessità: 3)
+const formatSinglePagoPa = (pagoPa: any): string | null => {
+    if (!pagoPa) { return null; }
+
+    const details = [
+        pagoPa.creditorTaxId && `CF: ${pagoPa.creditorTaxId}`,
+        pagoPa.noticeCode && `Cod. Avviso: ${pagoPa.noticeCode}`
+    ].filter(Boolean);
+
+    let line = `- pagoPA: ${details.join(' ')}`.trim();
+
+    if (pagoPa.applyCost !== undefined && pagoPa.applyCost !== null) {
+        line += `, costi applicati: ${pagoPa.applyCost}`;
+    }
+
+    return line;
+};
+
+// FUNZIONE PRINCIPALE: Ora ha una complessità bassissima (Complessità: ~3)
+export const formatPaymentLines = (recipient: any, data: any): Array<string> => {
+    const payments = recipient?.payments;
+    if (!payments?.length) { return []; }
+
+    const lines: Array<string> = [getPaymentHeaderLine(data)];
+
+    payments.forEach((p: any) => {
+        const pagoPaLine = formatSinglePagoPa(p?.pagoPA);
+        if (pagoPaLine) {
+            lines.push(pagoPaLine);
+        }
+    });
+
+    return lines;
+};
+
 const buildReportText = (data: NotificationDataModel): string => {
     const sentAt = new Date(data.sentAt).toLocaleDateString("it-IT", {
         day: "2-digit", month: "2-digit", year: "numeric",
@@ -38,14 +86,8 @@ const buildReportText = (data: NotificationDataModel): string => {
         ].filter(Boolean).join(", ");
         lines.push(`- Indirizzo: ${addrParts}`);
 
-        if (recipient.payments?.length) {
-            lines.push(`- Pagamenti: ${data.paFee}/${data.vat} - ${data.pagoPaIntMode}`);
-            recipient.payments.forEach((p) => {
-                if (p.pagoPa) {
-                    lines.push(`- pagoPA: ${p.pagoPa.creditorTaxId} ${p.pagoPa.noticeCode}, costi applicati: ${p.pagoPa.applyCost}`);
-                }
-            });
-        }
+        const paymentLines = formatPaymentLines(recipient, data);
+        lines.push(...paymentLines);
     });
     lines.push("");
 
