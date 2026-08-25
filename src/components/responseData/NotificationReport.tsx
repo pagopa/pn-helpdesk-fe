@@ -2,7 +2,7 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useState } from "react";
-import { NotificationDataModel, notificationStatus, PagoPa, Recipient } from "../../model/notification";
+import { NotificationDataModel, notificationStatus, PagoPa, Payment, Recipient } from "../../model/notification";
 import { buildTimelineText } from "../../helpers/timeline.utils";
 
 type Props = {
@@ -44,7 +44,7 @@ export const formatPaymentLines = (recipient: Recipient, data: NotificationDataM
 
     const lines: Array<string> = [getPaymentHeaderLine(data)];
 
-    payments.forEach((p: any) => {
+    payments.forEach((p: Payment) => {
         const pagoPaLine = formatSinglePagoPa(p?.pagoPa);
         if (pagoPaLine) {
             lines.push(pagoPaLine);

@@ -32,7 +32,7 @@ export interface PagoPa {
     attachment?: Attachment;
 }
 
-interface Payment {
+export interface Payment {
     pagoPa?: PagoPa;
 }
 
