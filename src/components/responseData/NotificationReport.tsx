@@ -2,7 +2,7 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useState } from "react";
-import { NotificationDataModel, notificationStatus } from "../../model/notification";
+import { NotificationDataModel, notificationStatus, PagoPa, Recipient } from "../../model/notification";
 import { buildTimelineText } from "../../helpers/timeline.utils";
 
 type Props = {
@@ -21,7 +21,7 @@ const getPaymentHeaderLine = (data: NotificationDataModel): string => {
         : '- Pagamenti presenti';
 };
 
-const formatSinglePagoPa = (pagoPa: any): string | null => {
+const formatSinglePagoPa = (pagoPa: PagoPa | undefined): string | null => {
     if (!pagoPa) { return null; }
 
     const details = [
@@ -38,7 +38,7 @@ const formatSinglePagoPa = (pagoPa: any): string | null => {
     return line;
 };
 
-export const formatPaymentLines = (recipient: any, data: NotificationDataModel): Array<string> => {
+export const formatPaymentLines = (recipient: Recipient, data: NotificationDataModel): Array<string> => {
     const payments = recipient?.payments;
     if (!payments?.length) { return []; }
 
