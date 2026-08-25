@@ -9,11 +9,11 @@ type Props = {
     data: NotificationDataModel;
 };
 
-const getPaymentHeaderLine = (data: any): string => {
+const getPaymentHeaderLine = (data: NotificationDataModel): string => {
     const feeInfo = [
         data?.paFee ? `Commissione PA: ${data.paFee}` : "Commissione PA: 0",
         data?.vat ? `IVA: ${data.vat}` : "IVA: 0",
-        data?.pagoPaIntMode ? `Modalità: ${data.pagoPaIntMode}` : "Modalità: 0"
+        data?.pagoPaIntMode ? `Modalità: ${data.pagoPaIntMode}` : "Modalità: NONE"
     ].filter(Boolean);
 
     return feeInfo.length > 0
@@ -38,14 +38,14 @@ const formatSinglePagoPa = (pagoPa: any): string | null => {
     return line;
 };
 
-export const formatPaymentLines = (recipient: any, data: any): Array<string> => {
+export const formatPaymentLines = (recipient: any, data: NotificationDataModel): Array<string> => {
     const payments = recipient?.payments;
     if (!payments?.length) { return []; }
 
     const lines: Array<string> = [getPaymentHeaderLine(data)];
 
     payments.forEach((p: any) => {
-        const pagoPaLine = formatSinglePagoPa(p?.pagoPA);
+        const pagoPaLine = formatSinglePagoPa(p?.pagoPa);
         if (pagoPaLine) {
             lines.push(pagoPaLine);
         }
