@@ -2,11 +2,56 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useState } from "react";
-import { NotificationDataModel, notificationStatus } from "../../model/notification";
+import { NotificationDataModel, notificationStatus, PagoPa, Payment, Recipient } from "../../model/notification";
 import { buildTimelineText } from "../../helpers/timeline.utils";
 
 type Props = {
     data: NotificationDataModel;
+};
+
+const getPaymentHeaderLine = (data: NotificationDataModel): string => {
+    const feeInfo = [
+        data?.paFee ? `Commissione PA: ${data.paFee}` : "Commissione PA: 0",
+        data?.vat ? `IVA: ${data.vat}` : "IVA: 0",
+        data?.pagoPaIntMode ? `Modalità: ${data.pagoPaIntMode}` : "Modalità: NONE"
+    ].filter(Boolean);
+
+    return feeInfo.length > 0
+        ? `- Pagamenti: ${feeInfo.join(' - ')}`
+        : '- Pagamenti presenti';
+};
+
+const formatSinglePagoPa = (pagoPa: PagoPa | undefined): string | null => {
+    if (!pagoPa) { return null; }
+
+    const details = [
+        pagoPa.creditorTaxId && `CF: ${pagoPa.creditorTaxId}`,
+        pagoPa.noticeCode && `Cod. Avviso: ${pagoPa.noticeCode}`
+    ].filter(Boolean);
+
+    let line = `- pagoPA: ${details.join(' ')}`.trim();
+
+    if (pagoPa.applyCost !== undefined && pagoPa.applyCost !== null) {
+        line += `, costi applicati: ${pagoPa.applyCost}`;
+    }
+
+    return line;
+};
+
+export const formatPaymentLines = (recipient: Recipient, data: NotificationDataModel): Array<string> => {
+    const payments = recipient?.payments;
+    if (!payments?.length) { return []; }
+
+    const lines: Array<string> = [getPaymentHeaderLine(data)];
+
+    payments.forEach((p: Payment) => {
+        const pagoPaLine = formatSinglePagoPa(p?.pagoPa);
+        if (pagoPaLine) {
+            lines.push(pagoPaLine);
+        }
+    });
+
+    return lines;
 };
 
 const buildReportText = (data: NotificationDataModel): string => {
@@ -38,14 +83,8 @@ const buildReportText = (data: NotificationDataModel): string => {
         ].filter(Boolean).join(", ");
         lines.push(`- Indirizzo: ${addrParts}`);
 
-        if (recipient.payments?.length) {
-            lines.push(`- Pagamenti: ${data.paFee}/${data.vat} - ${data.pagoPaIntMode}`);
-            recipient.payments.forEach((p) => {
-                if (p.pagoPa) {
-                    lines.push(`- pagoPA: ${p.pagoPa.creditorTaxId} ${p.pagoPa.noticeCode}, costi applicati: ${p.pagoPa.applyCost}`);
-                }
-            });
-        }
+        const paymentLines = formatPaymentLines(recipient, data);
+        lines.push(...paymentLines);
     });
     lines.push("");
 

@@ -25,18 +25,18 @@ interface Attachment {
     ref: Ref;
 }
 
-interface PagoPa {
+export interface PagoPa {
     noticeCode: string;
     creditorTaxId: string;
     applyCost: boolean;
     attachment?: Attachment;
 }
 
-interface Payment {
+export interface Payment {
     pagoPa?: PagoPa;
 }
 
-interface Recipient {
+export interface Recipient {
     recipientType: 'PF' | 'PG';
     taxId: string;
     denomination: string;
