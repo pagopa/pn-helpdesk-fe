@@ -16,11 +16,15 @@ import * as spinnerActions from '../../../redux/spinnerSlice';
 import { FieldsProperties, FieldsProps, FormField, MenuItems } from '../../formFields/FormFields';
 import ResponseData from '../../responseData/ResponseData';
 import { getConfiguration } from '../../../services/configuration.service';
+import NotificationData from '../../responseData/NotificationData';
+import { NotificationDataModel } from '../../../model/notification';
 
 /**
  * default values of the form fields
  */
-const defaultFormValues: { [key: string]: any } = {
+
+
+const getDynamicDefaultValues = (): { [key: string]: any } => ({
   ticketNumber: '',
   taxId: '',
   personId: '',
@@ -43,7 +47,9 @@ const defaultFormValues: { [key: string]: any } = {
     format(new Date(new Date().setHours(0, 0, 0, 0)), "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"),
   ],
   jti: '',
-};
+});
+
+
 
 /**
  * Generating the app form using the form fields
@@ -94,7 +100,7 @@ const SearchForm = () => {
   } = useForm({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
-    defaultValues: defaultFormValues,
+    defaultValues: getDynamicDefaultValues(),
   });
 
   /**
@@ -116,7 +122,7 @@ const SearchForm = () => {
   useEffect(() => {
     const values = getValues();
     reset({
-      ...defaultFormValues,
+      ...getDynamicDefaultValues(),
       'Tipo Estrazione': values['Tipo Estrazione'],
     });
     setSelectedValue(values['Tipo Estrazione'].toString());
@@ -217,7 +223,7 @@ const SearchForm = () => {
         if (
           selectedValue === 'Ottieni log completi' &&
           [...neededFields].sort().join('') ===
-            [...MenuItems['Ottieni log completi']].sort().join('') &&
+          [...MenuItems['Ottieni log completi']].sort().join('') &&
           field.name !== 'ticketNumber'
         ) {
           return { ...field, required: false };
@@ -242,12 +248,18 @@ const SearchForm = () => {
    * handling form submit
    * @param data values from the form
    */
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     resetStore();
     dispatch(spinnerActions.updateSpinnerOpened(true));
     const payload = createPayload(data);
     if (selectedValue === 'Ottieni EncCF' || selectedValue === 'Ottieni CF') {
       createRequest(payload);
+    } else if (selectedValue === 'Visualizza notifica') {
+      const notificationPayload = {
+        iuns: payload.iun ? [payload.iun] : [],
+        ticketsNumber: payload.ticketNumber ? [payload.ticketNumber] : []
+      };
+      await fetchNotification(JSON.stringify(notificationPayload));
     } else {
       downloadZip(JSON.stringify(payload));
     }
@@ -293,7 +305,7 @@ const SearchForm = () => {
       // case "Ottieni CF":
       //   return '/persons/v1/tax-id';
       //   break;
-      case 'Ottieni notifica':
+      case 'Scarica notifica':
         return '/logs/v1/notifications/info';
       case 'Ottieni notifiche di una PA':
         return '/logs/v1/notifications/monthly';
@@ -310,24 +322,10 @@ const SearchForm = () => {
     }
   };
 
-  const downloadZip = (payload: any): any => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const url = API_ENDPOINT + getUrl();
-
+  const fetchNotification = async (payload: any) => {
     dispatch(spinnerActions.updateSpinnerOpened(true));
-    const token = sessionStorage.getItem('token');
-
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        'x-pagopa-pn-uid': uuid(),
-        'x-pagopa-pn-cx-type': 'BO',
-      },
-      body: payload,
-    })
-      .then((res) => {
+    await apiRequests.getNotificationsInfo(payload).
+      then((res: { status: number; data: NotificationDataModel }) => {
         if (res.status !== 200) {
           const msg =
             res.status === 204
@@ -338,16 +336,9 @@ const SearchForm = () => {
           dispatch(spinnerActions.updateSpinnerOpened(false));
           return;
         }
-
-        void res.json().then((data) => {
-          const fileName = data?.message;
-          password = res.headers.get('password');
-
-          updateResponse({ password });
-          polling(fileName);
-        });
-      })
-      .catch(() => {
+        dispatch(responseActions.updateNotificationData(res.data));
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+      }).catch(() => {
         updateSnackbar({
           data: { message: "Si è verificato un errore durante l'estrazione" },
           status: 500,
@@ -357,34 +348,76 @@ const SearchForm = () => {
       });
   };
 
+  const handleResetForm = () => {
+    const currentTipoEstrazione = getValues('Tipo Estrazione');
+    const freshDefaults = getDynamicDefaultValues();
+
+    reset({
+      ...freshDefaults,
+      'Tipo Estrazione': currentTipoEstrazione,
+    }, {
+      keepDefaultValues: false,
+      keepDirty: false,
+    });
+
+    clearErrors();
+    dispatch(responseActions.resetState());
+  };
+
+  const downloadZip = (payload: any): any => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion    
+    const url = API_ENDPOINT + getUrl();
+    dispatch(spinnerActions.updateSpinnerOpened(true));
+    const token = sessionStorage.getItem('token');
+    fetch(url,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', Authorization: `Bearer ${token}`, 'x-pagopa-pn-uid': uuid(), 'x-pagopa-pn-cx-type': 'BO',
+        },
+        body: payload,
+      })
+      .then((res) => {
+        if (res.status !== 200) {
+          const msg = res.status === 204 ? 'Nessun dato disponibile' : "Si è verificato un errore durante l'estrazione";
+          updateSnackbar({ data: { message: msg }, status: 500 });
+          dispatch(spinnerActions.updateSpinnerOpened(false)); return;
+        }
+        void res.json().then((data) => {
+          const fileName = data?.message; password = res.headers.get('password');
+          updateResponse({ password });
+          polling(fileName);
+        });
+      }).catch(() => {
+        updateSnackbar({ data: { message: "Si è verificato un errore durante l'estrazione" }, status: 500, });
+        dispatch(spinnerActions.updateSpinnerOpened(false));
+      });
+  };
   let timerId: any;
 
   const polling = (data: any): any => {
-    if (!data || data === '') {
-      return;
-    }
-
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-
-    apiRequests
-      .getDownloadUrl(data)
-      .then((ret) => {
-        if (ret.data.message === 'notready') {
-          timerId = setTimeout(() => polling(data), 5000);
-        } else {
-          dispatch(spinnerActions.updateSpinnerOpened(false));
-          updateResponse({ password, downloadLink: ret.data.message });
-          updateSnackbar({ data: { message: infoMessages.OK_RESPONSE } });
-        }
-      })
-      .catch(() => {
+    if (!data || data === '') { return; }
+    if (timerId) { clearTimeout(timerId); }
+    apiRequests.getDownloadUrl(data).then((ret) => {
+      if (ret.data.message === 'notready') { timerId = setTimeout(() => polling(data), 5000); }
+      else {
         dispatch(spinnerActions.updateSpinnerOpened(false));
-        updateSnackbar({ data: { error: 'Error preparing download' }, status: 500 });
-      });
+        updateResponse({ password, downloadLink: ret.data.message });
+        updateSnackbar({ data: { message: infoMessages.OK_RESPONSE } });
+      }
+    }).catch(() => {
+      dispatch(spinnerActions.updateSpinnerOpened(false));
+      updateSnackbar({ data: { error: 'Error preparing download' }, status: 500 });
+    });
   };
-
+  /**
+   * update the response data component depending on the response
+   * @param response
+   */
+  const updateResponse = (response: any) => {
+    dispatch(responseActions.updateResponseOpened(true));
+    dispatch(responseActions.updateResponseData(response));
+  };
   /**
    * Formatting the data ready to be sent
    * @param data data that has to be formatted
@@ -435,15 +468,6 @@ const SearchForm = () => {
     if (duration) {
       dispatch(snackbarActions.updateAutoHideDuration(duration));
     }
-  };
-
-  /**
-   * update the response data component depending on the response
-   * @param response
-   */
-  const updateResponse = (response: any) => {
-    dispatch(responseActions.updateResponseOpened(true));
-    dispatch(responseActions.updateResponseData(response));
   };
 
   /**
@@ -519,19 +543,18 @@ const SearchForm = () => {
                                   <>
                                     <FormField
                                       field={field}
-                                      value={value}
+                                      value={value ?? (field.componentType === 'dateRangePicker' ? [] : '')}
                                       onBlur={onBlur}
                                       error={error}
-                                      onChange={(value: any) => {
-                                        onChange(value);
-                                        value.nativeEvent &&
-                                          value.nativeEvent.data === null &&
+                                      onChange={(newValue: any) => {
+                                        onChange(newValue);
+                                        newValue?.nativeEvent &&
+                                          newValue.nativeEvent.data === null &&
                                           clearErrors(name);
                                       }}
                                     />
                                     <FormHelperText error>
-                                      {errors[field?.name] &&
-                                      field.componentType !== 'dateRangePicker'
+                                      {errors[field?.name] && field.componentType !== 'dateRangePicker'
                                         ? (errors[field?.name]?.message as string)
                                         : ' '}
                                     </FormHelperText>
@@ -561,13 +584,7 @@ const SearchForm = () => {
                           sx={{
                             '&:hover': { backgroundColor: 'action.hover' },
                           }}
-                          onClick={() => {
-                            reset({
-                              ...defaultFormValues,
-                              'Tipo Estrazione': getValues('Tipo Estrazione'),
-                            });
-                            dispatch(responseActions.resetState());
-                          }}
+                          onClick={handleResetForm}
                         >
                           Resetta filtri
                         </Button>
@@ -594,6 +611,7 @@ const SearchForm = () => {
                 </form>
               </Grid>
               <ResponseData></ResponseData>
+              <NotificationData></NotificationData>
             </Grid>
           </Card>
         </Grid>

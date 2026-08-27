@@ -18,7 +18,8 @@ import NumberFieldComponent from '../textField/NumberFieldComponent';
 const MenuItems: { [key: string]: Array<string> } = {
   'Ottieni EncCF': ['ticketNumber', 'taxId', 'piva', 'recipientType'],
   'Ottieni CF': ['personId'],
-  'Ottieni notifica': ['ticketNumber', 'iun'],
+  'Scarica notifica': ['ticketNumber', 'iun'],
+  'Visualizza notifica': ['ticketNumber', 'iun'],
   // use case 9 dissabled for now
   // "Ottieni log completi + organizzazione": ["ticketNumber", "taxId", "Time interval"],
   'Ottieni log completi': ['ticketNumber', 'taxId', 'iun', 'personId'],
@@ -576,7 +577,7 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
         <DateRangePickerComponent
           field={field}
           onBlur={onBlur}
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          // eslint-disable-next-line
           required={field.required!}
           onChange={onChange}
           intervalLimit={field.intervalLimit}
@@ -585,12 +586,12 @@ const FormField = ({ field, onChange, value, onBlur, error }: Props) => {
             {
               label: 'Dal',
               view: ['day'],
-              value: value[0],
+              value: Array.isArray(value) ? value[0] : '',
             },
             {
               label: 'Al',
               view: ['day'],
-              value: value[1],
+              value: Array.isArray(value) ? value[1] : '',
             },
           ]}
         />

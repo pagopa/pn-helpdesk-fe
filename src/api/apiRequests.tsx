@@ -15,8 +15,10 @@ import {
   searchPaType,
   updatePdndRequest,
   postEventType,
+  getNotificationsVisualizationLogsType,
 } from './apiRequestTypes';
 import { http as logExtractoraggregateApiClient } from './logExtractorAxiosClient';
+import { bfhdClient } from './bfhdAxiosClient'
 import { http as aggregateApiClient } from './aggregateAxiosClient';
 import { createMalfunctionEvent, getMalfunctionPreview } from './downtimeLogsApi';
 import { BoStatusUpdateEvent, PnFunctionality, PnFunctionalityStatus } from './downtimeLogs';
@@ -75,6 +77,21 @@ const getPersonsLogs = async (data: getPersonsLogsType) => {
 const getNotificationsInfoLogs = async (data: getNotificationsInfoLogsType) => {
   return await logExtractoraggregateApiClient
     .getNotificationsInfoLogs(data)
+    .then((result: any) => {
+      return result;
+    })
+    .catch((error: any) => {
+      throw error;
+    });
+};
+
+/**
+ * Take the json response of notification from bfhd
+ * @param {getNotificationsVisualizationLogsType} data
+ */
+const getNotificationsInfo = async (data: getNotificationsVisualizationLogsType) => {
+  return await bfhdClient
+    .getNotificationInfo(data)
     .then((result: any) => {
       return result;
     })
@@ -152,11 +169,11 @@ const getAggregates = async (data: getAggregateParams) => {
     .then((result) => {
       const items = result.data.items.map(
         (agg) =>
-          ({
-            ...agg,
-            createdAt: formatDate(agg.createdAt, true),
-            lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
-          } as AggregateSummary)
+        ({
+          ...agg,
+          createdAt: formatDate(agg.createdAt, true),
+          lastUpdate: agg.lastUpdate ? formatDate(agg.lastUpdate, true) : ``,
+        } as AggregateSummary)
       );
 
       return {
@@ -376,6 +393,7 @@ const apiRequests = {
   getDownloadUrl,
   createEvent,
   getPreview,
+  getNotificationsInfo
 };
 
 export default apiRequests;

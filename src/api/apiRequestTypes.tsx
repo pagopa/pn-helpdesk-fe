@@ -49,6 +49,14 @@ type getNotificationsInfoLogsType = {
 };
 
 /**
+ * @typedef {Object} getNotificationsVisualizationLogsType
+ */
+type getNotificationsVisualizationLogsType = {
+  ticketsNumber: Array<string>;
+  iuns: Array<number>;
+};
+
+/**
  * @typedef {Object} getLogsProcessesType
  */
 type getLogsProcessesType = {
@@ -336,4 +344,5 @@ export type {
   virtualKey,
   postEventType,
   getPreview,
+  getNotificationsVisualizationLogsType
 };

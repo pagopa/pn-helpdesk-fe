@@ -16,7 +16,7 @@ const props = {
     selectItems: [
       'Ottieni EncCF',
       'Ottieni CF',
-      'Ottieni notifica',
+      'Scarica notifica',
       'Ottieni log completi',
       'Ottieni log di processo',
     ],

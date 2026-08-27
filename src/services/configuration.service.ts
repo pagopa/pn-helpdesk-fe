@@ -8,6 +8,7 @@ export function getConfiguration(): AppConfiguration {
     AWS_PROJECT_REGION: region,
     AWS_COGNITO_REGION: region,
     API_ENDPOINT: `https://${configurationFromFile.API_DOMAIN}/log-extractor`,
+    API_ENDPOINT_BFHD: `https://${configurationFromFile.API_DOMAIN}/bfhd`,
     API_AGGREGATE_ENDPOINT: `https://${configurationFromFile.WEB_API_DOMAIN}/api-key-bo`,
     API_PAPER_CHANNEL_ENDPOINT: `https://${configurationFromFile.WEB_API_DOMAIN}`,
     API_DOWNTIME_LOGS_ENDPOINT: `https://${configurationFromFile.WEB_API_DOMAIN}`,
