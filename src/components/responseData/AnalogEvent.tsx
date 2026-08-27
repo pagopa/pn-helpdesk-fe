@@ -105,9 +105,9 @@ function parseAnalogElement(el: any) {
             : null;
 
     const prepareAnalogDomicile =
-        el.elementId.includes("PREPARE_ANALOG_DOMICILE") && el.details
+        el.elementId.includes("PREPARE_ANALOG_DOMICILE") && el.details?.physicalAddress
             ? {
-                at: el.details.physicalAddress.at || '',
+                at: el.details.physicalAddress.at,
                 address: el.details.physicalAddress.address,
                 addressDetails: el.details.physicalAddress.addressDetails,
                 zip: el.details.physicalAddress.zip,
