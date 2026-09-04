@@ -1,4 +1,3 @@
-// NotificationReport.tsx
 import { Box, Button, Paper, Typography } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useState } from "react";
@@ -112,7 +111,19 @@ const buildReportText = (data: NotificationDataModel): string => {
 
     lines.push("Di seguito riportiamo la cronologia degli eventi che tracciano il ciclo di vita della notifica:");
     lines.push("");
-    lines.push(buildTimelineText(data.timeline));
+
+    const excludedCategories = [
+        "NOTIFICATION_COST_VALIDATION_REQUEST",
+        "NOTIFICATION_COST_VALIDATION_RESPONSE",
+        "NOTIFICATION_CANCELLATION_REQUEST",
+        "NOTIFICATION_CANCELLED_DOCUMENT_CREATION_REQUEST"
+    ];
+
+    const filteredTimeline = data.timeline.filter(
+        (event) => !excludedCategories.includes(event.category)
+    );
+
+    lines.push(buildTimelineText(filteredTimeline));
     lines.push("");
 
     lines.push("Esito e Perfezionamento");
