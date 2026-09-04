@@ -28,7 +28,7 @@
       },
       "api-bfhd": {
         "generatorName": "typescript-axios",
-        "inputSpec": "https://raw.githubusercontent.com/pagopa/pn-bfhd/8ab7f63544b2154dd7db80efe96b140c97fdf6ee/docs/openapi/api-internal-v1.yaml",
+        "inputSpec": "https://raw.githubusercontent.com/pagopa/pn-bfhd/ec731dacbe6f418935c5f16cee14ce15b284f734/docs/openapi/api-internal-v1.yaml",
         "output": "./src/api/bfhd",
         "additionalProperties": {
           "supportsES6": true,
