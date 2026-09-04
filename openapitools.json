@@ -25,6 +25,17 @@
           "modelPackage": "models",
           "cleanupOutput": true
         }
+      },
+      "api-bfhd": {
+        "generatorName": "typescript-axios",
+        "inputSpec": "",
+        "output": "./src/api/bfhd",
+        "additionalProperties": {
+          "supportsES6": true,
+          "apiPackage": "apis",
+          "modelPackage": "models",
+          "cleanupOutput": true
+        }
       }
     }
   }
