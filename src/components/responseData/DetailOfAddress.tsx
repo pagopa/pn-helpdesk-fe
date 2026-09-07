@@ -14,8 +14,11 @@ const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accord
         arrA: Array<string | null | undefined>,
         arrB: Array<string | null | undefined>
     ) => (
-        arrA.map((valueA, i) => {
-            const valueB = arrB[i];
+        arrA.map((valA, i) => {
+            const valB = arrB[i];
+            const valueA = (valA === "" || valA === null || valA === undefined) ? "-" : valA;
+            const valueB = (valB === "" || valB === null || valB === undefined) ? "-" : valB;
+
             const isDifferent = valueA !== valueB;
 
             return (
@@ -28,22 +31,24 @@ const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accord
                         marginBottom: "4px"
                     }}
                 >
-                    {valueA ?? "-"}
+                    {valueA}
                 </div>
             );
         }));
 
     const oldAddressComplete = [
         oldAddress?.address,
+        oldAddress?.addressDetails || "-",
         oldAddress?.municipality,
-        oldAddress?.municipalityDetails,
+        oldAddress?.municipalityDetails || "-",
         oldAddress?.zip,
         oldAddress?.province
     ] as Array<string | undefined>;
     const normalizeAddressComplete = [
         normalizeAddress?.address,
+        normalizeAddress?.addressDetails || "-",
         normalizeAddress?.municipality,
-        normalizeAddress?.municipalityDetails,
+        normalizeAddress?.municipalityDetails || "-",
         normalizeAddress?.zip,
         normalizeAddress?.province
     ] as Array<string | undefined>;
