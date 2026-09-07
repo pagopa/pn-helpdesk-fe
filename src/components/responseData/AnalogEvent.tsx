@@ -3,6 +3,7 @@ import React from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
 import { codiciStatusTimeline } from '../../model/notification';
+import { formatEventDate } from '../../helpers/utils';
 
 type AnalogEvent = {
     accordionKey: string;
@@ -79,18 +80,6 @@ function getSummaryText(sendAnalog: SendAnalog, sendAnalogFeedback: any): string
     return "";
 }
 
-function formatEventDate(timestamp?: string): string {
-    if (!timestamp) {
-        return "";
-    }
-    return new Date(timestamp).toLocaleDateString("it-IT", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-    });
-}
 
 function parseAnalogElement(el: any) {
     const eventDateFormatted = formatEventDate(el.eventTimestamp || el.timestamp || el.details?.eventTimestamp);

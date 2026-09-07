@@ -1,21 +1,23 @@
 import { Typography, Stack } from '@mui/material';
 import React from 'react';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
+import { formatEventDate } from '../../helpers/utils';
 
 type Props = {
     accordionKey: string;
     category: string;
     details: any;
+    eventTimestamp?: string;
 };
 
-const LegalMessage: React.FC<Props> = ({ accordionKey, category, details }) => {
-    // Rendiamo la categoria leggibile
+const LegalMessage: React.FC<Props> = ({ accordionKey, category, details, eventTimestamp }) => {
     const formatCategory = (cat: string) => {
         if (cat.includes('PROGRESS')) { return 'Progresso Invio Digitale'; }
         if (cat.includes('FEEDBACK')) { return 'Ricevuta Invio Digitale'; }
         if (cat.includes('CREATION_REQUEST')) { return 'Richiesta Creazione Consegna'; }
         return 'Invio Domicilio Digitale';
     };
+    const eventDateFormatted = formatEventDate(eventTimestamp);
 
     return (
         <AccordionTimeline
@@ -27,6 +29,11 @@ const LegalMessage: React.FC<Props> = ({ accordionKey, category, details }) => {
             }
             accordionDetailsChild={
                 <Stack spacing={1}>
+                    {eventDateFormatted && (
+                        <Typography variant="body1" >
+                            Data evento: {eventDateFormatted}
+                        </Typography>
+                    )}
                     {details?.digitalAddress && (
                         <>
                             <Typography variant="body1">
