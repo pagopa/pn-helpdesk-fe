@@ -42,3 +42,16 @@ export const calcSha256String = (file: File): Promise<{ hashHex: string; hashBas
     };
   });
 };
+
+export const formatEventDate = (timestamp?: string): string => {
+  if (!timestamp) {
+    return "";
+  }
+  return new Date(timestamp).toLocaleDateString("it-IT", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+};
