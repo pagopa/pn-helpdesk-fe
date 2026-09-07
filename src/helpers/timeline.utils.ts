@@ -11,6 +11,10 @@ const CATEGORIE_ESCLUSE = new Set([
     "PROBABLE_SCHEDULING_ANALOG_DATE",
     "SCHEDULE_ANALOG_WORKFLOW",
     "SCHEDULE_REFINEMENT",
+    "NOTIFICATION_COST_VALIDATION_REQUEST",
+    "NOTIFICATION_COST_VALIDATION_RESPONSE",
+    "NOTIFICATION_CANCELLATION_REQUEST",
+    "NOTIFICATION_CANCELLED_DOCUMENT_CREATION_REQUEST"
 ]);
 
 const TRADUZIONI_CATEGORIA: Record<string, string> = {
@@ -33,6 +37,10 @@ const TRADUZIONI_CATEGORIA: Record<string, string> = {
     "SCHEDULE_REFINEMENT": "Pianificazione perfezionamento",
     "COMPLETELY_UNREACHABLE": "Destinatario completamente irreperibile",
     "NOTIFICATION_CANCELLED": "Notifica annullata",
+    "VALIDATED_F24": "F24 validato",
+    "VALIDATE_F24_REQUEST": "Richiesta validazione F24",
+    "GENERATE_F24_REQUEST": "Richiesta generazione F24",
+    "REQUEST_REFUSED": "Notifica rifiutata",
 };
 
 const TRADUZIONI_SOURCE: Record<string, string> = {
@@ -132,7 +140,14 @@ const describeDigitalFeedback = (details: TimelineDetails): string => {
     return `Esito digitale: ${esito}${traduzione}`;
 };
 
-// Mappa categoria -> funzione descrittiva
+const describeRefused = (details: TimelineDetails): string => {
+    if (details.refusalReasons && details.refusalReasons[0].detail.includes("address is not valid")) {
+        return "Indirizzo non valido, non é possibile normalizzare l'indirizzo del destinatario";
+    }
+    return "Richiesta rifiutata";
+};
+
+
 const DESCRITTORI: Partial<Record<string, (details: TimelineDetails) => string>> = {
     "GET_ADDRESS": describeGetAddress,
     "SEND_COURTESY_MESSAGE": describeCourtesyMessage,
@@ -144,17 +159,22 @@ const DESCRITTORI: Partial<Record<string, (details: TimelineDetails) => string>>
     "SEND_DIGITAL": describeDigital,
     "SEND_DIGITAL_PROGRESS": describeDigital,
     "DIGITAL_PROG": describeDigital,
+    "REQUEST_REFUSED": describeRefused,
     "SEND_DIGITAL_FEEDBACK": describeDigitalFeedback,
     "NORMALIZED_ADDRESS": (d) => `Indirizzo normalizzato per destinatario ${d.recIndex ?? 0}`,
     "REFINEMENT": () => `Notifica perfezionata per decorrenza termini`,
 };
 
-// Funzione principale ora è solo un lookup
-const getEventDescription = (el: TimelineElement): string => {
+const getEventDescription = (el: TimelineElement): { descrizione: string; fromDescrittore: boolean } => {
     const descrittore = DESCRITTORI[el.category];
-    return descrittore
-        ? descrittore(el.details)
-        : TRADUZIONI_CATEGORIA[el.category] ?? el.category;
+    const traduzione = TRADUZIONI_CATEGORIA[el.category];
+    console.log("descrittore", descrittore);
+    if (descrittore) {
+        return { descrizione: descrittore(el.details), fromDescrittore: true };
+    } else if (traduzione) {
+        return { descrizione: traduzione, fromDescrittore: false };
+    }
+    return { descrizione: "EVENTO NON SUPPORTATO", fromDescrittore: false };
 };
 
 export function buildTimelineText(timeline: Array<TimelineElement>): string {
@@ -173,7 +193,12 @@ export function buildTimelineText(timeline: Array<TimelineElement>): string {
         const ts = formatTimestamp(el.eventTimestamp);
         const label = TRADUZIONI_CATEGORIA[el.category] ?? el.category;
         const desc = getEventDescription(el);
-        lines.push(`* [${ts}] ${label}: ${desc}`);
+        console.log("desc", desc);
+        if (desc.fromDescrittore) {
+            lines.push(`* [${ts}] ${label}: ${desc.descrizione}`);
+        } else {
+            lines.push(`* [${ts}] ${label}`);
+        }
     });
 
     return lines.join("\n");

@@ -99,11 +99,11 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push("");
     lines.push("Dettagli:");
     lines.push(`- Tipo tariffa: ${data.notificationFeePolicy}`);
-    lines.push(`- Tipo raccomandata:   ${data.physicalCommunicationType}`);
+    lines.push(`- Tipo raccomandata: ${data.physicalCommunicationType}`);
     if (data.group) {
-        lines.push(`- Gruppo/i : ${data.group}`);
+        lines.push(`- Gruppo/i: ${data.group}`);
     }
-    lines.push(`- Codice tassonomico ${data.taxonomyCode}`);
+    lines.push(`- Codice tassonomico: ${data.taxonomyCode}`);
     lines.push("");
 
     lines.push(`Stato attuale della notifica: ${data.notificationStatus} - ${notificationStatus[data.notificationStatus.toLowerCase()]}`);
@@ -112,23 +112,14 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push("Di seguito riportiamo la cronologia degli eventi che tracciano il ciclo di vita della notifica:");
     lines.push("");
 
-    const excludedCategories = [
-        "NOTIFICATION_COST_VALIDATION_REQUEST",
-        "NOTIFICATION_COST_VALIDATION_RESPONSE",
-        "NOTIFICATION_CANCELLATION_REQUEST",
-        "NOTIFICATION_CANCELLED_DOCUMENT_CREATION_REQUEST"
-    ];
-
-    const filteredTimeline = data.timeline.filter(
-        (event) => !excludedCategories.includes(event.category)
-    );
-
-    lines.push(buildTimelineText(filteredTimeline));
+    lines.push(buildTimelineText(data.timeline));
     lines.push("");
 
     lines.push("Esito e Perfezionamento");
     const status = data.notificationStatus.toUpperCase();
-    if (status === "DELIVERED" || status === "VIEWED") {
+    if (status === "EFFECTIVE_DATE") {
+        lines.push(`La notifica si è perfezionata`);
+    } else if (status === "VIEWED") {
         lines.push(`La notifica si è perfezionata digitalmente.`);
     } else if (status === "UNREACHABLE") {
         lines.push(`Non essendo stato possibile il recapito digitale, la notifica è passata al flusso analogico.`);
