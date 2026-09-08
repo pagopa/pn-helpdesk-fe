@@ -89,14 +89,19 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push("");
 
     lines.push("Allegati:");
-    data.documents.forEach((doc) => {
-        if (typeof doc === "object") {
-            lines.push(`- Documento ${doc.docIdx}: ${doc.ref.key} `);
-            lines.push(`- sha256: ${doc.digests.sha256}`);
-        } else {
-            lines.push(`- Documento: ${doc}`);
-        }
-    });
+    if ("documentCancelledCount" in data.documents) {
+        lines.push(`- ${data.documents.description}: ${data.documents.documentCancelledCount} documento/i`);
+    } else {
+        data.documents.forEach((doc) => {
+            if (doc && typeof doc === "object") {
+                lines.push(`- Documento ${doc.docIdx ?? ""}: ${doc.ref?.key ?? ""} `);
+                lines.push(`- sha256: ${doc.digests?.sha256 ?? ""}`);
+            } else {
+                lines.push(`- Documento: ${doc}`);
+            }
+        });
+    }
+
     lines.push("");
     lines.push("Dettagli:");
     lines.push(`- Tipo tariffa: ${data.notificationFeePolicy}`);

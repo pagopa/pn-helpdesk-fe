@@ -137,12 +137,17 @@ interface NotificationStatusHistory {
     relatedTimelineElements: Array<string>;
 }
 
+interface DocumentCancelled {
+    description: string;
+    documentCancelledCount: number;
+}
+
 export interface NotificationDataModel {
     abstract?: string;
     paProtocolNumber: string;
     subject: string;
     recipients: Array<Recipient>;
-    documents: Array<Document> | Array<string>;
+    documents: Array<Document> | DocumentCancelled;
     notificationFeePolicy: string;
     physicalCommunicationType: string;
     senderDenomination: string;

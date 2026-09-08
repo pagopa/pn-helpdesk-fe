@@ -112,7 +112,7 @@ const NotificationData = () => {
     const statusOfNotification = data.notificationStatus;
     const sentAtNotification = new Date(data.sentAt).toLocaleDateString();
     const protocolNumberOfNotification = data.paProtocolNumber;
-    const documents = data.documents || [];
+    const documents = data.documents;
 
     return (
         <Box sx={{ width: 'inherit' }}>
@@ -133,29 +133,34 @@ const NotificationData = () => {
             ))}
 
             <Typography sx={{ mt: 4, mb: 2, fontWeight: 'bold' }}>Documenti allegati alla notifica:</Typography>
-            {documents.map((el, idx) => (
-                <Box key={idx} sx={{ width: "100%", minWidth: 0, mb: 1 }}>
-                    {typeof el === 'string' ? (
-                        <Typography variant="body2" sx={{ color: "error.main", fontStyle: "italic", p: 1, bgcolor: '#fff5f5', borderRadius: '4px' }}>
-                            {el}
-                        </Typography>
-                    ) : (
-                        <Link
-                            target="_blank"
-                            href={`${el.safeStorage?.download?.url}`}
-                            sx={{
-                                display: "block",
-                                whiteSpace: "nowrap",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                maxWidth: "auto",
-                            }}
-                        >
-                            {`PN-ATTACHMENT-${idx + 1}`}
-                        </Link>
-                    )}
-                </Box>
-            ))}
+            {"documentCancelledCount" in documents ? (
+                <Typography variant="body2" sx={{ color: "error.main", fontStyle: "italic", p: 1, bgcolor: '#fff5f5', borderRadius: '4px' }}>
+                    {documents.description}: {documents.documentCancelledCount} documento/i
+                </Typography>) :
+                documents.map((el, idx) => (
+                    <Box key={idx} sx={{ width: "100%", minWidth: 0, mb: 1 }}>
+                        {typeof el === 'string' ? (
+                            <Typography variant="body2" sx={{ color: "error.main", fontStyle: "italic", p: 1, bgcolor: '#fff5f5', borderRadius: '4px' }}>
+                                {el}
+                            </Typography>
+                        ) : (
+                            <Link
+                                target="_blank"
+                                href={`${el.safeStorage?.download?.url}`}
+                                sx={{
+                                    display: "block",
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    maxWidth: "auto",
+                                }}
+                            >
+                                {`PN-ATTACHMENT-${idx + 1}`}
+                            </Link>
+                        )}
+                    </Box>
+                ))
+            }
 
             <NotificationReport data={data} />
         </Box>
