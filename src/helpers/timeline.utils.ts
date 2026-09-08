@@ -168,7 +168,6 @@ const DESCRITTORI: Partial<Record<string, (details: TimelineDetails) => string>>
 const getEventDescription = (el: TimelineElement): { descrizione: string; fromDescrittore: boolean } => {
     const descrittore = DESCRITTORI[el.category];
     const traduzione = TRADUZIONI_CATEGORIA[el.category];
-    console.log("descrittore", descrittore);
     if (descrittore) {
         return { descrizione: descrittore(el.details), fromDescrittore: true };
     } else if (traduzione) {
@@ -193,7 +192,6 @@ export function buildTimelineText(timeline: Array<TimelineElement>): string {
         const ts = formatTimestamp(el.eventTimestamp);
         const label = TRADUZIONI_CATEGORIA[el.category] ?? el.category;
         const desc = getEventDescription(el);
-        console.log("desc", desc);
         if (desc.fromDescrittore) {
             lines.push(`* [${ts}] ${label}: ${desc.descrizione}`);
         } else {
