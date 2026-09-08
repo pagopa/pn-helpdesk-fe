@@ -115,7 +115,6 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push(buildTimelineText(data.timeline));
     lines.push("");
 
-    lines.push("Esito e Perfezionamento");
     const status = data.notificationStatus.toUpperCase();
     if (status === "EFFECTIVE_DATE") {
         lines.push(`La notifica si è perfezionata`);
@@ -123,6 +122,8 @@ const buildReportText = (data: NotificationDataModel): string => {
         lines.push(`La notifica si è perfezionata digitalmente.`);
     } else if (status === "UNREACHABLE") {
         lines.push(`Non essendo stato possibile il recapito digitale, la notifica è passata al flusso analogico.`);
+    } else if (status === "DELIVERING") {
+        lines.push(`La notifica è attualmente in fase di invio.`);
     } else {
         lines.push(`La notifica è attualmente in fase di lavorazione.`);
     }
