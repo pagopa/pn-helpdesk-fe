@@ -86,6 +86,7 @@ export interface TimelineDetails {
     recIndex?: number;
     notificationRequestId?: string;
     paProtocolNumber?: string;
+    refusalReasons?: Array<{ errorCode: string; detail: string; index: number }>;
     legalFactId?: string;
     physicalAddress?: PhysicalAddress;
     digitalAddressSource?: string;
@@ -203,10 +204,10 @@ export const notificationStatus: Record<string, string> = {
     "effective-date-multirecipient": "Perfezionata per decorrenza termini",
     "viewed": "Avvenuto accesso",
     "viewed-multirecipient": "Avvenuto accesso",
-    "canceled": "Annullata",
-    "canceled-tooltip": "L'ente ha annullato l'invio della notifica",
+    "cancelled": "Annullata",
     "returned-to-sender": "Resa al mittente",
     "notification-timeline-reworked": "Evento o più eventi aggiornati",
+    "refused": "Rifiutata",
 };
 
 export const codiciStatusTimeline: Record<string, string> = {
