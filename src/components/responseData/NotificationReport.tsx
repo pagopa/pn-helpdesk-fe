@@ -12,7 +12,7 @@ type Props = {
 const getPaymentHeaderLine = (data: NotificationDataModel): string => {
     const feeInfo = [
         data?.paFee ? `Commissione PA: ${data.paFee}` : "Commissione PA: 0",
-        data?.vat ? `IVA: ${data.vat}` : "IVA: 0",
+        data?.vat ? `IVA: ${data.vat}%` : "IVA: 0%",
         data?.pagoPaIntMode ? `Modalità: ${data.pagoPaIntMode}` : "Modalità: NONE"
     ].filter(Boolean);
 
@@ -32,7 +32,7 @@ const formatSinglePagoPa = (pagoPa: PagoPa | undefined): string | null => {
     let line = `- pagoPA: ${details.join(' ')}`.trim();
 
     if (pagoPa.applyCost !== undefined && pagoPa.applyCost !== null) {
-        line += `, costi applicati: ${pagoPa.applyCost}`;
+        line += `, applica costi: ${pagoPa.applyCost}`;
     }
 
     return line;
@@ -55,21 +55,40 @@ export const formatPaymentLines = (recipient: Recipient, data: NotificationDataM
 };
 
 const buildReportText = (data: NotificationDataModel): string => {
-    const sentAt = new Date(data.sentAt).toLocaleDateString("it-IT", {
-        day: "2-digit", month: "2-digit", year: "numeric",
-        hour: "2-digit", minute: "2-digit"
+    const sentDateObj = new Date(data.sentAt);
+    const acceptedEvent = data.timeline?.find(event => event.elementId?.includes("REQUEST_ACCEPTED"));
+
+    const acceptedDateFormatted = acceptedEvent
+        ? new Date(acceptedEvent.eventTimestamp).toLocaleDateString("it-IT", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        })
+        : "";
+
+    const formattedDate = sentDateObj.toLocaleDateString("it-IT", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
+
+    const formattedTime = sentDateObj.toLocaleTimeString("it-IT", {
+        hour: "2-digit",
+        minute: "2-digit"
     });
 
     const lines: Array<string> = [];
 
-    lines.push(`La notifica con IUN ${data.iun} inviata da ${data.senderDenomination}, CF: ${data.senderTaxId} il ${sentAt} avente`);
+    lines.push(`La notifica IUN ${data.iun}`);
+    lines.push(`mittente ${data.senderDenomination} (${data.senderTaxId})`);
+    lines.push(`Data deposito ${formattedDate} (ore - ${formattedTime})`);
     lines.push(`- Oggetto della Notifica: ${data.subject}`);
     lines.push(`- Numero di protocollo: ${data.paProtocolNumber}`);
     lines.push("");
 
     lines.push("Destinatari:");
     data.recipients.forEach((recipient) => {
-        lines.push(`- ${recipient.denomination} CF ${recipient.taxId}`);
+        lines.push(`- ${recipient.denomination} (${recipient.taxId})`);
 
         const addr = recipient.physicalAddress;
         const addrParts = [
@@ -94,20 +113,19 @@ const buildReportText = (data: NotificationDataModel): string => {
             lines.push(`- Documento ${doc.docIdx}: ${doc.ref.key} `);
             lines.push(`- sha256: ${doc.digests.sha256}`);
         } else {
-            lines.push(`- Documento: ${doc}`);
+            lines.push(`- Documenti: ${doc}`);
         }
     });
     lines.push("");
     lines.push("Dettagli:");
     lines.push(`- Tipo tariffa: ${data.notificationFeePolicy}`);
-    lines.push(`- Tipo raccomandata:   ${data.physicalCommunicationType}`);
+    lines.push(`- Tipo raccomandata: ${data.physicalCommunicationType}`);
     if (data.group) {
-        lines.push(`- Gruppo/i : ${data.group}`);
+        lines.push(`- Gruppo: ${data.group}`);
     }
     lines.push(`- Codice tassonomico ${data.taxonomyCode}`);
     lines.push("");
 
-    lines.push(`Stato attuale della notifica: ${data.notificationStatus} - ${notificationStatus[data.notificationStatus.toLowerCase()]}`);
     lines.push("");
 
     lines.push("Di seguito riportiamo la cronologia degli eventi che tracciano il ciclo di vita della notifica:");
@@ -117,8 +135,10 @@ const buildReportText = (data: NotificationDataModel): string => {
 
     lines.push("Esito e Perfezionamento");
     const status = data.notificationStatus.toUpperCase();
+    lines.push(`Stato attuale della notifica: ${status} - ${notificationStatus[data.notificationStatus.toLowerCase()]}`);
     if (status === "DELIVERED" || status === "VIEWED") {
-        lines.push(`La notifica si è perfezionata digitalmente.`);
+        const datePlaceholder = acceptedDateFormatted ? ` ${acceptedDateFormatted}` : "";
+        lines.push(`La notifica si è perfezionata per decorrenza termini il${datePlaceholder}.`);
     } else if (status === "UNREACHABLE") {
         lines.push(`Non essendo stato possibile il recapito digitale, la notifica è passata al flusso analogico.`);
     } else {

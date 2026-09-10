@@ -50,11 +50,21 @@ const TRADUZIONI_DIGITAL_TYPE: Record<string, string> = {
     "SMS": "SMS",
 };
 
-function formatTimestamp(ts: string): string {
-    return new Date(ts).toLocaleString("it-IT", {
-        day: "2-digit", month: "2-digit", year: "numeric",
-        hour: "2-digit", minute: "2-digit"
+function formatTimestamp(ts: string): { date: string; time: string } {
+    const dateObj = new Date(ts);
+
+    const date = dateObj.toLocaleDateString("it-IT", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
     });
+
+    const time = dateObj.toLocaleTimeString("it-IT", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+    return { date, time };
 }
 
 const getGeneralRegistryName = (details: TimelineDetails): string => {
@@ -149,7 +159,7 @@ const DESCRITTORI: Partial<Record<string, (details: TimelineDetails) => string>>
     "REFINEMENT": () => `Notifica perfezionata per decorrenza termini`,
 };
 
-// Funzione principale ora è solo un lookup
+
 const getEventDescription = (el: TimelineElement): string => {
     const descrittore = DESCRITTORI[el.category];
     return descrittore
@@ -173,7 +183,7 @@ export function buildTimelineText(timeline: Array<TimelineElement>): string {
         const ts = formatTimestamp(el.eventTimestamp);
         const label = TRADUZIONI_CATEGORIA[el.category] ?? el.category;
         const desc = getEventDescription(el);
-        lines.push(`* [${ts}] ${label}: ${desc}`);
+        lines.push(`* [${ts.date} ${ts.time}] ${label}: ${desc}`);
     });
 
     return lines.join("\n");
