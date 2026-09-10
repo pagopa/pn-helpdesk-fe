@@ -107,14 +107,14 @@ function parseAnalogElement(el: any) {
     const prepareAnalogDomicile =
         el.elementId.includes("PREPARE_ANALOG_DOMICILE") && el.details
             ? {
-                at: el.details.physicalAddress.at || '',
-                address: el.details.physicalAddress.address,
-                addressDetails: el.details.physicalAddress.addressDetails,
-                zip: el.details.physicalAddress.zip,
-                municipality: el.details.physicalAddress.municipality,
-                mucipalityDetails: el.details.physicalAddress.municipalityDetails,
-                province: el.details.physicalAddress.province,
-                foreignState: el.details.physicalAddress.foreignState,
+                at: el.details.physicalAddress?.at || '',
+                address: el.details.physicalAddress?.address,
+                addressDetails: el.details.physicalAddress?.addressDetails,
+                zip: el.details.physicalAddress?.zip,
+                municipality: el.details.physicalAddress?.municipality,
+                mucipalityDetails: el.details.physicalAddress?.municipalityDetails,
+                province: el.details.physicalAddress?.province,
+                foreignState: el.details.physicalAddress?.foreignState,
             }
             : null;
 
