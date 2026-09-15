@@ -122,6 +122,8 @@ const buildReportText = (data: NotificationDataModel): string => {
         lines.push(`La notifica si è perfezionata digitalmente.`);
     } else if (status === "UNREACHABLE") {
         lines.push(`Non essendo stato possibile il recapito digitale, la notifica è passata al flusso analogico.`);
+    } else if (status === "REFUSED") {
+        lines.push(`La notifica è stata rifiutata.`);
     } else if (status === "DELIVERING") {
         lines.push(`La notifica è attualmente in fase di invio.`);
     } else if (status === "DELIVERED") {
