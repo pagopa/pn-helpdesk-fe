@@ -141,7 +141,7 @@ const describeDigitalFeedback = (details: TimelineDetails): string => {
 };
 
 const describeRefused = (details: TimelineDetails): string => {
-    if (details.refusalReasons && details.refusalReasons[0].detail.includes("address is not valid")) {
+    if (details.refusalReasons?.[0]?.detail.includes("address is not valid")) {
         return "Indirizzo non valido, non é possibile normalizzare l'indirizzo del destinatario";
     }
     return "Richiesta rifiutata";
