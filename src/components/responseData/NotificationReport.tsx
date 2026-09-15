@@ -116,7 +116,7 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push("");
 
     const status = data.notificationStatus.toUpperCase();
-    if (status === "EFFECTIVE_DATE") {
+    if (status === "EFFECTIVE_DATE" || status === "EFFECTIVE-DATE-MULTIRECIPIENT") {
         lines.push(`La notifica si è perfezionata`);
     } else if (status === "VIEWED") {
         lines.push(`La notifica si è perfezionata digitalmente.`);
