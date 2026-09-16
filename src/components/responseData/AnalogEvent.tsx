@@ -3,6 +3,7 @@ import React from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
 import { codiciStatusTimeline } from '../../model/notification';
+import { formatEventDate } from '../../helpers/utils';
 
 type AnalogEvent = {
     accordionKey: string;
@@ -79,7 +80,10 @@ function getSummaryText(sendAnalog: SendAnalog, sendAnalogFeedback: any): string
     return "";
 }
 
+
 function parseAnalogElement(el: any) {
+    const eventDateFormatted = formatEventDate(el.eventTimestamp || el.timestamp || el.details?.eventTimestamp);
+
     const schedulingDate =
         el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW") && el.details?.schedulingDate
             ? new Date(el.details.schedulingDate).toLocaleDateString()
@@ -132,28 +136,31 @@ function parseAnalogElement(el: any) {
             ? el.details?.physicalAddress
             : null;
 
-    return { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, sendAnalogDomicile };
+    return { eventDateFormatted, schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, sendAnalogDomicile };
 }
+
 
 const AnalogEvent: React.FC<AnalogEvent> = ({ accordionKey, analogEvents }) => (
     <AccordionTimeline
         keyValue={accordionKey}
         accordionSummaryChild={<Typography variant="body1">Workflow Analogico ({analogEvents.length} eventi)</Typography>}
         accordionDetailsChild={analogEvents.map((el: any, i: number) => {
-            const { schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, sendAnalogDomicile } = parseAnalogElement(el);
+            const { eventDateFormatted, schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, sendAnalogDomicile } = parseAnalogElement(el);
 
             return (
                 <Accordion key={`analog-${i}`}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography variant="body1">
-                            {i + 1}: {el.category}
-                        </Typography>
-                        <Typography variant="body1">
-                            {getSummaryText(sendAnalog, sendAnalogFeedback)}
+                            {i + 1}: {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback)}
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Box component="div" display="flex" flexDirection="column" gap={1}>
+                            {eventDateFormatted && (
+                                <Typography variant="body1">
+                                    Data evento: {eventDateFormatted}
+                                </Typography>
+                            )}
                             {schedulingDate && <Typography variant="body1">Schedulato il: {schedulingDate}</Typography>}
                             {physicalAddress && <PhysicalAddress address={physicalAddress} />}
                             {sendAnalog && <SendAnalogDetails sendAnalog={sendAnalog} />}

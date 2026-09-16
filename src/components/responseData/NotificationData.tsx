@@ -81,6 +81,7 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                                         accordionKey={el.elementId}
                                         category={el.category}
                                         details={el.details}
+                                        eventTimestamp={el.eventTimestamp}
                                     />
                                 )}
 
