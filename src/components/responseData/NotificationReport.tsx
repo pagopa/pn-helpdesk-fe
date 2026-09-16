@@ -54,17 +54,60 @@ export const formatPaymentLines = (recipient: Recipient, data: NotificationDataM
     return lines;
 };
 
-const buildReportText = (data: NotificationDataModel): string => {
-    const sentDateObj = new Date(data.sentAt);
+const buildAcceptedDateFormatted = (data: NotificationDataModel): string => {
     const acceptedEvent = data.timeline?.find(event => event.elementId?.includes("REQUEST_ACCEPTED"));
 
-    const acceptedDateFormatted = acceptedEvent
+    return acceptedEvent
         ? new Date(acceptedEvent.eventTimestamp).toLocaleDateString("it-IT", {
             day: "2-digit",
             month: "2-digit",
             year: "numeric"
         })
         : "";
+};
+
+function formatRecipientLines(recipient: Recipient, data: NotificationDataModel): Array<string> {
+    const addr = recipient.physicalAddress || {};
+    const addrParts = [
+        addr.address,
+        addr.addressDetails,
+        addr.municipalityDetails,
+        addr.zip,
+        addr.municipality,
+        addr.province,
+        addr.foreignState,
+    ].filter(Boolean).join(", ");
+
+    return [
+        `- ${recipient.denomination} (${recipient.taxId})`,
+        ...(addrParts ? [`- Indirizzo: ${addrParts}`] : []),
+        ...formatPaymentLines(recipient, data),
+    ];
+}
+
+function formatDocumentLines(documents: NotificationDataModel["documents"]): Array<string> {
+    if (!documents) {
+        return [];
+    }
+
+    if ("documentCancelledCount" in documents) {
+        return [`- ${documents.description}: ${documents.documentCancelledCount} documento/i`];
+    }
+
+    return documents.flatMap((doc) => {
+        if (doc && typeof doc === "object") {
+            return [
+                `- Documento ${doc.docIdx ?? ""}: ${doc.ref?.key ?? ""} `,
+                `- sha256: ${doc.digests?.sha256 ?? ""}`,
+            ];
+        }
+        return [`- Documento: ${doc}`];
+    });
+}
+
+const buildReportText = (data: NotificationDataModel): string => {
+    const sentDateObj = new Date(data.sentAt);
+    const acceptedDateFormatted = buildAcceptedDateFormatted(data);
 
     const formattedDate = sentDateObj.toLocaleDateString("it-IT", {
         day: "2-digit",
@@ -87,39 +130,11 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push("");
 
     lines.push("Destinatari:");
-    data.recipients.forEach((recipient) => {
-        lines.push(`- ${recipient.denomination} (${recipient.taxId})`);
-
-        const addr = recipient.physicalAddress;
-        const addrParts = [
-            addr.address,
-            addr.addressDetails,
-            addr.municipalityDetails,
-            addr.zip,
-            addr.municipality,
-            addr.province,
-            addr.foreignState,
-        ].filter(Boolean).join(", ");
-        lines.push(`- Indirizzo: ${addrParts}`);
-
-        const paymentLines = formatPaymentLines(recipient, data);
-        lines.push(...paymentLines);
-    });
+    lines.push(...data.recipients.flatMap(recipient => formatRecipientLines(recipient, data)));
     lines.push("");
 
     lines.push("Allegati:");
-    if ("documentCancelledCount" in data.documents) {
-        lines.push(`- ${data.documents.description}: ${data.documents.documentCancelledCount} documento/i`);
-    } else {
-        data.documents.forEach((doc) => {
-            if (doc && typeof doc === "object") {
-                lines.push(`- Documento ${doc.docIdx ?? ""}: ${doc.ref?.key ?? ""} `);
-                lines.push(`- sha256: ${doc.digests?.sha256 ?? ""}`);
-            } else {
-                lines.push(`- Documento: ${doc}`);
-            }
-        });
-    }
+    lines.push(...formatDocumentLines(data.documents));
 
     lines.push("");
     lines.push("Dettagli:");
