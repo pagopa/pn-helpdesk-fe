@@ -28,7 +28,6 @@ const TRADUZIONI_CATEGORIA: Record<string, string> = {
     "SEND_DIGITAL_FEEDBACK": "Esito invio digitale",
     "DIGITAL_PROG": "Avanzamento invio digitale",
     "SEND_DIGITAL_PROGRESS": "Avanzamento invio digitale",
-    "NOTIFICATION_VIEWED": "Notifica visualizzata dal destinatario",
     "REFINEMENT": "Perfezionamento notifica per decorrenza termini",
     "SCHEDULE_REFINEMENT": "Pianificazione perfezionamento",
     "COMPLETELY_UNREACHABLE": "Destinatario completamente irreperibile",
@@ -132,7 +131,11 @@ const describeDigitalFeedback = (details: TimelineDetails): string => {
     return `Esito digitale: ${esito}${traduzione}`;
 };
 
-// Mappa categoria -> funzione descrittiva
+const describeNotificationViewed = (details: TimelineDetails): string => {
+    const cf = details.delegateInfo?.internalId;
+    return cf ? `Notifica visualizzata dal destinatario (CF: ${cf})` : "Notifica visualizzata dal destinatario";
+};
+
 const DESCRITTORI: Partial<Record<string, (details: TimelineDetails) => string>> = {
     "GET_ADDRESS": describeGetAddress,
     "SEND_COURTESY_MESSAGE": describeCourtesyMessage,
@@ -145,11 +148,11 @@ const DESCRITTORI: Partial<Record<string, (details: TimelineDetails) => string>>
     "SEND_DIGITAL_PROGRESS": describeDigital,
     "DIGITAL_PROG": describeDigital,
     "SEND_DIGITAL_FEEDBACK": describeDigitalFeedback,
+    "NOTIFICATION_VIEWED": describeNotificationViewed,
     "NORMALIZED_ADDRESS": (d) => `Indirizzo normalizzato per destinatario ${d.recIndex ?? 0}`,
     "REFINEMENT": () => `Notifica perfezionata per decorrenza termini`,
 };
 
-// Funzione principale ora è solo un lookup
 const getEventDescription = (el: TimelineElement): string => {
     const descrittore = DESCRITTORI[el.category];
     return descrittore

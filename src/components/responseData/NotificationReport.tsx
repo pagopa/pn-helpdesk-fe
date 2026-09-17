@@ -59,6 +59,7 @@ const buildReportText = (data: NotificationDataModel): string => {
         day: "2-digit", month: "2-digit", year: "numeric",
         hour: "2-digit", minute: "2-digit"
     });
+    const status = data.notificationStatus.toUpperCase();
 
     const lines: Array<string> = [];
 
@@ -121,7 +122,6 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push("");
 
     lines.push("Esito e Perfezionamento");
-    const status = data.notificationStatus.toUpperCase();
     if (status === "DELIVERED" || status === "VIEWED") {
         lines.push(`La notifica si è perfezionata digitalmente.`);
     } else if (status === "UNREACHABLE") {

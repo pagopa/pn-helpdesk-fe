@@ -118,6 +118,14 @@ export interface TimelineDetails {
     prepareRequestId?: string;
     deliveryFailureCause: string;
     ioSendMessageResult: string;
+    delegateInfo?: DelegateInfo;
+}
+
+interface DelegateInfo {
+    internalId: string;
+    mandateId: string;
+    delegateType: string;
+    operatorUuid: string;
 }
 
 export interface TimelineElement {
