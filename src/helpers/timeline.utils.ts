@@ -132,8 +132,8 @@ const describeDigitalFeedback = (details: TimelineDetails): string => {
 };
 
 const describeNotificationViewed = (details: TimelineDetails): string => {
-    const cf = details.delegateInfo?.internalId;
-    return cf ? `Notifica visualizzata dal destinatario (CF: ${cf})` : "Notifica visualizzata dal destinatario";
+    const internalId = details.delegateInfo?.internalId;
+    return internalId ? `Notifica visualizzata dal destinatario (Codice Univoco: ${internalId})` : "Notifica visualizzata dal destinatario";
 };
 
 const DESCRITTORI: Partial<Record<string, (details: TimelineDetails) => string>> = {
