@@ -32,7 +32,6 @@ const TRADUZIONI_CATEGORIA: Record<string, string> = {
     "SEND_DIGITAL_FEEDBACK": "Esito invio digitale",
     "DIGITAL_PROG": "Avanzamento invio digitale",
     "SEND_DIGITAL_PROGRESS": "Avanzamento invio digitale",
-    "NOTIFICATION_VIEWED": "Notifica visualizzata dal destinatario",
     "REFINEMENT": "Perfezionamento notifica per decorrenza termini",
     "SCHEDULE_REFINEMENT": "Pianificazione perfezionamento",
     "COMPLETELY_UNREACHABLE": "Destinatario completamente irreperibile",
@@ -140,6 +139,11 @@ const describeDigitalFeedback = (details: TimelineDetails): string => {
     return `Esito digitale: ${esito}${traduzione}`;
 };
 
+const describeNotificationViewed = (details: TimelineDetails): string => {
+    const internalId = details.delegateInfo?.internalId;
+    return internalId ? `Notifica visualizzata dal destinatario (Codice Univoco: ${internalId})` : "Notifica visualizzata dal destinatario";
+};
+
 const describeRefused = (details: TimelineDetails): string => {
     if (details.refusalReasons?.[0]?.detail.includes("address is not valid")) {
         return "Indirizzo non valido, non è possibile normalizzare l'indirizzo del destinatario";
@@ -161,6 +165,7 @@ const DESCRITTORI: Partial<Record<string, (details: TimelineDetails) => string>>
     "DIGITAL_PROG": describeDigital,
     "REQUEST_REFUSED": describeRefused,
     "SEND_DIGITAL_FEEDBACK": describeDigitalFeedback,
+    "NOTIFICATION_VIEWED": describeNotificationViewed,
     "NORMALIZED_ADDRESS": (d) => `Indirizzo normalizzato per destinatario ${d.recIndex ?? 0}`,
     "REFINEMENT": () => `Notifica perfezionata per decorrenza termini`,
 };

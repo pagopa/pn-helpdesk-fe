@@ -58,6 +58,7 @@ const buildReportText = (data: NotificationDataModel): string => {
         day: "2-digit", month: "2-digit", year: "numeric",
         hour: "2-digit", minute: "2-digit"
     });
+    const status = data.notificationStatus.toUpperCase();
 
     const lines: Array<string> = [];
 
@@ -120,7 +121,6 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push(buildTimelineText(data.timeline));
     lines.push("");
 
-    const status = data.notificationStatus.toUpperCase();
     if (status === "EFFECTIVE_DATE" || status === "EFFECTIVE-DATE-MULTIRECIPIENT") {
         lines.push(`La notifica si è perfezionata`);
     } else if (status === "VIEWED") {
