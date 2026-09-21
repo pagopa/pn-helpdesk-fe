@@ -141,7 +141,8 @@ const describeDigitalFeedback = (details: TimelineDetails): string => {
 
 const describeNotificationViewed = (details: TimelineDetails): string => {
     const internalId = details.delegateInfo?.internalId;
-    return internalId ? `Notifica visualizzata dal destinatario (Codice Univoco: ${internalId})` : "Notifica visualizzata dal destinatario";
+    const code = internalId ? ` (Codice Univoco: ${internalId})` : "";
+    return `dal destinatario${code}`;
 };
 
 const describeRefused = (details: TimelineDetails): string => {
