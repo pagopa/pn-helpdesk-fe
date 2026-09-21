@@ -41,6 +41,7 @@ const TRADUZIONI_CATEGORIA: Record<string, string> = {
     "VALIDATE_F24_REQUEST": "Richiesta validazione F24",
     "GENERATE_F24_REQUEST": "Richiesta generazione F24",
     "REQUEST_REFUSED": "Notifica rifiutata",
+    "NOTIFICATION_VIEWED": "Notifica visualizzata dal destinatario",
 };
 
 const TRADUZIONI_SOURCE: Record<string, string> = {
@@ -152,8 +153,7 @@ const describeDigitalFeedback = (details: TimelineDetails): string => {
 
 const describeNotificationViewed = (details: TimelineDetails): string => {
     const internalId = details.delegateInfo?.internalId;
-    const code = internalId ? ` (Codice Univoco: ${internalId})` : "";
-    return `dal destinatario${code}`;
+    return internalId ? ` (Codice Univoco: ${internalId}) ` : "";
 };
 
 const describeRefused = (details: TimelineDetails): string => {
@@ -210,7 +210,12 @@ export function buildTimelineText(timeline: Array<TimelineElement>): string {
         const label = TRADUZIONI_CATEGORIA[el.category] ?? el.category;
         const desc = getEventDescription(el);
         if (desc.fromDescrittore) {
-            lines.push(`* [${ts.date} ${ts.time}] ${label}: ${desc.descrizione}`);
+            // if the description comes from a descriptor, we include ":" in the line"
+            if (desc.descrizione) {
+                lines.push(`* [${ts.date} ${ts.time}] ${label}: ${desc.descrizione}`);
+            } else {
+                lines.push(`* [${ts.date} ${ts.time}] ${label}`);
+            }
         } else {
             lines.push(`* [${ts.date} ${ts.time}] ${label}`);
         }
