@@ -58,11 +58,21 @@ const TRADUZIONI_DIGITAL_TYPE: Record<string, string> = {
     "SMS": "SMS",
 };
 
-function formatTimestamp(ts: string): string {
-    return new Date(ts).toLocaleString("it-IT", {
-        day: "2-digit", month: "2-digit", year: "numeric",
-        hour: "2-digit", minute: "2-digit"
+function formatTimestamp(ts: string): { date: string; time: string } {
+    const dateObj = new Date(ts);
+
+    const date = dateObj.toLocaleDateString("it-IT", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
     });
+
+    const time = dateObj.toLocaleTimeString("it-IT", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+
+    return { date, time };
 }
 
 const getGeneralRegistryName = (details: TimelineDetails): string => {
@@ -200,9 +210,9 @@ export function buildTimelineText(timeline: Array<TimelineElement>): string {
         const label = TRADUZIONI_CATEGORIA[el.category] ?? el.category;
         const desc = getEventDescription(el);
         if (desc.fromDescrittore) {
-            lines.push(`* [${ts}] ${label}: ${desc.descrizione}`);
+            lines.push(`* [${ts.date} ${ts.time}] ${label}: ${desc.descrizione}`);
         } else {
-            lines.push(`* [${ts}] ${label}`);
+            lines.push(`* [${ts.date} ${ts.time}] ${label}`);
         }
     });
 

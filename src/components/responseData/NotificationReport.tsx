@@ -11,7 +11,7 @@ type Props = {
 const getPaymentHeaderLine = (data: NotificationDataModel): string => {
     const feeInfo = [
         data?.paFee ? `Commissione PA: ${data.paFee}` : "Commissione PA: 0",
-        data?.vat ? `IVA: ${data.vat}` : "IVA: 0",
+        data?.vat ? `IVA: ${data.vat}%` : "IVA: 0%",
         data?.pagoPaIntMode ? `Modalità: ${data.pagoPaIntMode}` : "Modalità: NONE"
     ].filter(Boolean);
 
@@ -31,7 +31,7 @@ const formatSinglePagoPa = (pagoPa: PagoPa | undefined): string | null => {
     let line = `- pagoPA: ${details.join(' ')}`.trim();
 
     if (pagoPa.applyCost !== undefined && pagoPa.applyCost !== null) {
-        line += `, costi applicati: ${pagoPa.applyCost}`;
+        line += `, applica costi: ${pagoPa.applyCost}`;
     }
 
     return line;
@@ -53,66 +53,99 @@ export const formatPaymentLines = (recipient: Recipient, data: NotificationDataM
     return lines;
 };
 
+const buildAcceptedDateFormatted = (data: NotificationDataModel): string => {
+    const acceptedEvent = data.timeline?.find(event => event.elementId?.includes("REQUEST_ACCEPTED"));
+
+    return acceptedEvent
+        ? new Date(acceptedEvent.eventTimestamp).toLocaleDateString("it-IT", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+        })
+        : "";
+};
+
+function formatRecipientLines(recipient: Recipient, data: NotificationDataModel): Array<string> {
+    const addr = recipient.physicalAddress || {};
+    const addrParts = [
+        addr.address,
+        addr.addressDetails,
+        addr.municipalityDetails,
+        addr.zip,
+        addr.municipality,
+        addr.province,
+        addr.foreignState,
+    ].filter(Boolean).join(", ");
+
+    return [
+        `- ${recipient.denomination} (${recipient.taxId})`,
+        ...(addrParts ? [`- Indirizzo: ${addrParts}`] : []),
+        ...formatPaymentLines(recipient, data),
+    ];
+}
+
+function formatDocumentLines(documents: NotificationDataModel["documents"]): Array<string> {
+    if (!documents) {
+        return [];
+    }
+
+    if ("documentCancelledCount" in documents) {
+        return [`- ${documents.description}: ${documents.documentCancelledCount} documento/i`];
+    }
+
+    return documents.flatMap((doc) => {
+        if (doc && typeof doc === "object") {
+            return [
+                `- Documento ${doc.docIdx ?? ""}: ${doc.ref?.key ?? ""} `,
+                `- sha256: ${doc.digests?.sha256 ?? ""}`,
+            ];
+        }
+        return [`- Documento: ${doc}`];
+    });
+}
+
 const buildReportText = (data: NotificationDataModel): string => {
-    const sentAt = new Date(data.sentAt).toLocaleDateString("it-IT", {
-        day: "2-digit", month: "2-digit", year: "numeric",
-        hour: "2-digit", minute: "2-digit"
+    const sentDateObj = new Date(data.sentAt);
+    const acceptedDateFormatted = buildAcceptedDateFormatted(data);
+
+    const formattedDate = sentDateObj.toLocaleDateString("it-IT", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    });
+
+    const formattedTime = sentDateObj.toLocaleTimeString("it-IT", {
+        hour: "2-digit",
+        minute: "2-digit"
     });
     const status = data.notificationStatus.toUpperCase();
 
     const lines: Array<string> = [];
 
-    lines.push(`La notifica con IUN ${data.iun} inviata da ${data.senderDenomination}, CF: ${data.senderTaxId} il ${sentAt} avente`);
+    lines.push(`La notifica IUN ${data.iun}`);
+    lines.push(`mittente ${data.senderDenomination} (${data.senderTaxId})`);
+    lines.push(`Data deposito ${formattedDate} (ore - ${formattedTime})`);
     lines.push(`- Oggetto della Notifica: ${data.subject}`);
     lines.push(`- Numero di protocollo: ${data.paProtocolNumber}`);
     lines.push("");
 
     lines.push("Destinatari:");
-    data.recipients.forEach((recipient) => {
-        lines.push(`- ${recipient.denomination} CF ${recipient.taxId}`);
-
-        const addr = recipient.physicalAddress;
-        const addrParts = [
-            addr.address,
-            addr.addressDetails,
-            addr.municipalityDetails,
-            addr.zip,
-            addr.municipality,
-            addr.province,
-            addr.foreignState,
-        ].filter(Boolean).join(", ");
-        lines.push(`- Indirizzo: ${addrParts}`);
-
-        const paymentLines = formatPaymentLines(recipient, data);
-        lines.push(...paymentLines);
-    });
+    lines.push(...data.recipients.flatMap(recipient => formatRecipientLines(recipient, data)));
     lines.push("");
 
     lines.push("Allegati:");
-    if ("documentCancelledCount" in data.documents) {
-        lines.push(`- ${data.documents.description}: ${data.documents.documentCancelledCount} documento/i`);
-    } else {
-        data.documents.forEach((doc) => {
-            if (doc && typeof doc === "object") {
-                lines.push(`- Documento ${doc.docIdx ?? ""}: ${doc.ref?.key ?? ""} `);
-                lines.push(`- sha256: ${doc.digests?.sha256 ?? ""}`);
-            } else {
-                lines.push(`- Documento: ${doc}`);
-            }
-        });
-    }
+    lines.push(...formatDocumentLines(data.documents));
 
     lines.push("");
     lines.push("Dettagli:");
     lines.push(`- Tipo tariffa: ${data.notificationFeePolicy}`);
     lines.push(`- Tipo raccomandata: ${data.physicalCommunicationType}`);
     if (data.group) {
-        lines.push(`- Gruppo/i: ${data.group}`);
+        lines.push(`- Gruppo: ${data.group}`);
     }
     lines.push(`- Codice tassonomico: ${data.taxonomyCode}`);
     lines.push("");
 
-    lines.push(`Stato attuale della notifica: ${data.notificationStatus} - ${notificationStatus[data.notificationStatus.toLowerCase()]}`);
     lines.push("");
 
     lines.push("Di seguito riportiamo la cronologia degli eventi che tracciano il ciclo di vita della notifica:");
@@ -121,18 +154,18 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push(buildTimelineText(data.timeline));
     lines.push("");
 
-    if (status === "EFFECTIVE_DATE" || status === "EFFECTIVE-DATE-MULTIRECIPIENT") {
+    lines.push(`Stato attuale della notifica: ${status} - ${notificationStatus[data.notificationStatus.toLowerCase()]}`);
+    if (status === "DELIVERED" || status === "VIEWED") {
+        const datePlaceholder = acceptedDateFormatted ? ` ${acceptedDateFormatted}` : "";
+        lines.push(`La notifica si è perfezionata per decorrenza termini il${datePlaceholder}.`);
+    } else if (status === "EFFECTIVE_DATE" || status === "EFFECTIVE-DATE-MULTIRECIPIENT") {
         lines.push(`La notifica si è perfezionata`);
-    } else if (status === "VIEWED") {
-        lines.push(`La notifica si è perfezionata digitalmente.`);
     } else if (status === "UNREACHABLE") {
         lines.push(`Non essendo stato possibile il recapito digitale, la notifica è passata al flusso analogico.`);
     } else if (status === "REFUSED") {
         lines.push(`La notifica è stata rifiutata.`);
     } else if (status === "DELIVERING") {
         lines.push(`La notifica è attualmente in fase di invio.`);
-    } else if (status === "DELIVERED") {
-        lines.push(`La notifica risulta consegnata.`);
     } else {
         lines.push(`La notifica è attualmente in fase di lavorazione.`);
     }
