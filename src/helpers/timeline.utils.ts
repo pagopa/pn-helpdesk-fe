@@ -17,7 +17,11 @@ const CATEGORIE_ESCLUSE = new Set([
     "NOTIFICATION_CANCELLED_DOCUMENT_CREATION_REQUEST",
     "NOTIFICATION_VIEWED_CREATION_REQUEST",
     "COMPLETELY_UNREACHABLE_CREATION_REQUEST",
-    "PREPARE_ANALOG_DOMICILE_FAILURE"
+    "PREPARE_ANALOG_DOMICILE_FAILURE",
+    "GENERATED_F24",
+    "DIGITAL_SUCCESS_WORKFLOW",
+    "DIGITAL_DELIVERY_CREATION_REQUEST",
+    "SEND_DIGITAL_DOMICILE"
 ]);
 
 const TRADUZIONI_CATEGORIA: Record<string, string> = {
@@ -180,7 +184,7 @@ const DESCRITTORI: Partial<Record<string, (details: TimelineDetails) => string>>
     "REQUEST_REFUSED": describeRefused,
     "SEND_DIGITAL_FEEDBACK": describeDigitalFeedback,
     "NOTIFICATION_VIEWED": describeNotificationViewed,
-    "NORMALIZED_ADDRESS": (d) => `Indirizzo normalizzato per destinatario ${d.recIndex ?? 0}`,
+    "NORMALIZED_ADDRESS": () => `Indirizzo normalizzato per destinatario`,
     "REFINEMENT": () => `Notifica perfezionata per decorrenza termini`,
 };
 
