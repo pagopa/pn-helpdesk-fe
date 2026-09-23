@@ -224,6 +224,7 @@ export const notificationStatus: Record<string, string> = {
 };
 
 export const codiciStatusTimeline: Record<string, string> = {
+    "D00": "",
     "M01": "perché il destinatario è irreperibile",
     "M02": "perché il destinatario è deceduto",
     "M03": "perché il destinatario è sconosciuto",
