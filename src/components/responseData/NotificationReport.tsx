@@ -118,6 +118,7 @@ const buildReportText = (data: NotificationDataModel): string => {
         hour: "2-digit",
         minute: "2-digit"
     });
+    const status = data.notificationStatus.toUpperCase();
 
     const lines: Array<string> = [];
 
@@ -153,7 +154,6 @@ const buildReportText = (data: NotificationDataModel): string => {
     lines.push(buildTimelineText(data.timeline));
     lines.push("");
 
-    const status = data.notificationStatus.toUpperCase();
     lines.push(`Stato attuale della notifica: ${status} - ${notificationStatus[data.notificationStatus.toLowerCase()]}`);
     if (status === "DELIVERED" || status === "VIEWED") {
         const datePlaceholder = acceptedDateFormatted ? ` ${acceptedDateFormatted}` : "";

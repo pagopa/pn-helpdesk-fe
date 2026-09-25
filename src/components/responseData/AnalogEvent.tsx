@@ -69,13 +69,16 @@ const SendAnalogFeedbackDetails: React.FC<{ feedback: any }> = ({ feedback }) =>
     </>
 );
 
-function getSummaryText(sendAnalog: SendAnalog, sendAnalogFeedback: any): string {
+function getSummaryText(sendAnalog: SendAnalog, sendAnalogFeedback: any, prepareAnalogDomicileFailure: any): string {
     if (sendAnalog) {
         const code = sendAnalog.deliveryDetailCode || sendAnalog.deliveryFailureCause;
         return code ? ` - ${code} - ${codiciStatusTimeline[code]}` : "";
     }
     if (sendAnalogFeedback?.deliveryDetailCode) {
         return `- ${sendAnalogFeedback.deliveryDetailCode} - ${codiciStatusTimeline[sendAnalogFeedback.deliveryDetailCode]}`;
+    }
+    if (prepareAnalogDomicileFailure) {
+        return `- ${prepareAnalogDomicileFailure.failureCause} - ${codiciStatusTimeline[prepareAnalogDomicileFailure.failureCause]}`;
     }
     return "";
 }
@@ -122,6 +125,13 @@ function parseAnalogElement(el: any) {
             }
             : null;
 
+    const prepareAnalogDomicileFailure =
+        el.elementId.includes("PREPARE_ANALOG_DOMICILE_FAILURE")
+            ? {
+                failureCause: el.details.failureCause,
+            }
+            : null;
+
     const sendAnalogDomicile =
         el.elementId.includes("SEND_ANALOG_DOMICILE") && el.details
             ? {
@@ -136,7 +146,7 @@ function parseAnalogElement(el: any) {
             ? el.details?.physicalAddress
             : null;
 
-    return { eventDateFormatted, schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, sendAnalogDomicile };
+    return { eventDateFormatted, schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, prepareAnalogDomicileFailure, sendAnalogDomicile };
 }
 
 
@@ -145,13 +155,13 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ accordionKey, analogEvents }) => (
         keyValue={accordionKey}
         accordionSummaryChild={<Typography variant="body1">Workflow Analogico ({analogEvents.length} eventi)</Typography>}
         accordionDetailsChild={analogEvents.map((el: any, i: number) => {
-            const { eventDateFormatted, schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, sendAnalogDomicile } = parseAnalogElement(el);
+            const { eventDateFormatted, schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, prepareAnalogDomicileFailure, sendAnalogDomicile } = parseAnalogElement(el);
 
             return (
                 <Accordion key={`analog-${i}`}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                         <Typography variant="body1">
-                            {i + 1}: {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback)}
+                            {i + 1}: {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
