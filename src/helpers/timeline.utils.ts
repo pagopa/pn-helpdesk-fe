@@ -159,7 +159,7 @@ const describeDigitalFeedback = (details: TimelineDetails): string => {
 
 const describeNotificationViewed = (details: TimelineDetails): string => {
     const internalId = details.delegateInfo?.internalId;
-    return internalId ? ` (Codice Univoco: ${internalId}) ` : "";
+    return internalId ? `(Codice Univoco: ${internalId})` : "";
 };
 
 const describeRefused = (details: TimelineDetails): string => {
