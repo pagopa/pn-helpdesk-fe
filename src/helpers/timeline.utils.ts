@@ -14,7 +14,14 @@ const CATEGORIE_ESCLUSE = new Set([
     "NOTIFICATION_COST_VALIDATION_REQUEST",
     "NOTIFICATION_COST_VALIDATION_RESPONSE",
     "NOTIFICATION_CANCELLATION_REQUEST",
-    "NOTIFICATION_CANCELLED_DOCUMENT_CREATION_REQUEST"
+    "NOTIFICATION_CANCELLED_DOCUMENT_CREATION_REQUEST",
+    "NOTIFICATION_VIEWED_CREATION_REQUEST",
+    "COMPLETELY_UNREACHABLE_CREATION_REQUEST",
+    "PREPARE_ANALOG_DOMICILE_FAILURE",
+    "GENERATED_F24",
+    "DIGITAL_SUCCESS_WORKFLOW",
+    "DIGITAL_DELIVERY_CREATION_REQUEST",
+    "SEND_DIGITAL_DOMICILE"
 ]);
 
 const TRADUZIONI_CATEGORIA: Record<string, string> = {
@@ -32,7 +39,6 @@ const TRADUZIONI_CATEGORIA: Record<string, string> = {
     "SEND_DIGITAL_FEEDBACK": "Esito invio digitale",
     "DIGITAL_PROG": "Avanzamento invio digitale",
     "SEND_DIGITAL_PROGRESS": "Avanzamento invio digitale",
-    "NOTIFICATION_VIEWED": "Notifica visualizzata dal destinatario",
     "REFINEMENT": "Perfezionamento notifica per decorrenza termini",
     "SCHEDULE_REFINEMENT": "Pianificazione perfezionamento",
     "COMPLETELY_UNREACHABLE": "Destinatario completamente irreperibile",
@@ -41,6 +47,7 @@ const TRADUZIONI_CATEGORIA: Record<string, string> = {
     "VALIDATE_F24_REQUEST": "Richiesta validazione F24",
     "GENERATE_F24_REQUEST": "Richiesta generazione F24",
     "REQUEST_REFUSED": "Notifica rifiutata",
+    "NOTIFICATION_VIEWED": "Notifica visualizzata dal destinatario",
 };
 
 const TRADUZIONI_SOURCE: Record<string, string> = {
@@ -150,6 +157,11 @@ const describeDigitalFeedback = (details: TimelineDetails): string => {
     return `Esito digitale: ${esito}${traduzione}`;
 };
 
+const describeNotificationViewed = (details: TimelineDetails): string => {
+    const internalId = details.delegateInfo?.internalId;
+    return internalId ? `(Codice Univoco: ${internalId})` : "";
+};
+
 const describeRefused = (details: TimelineDetails): string => {
     if (details.refusalReasons?.[0]?.detail.includes("address is not valid")) {
         return "Indirizzo non valido, non è possibile normalizzare l'indirizzo del destinatario";
@@ -171,7 +183,8 @@ const DESCRITTORI: Partial<Record<string, (details: TimelineDetails) => string>>
     "DIGITAL_PROG": describeDigital,
     "REQUEST_REFUSED": describeRefused,
     "SEND_DIGITAL_FEEDBACK": describeDigitalFeedback,
-    "NORMALIZED_ADDRESS": (d) => `Indirizzo normalizzato per destinatario ${d.recIndex ?? 0}`,
+    "NOTIFICATION_VIEWED": describeNotificationViewed,
+    "NORMALIZED_ADDRESS": () => `Indirizzo normalizzato per destinatario`,
     "REFINEMENT": () => `Notifica perfezionata per decorrenza termini`,
 };
 
@@ -203,7 +216,12 @@ export function buildTimelineText(timeline: Array<TimelineElement>): string {
         const label = TRADUZIONI_CATEGORIA[el.category] ?? el.category;
         const desc = getEventDescription(el);
         if (desc.fromDescrittore) {
-            lines.push(`* [${ts.date} ${ts.time}] ${label}: ${desc.descrizione}`);
+            // if the description comes from a descriptor, we include ":" in the line"
+            if (desc.descrizione) {
+                lines.push(`* [${ts.date} ${ts.time}] ${label}: ${desc.descrizione}`);
+            } else {
+                lines.push(`* [${ts.date} ${ts.time}] ${label}`);
+            }
         } else {
             lines.push(`* [${ts.date} ${ts.time}] ${label}`);
         }
