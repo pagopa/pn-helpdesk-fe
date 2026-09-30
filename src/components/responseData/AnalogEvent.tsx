@@ -160,17 +160,12 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ accordionKey, analogEvents }) => (
             return (
                 <Accordion key={`analog-${i}`}>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography variant="body1">
-                            {i + 1}: {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}
+                        <Typography variant="body2">
+                            {eventDateFormatted}: {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}
                         </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Box component="div" display="flex" flexDirection="column" gap={1}>
-                            {eventDateFormatted && (
-                                <Typography variant="body1">
-                                    Data evento: {eventDateFormatted}
-                                </Typography>
-                            )}
                             {schedulingDate && <Typography variant="body1">Schedulato il: {schedulingDate}</Typography>}
                             {physicalAddress && <PhysicalAddress address={physicalAddress} />}
                             {sendAnalog && <SendAnalogDetails sendAnalog={sendAnalog} />}
