@@ -124,7 +124,7 @@ const buildReportText = (data: NotificationDataModel): string => {
 
     lines.push(`La notifica IUN ${data.iun}`);
     lines.push(`mittente ${data.senderDenomination} (${data.senderTaxId})`);
-    lines.push(`Data deposito ${formattedDate} (ore - ${formattedTime})`);
+    lines.push(`Data deposito ${formattedDate} ${formattedTime}`);
     lines.push(`- Oggetto della Notifica: ${data.subject}`);
     lines.push(`- Numero di protocollo: ${data.paProtocolNumber}`);
     lines.push("");
