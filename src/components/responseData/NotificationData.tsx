@@ -48,18 +48,16 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                             el.elementId.includes('DIGITAL_PROG') ||
                             el.elementId.includes('DIGITAL_DELIVERY_CREATION_REQUEST');
 
-                        // Estrazione dei dati puliti per il messaggio di cortesia
                         const channel = el.details.digitalAddress?.type || "-";
                         const destination = el.details.digitalAddress?.address || "-";
                         const sendDate = el.details.sendDate ? new Date(el.details.sendDate).toLocaleDateString() : "-";
 
                         const isAppIo = el.details.digitalAddress?.type === "APPIO";
-                        // Passiamo solo il valore del risultato, non l'intera stringa formattata
                         const ioResult = isAppIo ? el.details.ioSendMessageResult : undefined;
 
 
                         return (
-                            <Box key={idx} sx={{ my: 1 }}>
+                            <Box key={idx}>
                                 {isAddress && (
                                     <DetailOfAddress
                                         accordionKey={el.elementId}
