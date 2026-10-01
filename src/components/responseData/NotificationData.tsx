@@ -48,14 +48,15 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                             el.elementId.includes('DIGITAL_PROG') ||
                             el.elementId.includes('DIGITAL_DELIVERY_CREATION_REQUEST');
 
-                        const courtesyDetails = isCourtesyOnly ? [
-                            `Canale: ${el.details.digitalAddress?.type || "-"}`,
-                            `Destinazione: ${el.details.digitalAddress?.address || "-"}`,
-                            `Data Invio: ${el.details.sendDate ? new Date(el.details.sendDate).toLocaleDateString() : "-"}`
-                        ] : [];
+                        // Estrazione dei dati puliti per il messaggio di cortesia
+                        const channel = el.details.digitalAddress?.type || "-";
+                        const destination = el.details.digitalAddress?.address || "-";
+                        const sendDate = el.details.sendDate ? new Date(el.details.sendDate).toLocaleDateString() : "-";
 
                         const isAppIo = el.details.digitalAddress?.type === "APPIO";
-                        const ioResult = isAppIo ? `Risultato AppIo: ${el.details.ioSendMessageResult}` : undefined;
+                        // Passiamo solo il valore del risultato, non l'intera stringa formattata
+                        const ioResult = isAppIo ? el.details.ioSendMessageResult : undefined;
+
 
                         return (
                             <Box key={idx} sx={{ my: 1 }}>
@@ -69,8 +70,9 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
 
                                 {isCourtesyOnly && (
                                     <CourtesyMessage
-                                        accordionKey={el.elementId}
-                                        sendCourtesyMessage={courtesyDetails}
+                                        channel={channel}
+                                        destination={destination}
+                                        sendDate={sendDate}
                                         ioResult={ioResult}
                                         numberOfSendCourtesyMessage={courtesyCount}
                                     />
