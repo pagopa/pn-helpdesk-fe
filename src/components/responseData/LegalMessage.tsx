@@ -16,15 +16,13 @@ const LegalMessage: React.FC<Props> = ({ category, details, eventTimestamp }) =>
     return (
         <Box sx={{ my: 1, ml: 2 }}>
             <Typography variant="body2" component="div">
-                {/* Titolo/Categoria della notifica legale */}
-                <Box component="span" >{category}</Box>
 
-                {/* Data evento */}
                 {eventDateFormatted && (
                     <> - <Box component="span" >{eventDateFormatted}</Box></>
                 )}
 
-                {/* Dettagli Indirizzo Digitale */}
+                <Box component="span" >{category}</Box>
+
                 {details?.digitalAddress?.type && (
                     <> - <Box component="span" >{details.digitalAddress.type}</Box></>
                 )}
@@ -32,22 +30,18 @@ const LegalMessage: React.FC<Props> = ({ category, details, eventTimestamp }) =>
                     <> - <Box component="span" >{details.digitalAddress.address}</Box></>
                 )}
 
-                {/* Codice Dettaglio */}
                 {details?.deliveryDetailCode && (
                     <> - <Box component="span" >{details.deliveryDetailCode}</Box></>
                 )}
 
-                {/* Esito Transazione */}
                 {details?.responseStatus && (
                     <> - <Box component="span" >{details.responseStatus}</Box></>
                 )}
 
-                {/* Stato Finale Workflow */}
                 {details?.endWorkflowStatus && (
                     <> - <Box component="span" >{details.endWorkflowStatus}</Box></>
                 )}
 
-                {/* Causa Errore */}
                 {details?.deliveryFailureCause && (
                     <> - <Box component="span" >{details.deliveryFailureCause}</Box></>
                 )}
