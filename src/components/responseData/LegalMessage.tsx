@@ -2,6 +2,7 @@ import { Typography, Stack } from '@mui/material';
 import React from 'react';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
 import { formatEventDate } from '../../helpers/utils';
+import { codiciStatusTimeline } from '../../model/notification';
 
 type Props = {
     accordionKey: string;
@@ -47,7 +48,7 @@ const LegalMessage: React.FC<Props> = ({ accordionKey, category, details, eventT
                     )}
                     {details?.deliveryDetailCode && (
                         <Typography variant="body1">
-                            Codice Dettaglio: {details.deliveryDetailCode}
+                            Codice Dettaglio: {details.deliveryDetailCode} - {codiciStatusTimeline[details.deliveryDetailCode] || details.deliveryDetailCode}
                         </Typography>
                     )}
                     {details?.responseStatus && (
