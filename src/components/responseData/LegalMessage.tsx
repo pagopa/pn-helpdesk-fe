@@ -18,10 +18,10 @@ const LegalMessage: React.FC<Props> = ({ category, details, eventTimestamp }) =>
             <Typography variant="body2" component="div">
 
                 {eventDateFormatted && (
-                    <> - <Box component="span" >{eventDateFormatted}</Box></>
+                    <> - <Box component="span" >{eventDateFormatted} </Box></>
                 )}
 
-                <Box component="span" >{category}</Box>
+                - <Box component="span" >{category}</Box>
 
                 {details?.digitalAddress?.type && (
                     <> - <Box component="span" >{details.digitalAddress.type}</Box></>
