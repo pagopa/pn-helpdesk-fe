@@ -119,17 +119,21 @@ const SendAnalogDomicile: React.FC<{ analogCost: any }> = ({ analogCost }) => {
     const formattedCost = !isNaN(realCost)
         ? realCost.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })
         : `${analogCost.analogCost} €`;
-
+    console.log(analogCost, 'analogCost >> ');
     return (<>
         {analogCost?.analogCost && (
             <>
-                <Box component="span" >{formattedCost}</Box>
+                <Box component="span" >{formattedCost} </Box>
             </>
         )}
-        {analogCost.sendDate && (
+        {analogCost?.numberOfPages && (
             <>
-                {analogCost.analogCost !== undefined && " - "}
-                Data di invio: <Box component="span" >{new Date(analogCost.sendDate).toLocaleDateString('it-IT')}</Box>
+                - Numero Pagine: <Box component="span" >{analogCost.numberOfPages} Incluso AAR </Box>
+            </>
+        )}
+        {analogCost?.envelopeWeight && (
+            <>
+                - Peso: <Box component="span" >{analogCost.envelopeWeight} </Box>
             </>
         )}
     </>
@@ -216,6 +220,8 @@ function parseAnalogElement(el: any) {
             ? {
                 analogCost: el.details.analogCost,
                 sendDate: el.details.sendDate,
+                numberOfPages: el.details.numberOfPages,
+                envelopeWeight: el.details.envelopeWeight,
             }
             : null;
 
