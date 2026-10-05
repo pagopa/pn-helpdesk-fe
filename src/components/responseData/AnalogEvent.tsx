@@ -25,8 +25,15 @@ type SendAnalog = {
     deliveryFailureCause: string;
     responseStatus: string;
     registeredLetterCode: string;
+    attachments: Array<AnalogAttachment>;
+
 } | null;
 
+type AnalogAttachment = {
+    documentType: string;
+    url: string;
+    date: string;
+};
 
 const PhysicalAddress: React.FC<{ address: any }> = ({ address }) => (
     <Box sx={{ mt: 0.5, pl: 2 }}> {/* Un leggero rientro a sinistra isola visivamente l'indirizzo */}
@@ -142,7 +149,22 @@ const SendAnalogDomicile: React.FC<{ analogCost: any }> = ({ analogCost }) => {
 
 const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog }) => (
     <>
-        {sendAnalog?.responseStatus && <Box component="span">- Dettaglio:{sendAnalog.responseStatus}</Box>}
+        {sendAnalog?.attachments && (
+            <Box component="span"> - Attachments: {sendAnalog.attachments.map((attachment, index) => (
+                <>
+                    <Box key={index} component="span">
+                        {attachment.documentType} -
+                    </Box>
+                    <Box key={index} component="span">
+                        {attachment.url} -
+                    </Box>
+                    <Box key={index} component="span">
+                        {formatEventDate(attachment.date)}
+                    </Box>
+                </>
+            ))}
+            </Box>
+        )}
     </>
 );
 
@@ -182,6 +204,7 @@ function parseAnalogElement(el: any) {
                 deliveryFailureCause: el.details.deliveryFailureCause,
                 responseStatus: el.details.responseStatus,
                 registeredLetterCode: el.details.registeredLetterCode,
+                attachments: el.details.attachments,
             }
             : null;
 
