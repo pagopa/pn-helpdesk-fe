@@ -77,6 +77,9 @@ function getSummaryText(sendAnalog: SendAnalog, sendAnalogFeedback: any, prepare
     if (sendAnalogFeedback?.deliveryDetailCode) {
         return `- ${sendAnalogFeedback.deliveryDetailCode} - ${codiciStatusTimeline[sendAnalogFeedback.deliveryDetailCode]}`;
     }
+    if (sendAnalogFeedback?.deliveryFailureCause) {
+        return `- ${sendAnalogFeedback.deliveryFailureCause} - ${codiciStatusTimeline[sendAnalogFeedback.deliveryFailureCause]}`;
+    }
     if (prepareAnalogDomicileFailure) {
         return `- ${prepareAnalogDomicileFailure.failureCause} - ${codiciStatusTimeline[prepareAnalogDomicileFailure.failureCause]}`;
     }
