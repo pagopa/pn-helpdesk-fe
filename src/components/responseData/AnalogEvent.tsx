@@ -151,18 +151,18 @@ const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog })
     <>
         {sendAnalog?.attachments && (
             <Box component="span"> - Attachments: {sendAnalog.attachments.map((attachment, index) => (
-                <>
-                    <Box key={index} component="span">
+                <React.Fragment key={index}>
+                    <Box component="span">
                         {attachment.documentType} -
                     </Box>
-                    <Box key={index} component="span">
+                    <Box component="span">
                         {attachment.url} -
                     </Box>
-                    <Box key={index} component="span">
+                    <Box component="span">
                         {formatEventDate(attachment.date)}
                     </Box>
-                </>
-            ))}
+                </React.Fragment>
+            ))}</Box>
             </Box>
         )}
     </>
