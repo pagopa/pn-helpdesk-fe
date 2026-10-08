@@ -287,7 +287,7 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                     {/* Sub-componenti dei dettagli: 
                         Avvolti in Box inline per accodarli sulla stessa riga di testo */}
                     {physicalAddress && (
-                        <> - Indirizzo: <Box component="span" sx={{ display: 'inline' }}><PhysicalAddress address={physicalAddress} /></Box></>
+                        <> - Indirizzo: <PhysicalAddress address={physicalAddress} /></>
                     )}
 
                     {sendAnalog && (
