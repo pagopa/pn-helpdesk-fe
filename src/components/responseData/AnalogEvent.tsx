@@ -126,7 +126,6 @@ const SendAnalogDomicile: React.FC<{ analogCost: any }> = ({ analogCost }) => {
     const formattedCost = !isNaN(realCost)
         ? realCost.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })
         : `${analogCost.analogCost} €`;
-    console.log(analogCost, 'analogCost >> ');
     return (<>
         {analogCost?.analogCost && (
             <>
