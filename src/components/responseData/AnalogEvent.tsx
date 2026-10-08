@@ -117,12 +117,10 @@ const PrepareAnalogDomicile: React.FC<{ domicile: any }> = ({ domicile }) => (
 
 
 const SendAnalogDomicile: React.FC<{ analogCost: any }> = ({ analogCost }) => {
-    // Dividiamo il valore intero in centesimi (es. 310) per 100 per ottenere i decimali reali (3.10)
     const realCost = typeof analogCost.analogCost === 'number'
         ? analogCost.analogCost / 100
         : parseFloat(analogCost.analogCost) / 100;
 
-    // Formattiamo il numero in valuta italiana (es. 3.1 -> 3,10 €)
     const formattedCost = !isNaN(realCost)
         ? realCost.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })
         : `${analogCost.analogCost} €`;
@@ -156,10 +154,7 @@ const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog })
                         {attachment.documentType} -
                     </Box>
                     <Box key={index} component="span">
-                        {attachment.url} -
-                    </Box>
-                    <Box key={index} component="span">
-                        {formatEventDate(attachment.date)}
+                        {attachment.url}
                     </Box>
                 </>
             ))}
