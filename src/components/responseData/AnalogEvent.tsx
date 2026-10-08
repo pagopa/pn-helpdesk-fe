@@ -1,7 +1,6 @@
-import { Accordion, AccordionSummary, Typography, AccordionDetails, Box } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import React from 'react';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AccordionTimeline from '../accordionData/AccordionTimeline';
+
 import { codiciStatusTimeline } from '../../model/notification';
 import { formatEventDate } from '../../helpers/utils';
 
@@ -26,46 +25,151 @@ type SendAnalog = {
     deliveryFailureCause: string;
     responseStatus: string;
     registeredLetterCode: string;
+    attachments: Array<AnalogAttachment>;
+
 } | null;
 
+type AnalogAttachment = {
+    documentType: string;
+    url: string;
+    date: string;
+};
+
 const PhysicalAddress: React.FC<{ address: any }> = ({ address }) => (
-    <>
-        {address.fullname && <Typography variant="body1">Nome: {address.fullname}</Typography>}
-        {address.address && <Typography variant="body1">Indirizzo: {address.address}</Typography>}
-        {address.addressDetails && <Typography variant="body1">Dettagli: {address.addressDetails}</Typography>}
-        {address.zip && <Typography variant="body1">CAP: {address.zip}</Typography>}
-        {address.municipality && <Typography variant="body1">Comune: {address.municipality}</Typography>}
-        {address.province && <Typography variant="body1">Provincia: {address.province}</Typography>}
-        {address.foreignState && <Typography variant="body1">Stato estero: {address.foreignState}</Typography>}
-    </>
+    <Box sx={{ mt: 0.5, pl: 2 }}> {/* Un leggero rientro a sinistra isola visivamente l'indirizzo */}
+        {address.fullname && (
+            <Typography variant="body2">
+                Nome: <Box component="span" sx={{ fontWeight: 'bold' }}>{address.fullname}</Box>
+            </Typography>
+        )}
+        {address.address && (
+            <Typography variant="body2">
+                Indirizzo: <Box component="span" sx={{ fontWeight: 'bold' }}>{address.address}</Box>
+            </Typography>
+        )}
+        {address.addressDetails && (
+            <Typography variant="body2">
+                Dettagli: <Box component="span" sx={{ fontWeight: 'bold' }}>{address.addressDetails}</Box>
+            </Typography>
+        )}
+        {address.zip && (
+            <Typography variant="body2">
+                CAP: <Box component="span" sx={{ fontWeight: 'bold' }}>{address.zip}</Box>
+            </Typography>
+        )}
+        {address.municipality && (
+            <Typography variant="body2">
+                Comune: <Box component="span" sx={{ fontWeight: 'bold' }}>{address.municipality}</Box>
+            </Typography>
+        )}
+        {address.province && (
+            <Typography variant="body2">
+                Provincia: <Box component="span" sx={{ fontWeight: 'bold' }}>{address.province}</Box>
+            </Typography>
+        )}
+        {address.foreignState && (
+            <Typography variant="body2">
+                Stato estero: <Box component="span" sx={{ fontWeight: 'bold' }}>{address.foreignState}</Box>
+            </Typography>
+        )}
+    </Box>
 );
 
-const PrepareAnalogDomicile: React.FC<{ domicile: any }> = ({ domicile }) => (<>
-    {domicile.at && <Typography variant="body1">Domicilio presso: {domicile.at}</Typography>}
-    {domicile.address && <Typography variant="body1">Indirizzo: {domicile.address}</Typography>}
-    {domicile.addressDetails && <Typography variant="body1">Dettagli: {domicile.addressDetails}</Typography>}
-    {domicile.zip && <Typography variant="body1">CAP: {domicile.zip}</Typography>}
-    {domicile.municipality && <Typography variant="body1">Comune: {domicile.municipality}</Typography>}
-    {domicile.province && <Typography variant="body1">Provincia: {domicile.province}</Typography>}
-    {domicile.foreignState && <Typography variant="body1">Stato estero: {domicile.foreignState}</Typography>}
+const PrepareAnalogDomicile: React.FC<{ domicile: any }> = ({ domicile }) => (
+    <Box sx={{ mt: 0.5, pl: 2 }}> {/* Rientro a sinistra per uniformità visiva con gli altri blocchi */}
+        {domicile.at && (
+            <Typography variant="body2">
+                Domicilio presso: <Box component="span" sx={{ fontWeight: 'bold' }}>{domicile.at}</Box>
+            </Typography>
+        )}
+        {domicile.address && (
+            <Typography variant="body2">
+                Indirizzo: <Box component="span" sx={{ fontWeight: 'bold' }}>{domicile.address}</Box>
+            </Typography>
+        )}
+        {domicile.addressDetails && (
+            <Typography variant="body2">
+                Dettagli: <Box component="span" sx={{ fontWeight: 'bold' }}>{domicile.addressDetails}</Box>
+            </Typography>
+        )}
+        {domicile.zip && (
+            <Typography variant="body2">
+                CAP: <Box component="span" sx={{ fontWeight: 'bold' }}>{domicile.zip}</Box>
+            </Typography>
+        )}
+        {domicile.municipality && (
+            <Typography variant="body2">
+                Comune: <Box component="span" sx={{ fontWeight: 'bold' }}>{domicile.municipality}</Box>
+            </Typography>
+        )}
+        {domicile.province && (
+            <Typography variant="body2">
+                Provincia: <Box component="span" sx={{ fontWeight: 'bold' }}>{domicile.province}</Box>
+            </Typography>
+        )}
+        {domicile.foreignState && (
+            <Typography variant="body2">
+                Stato estero: <Box component="span" sx={{ fontWeight: 'bold' }}>{domicile.foreignState}</Box>
+            </Typography>
+        )}
+    </Box>
+);
 
-</>);
 
-const SendAnalogDomicile: React.FC<{ analogCost: any }> = ({ analogCost }) => (<>
-    {analogCost.analogCost && <Typography variant="body1">Costo del workflow analogico: {analogCost.analogCost}€</Typography>}
-    {analogCost.sendDate && <Typography variant="body1">Data di invio: {new Date(analogCost.sendDate).toLocaleDateString()}</Typography>}
-</>);
+const SendAnalogDomicile: React.FC<{ analogCost: any }> = ({ analogCost }) => {
+    // Dividiamo il valore intero in centesimi (es. 310) per 100 per ottenere i decimali reali (3.10)
+    const realCost = typeof analogCost.analogCost === 'number'
+        ? analogCost.analogCost / 100
+        : parseFloat(analogCost.analogCost) / 100;
+
+    // Formattiamo il numero in valuta italiana (es. 3.1 -> 3,10 €)
+    const formattedCost = !isNaN(realCost)
+        ? realCost.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })
+        : `${analogCost.analogCost} €`;
+    return (<>
+        {analogCost?.analogCost && (
+            <>
+                <Box component="span" >{formattedCost} </Box>
+            </>
+        )}
+        {analogCost?.numberOfPages && (
+            <>
+                - Numero Pagine: <Box component="span" >{analogCost.numberOfPages} Incluso AAR </Box>
+            </>
+        )}
+        {analogCost?.envelopeWeight && (
+            <>
+                - Peso: <Box component="span" >{analogCost.envelopeWeight} </Box>
+            </>
+        )}
+    </>
+    );
+};
 
 const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog }) => (
     <>
-        {sendAnalog?.responseStatus && <Typography variant="body1">Status risposta: {sendAnalog.responseStatus}</Typography>}
-        {sendAnalog?.registeredLetterCode && <Typography variant="body1">Raccomandata: {sendAnalog.registeredLetterCode}</Typography>}
+        {sendAnalog?.attachments && (
+            <Box component="span"> - Attachments: {sendAnalog.attachments.map((attachment, index) => (
+                <React.Fragment key={index}>
+                    <Box component="span">
+                        {attachment.documentType} -
+                    </Box>
+                    <Box component="span">
+                        {attachment.url} -
+                    </Box>
+                    <Box component="span">
+                        {formatEventDate(attachment.date)}
+                    </Box>
+                </React.Fragment>
+            ))}</Box>
+            </Box>
+        )}
     </>
 );
 
 const SendAnalogFeedbackDetails: React.FC<{ feedback: any }> = ({ feedback }) => (
     <>
-        {feedback?.responseStatus && <Typography variant="body1">Status risposta: {feedback.responseStatus}</Typography>}
+        {feedback?.responseStatus && <Box component="span">{feedback.responseStatus}</Box>}
     </>
 );
 
@@ -99,6 +203,7 @@ function parseAnalogElement(el: any) {
                 deliveryFailureCause: el.details.deliveryFailureCause,
                 responseStatus: el.details.responseStatus,
                 registeredLetterCode: el.details.registeredLetterCode,
+                attachments: el.details.attachments,
             }
             : null;
 
@@ -137,6 +242,8 @@ function parseAnalogElement(el: any) {
             ? {
                 analogCost: el.details.analogCost,
                 sendDate: el.details.sendDate,
+                numberOfPages: el.details.numberOfPages,
+                envelopeWeight: el.details.envelopeWeight,
             }
             : null;
 
@@ -150,40 +257,58 @@ function parseAnalogElement(el: any) {
 }
 
 
-const AnalogEvent: React.FC<AnalogEvent> = ({ accordionKey, analogEvents }) => (
-    <AccordionTimeline
-        keyValue={accordionKey}
-        accordionSummaryChild={<Typography variant="body1">Workflow Analogico ({analogEvents.length} eventi)</Typography>}
-        accordionDetailsChild={analogEvents.map((el: any, i: number) => {
-            const { eventDateFormatted, schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, prepareAnalogDomicileFailure, sendAnalogDomicile } = parseAnalogElement(el);
+const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
+    <Box sx={{ my: 1, display: "flex", flexDirection: "column", gap: 1 }}>
+        {analogEvents.map((el: any, i: number) => {
+            const {
+                eventDateFormatted,
+                schedulingDate,
+                sendAnalog,
+                sendAnalogFeedback,
+                physicalAddress,
+                prepareAnalogDomicile,
+                prepareAnalogDomicileFailure,
+                sendAnalogDomicile
+            } = parseAnalogElement(el);
 
             return (
-                <Accordion key={`analog-${i}`}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography variant="body1">
-                            {i + 1}: {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}
-                        </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Box component="div" display="flex" flexDirection="column" gap={1}>
-                            {eventDateFormatted && (
-                                <Typography variant="body1">
-                                    Data evento: {eventDateFormatted}
-                                </Typography>
-                            )}
-                            {schedulingDate && <Typography variant="body1">Schedulato il: {schedulingDate}</Typography>}
-                            {physicalAddress && <PhysicalAddress address={physicalAddress} />}
-                            {sendAnalog && <SendAnalogDetails sendAnalog={sendAnalog} />}
-                            {sendAnalogFeedback && <SendAnalogFeedbackDetails feedback={sendAnalogFeedback} />}
-                            {prepareAnalogDomicile && <PrepareAnalogDomicile domicile={prepareAnalogDomicile} />}
-                            {sendAnalogDomicile && <SendAnalogDomicile analogCost={sendAnalogDomicile} />}
-                        </Box>
-                    </AccordionDetails>
-                </Accordion>
+                <Typography key={`analog-${i}`} variant="body2" component="div">
+
+                    {eventDateFormatted && (
+                        <> - <Box component="span" >{eventDateFormatted}</Box>:</>
+                    )}
+                    <Box component="span" > {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}</Box>
+
+                    {/* Data schedulazione */}
+                    {schedulingDate && (
+                        <> - Schedulato il: <Box component="span" >{schedulingDate}</Box></>
+                    )}
+
+                    {/* Sub-componenti dei dettagli: 
+                        Avvolti in Box inline per accodarli sulla stessa riga di testo */}
+                    {physicalAddress && (
+                        <> - Indirizzo: <PhysicalAddress address={physicalAddress} /></>
+                    )}
+
+                    {sendAnalog && (
+                        <><Box component="span" sx={{ display: 'inline' }}><SendAnalogDetails sendAnalog={sendAnalog} /></Box></>
+                    )}
+
+                    {sendAnalogFeedback && (
+                        <> - Feedback: <Box component="span" sx={{ display: 'inline' }}><SendAnalogFeedbackDetails feedback={sendAnalogFeedback} /></Box></>
+                    )}
+
+                    {prepareAnalogDomicile && (
+                        <> - Domicilio: <Box component="span" sx={{ display: 'inline' }}><PrepareAnalogDomicile domicile={prepareAnalogDomicile} /></Box></>
+                    )}
+
+                    {sendAnalogDomicile && (
+                        <> - Costo: <Box component="span" sx={{ display: 'inline' }}><SendAnalogDomicile analogCost={sendAnalogDomicile} /></Box></>
+                    )}
+                </Typography>
             );
         })}
-        sxDetails={{ display: "flex", flexDirection: "column", gap: 2 }}
-    />
+    </Box>
 );
 
 export default AnalogEvent;
