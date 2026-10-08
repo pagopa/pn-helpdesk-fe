@@ -48,7 +48,7 @@ const LegalMessage: React.FC<Props> = ({ accordionKey, category, details, eventT
                     )}
                     {details?.deliveryDetailCode && (
                         <Typography variant="body1">
-                            Codice Dettaglio: {details.deliveryDetailCode} - {codiciStatusTimeline[details.deliveryDetailCode] || details.deliveryDetailCode}
+                            Codice Dettaglio: {details.deliveryDetailCode}{codiciStatusTimeline[details.deliveryDetailCode] ? ` - ${codiciStatusTimeline[details.deliveryDetailCode]}` : ''}
                         </Typography>
                     )}
                     {details?.responseStatus && (
