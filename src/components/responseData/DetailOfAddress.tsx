@@ -2,11 +2,13 @@ import React from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
 import { PhysicalAddress } from '../../model/notification';
+import { formatEventDate } from '../../helpers/utils';
 
 type Props = {
     normalizeAddress: PhysicalAddress | undefined;
     oldAddress: PhysicalAddress | undefined;
     accordionKey: string;
+    date: string;
 };
 
 const LABELS = [
@@ -20,7 +22,8 @@ const LABELS = [
     "Foreign State"
 ];
 
-const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accordionKey }) => {
+const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accordionKey, date }) => {
+    const dateFormatted = formatEventDate(date);
     const highlightDiff = (
         arrA: Array<string | null | undefined>,
         arrB: Array<string | null | undefined>
@@ -98,7 +101,7 @@ const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accord
 
     return (
         <AccordionTimeline keyValue={accordionKey}
-            accordionSummaryChild={<Typography component="span">Indirizzo normalizzato</Typography>}
+            accordionSummaryChild={<Typography variant="body2">{dateFormatted}: NORMALIZED_ADDRESS</Typography>}
             accordionDetailsChild={
                 // Ho cambiato Typography in Box per contenere correttamente i div ed evitare errori HTML in console
                 <Stack direction={'row'} justifyContent={'space-around'} spacing={4} sx={{ width: '100%' }}>
