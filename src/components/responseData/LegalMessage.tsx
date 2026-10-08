@@ -43,7 +43,11 @@ const LegalMessage: React.FC<Props> = ({ accordionKey, category, details, eventT
                                 Indirizzo: {details.digitalAddress.address}
                             </Typography>
                         </>
-
+                    )}
+                    {details?.digitalAddressSource && (
+                        <Typography variant="body1">
+                            Sorgente: {details.digitalAddressSource}
+                        </Typography>
                     )}
                     {details?.deliveryDetailCode && (
                         <Typography variant="body1">
