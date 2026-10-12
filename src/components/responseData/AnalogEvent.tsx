@@ -124,7 +124,6 @@ const SendAnalogDomicile: React.FC<{ analogCost: any }> = ({ analogCost }) => {
     const formattedCost = !isNaN(realCost)
         ? realCost.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' })
         : `${analogCost.analogCost} €`;
-    console.log(analogCost, 'analogCost >> ');
     return (<>
         {analogCost?.analogCost && (
             <>
@@ -149,16 +148,18 @@ const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog })
     <>
         {sendAnalog?.attachments && (
             <Box component="span"> - Attachments: {sendAnalog.attachments.map((attachment, index) => (
-                <>
-                    <Box key={index} component="span">
+                <React.Fragment key={index}>
+                    <Box component="span">
                         {attachment.documentType} -
                     </Box>
-                    <Box key={index} component="span">
-                        {attachment.url}
+                    <Box component="span">
+                        {attachment.url} -
                     </Box>
-                </>
-            ))}
-            </Box>
+                    <Box component="span">
+                        {formatEventDate(attachment.date)}
+                    </Box>
+                </React.Fragment>
+            ))}</Box>
         )}
     </>
 );
@@ -283,7 +284,7 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                     {/* Sub-componenti dei dettagli: 
                         Avvolti in Box inline per accodarli sulla stessa riga di testo */}
                     {physicalAddress && (
-                        <> - Indirizzo: <Box component="span" sx={{ display: 'inline' }}><PhysicalAddress address={physicalAddress} /></Box></>
+                        <> - Indirizzo: <PhysicalAddress address={physicalAddress} /></>
                     )}
 
                     {sendAnalog && (
