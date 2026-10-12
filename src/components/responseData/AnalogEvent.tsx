@@ -162,7 +162,6 @@ const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog })
                     </Box>
                 </React.Fragment>
             ))}</Box>
-            </Box>
         )}
     </>
 );
