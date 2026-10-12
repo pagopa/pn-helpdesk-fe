@@ -118,13 +118,21 @@ const NotificationData = () => {
     return (
         <Box sx={{ width: 'inherit' }}>
             <Stack direction={'row'}>
-                <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Creata: {sentAtNotification}</Typography>
-                <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Stato: {notificationStatus[statusOfNotification.toLocaleLowerCase()]}</Typography>
-                <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Numero protocollo: {protocolNumberOfNotification}</Typography>
+                <Typography sx={{ pr: 2, my: 2 }}>
+                    Creata: <Box component="span" sx={{ fontWeight: 'bold' }}>{sentAtNotification}</Box>
+                </Typography>
+                <Typography sx={{ pr: 2, my: 2 }}>
+                    Stato: <Box component="span" sx={{ fontWeight: 'bold' }}>{notificationStatus[statusOfNotification.toLocaleLowerCase()]}</Box>
+                </Typography>
+                <Typography sx={{ pr: 2, my: 2 }}>
+                    Numero protocollo: <Box component="span" sx={{ fontWeight: 'bold' }}>{protocolNumberOfNotification}</Box>
+                </Typography>
             </Stack>
 
             <Stack direction={'row'} justifyContent={'space-between'} sx={{ mb: 3 }}>
-                <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Soggetto: {subjectOfNotification}</Typography>
+                <Typography sx={{ pr: 2, my: 2 }}>
+                    Soggetto: <Box component="span" sx={{ fontWeight: 'bold' }}>{subjectOfNotification}</Box>
+                </Typography>
             </Stack>
 
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>Destinatari e Timeline:</Typography>
