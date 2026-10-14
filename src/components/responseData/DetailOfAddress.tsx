@@ -2,6 +2,7 @@ import React from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
 import { PhysicalAddress } from '../../model/notification';
+import { formatEventDate } from '../../helpers/utils';
 
 type Props = {
     normalizeAddress: PhysicalAddress | undefined;
@@ -110,7 +111,7 @@ const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accord
 
     return (
         <AccordionTimeline keyValue={accordionKey}
-            accordionSummaryChild={<Typography component="span">Indirizzo normalizzato</Typography>}
+            accordionSummaryChild={<Typography variant="body2">NORMALIZED_ADDRESS</Typography>}
             accordionDetailsChild={
                 <Stack direction={'row'} justifyContent={'space-around'} spacing={4} sx={{ width: '100%' }}>
                     <Box sx={{ flex: 1 }}>
