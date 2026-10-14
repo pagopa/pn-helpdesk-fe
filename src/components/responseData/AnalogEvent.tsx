@@ -280,31 +280,28 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                     )}
                     <Box component="span" > {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}</Box>
 
-                    {/* Data schedulazione */}
                     {schedulingDate && (
                         <> - Schedulato il: <Box component="span" >{schedulingDate}</Box></>
                     )}
 
-                    {/* Sub-componenti dei dettagli: 
-                        Avvolti in Box inline per accodarli sulla stessa riga di testo */}
                     {physicalAddress && (
                         <> - Indirizzo: <PhysicalAddress address={physicalAddress} /></>
                     )}
 
                     {sendAnalog && (
-                        <><Box component="span" sx={{ display: 'inline' }}><SendAnalogDetails sendAnalog={sendAnalog} /></Box></>
+                        <SendAnalogDetails sendAnalog={sendAnalog} />
                     )}
 
                     {sendAnalogFeedback && (
-                        <> - Feedback: <Box component="span" sx={{ display: 'inline' }}><SendAnalogFeedbackDetails feedback={sendAnalogFeedback} /></Box></>
+                        <> - Feedback: <SendAnalogFeedbackDetails feedback={sendAnalogFeedback} /></>
                     )}
 
                     {prepareAnalogDomicile && (
-                        <> - Domicilio: <Box component="span" sx={{ display: 'inline' }}><PrepareAnalogDomicile domicile={prepareAnalogDomicile} /></Box></>
+                        <> - Domicilio: <PrepareAnalogDomicile domicile={prepareAnalogDomicile} /></>
                     )}
 
                     {sendAnalogDomicile && (
-                        <> - Costo: <Box component="span" sx={{ display: 'inline' }}><SendAnalogDomicile analogCost={sendAnalogDomicile} /></Box></>
+                        <> - Costo: <SendAnalogDomicile analogCost={sendAnalogDomicile} /></>
                     )}
                 </Typography>
             );
