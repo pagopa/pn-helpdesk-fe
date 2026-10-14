@@ -41,7 +41,6 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                     recipient.timeline.map((el, idx) => {
                         const isAddress = el.elementId.includes('NORMALIZED_ADDRESS');
                         const isAnalog = el.elementId.includes('SCHEDULE_ANALOG_WORKFLOW');
-
                         const isCourtesyOnly = el.elementId.includes('SEND_COURTESY_MESSAGE');
 
                         const isLegalDigital = el.elementId.includes('SEND_DIGITAL') ||
@@ -56,7 +55,13 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
 
                         const isAppIo = el.details.digitalAddress?.type === "APPIO";
                         const ioResult = isAppIo ? `Risultato AppIo: ${el.details.ioSendMessageResult}` : undefined;
-
+                        let anprAddress;
+                        if (isAddress) {
+                            const anprEvent = recipient.timeline.find(event =>
+                                event.elementId.includes('SEND_ANALOG_DOMICILE') && event.elementId.includes('ATTEMPT_1')
+                            );
+                            anprAddress = anprEvent?.details?.physicalAddress;
+                        }
                         return (
                             <Box key={idx} sx={{ my: 1 }}>
                                 {isAddress && (
@@ -64,7 +69,7 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                                         accordionKey={el.elementId}
                                         oldAddress={el.details.oldAddress}
                                         normalizeAddress={el.details.normalizedAddress}
-                                        date={el.eventTimestamp}
+                                        anprAddress={anprAddress}
                                     />
                                 )}
 
@@ -119,13 +124,21 @@ const NotificationData = () => {
     return (
         <Box sx={{ width: 'inherit' }}>
             <Stack direction={'row'}>
-                <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Creata: {sentAtNotification}</Typography>
-                <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Stato: {notificationStatus[statusOfNotification.toLocaleLowerCase()]}</Typography>
-                <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Numero protocollo: {protocolNumberOfNotification}</Typography>
+                <Typography sx={{ pr: 2, my: 2 }}>
+                    Creata: <Box component="span" sx={{ fontWeight: 'bold' }}>{sentAtNotification}</Box>
+                </Typography>
+                <Typography sx={{ pr: 2, my: 2 }}>
+                    Stato: <Box component="span" sx={{ fontWeight: 'bold' }}>{notificationStatus[statusOfNotification.toLocaleLowerCase()]}</Box>
+                </Typography>
+                <Typography sx={{ pr: 2, my: 2 }}>
+                    Numero protocollo: <Box component="span" sx={{ fontWeight: 'bold' }}>{protocolNumberOfNotification}</Box>
+                </Typography>
             </Stack>
 
             <Stack direction={'row'} justifyContent={'space-between'} sx={{ mb: 3 }}>
-                <Typography sx={{ pr: 2, my: 2, fontWeight: 'bold' }}>Soggetto: {subjectOfNotification}</Typography>
+                <Typography sx={{ pr: 2, my: 2 }}>
+                    Soggetto: <Box component="span" sx={{ fontWeight: 'bold' }}>{subjectOfNotification}</Box>
+                </Typography>
             </Stack>
 
             <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>Destinatari e Timeline:</Typography>

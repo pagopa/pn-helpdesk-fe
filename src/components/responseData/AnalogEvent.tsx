@@ -74,8 +74,12 @@ function getSummaryText(sendAnalog: SendAnalog, sendAnalogFeedback: any, prepare
         const code = sendAnalog.deliveryDetailCode || sendAnalog.deliveryFailureCause;
         return code ? ` - ${code} - ${codiciStatusTimeline[code]}` : "";
     }
-    if (sendAnalogFeedback?.deliveryDetailCode) {
-        return `- ${sendAnalogFeedback.deliveryDetailCode} - ${codiciStatusTimeline[sendAnalogFeedback.deliveryDetailCode]}`;
+    if (sendAnalogFeedback?.deliveryDetailCode || sendAnalogFeedback?.deliveryFailureCause) {
+        const code = sendAnalogFeedback.deliveryDetailCode || sendAnalogFeedback.deliveryFailureCause;
+        const cause = sendAnalogFeedback.deliveryFailureCause && sendAnalogFeedback.deliveryDetailCode
+            ? ` - ${sendAnalogFeedback.deliveryFailureCause} - ${codiciStatusTimeline[sendAnalogFeedback.deliveryFailureCause] ?? sendAnalogFeedback.deliveryFailureCause}`
+            : "";
+        return `- ${code} - ${codiciStatusTimeline[code] ?? code}${cause}`;
     }
     if (prepareAnalogDomicileFailure) {
         return `- ${prepareAnalogDomicileFailure.failureCause} - ${codiciStatusTimeline[prepareAnalogDomicileFailure.failureCause]}`;
