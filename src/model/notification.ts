@@ -224,6 +224,19 @@ export const notificationStatus: Record<string, string> = {
 };
 
 export const codiciStatusTimeline: Record<string, string> = {
+    "C000": "COMUNICAZIONE CON SERVER PEC AVVENUTA (senza busta)",
+    "C001": "ACCETTAZIONE (con busta)",
+    "C002": "NON_ACCETTAZIONE (con busta)",
+    "C003": "AVVENUTA_CONSEGNA (con busta)",
+    "C004": "ERRORE_CONSEGNA (con busta)",
+    "C005": "PRESA_IN_CARICO (senza busta)",
+    "C006": "RILEVAZIONE_VIRUS (con busta)",
+    "C007": "PREAVVISO_ERRORE_CONSEGNA (senza busta)",
+    "C008": "ERRORE_COMUNICAZIONE_SERVER_PEC - con retry da parte di PN (senza busta)",
+    "C009": "ERRORE_DOMINIO_PEC_NON_VALIDO - senza retry: indica un dominio pec non valido; (senza busta)",
+    "C010": "ERROR_INVIO_PEC - con retry da parte di PN: indica un errore generico di invio pec (senza busta)",
+    "DP00": "Tentativo reinvio richiesto: codice interno a delivery push che indica una richiesta di ritentativo",
+    "DP10": "Scaduto timeout di invio a ext-channel, senza ottenere un evento di risposta OK/KO/RETRY_PROGRESS",
     "D00": "",
     "M01": "perché il destinatario è irreperibile",
     "M02": "perché il destinatario è deceduto",
