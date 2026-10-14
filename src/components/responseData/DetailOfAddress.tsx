@@ -7,6 +7,7 @@ type Props = {
     normalizeAddress: PhysicalAddress | undefined;
     oldAddress: PhysicalAddress | undefined;
     accordionKey: string;
+    anprAddress?: PhysicalAddress | undefined;
 };
 
 const LABELS = [
@@ -20,7 +21,7 @@ const LABELS = [
     "Foreign State"
 ];
 
-const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accordionKey }) => {
+const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accordionKey, anprAddress }) => {
     const highlightDiff = (
         arrA: Array<string | null | undefined>,
         arrB: Array<string | null | undefined>
@@ -96,11 +97,21 @@ const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accord
         normalizeAddress?.foreignState
     ] as Array<string | undefined>;
 
+    const anprAddressComplete = [
+        anprAddress?.at,
+        anprAddress?.address,
+        anprAddress?.addressDetails,
+        anprAddress?.municipality,
+        anprAddress?.municipalityDetails,
+        anprAddress?.zip,
+        anprAddress?.province,
+        anprAddress?.foreignState
+    ] as Array<string | undefined>;
+
     return (
         <AccordionTimeline keyValue={accordionKey}
             accordionSummaryChild={<Typography component="span">Indirizzo normalizzato</Typography>}
             accordionDetailsChild={
-                // Ho cambiato Typography in Box per contenere correttamente i div ed evitare errori HTML in console
                 <Stack direction={'row'} justifyContent={'space-around'} spacing={4} sx={{ width: '100%' }}>
                     <Box sx={{ flex: 1 }}>
                         <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 2 }}>
@@ -114,6 +125,12 @@ const DetailOfAddress: React.FC<Props> = ({ oldAddress, normalizeAddress, accord
                         </Typography>
                         {highlightDiff(normalizeAddressComplete, oldAddressComplete)}
                     </Box>
+                    {anprAddress && <Box sx={{ flex: 1 }}>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 2 }}>
+                            Secondo invio
+                        </Typography>
+                        {highlightDiff(anprAddressComplete, normalizeAddressComplete)}
+                    </Box>}
                 </Stack>
             }
         />
