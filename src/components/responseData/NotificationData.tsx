@@ -41,7 +41,6 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                     recipient.timeline.map((el, idx) => {
                         const isAddress = el.elementId.includes('NORMALIZED_ADDRESS');
                         const isAnalog = el.elementId.includes('SCHEDULE_ANALOG_WORKFLOW');
-
                         const isCourtesyOnly = el.elementId.includes('SEND_COURTESY_MESSAGE');
 
                         const isLegalDigital = el.elementId.includes('SEND_DIGITAL') ||
@@ -53,9 +52,14 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                         const sendDate = el.details.sendDate ? new Date(el.details.sendDate).toLocaleDateString() : "-";
 
                         const isAppIo = el.details.digitalAddress?.type === "APPIO";
-                        const ioResult = isAppIo ? el.details.ioSendMessageResult : undefined;
-
-
+                        const ioResult = isAppIo ? `Risultato AppIo: ${el.details.ioSendMessageResult}` : undefined;
+                        let anprAddress;
+                        if (isAddress) {
+                            const anprEvent = recipient.timeline.find(event =>
+                                event.elementId.includes('SEND_ANALOG_DOMICILE') && event.elementId.includes('ATTEMPT_1')
+                            );
+                            anprAddress = anprEvent?.details?.physicalAddress;
+                        }
                         return (
                             <Box key={idx}>
                                 {isAddress && (
@@ -63,6 +67,7 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                                         accordionKey={el.elementId}
                                         oldAddress={el.details.oldAddress}
                                         normalizeAddress={el.details.normalizedAddress}
+                                        anprAddress={anprAddress}
                                     />
                                 )}
 
