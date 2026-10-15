@@ -47,11 +47,9 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                             el.elementId.includes('DIGITAL_PROG') ||
                             el.elementId.includes('DIGITAL_DELIVERY_CREATION_REQUEST');
 
-                        const courtesyDetails = isCourtesyOnly ? [
-                            `Canale: ${el.details.digitalAddress?.type || "-"}`,
-                            `Destinazione: ${el.details.digitalAddress?.address || "-"}`,
-                            `Data Invio: ${el.details.sendDate ? new Date(el.details.sendDate).toLocaleDateString() : "-"}`
-                        ] : [];
+                        const channel = el.details.digitalAddress?.type || "-";
+                        const destination = el.details.digitalAddress?.address || "-";
+                        const sendDate = el.details.sendDate ? new Date(el.details.sendDate).toLocaleDateString() : "-";
 
                         const isAppIo = el.details.digitalAddress?.type === "APPIO";
                         const ioResult = isAppIo ? `Risultato AppIo: ${el.details.ioSendMessageResult}` : undefined;
@@ -63,7 +61,7 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                             anprAddress = anprEvent?.details?.physicalAddress;
                         }
                         return (
-                            <Box key={idx} sx={{ my: 1 }}>
+                            <Box key={idx}>
                                 {isAddress && (
                                     <DetailOfAddress
                                         accordionKey={el.elementId}
@@ -75,8 +73,9 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
 
                                 {isCourtesyOnly && (
                                     <CourtesyMessage
-                                        accordionKey={el.elementId}
-                                        sendCourtesyMessage={courtesyDetails}
+                                        channel={channel}
+                                        destination={destination}
+                                        sendDate={sendDate}
                                         ioResult={ioResult}
                                         numberOfSendCourtesyMessage={courtesyCount}
                                     />

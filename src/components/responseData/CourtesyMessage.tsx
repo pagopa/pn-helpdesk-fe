@@ -1,30 +1,32 @@
-import { Typography } from '@mui/material';
 import React from 'react';
-import AccordionTimeline from '../accordionData/AccordionTimeline';
+import { Box, Typography } from '@mui/material';
 
-type Props = {
-    sendCourtesyMessage: Array<string>;
+type CourtesyMessageProps = {
+    channel: string;
+    destination: string;
+    sendDate: string;
     ioResult?: string;
     numberOfSendCourtesyMessage: number;
-    accordionKey: string;
-
 };
 
-const CourtesyMessage: React.FC<Props> = ({ accordionKey, sendCourtesyMessage, ioResult, numberOfSendCourtesyMessage }) => (
-    <AccordionTimeline keyValue={accordionKey}
-        accordionSummaryChild={<Typography component="span">Messaggio di cortesia</Typography>}
-        accordionDetailsChild={<>
-            <Typography variant="body1">
-                Numero di messaggi di cortesia: {numberOfSendCourtesyMessage}
-            </Typography>
-            {sendCourtesyMessage.map((el, idx) =>
-                <Typography key={idx} variant="body1">
-                    {el}
-                </Typography>)}
-            <Typography variant='body1'>{ioResult}</Typography>
-        </>
-        }
-    ></AccordionTimeline>
+const CourtesyMessage: React.FC<CourtesyMessageProps> = ({
+    channel,
+    destination,
+    sendDate,
+    ioResult,
+    numberOfSendCourtesyMessage
+}) => (
+    <Box sx={{ my: 1 }}>
+        <Typography variant="body2" component="div">
+            Messaggi di cortesia: <Box component="span" sx={{ fontWeight: 'bold' }}>{numberOfSendCourtesyMessage}</Box> -
+            Canale: <Box component="span" sx={{ fontWeight: 'bold' }}>{channel}</Box> -
+            Destinazione: <Box component="span" sx={{ fontWeight: 'bold' }}>{destination}</Box> -
+            Data Invio: <Box component="span" sx={{ fontWeight: 'bold' }}>{sendDate}</Box>
+            {ioResult && (
+                <> - Risultato AppIo: <Box component="span" sx={{ fontWeight: 'bold' }}>{ioResult}</Box></>
+            )}
+        </Typography>
+    </Box>
 );
 
 export default CourtesyMessage;
