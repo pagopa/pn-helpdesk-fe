@@ -1,7 +1,6 @@
 import { Typography, Box } from '@mui/material';
 import React from 'react';
 import { formatEventDate } from '../../helpers/utils';
-import { codiciStatusTimeline } from '../../model/notification';
 
 type Props = {
     accordionKey: string; // Mantenuto per compatibilità di firma se necessario, ma non usato
