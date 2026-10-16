@@ -1,4 +1,4 @@
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Tooltip } from '@mui/material';
 import React from 'react';
 
 import { codiciStatusTimeline } from '../../model/notification';
@@ -188,10 +188,26 @@ function getSummaryText(sendAnalog: SendAnalog, sendAnalogFeedback: any, prepare
     return "";
 }
 
+const parseEventDates = (el: any) => {
+    const primary = formatEventDate(el.timestamp);
+    const ingestion = new Date(el.ingestionTimestamp).toLocaleString('it-IT', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+
+    return {
+        eventDateFormatted: primary,
+        ingestionTimeStamp: el.timestamp !== el.ingestionTimestamp ? ingestion : null
+    };
+};
+
 
 function parseAnalogElement(el: any) {
-    const eventDateFormatted = formatEventDate(el.eventTimestamp || el.timestamp || el.details?.eventTimestamp);
-
+    const { eventDateFormatted, ingestionTimeStamp } = parseEventDates(el);
     const schedulingDate =
         el.elementId.includes("SCHEDULE_ANALOG_WORKFLOW") && el.details?.schedulingDate
             ? new Date(el.details.schedulingDate).toLocaleDateString()
@@ -254,7 +270,7 @@ function parseAnalogElement(el: any) {
             ? el.details?.physicalAddress
             : null;
 
-    return { eventDateFormatted, schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, prepareAnalogDomicileFailure, sendAnalogDomicile };
+    return { eventDateFormatted, ingestionTimeStamp, schedulingDate, sendAnalog, sendAnalogFeedback, physicalAddress, prepareAnalogDomicile, prepareAnalogDomicileFailure, sendAnalogDomicile };
 }
 
 
@@ -269,15 +285,20 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                 physicalAddress,
                 prepareAnalogDomicile,
                 prepareAnalogDomicileFailure,
-                sendAnalogDomicile
+                sendAnalogDomicile,
+                ingestionTimeStamp
             } = parseAnalogElement(el);
 
             return (
                 <Typography key={`analog-${i}`} variant="body2" component="div">
 
-                    {eventDateFormatted && (
-                        <> - <Box component="span" >{eventDateFormatted}</Box>:</>
-                    )}
+
+                    <Tooltip title={ingestionTimeStamp && "ingestionTimeStamp: " + ingestionTimeStamp}>
+                        <Box component="span">
+                            {eventDateFormatted}:
+                        </Box>
+                    </Tooltip>
+
                     <Box component="span" > {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}</Box>
 
                     {schedulingDate && (
