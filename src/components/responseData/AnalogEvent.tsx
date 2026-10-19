@@ -278,14 +278,14 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                         display: 'flex',
                         alignItems: 'flex-start',
                     }}>
-                        <Box component="div" sx={{ whiteSpace: 'nowrap' }} >
+                        <Box component="div" sx={{ whiteSpace: 'nowrap', mr: 0.5 }} >
                             {eventDateFormatted && (
-                                <Box component="span" >{eventDateFormatted}: </Box>
+                                <Box component="span" >{eventDateFormatted}:</Box>
                             )}
                         </Box>
 
                         <Box component="div">
-                            <Box component="span" > {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}</Box>
+                            <Box component="span" >{el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}</Box>
 
                             {schedulingDate && (
                                 <> - Schedulato il: <Box component="span" >{schedulingDate}</Box></>

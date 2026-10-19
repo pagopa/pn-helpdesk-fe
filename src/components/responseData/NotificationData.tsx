@@ -52,7 +52,7 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                         const sendDate = el.details.sendDate ? formatEventDate(el.details.sendDate) : "-";
 
                         const isAppIo = el.details.digitalAddress?.type === "APPIO";
-                        const ioResult = isAppIo ? `Risultato AppIo: ${el.details.ioSendMessageResult}` : undefined;
+                        const ioResult = isAppIo ? `${el.details.ioSendMessageResult}` : undefined;
                         let anprAddress;
                         if (isAddress) {
                             const anprEvent = recipient.timeline.find(event =>
