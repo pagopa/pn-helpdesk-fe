@@ -95,7 +95,7 @@ export interface TimelineDetails {
     deliveryMode?: string;
     contactPhase?: string;
     sentAttemptMade?: number;
-    sendDate?: string | number | Date;
+    sendDate?: string;
     digitalAddress?: { type: string; address: string };
     schedulingAnalogDate?: string;
     schedulingDate?: string;
