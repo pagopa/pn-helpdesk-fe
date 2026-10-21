@@ -3,10 +3,10 @@ import { Box, Stack, Typography, Accordion, AccordionSummary, AccordionDetails, 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { responseNotificationData } from "../../redux/responseSlice";
 import { notificationStatus, TimelineElement, RecipientWithTimeline } from "../../model/notification";
+import { formatEventDate } from "../../helpers/utils";
 import AnalogEvent from "./AnalogEvent";
 import CourtesyMessage from "./CourtesyMessage";
 import LegalMessage from "./LegalMessage";
-
 import DetailOfAddress from "./DetailOfAddress";
 import NotificationReport from "./NotificationReport";
 
@@ -49,10 +49,10 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
 
                         const channel = el.details.digitalAddress?.type || "-";
                         const destination = el.details.digitalAddress?.address || "-";
-                        const sendDate = el.details.sendDate ? new Date(el.details.sendDate).toLocaleDateString() : "-";
+                        const sendDate = el.details.sendDate ? formatEventDate(el.details.sendDate) : "-";
 
                         const isAppIo = el.details.digitalAddress?.type === "APPIO";
-                        const ioResult = isAppIo ? `Risultato AppIo: ${el.details.ioSendMessageResult}` : undefined;
+                        const ioResult = isAppIo ? `${el.details.ioSendMessageResult}` : undefined;
                         let anprAddress;
                         if (isAddress) {
                             const anprEvent = recipient.timeline.find(event =>

@@ -36,7 +36,7 @@ type AnalogAttachment = {
 };
 
 const PhysicalAddress: React.FC<{ address: any }> = ({ address }) => (
-    <Box sx={{ mt: 0.5, pl: 2 }}> {/* Un leggero rientro a sinistra isola visivamente l'indirizzo */}
+    <Box sx={{ mt: 0.5 }}>
         {address.fullname && (
             <Typography variant="body2">
                 Nome: <Box component="span" sx={{ fontWeight: 'bold' }}>{address.fullname}</Box>
@@ -76,7 +76,7 @@ const PhysicalAddress: React.FC<{ address: any }> = ({ address }) => (
 );
 
 const PrepareAnalogDomicile: React.FC<{ domicile: any }> = ({ domicile }) => (
-    <Box sx={{ mt: 0.5, pl: 2 }}> {/* Rientro a sinistra per uniformità visiva con gli altri blocchi */}
+    <Box sx={{ mt: 0.5, }}>
         {domicile.at && (
             <Typography variant="body2">
                 Domicilio presso: <Box component="span" sx={{ fontWeight: 'bold' }}>{domicile.at}</Box>
@@ -291,39 +291,51 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
 
             return (
                 <Typography key={`analog-${i}`} variant="body2" component="div">
-
-
-                    <Tooltip title={ingestionTimeStamp && "ingestionTimeStamp: " + ingestionTimeStamp}>
-                        <Box component="span">
-                            {eventDateFormatted}:
+                    <Box sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                    }}>
+                        <Box component="div" sx={{ whiteSpace: 'nowrap', mr: 0.5 }} >
+                            {eventDateFormatted && (
+                                <Box component="span" >{eventDateFormatted}:</Box>
+                            )}
                         </Box>
-                    </Tooltip>
 
-                    <Box component="span" > {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}</Box>
 
-                    {schedulingDate && (
-                        <> - Schedulato il: <Box component="span" >{schedulingDate}</Box></>
-                    )}
+                        <Tooltip title={ingestionTimeStamp && "ingestionTimeStamp: " + ingestionTimeStamp}>
+                            <Box component="span">
+                                {eventDateFormatted}:
+                            </Box>
+                        </Tooltip>
 
-                    {physicalAddress && (
-                        <> - Indirizzo: <PhysicalAddress address={physicalAddress} /></>
-                    )}
+                        <Box component="span" > {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}</Box>
+                        <Box>
+                            {schedulingDate && (
+                                <> - Schedulato il: <Box component="span" >{schedulingDate}</Box></>
+                            )}
 
-                    {sendAnalog && (
-                        <SendAnalogDetails sendAnalog={sendAnalog} />
-                    )}
+                            {physicalAddress && (
+                                <> - Indirizzo: <PhysicalAddress address={physicalAddress} /></>
+                            )}
 
-                    {sendAnalogFeedback && (
-                        <> - Feedback: <SendAnalogFeedbackDetails feedback={sendAnalogFeedback} /></>
-                    )}
+                            {sendAnalog && (
+                                <SendAnalogDetails sendAnalog={sendAnalog} />
+                            )}
 
-                    {prepareAnalogDomicile && (
-                        <> - Domicilio: <PrepareAnalogDomicile domicile={prepareAnalogDomicile} /></>
-                    )}
+                            {sendAnalogFeedback && (
+                                <> - Feedback: <SendAnalogFeedbackDetails feedback={sendAnalogFeedback} /></>
+                            )}
 
-                    {sendAnalogDomicile && (
-                        <> - Costo: <SendAnalogDomicile analogCost={sendAnalogDomicile} /></>
-                    )}
+                            {prepareAnalogDomicile && (
+                                <> - Domicilio: <PrepareAnalogDomicile domicile={prepareAnalogDomicile} /></>
+                            )}
+
+                            {sendAnalogDomicile && (
+                                <> - Costo: <SendAnalogDomicile analogCost={sendAnalogDomicile} /></>
+                            )}
+                        </Box>
+
+                    </Box>
                 </Typography>
             );
         })}

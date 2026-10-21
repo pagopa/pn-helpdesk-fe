@@ -16,14 +16,14 @@ const CourtesyMessage: React.FC<CourtesyMessageProps> = ({
     ioResult,
     numberOfSendCourtesyMessage
 }) => (
-    <Box sx={{ my: 1 }}>
+    <Box sx={{ my: 1, ml: 2 }}>
         <Typography variant="body2" component="div">
-            Messaggi di cortesia: <Box component="span" sx={{ fontWeight: 'bold' }}>{numberOfSendCourtesyMessage}</Box> -
-            Canale: <Box component="span" sx={{ fontWeight: 'bold' }}>{channel}</Box> -
-            Destinazione: <Box component="span" sx={{ fontWeight: 'bold' }}>{destination}</Box> -
-            Data Invio: <Box component="span" sx={{ fontWeight: 'bold' }}>{sendDate}</Box>
+            - <Box component="span" >{sendDate}: </Box>
+            SEND_COURTESY_MESSAGE: <Box component="span" >{numberOfSendCourtesyMessage} </Box>
+            Canale: <Box component="span" >{channel} </Box>
+            Destinazione: <Box component="span" >{destination} </Box>
             {ioResult && (
-                <> - Risultato AppIo: <Box component="span" sx={{ fontWeight: 'bold' }}>{ioResult}</Box></>
+                <>  Risultato AppIo: <Box component="span" sx={{ fontWeight: 'bold' }}> {ioResult}</Box></>
             )}
         </Typography>
     </Box>

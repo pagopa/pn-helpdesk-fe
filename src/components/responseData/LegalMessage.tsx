@@ -18,32 +18,32 @@ const LegalMessage: React.FC<Props> = ({ category, details, eventTimestamp }) =>
             <Typography variant="body2" component="div">
 
                 {eventDateFormatted && (
-                    <> - <Box component="span" >{eventDateFormatted} </Box></>
+                    <> - <Box component="span" >{eventDateFormatted}: </Box></>
                 )}
 
-                - <Box component="span" >{category}</Box>
+                <Box component="span" >{category}</Box>
 
                 {details?.digitalAddress?.type && (
-                    <> - <Box component="span" >{details.digitalAddress.type}</Box></>
+                    <>  <Box component="span" >{details.digitalAddress.type}</Box></>
                 )}
                 {details?.digitalAddress?.address && (
-                    <> - <Box component="span" >{details.digitalAddress.address}</Box></>
+                    <>  <Box component="span" >{details.digitalAddress.address}</Box></>
                 )}
 
                 {details?.deliveryDetailCode && (
-                    <> - <Box component="span" >{details.deliveryDetailCode}</Box></>
+                    <>  <Box component="span" >{details.deliveryDetailCode}</Box></>
                 )}
 
                 {details?.responseStatus && (
-                    <> - <Box component="span" >{details.responseStatus}</Box></>
+                    <>  <Box component="span" >{details.responseStatus}</Box></>
                 )}
 
                 {details?.endWorkflowStatus && (
-                    <> - <Box component="span" >{details.endWorkflowStatus}</Box></>
+                    <>  <Box component="span" >{details.endWorkflowStatus}</Box></>
                 )}
 
                 {details?.deliveryFailureCause && (
-                    <> - <Box component="span" >{details.deliveryFailureCause}</Box></>
+                    <>  <Box component="span" >{details.deliveryFailureCause}</Box></>
                 )}
             </Typography>
         </Box>
