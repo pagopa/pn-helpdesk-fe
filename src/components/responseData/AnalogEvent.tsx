@@ -147,8 +147,8 @@ const SendAnalogDomicile: React.FC<{ analogCost: any }> = ({ analogCost }) => {
 const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog }) => (
     <>
         {sendAnalog?.attachments && (
-            <Box component="span"> - Attachments: {sendAnalog.attachments.map((attachment, index) => (
-                <React.Fragment key={index}>
+            <> - Attachments: {sendAnalog.attachments.map((attachment) => (
+                <>
                     <Box component="span">
                         {attachment.documentType} -
                     </Box>
@@ -158,8 +158,8 @@ const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog })
                     <Box component="span">
                         {formatEventDate(attachment.date)}
                     </Box>
-                </React.Fragment>
-            ))}</Box>
+                </>
+            ))}</>
         )}
     </>
 );
@@ -295,27 +295,21 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                         display: 'flex',
                         alignItems: 'flex-start',
                     }}>
-                        <Box component="div" sx={{ whiteSpace: 'nowrap', mr: 0.5 }} >
-                            {eventDateFormatted && (
-                                <Box component="span" >{eventDateFormatted}:</Box>
-                            )}
-                        </Box>
-
 
                         <Tooltip title={ingestionTimeStamp && "ingestionTimeStamp: " + ingestionTimeStamp}>
-                            <Box component="span">
+                            <Box component="span" sx={{ whiteSpace: 'nowrap', mr: 0.5 }}>
                                 {eventDateFormatted}:
                             </Box>
                         </Tooltip>
 
-                        <Box component="span" > {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}</Box>
-                        <Box>
+                        <Box component="span" > {el.category} {getSummaryText(sendAnalog, sendAnalogFeedback, prepareAnalogDomicileFailure)}
+
                             {schedulingDate && (
-                                <> - Schedulato il: <Box component="span" >{schedulingDate}</Box></>
+                                <Box component="span" >{schedulingDate}</Box>
                             )}
 
                             {physicalAddress && (
-                                <> - Indirizzo: <PhysicalAddress address={physicalAddress} /></>
+                                <PhysicalAddress address={physicalAddress} />
                             )}
 
                             {sendAnalog && (
@@ -323,15 +317,15 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                             )}
 
                             {sendAnalogFeedback && (
-                                <> - Feedback: <SendAnalogFeedbackDetails feedback={sendAnalogFeedback} /></>
+                                <SendAnalogFeedbackDetails feedback={sendAnalogFeedback} />
                             )}
 
                             {prepareAnalogDomicile && (
-                                <> - Domicilio: <PrepareAnalogDomicile domicile={prepareAnalogDomicile} /></>
+                                <PrepareAnalogDomicile domicile={prepareAnalogDomicile} />
                             )}
 
                             {sendAnalogDomicile && (
-                                <> - Costo: <SendAnalogDomicile analogCost={sendAnalogDomicile} /></>
+                                <SendAnalogDomicile analogCost={sendAnalogDomicile} />
                             )}
                         </Box>
 
