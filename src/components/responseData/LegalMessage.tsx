@@ -24,26 +24,26 @@ const LegalMessage: React.FC<Props> = ({ category, details, eventTimestamp }) =>
                 <Box component="span" >{category}</Box>
 
                 {details?.digitalAddress?.type && (
-                    <>  <Box component="span" >{details.digitalAddress.type}</Box></>
+                    <> - Canale: <Box component="span" >{details.digitalAddress.type}</Box></>
                 )}
                 {details?.digitalAddress?.address && (
-                    <>  <Box component="span" >{details.digitalAddress.address}</Box></>
+                    <>: <Box component="span" >{details.digitalAddress.address}</Box></>
                 )}
 
                 {details?.deliveryDetailCode && (
-                    <>  <Box component="span" >{details.deliveryDetailCode}</Box></>
+                    <> - <Box component="span" >{details.deliveryDetailCode}</Box></>
                 )}
 
                 {details?.responseStatus && (
-                    <>  <Box component="span" >{details.responseStatus}</Box></>
+                    <> -Response: <Box component="span" >{details.responseStatus}</Box></>
                 )}
 
                 {details?.endWorkflowStatus && (
-                    <>  <Box component="span" >{details.endWorkflowStatus}</Box></>
+                    <> - <Box component="span" >{details.endWorkflowStatus}</Box></>
                 )}
 
                 {details?.deliveryFailureCause && (
-                    <>  <Box component="span" >{details.deliveryFailureCause}</Box></>
+                    <> - <Box component="span" >{details.deliveryFailureCause}</Box></>
                 )}
             </Typography>
         </Box>
