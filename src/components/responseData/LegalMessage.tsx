@@ -29,6 +29,9 @@ const LegalMessage: React.FC<Props> = ({ category, details, eventTimestamp }) =>
                 {details?.digitalAddress?.address && (
                     <>: <Box component="span" >{details.digitalAddress.address}</Box></>
                 )}
+                {details?.digitalAddressSource && (
+                    <> - <Box component="span" >{details.digitalAddressSource}</Box></>
+                )}
 
                 {details?.deliveryDetailCode && (
                     <> - <Box component="span" >{details.deliveryDetailCode}</Box></>
