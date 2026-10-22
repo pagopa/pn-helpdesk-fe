@@ -294,6 +294,7 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                     <Box sx={{
                         display: 'flex',
                         alignItems: 'flex-start',
+                        ml: 2
                     }}>
 
                         <Tooltip title={ingestionTimeStamp && "ingestionTimeStamp: " + ingestionTimeStamp}>
