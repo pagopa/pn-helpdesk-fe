@@ -9,6 +9,7 @@ import CourtesyMessage from "./CourtesyMessage";
 import LegalMessage from "./LegalMessage";
 import DetailOfAddress from "./DetailOfAddress";
 import NotificationReport from "./NotificationReport";
+import GenericEvent from "./GenericEvent";
 
 const getCourtesyCount = (timeline: Array<TimelineElement>) =>
     timeline.filter((el) => el.elementId.includes('SEND_COURTESY_MESSAGE')).length;
@@ -25,10 +26,15 @@ const getAnalogEvents = (timeline: Array<TimelineElement>) =>
         el.elementId.includes("ANALOG_FAILURE_WORKFLOW")
     );
 
+const getGenericEvents = (timeline: Array<TimelineElement>) =>
+    timeline.filter((el) =>
+        el.elementId.includes("SCHEDULE_REFINEMENT")
+    );
+
 const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rIdx: number }) => {
     const courtesyCount = getCourtesyCount(recipient.timeline);
     const analogEvents = getAnalogEvents(recipient.timeline);
-
+    const genericEvents = getGenericEvents(recipient.timeline);
     return (
         <Accordion sx={{ mb: 2, border: '1px solid #ccc', borderRadius: '4px' }} defaultExpanded>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -42,7 +48,7 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                         const isAddress = el.elementId.includes('NORMALIZED_ADDRESS');
                         const isAnalog = el.elementId.includes('SCHEDULE_ANALOG_WORKFLOW');
                         const isCourtesyOnly = el.elementId.includes('SEND_COURTESY_MESSAGE');
-
+                        const isGeneric = el.elementId.includes('SCHEDULE_REFINEMENT');
                         const isLegalDigital = el.elementId.includes('SEND_DIGITAL') ||
                             el.elementId.includes('DIGITAL_PROG') ||
                             el.elementId.includes('DIGITAL_DELIVERY_CREATION_REQUEST');
@@ -94,6 +100,11 @@ const RecipientSection = ({ recipient }: { recipient: RecipientWithTimeline; rId
                                     <AnalogEvent
                                         accordionKey={el.elementId}
                                         analogEvents={analogEvents}
+                                    />
+                                )}
+                                {isGeneric && (
+                                    <GenericEvent
+                                        events={genericEvents}
                                     />
                                 )}
                             </Box>

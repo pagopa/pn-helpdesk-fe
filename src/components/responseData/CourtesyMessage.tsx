@@ -16,7 +16,7 @@ const CourtesyMessage: React.FC<CourtesyMessageProps> = ({
     ioResult,
     numberOfSendCourtesyMessage
 }) => (
-    <Box sx={{ my: 1, ml: 2 }}>
+    <Box sx={{ ml: 2 }}>
         <Typography variant="body2" component="div">
             - <Box component="span" >{sendDate}: </Box>
             SEND_COURTESY_MESSAGE: <Box component="span" >{numberOfSendCourtesyMessage} </Box>
