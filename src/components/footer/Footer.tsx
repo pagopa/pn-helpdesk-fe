@@ -1,7 +1,7 @@
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import { Container } from '@mui/material';
-
+import { Container, Typography } from '@mui/material';
+import packageJson from '../../../package.json';
 /**
  * General component presenting the footer of the app.
  */
@@ -17,7 +17,11 @@ const Footer = () => (
             paddingLeft: '0px',
           },
         }}
-      ></Toolbar>
+      >
+        <Typography variant="body2" color="white">
+          Version: {packageJson.version}
+        </Typography>
+      </Toolbar>
     </Container>
   </AppBar>
 );
