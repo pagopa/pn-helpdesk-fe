@@ -35,12 +35,17 @@ export interface PagoPa {
 export interface Payment {
     pagoPa?: PagoPa;
 }
+interface DigitalDomicile {
+    type: string;
+    address: string;
+}
 
 export interface Recipient {
     recipientType: 'PF' | 'PG';
     taxId: string;
     denomination: string;
     physicalAddress: PhysicalAddress;
+    digitalDomicile?: DigitalDomicile;
     payments?: Array<Payment>;
     timeline: Array<TimelineElement>;
 }
