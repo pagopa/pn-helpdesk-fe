@@ -317,7 +317,6 @@ export const codiciStatusTimeline: Record<string, string> = {
     "RECRN006": "Furto/Smarrimento/deterioramento",
     "RECRN013": "Non Rendicontabile",
     "RECRN015": "Causa Forza Maggiore",
-
     "RECAG001A": "Consegnato - pre-esito",
     "RECAG001B": "Consegnato - In Dematerializzazione",
     "RECAG001C": "Consegnato - Fascicolo Chiuso",

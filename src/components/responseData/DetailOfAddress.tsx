@@ -2,7 +2,6 @@ import React from 'react';
 import { Stack, Typography, Box } from '@mui/material';
 import AccordionTimeline from '../accordionData/AccordionTimeline';
 import { PhysicalAddress } from '../../model/notification';
-import { formatEventDate } from '../../helpers/utils';
 
 type Props = {
     normalizeAddress: PhysicalAddress | undefined;
