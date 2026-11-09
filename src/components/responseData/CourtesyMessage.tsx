@@ -16,9 +16,9 @@ const CourtesyMessage: React.FC<CourtesyMessageProps> = ({
     ioResult,
     numberOfSendCourtesyMessage
 }) => (
-    <Box sx={{ my: 1, ml: 2 }}>
+    <Box sx={{ my: 1 }}>
         <Typography variant="body2" component="div">
-            - <Box component="span" >{sendDate}: </Box>
+            <Box component="span" >{sendDate}: </Box>
             SEND_COURTESY_MESSAGE: <Box component="span" >{numberOfSendCourtesyMessage} </Box>
             Canale: <Box component="span" >{channel} </Box>
             Destinazione: <Box component="span" >{destination} </Box>
