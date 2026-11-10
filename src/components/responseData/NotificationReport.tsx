@@ -76,12 +76,15 @@ function formatRecipientLines(recipient: Recipient, data: NotificationDataModel)
         addr.province,
         addr.foreignState,
     ].filter(Boolean).join(", ");
+    const digitalDomicile = recipient.digitalDomicile?.address ? recipient.digitalDomicile.address : null;
 
     return [
         `- ${recipient.denomination} (${recipient.taxId})`,
         ...(addrParts ? [`- Indirizzo: ${addrParts}`] : []),
+        ...(digitalDomicile ? [`- Domicilio digitale: ${digitalDomicile}`] : []),
         ...formatPaymentLines(recipient, data),
     ];
+
 }
 
 function formatDocumentLines(documents: NotificationDataModel["documents"]): Array<string> {
