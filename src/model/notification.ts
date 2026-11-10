@@ -348,7 +348,7 @@ export const codiciStatusTimeline: Record<string, string> = {
     "RECAG012": "Accettazione 23L",
     "RECAG013": "Non Rendicontabile",
     "RECAG015": "Causa Forza Maggiore",
-
+    "RECAG012A": "Distacco della 23L dal plico - pre esito",
     "RECRI002": "Ingresso nel paese estero",
     "RECRI003A": "Consegnato - pre-esito",
     "RECRI003B": "Consegnato - In Dematerializzazione",
@@ -357,7 +357,8 @@ export const codiciStatusTimeline: Record<string, string> = {
     "RECRI004B": "Non Consegnato - In Dematerializzazione",
     "RECRI004C": "Non Consegnato - Fascicolo Chiuso",
     "RECRI005": "Furto/Smarrimento/deterioramento",
-
+    "PNRN012": "Decorsi i 10gg dal rilascio avviso di giacenza in buchetta",
+    "PNAG012": "Perfezionamento giudiziario della notifica (deprecato)",
     "RECRSI001": "Avviato all'estero",
     "RECRSI002": "Ingresso nel paese estero",
     "RECRSI003C": "Consegnato - Fascicolo Chiuso",
