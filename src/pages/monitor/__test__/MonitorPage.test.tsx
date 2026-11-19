@@ -2,7 +2,8 @@
  * @jest-environment jsdom
  */
 
-import { act, RenderResult, screen, waitFor } from '@testing-library/react';
+import { RenderResult, screen, waitFor } from '@testing-library/react';
+import { act } from 'react';
 import 'regenerator-runtime/runtime';
 import userEvent from '@testing-library/user-event';
 import MonitorPage from '../MonitorPage';

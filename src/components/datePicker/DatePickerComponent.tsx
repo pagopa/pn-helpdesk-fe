@@ -1,8 +1,7 @@
-import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { format } from 'date-fns';
+import { format, isValid, parse } from 'date-fns';
 import { FieldsProps } from '../formFields/FormFields';
 
 /**
@@ -16,7 +15,7 @@ type Props = {
   /**
    * value of the field if there is any
    */
-  value: string;
+  value: string | Date;
   /**
    * function handling the change of the field
    */
@@ -33,18 +32,29 @@ type Props = {
  */
 const DatePickerComponent = (props: Props) => {
   const field = props.field;
+  const dateFormat = field.format || 'yyyy-MM-dd';
+  const pickerValue =
+    props.value instanceof Date
+      ? props.value
+      : props.value
+      ? parse(props.value, dateFormat, new Date())
+      : null;
 
   /**
    * handle change of the date field
-   * @param e the selected date
+   * @param date the selected date
    */
-  const handleChange = (e: any) => {
+  const handleChange = (date: Date | null) => {
+    if (!date || !isValid(date)) {
+      return;
+    }
+
     const value =
       field.name !== 'referenceMonth'
         ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          format(e, field.format!)
+        format(date, dateFormat)
         : format(
-            new Date(new Date(new Date(e).setUTCDate(1)).setHours(0, 0, 0, 0)),
+            new Date(new Date(new Date(date).setUTCDate(1)).setHours(0, 0, 0, 0)),
             "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
           );
     props.onChange(value);
@@ -56,15 +66,17 @@ const DatePickerComponent = (props: Props) => {
         views={field.view}
         key={field.label}
         label={field.label}
-        value={props.value}
-        onChange={(e) => handleChange(e)}
+        value={pickerValue && isValid(pickerValue) ? pickerValue : null}
+        onChange={handleChange}
         disableFuture
         onClose={props.onBlur}
-        inputFormat={field.format}
-        mask={'__-__-____'}
-        renderInput={(params) => (
-          <TextField {...params} onBlur={props.onBlur} required={field.required} />
-        )}
+        format={dateFormat}
+        slotProps={{
+          textField: {
+            onBlur: props.onBlur,
+            required: field.required,
+          },
+        }}
       />
     </LocalizationProvider>
   );

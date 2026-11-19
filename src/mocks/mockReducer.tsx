@@ -15,7 +15,7 @@ import { UserContext } from '../contexts/UserContext';
 import { NotificationDataModel } from '../model/notification';
 
 function reducer(ui: any, { ...renderOptions }: any = {}) {
-  function Wrapper({ children }: any) {
+  function Wrapper({ children }: PropsWithChildren) {
     const mockStore = configureMockStore([]);
     const store = mockStore({
       accordion: {

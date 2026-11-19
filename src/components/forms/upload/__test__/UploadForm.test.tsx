@@ -1,6 +1,6 @@
 import { screen, render, fireEvent, act, waitFor } from '@testing-library/react';
 import React from 'react';
-import * as input from '@pagopa/mui-italia/dist/components/SingleFileInput/utils';
+import * as input from '@pagopa/mui-italia/components/SingleFileInput/utils';
 import { UploadBox } from '../UploadForm';
 import { UPLOAD_STATUS_ENUM } from '../../../../model';
 import * as reactRedux from '../../../../redux/hook';

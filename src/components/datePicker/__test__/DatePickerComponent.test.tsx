@@ -19,6 +19,8 @@ const field: FieldsProps = {
   required: false,
 };
 
+const november2022 = new Date(2022, 10, 1);
+
 describe('DatePickerComponent', () => {
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
@@ -38,7 +40,12 @@ describe('DatePickerComponent', () => {
 
   it('renders date picker component with value', () => {
     reducer(
-      <DatePickerComponent field={field} value="2022-11" onChange={jest.fn()} onBlur={jest.fn()} />
+      <DatePickerComponent
+        field={field}
+        value={november2022}
+        onChange={jest.fn()}
+        onBlur={jest.fn()}
+      />
     );
     const input = screen.getByRole('textbox', {
       name: 'Mese',
