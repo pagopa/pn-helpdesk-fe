@@ -1,5 +1,5 @@
 import { Card, Grid, Stack, Typography } from '@mui/material';
-import SingleFileInput from '@pagopa/mui-italia/components/SingleFileInput/SingleFileInput';
+import { SingleFileInput } from '@pagopa/mui-italia';
 import { useEffect, useState } from 'react';
 import { calcSha256String } from '../../../helpers/utils';
 import { UPLOAD_STATUS_ENUM } from '../../../model';
