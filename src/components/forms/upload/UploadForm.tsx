@@ -1,5 +1,5 @@
 import { Card, Grid, Stack, Typography } from '@mui/material';
-import SingleFileInput from '@pagopa/mui-italia/dist/components/SingleFileInput/SingleFileInput';
+import { SingleFileInput } from '@pagopa/mui-italia';
 import { useEffect, useState } from 'react';
 import { calcSha256String } from '../../../helpers/utils';
 import { UPLOAD_STATUS_ENUM } from '../../../model';
@@ -97,6 +97,7 @@ export function UploadBox() {
               onFileSelected={handleSelect}
               onFileRemoved={handleRemove}
               dropzoneLabel="Trascinare e rilasciare un file .xlsx o fare click per selezionarne uno"
+              dropzoneButton="Seleziona file"
               rejectedLabel="Tipo di file non supportato"
             />
           </Grid>

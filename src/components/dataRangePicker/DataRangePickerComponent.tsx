@@ -55,30 +55,28 @@ const DateRangePickerComponent = (props: Props) => {
             onChange={(e) => handleChange(e, index)}
             onClose={props.onBlur}
             disableFuture={props.field.disableFuture}
-            inputFormat={props.field.format || 'dd-MM-yyyy'}
-            mask={'__-__-____'}
+            format={props.field.format || 'dd-MM-yyyy'}
             maxDate={
               props.field.name === 'monthInterval' && props.field.maxDate
                 ? new Date(props.field.maxDate)
                 : undefined
             }
-            renderInput={(params) => (
-              <>
-                <TextField
-                  {...params}
-                  onKeyDown={(e) => e.preventDefault()}
-                  onBlur={props.onBlur}
-                  required={props.required}
-                  error={!!props.error}
-                  fullWidth
-                />
-                <FormHelperText error>{props.error ? props.error.message : ' '}</FormHelperText>
-              </>
-            )}
+            slotProps={{
+              textField: {
+                onKeyDown: (event) => event.preventDefault(),
+                onBlur: props.onBlur,
+                required: props.required,
+                error: !!props.error,
+                fullWidth: true,
+                helperText: props.error ? props.error.message : ' ',
+              },
+            }}
+
           />
         </Grid>
-      ))}
-    </Grid>
+      ))
+      }
+    </Grid >
   );
 };
 

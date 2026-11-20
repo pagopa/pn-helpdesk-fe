@@ -1,6 +1,13 @@
 /**
  * @jest-environment jsdom
  */
+jest.doMock('@pagopa/mui-italia/assets', () => ({
+  __esModule: true,
+  MonogramPagoPACompany: () => {
+    const React = require('react');
+    return React.createElement('img', { alt: 'PagoPA (Monogram)' });
+  },
+}));
 import 'regenerator-runtime/runtime';
 import '@testing-library/jest-dom/extend-expect';
 import { screen, cleanup, waitForElementToBeRemoved } from '@testing-library/react';

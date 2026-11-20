@@ -19,6 +19,8 @@ const field: FieldsProps = {
   required: false,
 };
 
+const november2022 = new Date(2022, 10, 1);
+
 describe('DatePickerComponent', () => {
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
@@ -38,7 +40,12 @@ describe('DatePickerComponent', () => {
 
   it('renders date picker component with value', () => {
     reducer(
-      <DatePickerComponent field={field} value="2022-11" onChange={jest.fn()} onBlur={jest.fn()} />
+      <DatePickerComponent
+        field={field}
+        value={november2022}
+        onChange={jest.fn()}
+        onBlur={jest.fn()}
+      />
     );
     const input = screen.getByRole('textbox', {
       name: 'Mese',
@@ -48,10 +55,13 @@ describe('DatePickerComponent', () => {
   });
 
   it('test changing value', async () => {
-    const handleChange = jest.fn();
+    let emittedValue = '';
+    const handleChange = jest.fn((value: string) => {
+      emittedValue = value;
+    });
     const handleBlur = jest.fn();
 
-    reducer(
+    const rendered = reducer(
       <DatePickerComponent
         field={field}
         value={'2022-09'}
@@ -68,5 +78,17 @@ describe('DatePickerComponent', () => {
     });
     expect(input).toHaveValue('2022-11');
     expect(handleChange).toHaveBeenCalled();
+    expect(emittedValue).toBe('2022-11-01T00:00:00.000Z');
+
+    rendered.rerender(
+      <DatePickerComponent
+        field={field}
+        value={emittedValue}
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
+    );
+
+    expect(await screen.findByRole('textbox', { name: 'Mese' })).toHaveValue('2022-11');
   });
 });
