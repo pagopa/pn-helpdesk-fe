@@ -1,7 +1,7 @@
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { format, isValid, parse } from 'date-fns';
+import { format, isValid, parseISO, parse } from 'date-fns';
 import { FieldsProps } from '../formFields/FormFields';
 
 /**
@@ -33,12 +33,17 @@ type Props = {
 const DatePickerComponent = (props: Props) => {
   const field = props.field;
   const dateFormat = field.format || 'yyyy-MM-dd';
-  const pickerValue =
-    props.value instanceof Date
-      ? props.value
-      : props.value
-      ? parse(props.value, dateFormat, new Date())
-      : null;
+
+  const toDate = (value: string | Date) => {
+    if (!value) return null;
+    if (value instanceof Date) return value;
+    const iso = parseISO(value);
+    if (isValid(iso)) return iso;
+    const parsed = parse(value, dateFormat, new Date());
+    return isValid(parsed) ? parsed : null;
+  };
+
+  const pickerValue = toDate(props.value);
 
   /**
    * handle change of the date field
@@ -53,10 +58,7 @@ const DatePickerComponent = (props: Props) => {
       field.name !== 'referenceMonth'
         ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         format(date, dateFormat)
-        : format(
-            new Date(new Date(new Date(date).setUTCDate(1)).setHours(0, 0, 0, 0)),
-            "yyyy-MM-dd'T'HH:mm:ss.sss'Z'"
-          );
+        : new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1)).toISOString();
     props.onChange(value);
   };
 
