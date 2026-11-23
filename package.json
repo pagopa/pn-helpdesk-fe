@@ -61,6 +61,7 @@
     "test": "vitest",
     "generate:api": "npx @openapitools/openapi-generator-cli generate",
     "dev": "yarn generate:api && vite",
+    "test:coverage": "vitest --watchAll=false --ci --coverage --testResultsProcessor=jest-sonar-reporter",
     "eject": "vite eject",
     "sonar": "node sonarqube-scanner.js",
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
