@@ -48,7 +48,7 @@ const columns = [
     minWidth: 100,
     sortable: false,
     disableColumnMenu: true,
-    id:'functionality'
+    id: 'functionality'
   },
   {
     field: 'state',
@@ -58,7 +58,7 @@ const columns = [
       params.row.state ? <CheckCircleIcon color="success" /> : <CancelIcon color={'error'} />,
     flex: 1,
     minWidth: 100,
-    id:'state'
+    id: 'state'
   },
   {
     field: 'data',
@@ -72,7 +72,7 @@ const columns = [
     hide: false,
     renderCell: (params: any) =>
       params.row.data ? format(new Date(params.row.data.substring(0, 16)), 'dd-MM-yyyy HH:mm') : '',
-    id:'data'
+    id: 'data'
   },
   {
     field: 'actions',
@@ -86,19 +86,36 @@ const columns = [
     hide: false,
     getActions: (params: any) =>
       params.row.state
-        ? [<GridActionsCellItem label="Inserire KO" showInMenu key={params.row.id} />]
-        : [<GridActionsCellItem label="Inserire OK" showInMenu key={params.row.id} />],
-    id:'actions'
+        ? [
+          // @ts-expect-error incompatibilità @types/react con MUI GridActionsCellItem
+          <GridActionsCellItem label="Inserire KO" showInMenu key={params.row.id} />,
+        ]
+        : [
+          // @ts-expect-error incompatibilità @types/react con MUI GridActionsCellItem
+          <GridActionsCellItem label="Inserire OK" showInMenu key={params.row.id} />,
+        ],
+    id: 'actions'
 
   },
 ];
 
 describe('DataGridComponent', () => {
-  afterEach(cleanup);
+  let getComputedStyleSpy: jest.SpyInstance;
 
-  beforeEach(() => {
-    jest.spyOn(React, 'useEffect').mockImplementation(() => jest.fn());
+  beforeAll(() => {
+    getComputedStyleSpy = jest.spyOn(window, 'getComputedStyle').mockImplementation((element) =>
+    ({
+      position: 'relative',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+    } as CSSStyleDeclaration)
+    );
   });
+
+  afterAll(() => getComputedStyleSpy.mockRestore());
+  afterEach(cleanup);
 
   it('render DataGridComponent with 4 columns and 4 rows', async () => {
     await act(async () => {

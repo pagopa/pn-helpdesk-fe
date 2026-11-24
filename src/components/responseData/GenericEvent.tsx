@@ -25,7 +25,7 @@ const GenericEvent: React.FC<Props> = ({ events }) => (
                         ml: 2
                     }}>
                         <Box component="span" sx={{ whiteSpace: 'nowrap', mr: 0.5 }}>
-                            - {eventTimestamp}:
+                            {eventTimestamp}:
                         </Box>
 
 

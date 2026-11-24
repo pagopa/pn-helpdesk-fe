@@ -11,8 +11,8 @@ class Http {
         return this.instance != null ? this.instance : createAxiosInstance(API_ENDPOINT_BFHD);
     }
 
-    getNotificationInfo<T = any, R = AxiosResponse<T>>(payload: getNotificationsVisualizationLogsType): Promise<R> {
-        return this.http.post<T, R>('/logs/v1/notifications/info', payload);
+    getNotificationInfo<T = any>(payload: getNotificationsVisualizationLogsType): Promise<AxiosResponse<T>> {
+        return this.http.post<T>('/logs/v1/notifications/info', payload);
     }
 }
 export const bfhdClient = new Http();
