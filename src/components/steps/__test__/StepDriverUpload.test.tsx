@@ -4,6 +4,7 @@ import React from 'react';
 import { UPLOAD_STATUS_ENUM } from '../../../model';
 import * as reactRedux from '../../../redux/hook';
 import { StepDriverUpload } from '../StepDriverUpload';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const initialUploadAndDownloadState = {
   download: {
@@ -20,14 +21,14 @@ const initialUploadAndDownloadState = {
 };
 
 describe('StepDriverUploadTest', function () {
-  const mockDispatchFn = jest.fn();
-  const mockNavigateFn = jest.fn();
+  const mockDispatchFn = vi.fn();
+  const mockNavigateFn = vi.fn();
 
-  const spyUseSelector = jest.spyOn(reactRedux, 'useAppSelector');
+  const spyUseSelector = vi.spyOn(reactRedux, 'useAppSelector');
 
   beforeEach(() => {
-    const spyUseDispatch = jest.spyOn(reactRedux, 'useAppDispatch');
-    const spyUseRouter = jest.spyOn(router, 'useNavigate');
+    const spyUseDispatch = vi.spyOn(reactRedux, 'useAppDispatch');
+    const spyUseRouter = vi.spyOn(router, 'useNavigate');
     spyUseRouter.mockReturnValue(mockNavigateFn);
     spyUseDispatch.mockReturnValue(mockDispatchFn);
     changeStore(initialUploadAndDownloadState);
@@ -91,8 +92,8 @@ describe('StepDriverUploadTest', function () {
         retry: 1000,
       },
     });
-    jest.useFakeTimers();
-    jest.spyOn(global, 'setTimeout');
+    vi.useFakeTimers();
+    vi.spyOn(global, 'setTimeout');
     render(<StepDriverUpload tenderCode={'1234'} />);
 
     expect(setTimeout).toHaveBeenCalledTimes(1);
@@ -187,10 +188,10 @@ const errorExcelColumn = {
   ],
 };
 
-jest.mock('../../forms/download/DownloadForm', () => ({
+vi.mock('../../forms/download/DownloadForm', () => ({
   DownloadBox: () => <div data-testid="download-box-mock" />,
 }));
 
-jest.mock('../../forms/upload/UploadForm', () => ({
+vi.mock('../../forms/upload/UploadForm', () => ({
   UploadBox: () => <div data-testid="upload-box-mock" />,
 }));

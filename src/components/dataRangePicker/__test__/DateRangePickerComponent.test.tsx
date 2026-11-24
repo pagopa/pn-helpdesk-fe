@@ -1,11 +1,12 @@
 /**
- * @jest-environment jsdom
+ * @vi-environment jsdom
  */
 import { CalendarPickerView } from '@mui/lab';
 import { fireEvent, screen } from '@testing-library/react';
 import 'regenerator-runtime/runtime';
 import { reducer } from '../../../mocks/mockReducer';
 import DateRangePickerComponent from '../DataRangePickerComponent';
+import { vi, type Mock } from 'vitest';
 
 /**
  * @typedef {Object} DatePicker
@@ -55,11 +56,11 @@ describe('DateRangePickerComponent', () => {
       value: (query: string) => ({
         media: query,
         matches: query === '(pointer: fine)',
-        onchange: () => {},
-        addEventListener: () => {},
-        removeEventListener: () => {},
-        addListener: () => {},
-        removeListener: () => {},
+        onchange: () => { },
+        addEventListener: () => { },
+        removeEventListener: () => { },
+        addListener: () => { },
+        removeListener: () => { },
         dispatchEvent: () => false,
       }),
     });
@@ -70,9 +71,9 @@ describe('DateRangePickerComponent', () => {
       <DateRangePickerComponent
         field={fieldProps}
         datePickers={datePickers}
-        onChange={jest.fn()}
+        onChange={vi.fn()}
         required={true}
-        onBlur={jest.fn()}
+        onBlur={vi.fn()}
       />
     );
     const inputs = await screen.findAllByRole('textbox');
@@ -93,14 +94,14 @@ describe('DateRangePickerComponent', () => {
   });
 
   it('test changing dal value', async () => {
-    const mockChangeFn = jest.fn();
+    const mockChangeFn = vi.fn();
     reducer(
       <DateRangePickerComponent
         field={fieldProps}
         datePickers={datePickers}
         onChange={mockChangeFn}
         required={true}
-        onBlur={jest.fn()}
+        onBlur={vi.fn()}
       />
     );
 
@@ -115,14 +116,14 @@ describe('DateRangePickerComponent', () => {
   });
 
   it('test changing al value', async () => {
-    const mockChangeFn = jest.fn();
+    const mockChangeFn = vi.fn();
     reducer(
       <DateRangePickerComponent
         field={fieldProps}
         datePickers={datePickers}
         onChange={mockChangeFn}
         required={true}
-        onBlur={jest.fn()}
+        onBlur={vi.fn()}
       />
     );
 

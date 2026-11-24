@@ -5,6 +5,7 @@ import * as reactRedux from '../../../redux/hook';
 import { CostsTable } from '../CostsTable';
 import { reducer } from '../../../mocks/mockReducer';
 import { CostDTO, InternationalZoneEnum, ProductTypeEnumDto } from '../../../api/paperChannel';
+import { vi, type Mock } from 'vitest';
 
 const costsTable = {
   costs: {
@@ -53,8 +54,8 @@ const costsTable = {
   error: false,
 };
 describe('Costs Table Test', () => {
-  const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
+  const useSelectorMock = vi.spyOn(reactRedux, 'useAppSelector');
+  const useDispatchMock = vi.spyOn(reactRedux, 'useAppDispatch');
 
   const mockingStore = (state: any) => {
     useSelectorMock.mockReturnValue(state);
@@ -63,7 +64,7 @@ describe('Costs Table Test', () => {
     mockingDispatch(updatedStore);
   };
   const mockingDispatch = (updatedStore: any) => {
-    const mockDispatch = jest.fn();
+    const mockDispatch = vi.fn();
     useDispatchMock.mockReturnValue(mockDispatch);
     updatedStore.dispatch = mockDispatch;
   };

@@ -4,14 +4,15 @@ import { Auth, Amplify } from 'aws-amplify';
 import { Permission, UserData } from '../../model/user-permission';
 import { getConfiguration } from '../../services/configuration.service';
 import { useAuth, CUSTOM_PERMISSION_KEY, initAmplify } from '../auth';
+import { vi } from 'vitest';
 
-jest.mock('../aws-exports', () => ({
+vi.mock('../aws-exports', () => ({
   __esModule: true,
   default: { aws_project_region: 'eu-south-1' },
 }));
 
-jest.mock('aws-amplify', () => ({
-  ...jest.requireActual('aws-amplify'),
+vi.mock('aws-amplify', () => ({
+  ...vi.importActual('aws-amplify'),
   Auth: {
     currentSession: () =>
       Promise.resolve({
@@ -68,7 +69,7 @@ describe('auth hook', () => {
   });
 
   it('getUserData function - federated login (Google)', async () => {
-    jest.spyOn(Auth, 'currentSession').mockResolvedValueOnce({
+    vi.spyOn(Auth, 'currentSession').mockResolvedValueOnce({
       getIdToken: () => ({
         getJwtToken: () => 'mock-id-token-federated',
         decodePayload: () => ({
@@ -82,7 +83,7 @@ describe('auth hook', () => {
     } as any);
 
     mockParsedUserData = null as UserData | null;
-    
+
     await act(async () => render(<FakeApp />));
 
     expect(mockParsedUserData).toBeTruthy();
@@ -96,7 +97,7 @@ describe('auth hook', () => {
   });
 
   it('loginWithSSO calls Auth.federatedSignIn with configured provider', async () => {
-    const mockFederatedSignIn = jest.fn().mockResolvedValue({});
+    const mockFederatedSignIn = vi.fn().mockResolvedValue({});
     (Auth as any).federatedSignIn = mockFederatedSignIn;
 
     function FakeSSOApp() {

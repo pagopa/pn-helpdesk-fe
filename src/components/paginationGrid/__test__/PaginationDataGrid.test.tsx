@@ -4,11 +4,12 @@ import { reducer } from '../../../mocks/mockReducer';
 import { PaginationDataGrid } from '../PaginationDataGrid';
 import { ModelType } from '../index';
 import { Page, Tender, TenderStatusEnum } from '../../../model';
+import { Mocked, vi, type Mock } from 'vitest';
 
 describe('PaginationDataGridTest', () => {
-  const setOnClickItemMock = jest.fn();
-  const setOnPageChangeMock = jest.fn();
-  const setOnPageSizeChangeMock = jest.fn();
+  const setOnClickItemMock = vi.fn();
+  const setOnPageChangeMock = vi.fn();
+  const setOnPageSizeChangeMock = vi.fn();
   const tender = {
     loading: false,
     allData: {} as Page<Tender>,

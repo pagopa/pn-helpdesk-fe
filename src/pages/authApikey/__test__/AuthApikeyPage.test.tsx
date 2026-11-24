@@ -4,6 +4,7 @@ import apiRequests from '../../../api/apiRequests';
 import AuthApikeyPage from '../AuthApikeyPage';
 import { api_key, search_pa } from '../../../api/mock_agg_response';
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const DEFAULT_LIMIT = 10;
 
@@ -14,14 +15,14 @@ describe('AuthApikeyPage tests', () => {
 
   beforeEach(() => {
     // mock api
-    const apiSpySearchPa = jest.spyOn(apiRequests, 'searchPa');
+    const apiSpySearchPa = vi.spyOn(apiRequests, 'searchPa');
     apiSpySearchPa.mockImplementation((params) => {
       const { lastEvaluatedId, limit, paName } = params;
       const res = search_pa(limit!, lastEvaluatedId!, paName);
       return Promise.resolve(res);
     });
 
-    const apiSpySearchApiKey = jest.spyOn(apiRequests, 'searchApiKey');
+    const apiSpySearchApiKey = vi.spyOn(apiRequests, 'searchApiKey');
     apiSpySearchApiKey.mockImplementation(() => {
       const res = api_key;
       return Promise.resolve(res);
@@ -29,9 +30,9 @@ describe('AuthApikeyPage tests', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
     result = undefined;
   });
 

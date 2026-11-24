@@ -9,6 +9,7 @@ import { AxiosHeaders, AxiosResponse } from 'axios';
 import { CreateMalfunctionDialog } from '../CreateMalfunctionDialog';
 import { FunctionalityName } from '../../../model/monitor';
 import apiRequests from '../../../api/apiRequests';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const mockStore = configureStore([thunk]);
 
@@ -21,8 +22,8 @@ const server = setupServer(
 );
 
 // Mock date picker
-jest.mock('@mui/x-date-pickers', () => ({
-  ...jest.requireActual('@mui/x-date-pickers'),
+vi.mock('@mui/x-date-pickers', () => ({
+  ...vi.importActual('@mui/x-date-pickers'),
   DateTimePicker: ({ label, value, onChange }: any) => (
     <input
       data-testid="mock-date-picker"
@@ -34,14 +35,14 @@ jest.mock('@mui/x-date-pickers', () => ({
 }));
 
 // Mock API
-jest.mock('../../../api/apiRequests', () => ({
+vi.mock('../../../api/apiRequests', () => ({
   __esModule: true,
   default: {
-    createEvent: jest.fn(),
+    createEvent: vi.fn(),
   },
 }));
 
-const mockedApi = apiRequests as jest.Mocked<typeof apiRequests>;
+const mockedApi = apiRequests as Mocked<typeof apiRequests>;
 const mockedResponse: AxiosResponse<void> = {
   data: undefined,
   status: 200,
@@ -52,9 +53,9 @@ const mockedResponse: AxiosResponse<void> = {
 
 // Props e store
 const defaultProps = {
-  refreshStatus: jest.fn(),
-  setIsModalOpen: jest.fn(),
-  updateSnackbar: jest.fn<void, [AxiosResponse | undefined]>(),
+  refreshStatus: vi.fn(),
+  setIsModalOpen: vi.fn(),
+  updateSnackbar: vi.fn<(response?: AxiosResponse) => void>(),
   isModalOpen: true,
   modalPayload: {
     functionality: 'NOTIFICATION_CREATE' as FunctionalityName,

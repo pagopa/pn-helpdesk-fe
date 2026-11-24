@@ -2,7 +2,6 @@
  * @jest-environment jsdom
  */
 import 'regenerator-runtime/runtime';
-import '@testing-library/jest-dom/extend-expect';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ChangePasswordForm from '../ChangePasswordForm';

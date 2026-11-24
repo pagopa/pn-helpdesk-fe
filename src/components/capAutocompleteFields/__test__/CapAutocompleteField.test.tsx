@@ -5,14 +5,15 @@ import { CapAutocompleteField } from '../CapAutocompleteField';
 import * as apis from '../../../api/paperChannelApi';
 import { errorMessages } from '../../../helpers/messagesConstants';
 import { regex } from '../../../helpers/validations';
+import { vi, type Mock } from 'vitest';
 
 const responseDTO = {
   content: [{ cap: '1000' }, { cap: '1001' }, { cap: '1002' }, { cap: '1003' }],
 };
 
 describe('Cap Autocomplete Test', () => {
-  const apiSpyCap = jest.spyOn(apis, 'retrieveCaps');
-  const mockApiCap = jest.fn();
+  const apiSpyCap = vi.spyOn(apis, 'retrieveCaps');
+  const mockApiCap = vi.fn();
 
   afterEach(cleanup);
   beforeEach(() => {
@@ -28,7 +29,7 @@ describe('Cap Autocomplete Test', () => {
           value={[]}
           required={true}
           error={false}
-          onChange={() => {}}
+          onChange={() => { }}
         />
       );
     });
@@ -55,7 +56,7 @@ describe('Cap Autocomplete Test', () => {
           value={[]}
           required={true}
           error={false}
-          onChange={() => {}}
+          onChange={() => { }}
         />
       );
     });
@@ -81,7 +82,7 @@ describe('Cap Autocomplete Test', () => {
           value={[]}
           required={true}
           error={false}
-          onChange={() => {}}
+          onChange={() => { }}
         />
       );
     });
@@ -105,7 +106,7 @@ describe('Cap Autocomplete Test', () => {
           value={[]}
           required={true}
           error={false}
-          onChange={() => {}}
+          onChange={() => { }}
         />
       );
     });

@@ -1,13 +1,14 @@
 import { render, fireEvent, RenderResult } from '@testing-library/react';
 import { search_pa } from '../../../api/mock_agg_response';
 import PaListWithRemoval from '../PaListWithRemoval';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const DEFAULT_LIMIT = 5;
 describe('PaListWithRemoval tests', () => {
   let result: RenderResult | undefined;
   const mockedData = search_pa(DEFAULT_LIMIT, '', '').items;
 
-  const onClick = jest.fn();
+  const onClick = vi.fn();
 
   beforeEach(() => {
     result = render(<PaListWithRemoval items={mockedData} onClick={onClick} />);

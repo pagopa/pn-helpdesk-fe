@@ -4,6 +4,7 @@ import { TenderTable } from '../TenderTable';
 import { reducer } from '../../../mocks/mockReducer';
 import * as reactRedux from '../../../redux/hook';
 import { Page, Tender, TenderStatusEnum } from '../../../model';
+import { vi, type Mock } from 'vitest';
 
 const tenderStore = {
   loading: false,
@@ -28,9 +29,9 @@ const tenderStore = {
 };
 
 describe('TenderTableTest', () => {
-  const useSelectorSpy = jest.spyOn(reactRedux, 'useAppSelector');
-  const useDispatchSpy = jest.spyOn(reactRedux, 'useAppDispatch');
-  const mockDispatch = jest.fn();
+  const useSelectorSpy = vi.spyOn(reactRedux, 'useAppSelector');
+  const useDispatchSpy = vi.spyOn(reactRedux, 'useAppDispatch');
+  const mockDispatch = vi.fn();
 
   const mockingStore = (state: any) => {
     const reduxStore = {

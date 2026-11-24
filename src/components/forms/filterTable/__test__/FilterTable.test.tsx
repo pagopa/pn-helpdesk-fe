@@ -2,9 +2,10 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { reducer } from '../../../../mocks/mockReducer';
 import { FieldsProperties } from '../../../formFields/FormFields';
 import FilterTable from '../FilterTable';
+import { Mocked, vi, type Mock } from 'vitest';
 
 describe('FilterTable tests', () => {
-  const mockSubmitFn = jest.fn();
+  const mockSubmitFn = vi.fn();
   const fields = [FieldsProperties['Nome aggregazione']];
 
   beforeEach(async () => {
@@ -12,9 +13,9 @@ describe('FilterTable tests', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   const getButtons = () => {

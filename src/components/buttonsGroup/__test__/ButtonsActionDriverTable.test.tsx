@@ -5,6 +5,7 @@ import * as hookPaperChannel from '../../../hooks/usePaperChannel';
 import { ButtonsActionDriverTable, ButtonShowCosts } from '../ButtonsActionDriverTable';
 import { DeliveryDriver } from '../../../model';
 import * as hookPermission from '../../../hooks/useHasPermissions';
+import { vi, type Mock } from 'vitest';
 
 const driver: DeliveryDriver = {
   businessName: '',
@@ -20,11 +21,11 @@ const driver: DeliveryDriver = {
 };
 
 describe('ButtonActionsDriverTable Test', () => {
-  let mockDispatchFn: jest.Mock;
-  let mockDeleteFn: jest.Mock;
+  let mockDispatchFn: Mock;
+  let mockDeleteFn: Mock;
 
   const setHasPermission = (value: boolean = true) => {
-    const spyUsePermission = jest.spyOn(hookPermission, 'useHasPermissions');
+    const spyUsePermission = vi.spyOn(hookPermission, 'useHasPermissions');
     spyUsePermission.mockReturnValue(value);
   };
 
@@ -36,9 +37,9 @@ describe('ButtonActionsDriverTable Test', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('Button rendered', async () => {
@@ -99,7 +100,7 @@ describe('ButtonActionsDriverTable Test', () => {
 });
 
 describe('ButtonShowCosts Driver test', () => {
-  let mockDispatchFn: jest.Mock;
+  let mockDispatchFn: Mock;
 
   beforeEach(async () => {
     const scenario = await doPrepareTestScenario();
@@ -107,9 +108,9 @@ describe('ButtonShowCosts Driver test', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('Test in document', () => {
@@ -139,22 +140,22 @@ describe('ButtonShowCosts Driver test', () => {
 
 type TestScenario = {
   result?: RenderResult;
-  mockDispatchFn: jest.Mock;
-  mockDeleteFn: jest.Mock;
+  mockDispatchFn: Mock;
+  mockDeleteFn: Mock;
 };
 
 async function doPrepareTestScenario(): Promise<TestScenario> {
-  const mockDispatchFn = jest.fn(() => ({
+  const mockDispatchFn = vi.fn(() => ({
     then: () => Promise.resolve(),
   }));
 
-  const mockDeleteFn = jest.fn();
+  const mockDeleteFn = vi.fn();
 
   // mock dispatch
-  const useDispatchSpy = jest.spyOn(hook, 'useAppDispatch');
+  const useDispatchSpy = vi.spyOn(hook, 'useAppDispatch');
   useDispatchSpy.mockReturnValue(mockDispatchFn as any);
 
-  const mockUsePaperChannelHook = jest.spyOn(hookPaperChannel, 'usePaperChannel');
+  const mockUsePaperChannelHook = vi.spyOn(hookPaperChannel, 'usePaperChannel');
   mockUsePaperChannelHook.mockReturnValue({
     deleteCost(): Promise<void> {
       return Promise.resolve(undefined);

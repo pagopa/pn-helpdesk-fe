@@ -1,4 +1,5 @@
-const scanner = require('sonarqube-scanner').default;
+import scannerModule from 'sonarqube-scanner';
+const scanner = scannerModule.default || scannerModule;
 
 const options = {
   'sonar.organization': 'pagopa',

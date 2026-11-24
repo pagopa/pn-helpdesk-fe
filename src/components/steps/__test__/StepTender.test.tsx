@@ -7,6 +7,7 @@ import * as reactRedux from '../../../redux/hook';
 import { StepTender } from '../StepTender';
 import * as paperChannelApi from '../../../api/paperChannelApi';
 import { TenderDTOStatusEnum } from '../../../api/paperChannel';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const initialState = {
   activeKey: 1,
@@ -47,18 +48,18 @@ const validatedTenderDetailResponseDTO = {
   },
 };
 
-jest.mock('../../../components/forms/tender/TenderForm', () => ({
+vi.mock('../../../components/forms/tender/TenderForm', () => ({
   TenderForm: () => <div data-testid="tender-form-mock" />,
 }));
 
 describe('StepTenderTest', () => {
-  const dispatchMockFn = jest.fn();
-  const navigateMockFn = jest.fn();
-  const useSelectorSpy = jest.spyOn(reactRedux, 'useAppSelector');
-  const useParamsSpy = jest.spyOn(router, 'useParams');
-  const useDispatchSpy = jest.spyOn(reactRedux, 'useAppDispatch');
-  const useNavigateSpy = jest.spyOn(router, 'useNavigate');
-  const retrieveTenderDetailSpy = jest.spyOn(paperChannelApi, 'retrieveTenderDetails');
+  const dispatchMockFn = vi.fn();
+  const navigateMockFn = vi.fn();
+  const useSelectorSpy = vi.spyOn(reactRedux, 'useAppSelector');
+  const useParamsSpy = vi.spyOn(router, 'useParams');
+  const useDispatchSpy = vi.spyOn(reactRedux, 'useAppDispatch');
+  const useNavigateSpy = vi.spyOn(router, 'useNavigate');
+  const retrieveTenderDetailSpy = vi.spyOn(paperChannelApi, 'retrieveTenderDetails');
 
   const changeStore = (state: any = initialState) => {
     const reduxStore = { tenderForm: state };

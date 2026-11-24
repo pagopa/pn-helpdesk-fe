@@ -2,6 +2,7 @@
   "name": "pn-helpdesk-fe",
   "version": "2.6.1",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@aws-amplify/auth": "^4.5.4",
     "@babel/core": "^7.0.0",
@@ -12,10 +13,9 @@
     "@mui/lab": "^5.0.0-alpha.140",
     "@mui/material": "^5.14.5",
     "@mui/x-data-grid": "^5.17.8",
-    "@mui/x-date-pickers": "5.0.13",
-    "@pagopa/mui-italia": "^1.0.2",
+    "@mui/x-date-pickers": "^6.17.0",
+    "@pagopa/mui-italia": "2.8.2",
     "@reduxjs/toolkit": "^1.8.1",
-    "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^14",
     "@tiptap/core": "^2.11.9",
@@ -39,6 +39,7 @@
     "eslint-plugin-jest-dom": "^4.0.2",
     "eslint-plugin-testing-library": "^5.9.1",
     "fs": "^0.0.1-security",
+    "jsdom": "^29.1.1",
     "msw": "^0.47.4",
     "mui-tiptap": "^1.18.1",
     "react": "^18.1.0",
@@ -47,7 +48,6 @@
     "react-number-format": "^5.1.3",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
     "redux": "^4.2.0",
     "regenerator-runtime": "^0.13.9",
     "streamsaver": "^2.0.6",
@@ -57,12 +57,13 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
     "generate:api": "npx @openapitools/openapi-generator-cli generate",
-    "start": "yarn generate:api && react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --watchAll=false",
-    "test:coverage": "react-scripts test --watchAll=false --ci --coverage --testResultsProcessor=jest-sonar-reporter",
-    "eject": "react-scripts eject",
+    "dev": "yarn generate:api && vite",
+    "test:coverage": "vitest run --coverage",
+    "eject": "vite eject",
     "sonar": "node sonarqube-scanner.js",
     "lint": "eslint . -c .eslintrc.js --ext .ts,.tsx --fix",
     "format": "prettier \"./**/*.{ts,tsx}\" --write",
@@ -91,9 +92,14 @@
     "@babel/preset-typescript": "^7.17.12",
     "@openapitools/openapi-generator-cli": "^2.6.0",
     "@pagopa/openapi-codegen-ts": "^12.1.2",
+    "@testing-library/jest-dom": "^8.0.0",
+    "@types/jest": "^30.0.0",
+    "@types/mocha": "^10.0.10",
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.59.7",
     "@typescript-eslint/parser": "^5.0.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "@vitest/coverage-v8": "^5.1.1",
     "axios-mock-adapter": "^1.21.1",
     "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.3.0",
@@ -109,9 +115,15 @@
     "react-test-renderer": "^18.2.0",
     "redux-mock-store": "^1.5.4",
     "rimraf": "^3.0.2",
-    "sonarqube-scanner": "^4.3.8"
+    "sonarqube-scanner": "^4.3.8",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1",
+    "vitest-sonar-reporter": "^3.0.0"
   },
   "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"
+    ],
     "moduleNameMapper": {
       "^axios$": "axios/dist/browser/axios.cjs"
     },
@@ -124,6 +136,7 @@
     ]
   },
   "resolutions": {
+    "nwsapi": "2.2.7",
     "**/react-scripts/react-dev-utils/recursive-readdir/minimatch": "^3.0.5",
     "**/minimatch": "^3.1.4",
     "**/filelist/minimatch": "^5.1.8",

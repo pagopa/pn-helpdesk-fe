@@ -3,6 +3,7 @@ import React from 'react';
 import { DriverAndCostForm } from '../DriverAndCostForm';
 import * as reactRedux from '../../../redux/hook';
 import { reducer } from '../../../mocks/mockReducer';
+import { vi, type Mock } from 'vitest';
 
 const driverDetail = {
   tenderCode: '12345',
@@ -19,18 +20,18 @@ const driverDetail = {
 
 const costSelected = {};
 
-jest.mock('../../../components/forms/deliveryDriver/DeliveryDriverForm', () => ({
+vi.mock('../../../components/forms/deliveryDriver/DeliveryDriverForm', () => ({
   DeliveryDriverForm: () => <div data-testid="delivery-driver-form-mock" />,
 }));
 
-jest.mock('../CostsTable', () => ({
+vi.mock('../CostsTable', () => ({
   CostsTable: () => <div data-testid="driver-costs-table-mock" />,
 }));
 
 describe('DriverAndCostFormTest', () => {
-  const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
-  const mockDispatch = jest.fn();
+  const useSelectorMock = vi.spyOn(reactRedux, 'useAppSelector');
+  const useDispatchMock = vi.spyOn(reactRedux, 'useAppDispatch');
+  const mockDispatch = vi.fn();
 
   const mockingStoreDriver = (deliveries: any = {}, costStore = costSelected) => {
     const reduxStore = {

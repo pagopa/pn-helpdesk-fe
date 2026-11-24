@@ -2,10 +2,11 @@ import { fireEvent, screen, within } from '@testing-library/react';
 import { reducer } from '../../../mocks/mockReducer';
 import Table from '../table';
 import { Column, Item, Sort } from '../tableTypes';
+import { Mocked, vi, type Mock } from 'vitest';
 
 describe('Table tests', () => {
-  const handleColumnClick = jest.fn();
-  const handleSort = jest.fn();
+  const handleColumnClick = vi.fn();
+  const handleSort = vi.fn();
   type MockColumn = 'id' | 'name';
   const columns: Array<Column<MockColumn>> = [
     {

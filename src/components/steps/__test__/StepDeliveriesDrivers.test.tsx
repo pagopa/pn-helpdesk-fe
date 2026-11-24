@@ -3,16 +3,17 @@ import * as router from 'react-router';
 import { fireEvent, render, screen } from '@testing-library/react';
 import * as reactRedux from '../../../redux/hook';
 import { StepDeliveriesDrivers } from '../StepDeliveriesDrivers';
+import { Mocked, vi, type Mock } from 'vitest';
 
 describe('StepDeliveriesDriversTest', function () {
-  const mockDispatchFn = jest.fn();
-  const mockNavigateFn = jest.fn();
+  const mockDispatchFn = vi.fn();
+  const mockNavigateFn = vi.fn();
 
-  const spyUseSelector = jest.spyOn(reactRedux, 'useAppSelector');
+  const spyUseSelector = vi.spyOn(reactRedux, 'useAppSelector');
 
   beforeEach(() => {
-    const spyUseDispatch = jest.spyOn(reactRedux, 'useAppDispatch');
-    const spyUseRouter = jest.spyOn(router, 'useNavigate');
+    const spyUseDispatch = vi.spyOn(reactRedux, 'useAppDispatch');
+    const spyUseRouter = vi.spyOn(router, 'useNavigate');
     spyUseRouter.mockReturnValue(mockNavigateFn);
     spyUseDispatch.mockReturnValue(mockDispatchFn);
     changeStore();
@@ -150,14 +151,14 @@ const driverEmptyState = {
   dialogCost: undefined,
 };
 
-jest.mock('../../deliveriesDrivers/DriverAndCostForm', () => ({
+vi.mock('../../deliveriesDrivers/DriverAndCostForm', () => ({
   DriverAndCostForm: () => <div data-testid="driver-cost-form-mock" />,
 }));
 
-jest.mock('../StepDriverUpload', () => ({
+vi.mock('../StepDriverUpload', () => ({
   StepDriverUpload: () => <div data-testid="driver-upload-mock" />,
 }));
 
-jest.mock('../../deliveriesDrivers/DeliveriesDriverTable', () => ({
+vi.mock('../../deliveriesDrivers/DeliveriesDriverTable', () => ({
   DeliveriesDriverTable: () => <div data-testid="drivers-table-mock" />,
 }));

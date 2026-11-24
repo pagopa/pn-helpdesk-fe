@@ -4,7 +4,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { MonogramPagoPACompany } from '@pagopa/mui-italia';
-
 import { FieldsProperties, FormField } from '../../formFields/FormFields';
 import { useAuth } from '../../../Authentication/auth';
 import * as snackbarActions from '../../../redux/snackbarSlice';

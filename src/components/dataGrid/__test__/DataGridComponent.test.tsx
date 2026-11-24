@@ -2,7 +2,8 @@
  * @jest-environment jsdom
  */
 
-import { act, cleanup, screen } from '@testing-library/react';
+import { cleanup, screen } from '@testing-library/react';
+import { act } from 'react';
 import 'regenerator-runtime/runtime';
 import { rest } from 'msw';
 import { GridActionsCellItem } from '@mui/x-data-grid';
@@ -14,6 +15,46 @@ import MonitorPage from '../../../pages/monitor/MonitorPage';
 import DataGridComponent from '../DataGridComponent';
 import { server } from '../../../mocks/server';
 import { reducer } from '../../../mocks/mockReducer';
+import { vi, type Mock } from 'vitest';
+
+vi.mock('@mui/x-data-grid', () => {
+  const React = require('react');
+
+  const DataGrid = ({ rows, columns }: any) => (
+    <div role="grid">
+      <div role="rowgroup">
+        <div role="row">
+          {columns.map((column: any) => (
+            <div key={column.field} role="columnheader">
+              {column.headerName}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div role="rowgroup">
+        {rows.map((row: any) => (
+          <div key={row.id} role="row">
+            {columns.map((column: any) => {
+              const value = column.renderCell ? column.renderCell({ row }) : row[column.field];
+              return (
+                <div key={`${row.id}-${column.field}`} role="cell">
+                  {value}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return {
+    __esModule: true,
+    DataGrid,
+    GridActionsCellItem: ({ label }: any) => <button>{label}</button>,
+    gridClasses: { row: 'MuiDataGrid-row' },
+  };
+});
 
 const rows = [
   {
@@ -48,7 +89,7 @@ const columns = [
     minWidth: 100,
     sortable: false,
     disableColumnMenu: true,
-    id:'functionality'
+    id: 'functionality'
   },
   {
     field: 'state',
@@ -58,7 +99,7 @@ const columns = [
       params.row.state ? <CheckCircleIcon color="success" /> : <CancelIcon color={'error'} />,
     flex: 1,
     minWidth: 100,
-    id:'state'
+    id: 'state'
   },
   {
     field: 'data',
@@ -72,7 +113,7 @@ const columns = [
     hide: false,
     renderCell: (params: any) =>
       params.row.data ? format(new Date(params.row.data.substring(0, 16)), 'dd-MM-yyyy HH:mm') : '',
-    id:'data'
+    id: 'data'
   },
   {
     field: 'actions',
@@ -88,17 +129,13 @@ const columns = [
       params.row.state
         ? [<GridActionsCellItem label="Inserire KO" showInMenu key={params.row.id} />]
         : [<GridActionsCellItem label="Inserire OK" showInMenu key={params.row.id} />],
-    id:'actions'
+    id: 'actions'
 
   },
 ];
 
 describe('DataGridComponent', () => {
   afterEach(cleanup);
-
-  beforeEach(() => {
-    jest.spyOn(React, 'useEffect').mockImplementation(() => jest.fn());
-  });
 
   it('render DataGridComponent with 4 columns and 4 rows', async () => {
     await act(async () => {

@@ -6,14 +6,15 @@ import { Permission } from '../../../model/user-permission';
 import * as routes from '../../../navigation/router.const';
 import AggregatesPage from '../AggregatesPage';
 import apiRequests from '../../../api/apiRequests';
+import { Mocked, vi, type Mock } from 'vitest';
 
-const navigate = jest.fn();
+const navigate = vi.fn();
 
 describe('AggregatesPage test', () => {
   beforeEach(() => {
     // mock navigation
-    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
-    const apiSpyGetAggregates = jest.spyOn(apiRequests, 'getAggregates');
+    vi.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
+    const apiSpyGetAggregates = vi.spyOn(apiRequests, 'getAggregates');
     apiSpyGetAggregates.mockImplementation(() =>
       Promise.resolve({
         items: [],

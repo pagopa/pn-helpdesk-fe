@@ -1,5 +1,5 @@
 /**
- * @jest-environment jsdom
+ * @vi-environment jsdom
  */
 import 'regenerator-runtime/runtime';
 import { fireEvent, waitFor, screen, act } from '@testing-library/react';
@@ -11,8 +11,9 @@ import AggregateDetailPage from '../AggregateDetailPage';
 import * as routes from '../../../navigation/router.const';
 import { aggregate, usage_plan_list, pa_list } from '../../../api/mock_agg_response';
 import { Permission } from '../../../model/user-permission';
+import { Mocked, vi, type Mock } from 'vitest';
 
-const navigate = jest.fn();
+const navigate = vi.fn();
 
 describe('AggregateDetailPage MODIFY', () => {
   const mockData1 = { ...usage_plan_list };
@@ -20,20 +21,20 @@ describe('AggregateDetailPage MODIFY', () => {
   const mockData3 = { ...pa_list };
 
   beforeEach(async () => {
-    const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getUsagePlans');
+    const apiSpyUsagePlans = vi.spyOn(apiRequests, 'getUsagePlans');
     apiSpyUsagePlans.mockImplementation(() => Promise.resolve(mockData1));
-    const apiSpyAggregate = jest.spyOn(apiRequests, 'getAggregateDetails');
+    const apiSpyAggregate = vi.spyOn(apiRequests, 'getAggregateDetails');
     apiSpyAggregate.mockImplementation(() => Promise.resolve(mockData2));
-    const apiSpyAssociatedPa = jest.spyOn(apiRequests, 'getAssociatedPaList');
+    const apiSpyAssociatedPa = vi.spyOn(apiRequests, 'getAssociatedPaList');
     apiSpyAssociatedPa.mockImplementation(() => Promise.resolve(mockData3));
-    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
-    jest.spyOn(router, 'useParams').mockImplementation(() => ({ idAggregate: mockData2.id }));
+    vi.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
+    vi.spyOn(router, 'useParams').mockImplementation(() => ({ idAggregate: mockData2.id }));
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('Renders AggregateDetailPage MODIFY', async () => {
@@ -101,7 +102,7 @@ describe('AggregateDetailPage MODIFY', () => {
 
 describe('AggregateDetailPage CREATE', () => {
   beforeEach(async () => {
-    const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getUsagePlans');
+    const apiSpyUsagePlans = vi.spyOn(apiRequests, 'getUsagePlans');
     apiSpyUsagePlans.mockImplementation(() => Promise.resolve(usage_plan_list));
   });
 
@@ -146,14 +147,14 @@ describe('AggregateDetailPage CREATE', () => {
 
 describe('AggregateDetailPage FAILED_PROMISE', () => {
   beforeEach(async () => {
-    const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getUsagePlans');
+    const apiSpyUsagePlans = vi.spyOn(apiRequests, 'getUsagePlans');
     apiSpyUsagePlans.mockImplementation(() => Promise.resolve(usage_plan_list));
   });
-  
+
   it('Renders AggregateDetailPage FAILED_PROMISE', async () => {
-    const apiSpyUsagePlans = jest.spyOn(apiRequests, 'getUsagePlans');
+    const apiSpyUsagePlans = vi.spyOn(apiRequests, 'getUsagePlans');
     apiSpyUsagePlans.mockImplementation(() => Promise.reject());
-    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
+    vi.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
 
     await act(async () => {
       renderWithProvidersAndPermissions(

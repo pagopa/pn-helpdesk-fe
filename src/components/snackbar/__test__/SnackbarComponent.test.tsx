@@ -3,17 +3,17 @@
  */
 import React from 'react';
 import 'regenerator-runtime/runtime';
-import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import { Provider } from 'react-redux';
 import SnackbarComponent from '../SnackbarComponent';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const mockStore = configureMockStore([]);
 
 describe('SnackbarComponent  Component', () => {
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it('renders component with status 200', () => {

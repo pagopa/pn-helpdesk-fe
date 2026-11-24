@@ -4,6 +4,7 @@ import { api_key, modify_pdnd } from '../../../api/mock_agg_response';
 import { renderWithProviders } from '../../../mocks/mockReducer';
 import { ConfirmationProvider } from '../../confirmationDialog/ConfirmationProvider';
 import VirtualKeyTable from '../VirtualKeyTable';
+import { vi } from 'vitest';
 
 describe('VirtualKeyTable without selected PA', () => {
   let result: RenderResult | undefined;
@@ -29,20 +30,20 @@ describe('VirtualKeyTable with selected PA', () => {
 
   beforeEach(() => {
     // mock api
-    const apiSpySearchApiKey = jest.spyOn(apiRequests, 'searchApiKey');
+    const apiSpySearchApiKey = vi.spyOn(apiRequests, 'searchApiKey');
     apiSpySearchApiKey.mockImplementation(() => {
       const res = api_key;
       return Promise.resolve(res);
     });
 
-    const apiSpyModifyPdnd = jest.spyOn(apiRequests, 'modifyPdnd');
+    const apiSpyModifyPdnd = vi.spyOn(apiRequests, 'modifyPdnd');
     apiSpyModifyPdnd.mockImplementation(() => Promise.resolve(modify_pdnd));
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
     result = undefined;
   });
 

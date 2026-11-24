@@ -6,6 +6,7 @@ import * as reactRedux from '../../../../redux/hook';
 import { UPLOAD_STATUS_ENUM } from '../../../../model';
 import { DownloadBox } from '../DownloadForm';
 import * as utils from '../../../../helpers/utils';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const initialState = {
   download: {
@@ -19,10 +20,10 @@ const initialState = {
 };
 
 describe('TenderPageTest', () => {
-  const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
-  const mockDownloadFile = jest.fn();
-  const mockDispatch = jest.fn();
+  const useSelectorMock = vi.spyOn(reactRedux, 'useAppSelector');
+  const useDispatchMock = vi.spyOn(reactRedux, 'useAppDispatch');
+  const mockDownloadFile = vi.fn();
+  const mockDispatch = vi.fn();
 
   const mockingStore = (state: any) => {
     useSelectorMock.mockReturnValue(state);
@@ -36,7 +37,7 @@ describe('TenderPageTest', () => {
   beforeEach(() => {
     useSelectorMock.mockClear();
     useDispatchMock.mockClear();
-    jest.spyOn(utils, 'downloadFile').mockImplementation(mockDownloadFile);
+    vi.spyOn(utils, 'downloadFile').mockImplementation(mockDownloadFile);
     mockingStore(initialState);
   });
 
@@ -148,8 +149,8 @@ describe('TenderPageTest', () => {
       retry: 1000,
       loading: true,
     };
-    jest.useFakeTimers();
-    jest.spyOn(global, 'setTimeout');
+    vi.useFakeTimers();
+    vi.spyOn(global, 'setTimeout');
 
     mockingStore({
       ...initialState,

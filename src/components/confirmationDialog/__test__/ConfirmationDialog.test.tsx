@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { reducer } from '../../../mocks/mockReducer';
 import ConfirmationDialog from '../ConfirmationDialog';
 import { Options } from '../ConfirmationTypes';
+import { vi, type Mock } from 'vitest';
 
 describe('ConfirmationDialog tests', () => {
   const options: Options = {
@@ -9,9 +10,9 @@ describe('ConfirmationDialog tests', () => {
     title: 'Mocked Title',
   };
 
-  const onConfirmMock = jest.fn();
+  const onConfirmMock = vi.fn();
 
-  const onCancelMock = jest.fn();
+  const onCancelMock = vi.fn();
 
   beforeEach(() => {
     reducer(

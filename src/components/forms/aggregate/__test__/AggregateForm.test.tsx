@@ -1,5 +1,5 @@
 /**
- * @jest-environment jsdom
+ * @vi-environment jsdom
  */
 import 'regenerator-runtime/runtime';
 import { fireEvent, act, screen, waitFor } from '@testing-library/react';
@@ -10,25 +10,27 @@ import apiRequests from '../../../../api/apiRequests';
 import { aggregate, usage_plan_list } from '../../../../api/mock_agg_response';
 import { renderWithProviders } from '../../../../mocks/mockReducer';
 import * as routes from '../../../../navigation/router.const';
-const navigate = jest.fn();
+import { Mocked, vi, type Mock } from 'vitest';
+
+const navigate = vi.fn();
 
 describe('AggregateForm CREATE', () => {
   // Override default timeout
-  jest.setTimeout(10000);
+  vi.setConfig({ testTimeout: 10000 });
 
   const idResponse = 'test';
   beforeEach(() => {
-    const apiSpyCreateAggregate = jest.spyOn(apiRequests, 'createAggregate');
+    const apiSpyCreateAggregate = vi.spyOn(apiRequests, 'createAggregate');
     apiSpyCreateAggregate.mockResolvedValue({ id: 'test' });
 
     // mock navigation
-    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
+    vi.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('renders', async () => {
@@ -116,23 +118,24 @@ describe('AggregateForm CREATE', () => {
 
 describe('AggregateForm MODIFY', () => {
   // Override default timeout
-  jest.setTimeout(10000);
+  vi.setConfig({ testTimeout: 10000 });
 
   beforeEach(() => {
-    const apiSpyModifyAggregate = jest.spyOn(apiRequests, 'modifyAggregate');
+
+    const apiSpyModifyAggregate = vi.spyOn(apiRequests, 'modifyAggregate');
     apiSpyModifyAggregate.mockResolvedValue({ id: 'test' });
 
-    const apiSpyDeleteAggregate = jest.spyOn(apiRequests, 'deleteAggregate');
+    const apiSpyDeleteAggregate = vi.spyOn(apiRequests, 'deleteAggregate');
     apiSpyDeleteAggregate.mockResolvedValue({ id: 'test' });
 
     // mock navigation
-    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
+    vi.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   const mockAggregate = aggregate;

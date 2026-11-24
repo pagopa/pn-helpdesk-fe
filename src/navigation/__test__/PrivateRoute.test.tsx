@@ -1,13 +1,14 @@
 import { act, render, screen } from '@testing-library/react';
 import { Permission } from '../../model/user-permission';
 import PrivateRoute from '../PrivateRoute';
+import { Mocked, vi, type Mock } from 'vitest';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', () => ({
+  ...vi.importActual('react-router-dom'),
   Navigate: () => <div data-testid="navigate-to-home" />,
 }));
 
-jest.mock('../../hooks/useHasPermissions', () => ({
+vi.mock('../../hooks/useHasPermissions', () => ({
   useHasPermissions: (roles: Array<Permission>) => roles.length === 1,
 }));
 

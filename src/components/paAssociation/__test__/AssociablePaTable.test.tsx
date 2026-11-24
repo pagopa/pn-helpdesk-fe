@@ -3,11 +3,12 @@ import { pa_list } from '../../../api/mock_agg_response';
 import { DEFAULT_PAGINATION_LIMIT } from '../../../hooks/usePagination';
 import { reducer } from '../../../mocks/mockReducer';
 import AssociablePaTable from '../AssociablePaTable';
+import { Mocked, vi, type Mock } from 'vitest';
 
 describe(' AssociablePaTable without selection', () => {
   let result: RenderResult | undefined;
   const mockedData = pa_list.items;
-  const mockHandleSelection = jest.fn();
+  const mockHandleSelection = vi.fn();
   beforeEach(() => {
     result = reducer(
       <AssociablePaTable paList={mockedData} handleSelection={mockHandleSelection} />

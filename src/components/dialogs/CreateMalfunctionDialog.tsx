@@ -124,13 +124,12 @@ export function CreateMalfunctionDialog({
               label="Data e ora evento"
               value={modalEventDate}
               onChange={(date: Date | null) => handleDateChange(date)}
-              renderInput={(params: any) => (
-                <TextField
-                  onKeyDown={(e) => e.preventDefault()}
-                  {...params}
-                  error={dateError ? true : false}
-                />
-              )}
+              slotProps={{
+                textField: {
+                  onKeyDown: (e) => e.preventDefault(),
+                  error: !!dateError,
+                },
+              }}
             />
             <FormHelperText error>{dateError ? dateError : ''}</FormHelperText>
           </Grid>

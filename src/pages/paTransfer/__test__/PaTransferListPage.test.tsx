@@ -4,17 +4,18 @@ import { renderWithProviders } from '../../../mocks/mockReducer';
 import { ConfirmationProvider } from '../../../components/confirmationDialog/ConfirmationProvider';
 import apiRequests from '../../../api/apiRequests';
 import { aggregates_list, pa_list_associated, move_pa } from '../../../api/mock_agg_response';
+import { Mocked, vi, type Mock } from 'vitest';
 
 describe('PaTransferListPage test', () => {
   // Override default timeout
-  jest.setTimeout(10000);
+  vi.setConfig({ testTimeout: 10000 });
 
-  const mockApiGetAggregates = jest.fn();
-  const mockApiGetAssociatedPaList = jest.fn();
-  const mockApiMovePa = jest.fn();
-  const apiSpyGetAggregates = jest.spyOn(apiRequests, 'getAggregates');
-  const apiSpyGetAssociatedPaList = jest.spyOn(apiRequests, 'getAssociatedPaList');
-  const apiSpyMovePa = jest.spyOn(apiRequests, 'movePa');
+  const mockApiGetAggregates = vi.fn();
+  const mockApiGetAssociatedPaList = vi.fn();
+  const mockApiMovePa = vi.fn();
+  const apiSpyGetAggregates = vi.spyOn(apiRequests, 'getAggregates');
+  const apiSpyGetAssociatedPaList = vi.spyOn(apiRequests, 'getAssociatedPaList');
+  const apiSpyMovePa = vi.spyOn(apiRequests, 'movePa');
 
   beforeEach(() => {
     // mock api

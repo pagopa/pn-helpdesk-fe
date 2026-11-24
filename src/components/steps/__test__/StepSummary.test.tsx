@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import * as router from 'react-router';
 import * as reactRedux from '../../../redux/hook';
 import { StepSummary } from '../StepSummary';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const initialState = {
   activeKey: 0 as number,
@@ -20,14 +21,14 @@ const initialState = {
 };
 
 describe('StepFSU test', () => {
-  const mockDispatchFn = jest.fn();
-  const mockNavigateFn = jest.fn();
+  const mockDispatchFn = vi.fn();
+  const mockNavigateFn = vi.fn();
 
-  const spyUseSelector = jest.spyOn(reactRedux, 'useAppSelector');
+  const spyUseSelector = vi.spyOn(reactRedux, 'useAppSelector');
 
   beforeEach(() => {
-    const spyUseDispatch = jest.spyOn(reactRedux, 'useAppDispatch');
-    const spyUseRouter = jest.spyOn(router, 'useNavigate');
+    const spyUseDispatch = vi.spyOn(reactRedux, 'useAppDispatch');
+    const spyUseRouter = vi.spyOn(router, 'useNavigate');
     spyUseRouter.mockReturnValue(mockNavigateFn);
     spyUseDispatch.mockReturnValue(mockDispatchFn);
     changeStore(initialState);
@@ -108,9 +109,9 @@ describe('StepFSU test', () => {
   });
 });
 
-jest.mock('../../dataInfo/DataInfo', () => ({
+vi.mock('../../dataInfo/DataInfo', () => ({
   DataInfo: () => <div data-testid="data-info-mock" />,
 }));
-jest.mock('../../deliveriesDrivers/DeliveriesDriverTable', () => ({
+vi.mock('../../deliveriesDrivers/DeliveriesDriverTable', () => ({
   DeliveriesDriverTable: () => <div data-testid="drivers-table-mock" />,
 }));

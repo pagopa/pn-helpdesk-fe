@@ -11,8 +11,8 @@ describe('useConfirmDialog test', () => {
     const confirmDialog = useConfirmDialog();
     const handleConfirm = () => {
       confirmDialog({ title, message })
-        .then(() => {})
-        .catch(() => {});
+        .then(() => { })
+        .catch(() => { });
     };
 
     return (

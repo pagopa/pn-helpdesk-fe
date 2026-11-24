@@ -1,4 +1,5 @@
 import { fireEvent, RenderResult, screen, waitFor } from '@testing-library/react';
+import { vi, type Mock } from 'vitest';
 
 import { ButtonsActionCostTable } from '../ButtonsActionCostTable';
 import { CostDTO } from '../../../api/paperChannel';
@@ -30,11 +31,11 @@ const costInternational: CostDTO = {
 };
 
 describe('ButtonActionsCostTable Test', () => {
-  let mockDispatchFn: jest.Mock;
-  let mockDeleteFn: jest.Mock;
+  let mockDispatchFn: Mock;
+  let mockDeleteFn: Mock;
 
   const setHasPermission = (value: boolean = true) => {
-    const spyUsePermission = jest.spyOn(hookPermission, 'useHasPermissions');
+    const spyUsePermission = vi.spyOn(hookPermission, 'useHasPermissions');
     spyUsePermission.mockReturnValue(value);
   };
 
@@ -46,9 +47,9 @@ describe('ButtonActionsCostTable Test', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('Button rendered', async () => {
@@ -142,22 +143,22 @@ describe('ButtonActionsCostTable Test', () => {
 
 type TestScenario = {
   result?: RenderResult;
-  mockDispatchFn: jest.Mock;
-  mockDeleteFn: jest.Mock;
+  mockDispatchFn: Mock;
+  mockDeleteFn: Mock;
 };
 
 async function doPrepareTestScenario(): Promise<TestScenario> {
-  const mockDispatchFn = jest.fn(() => ({
+  const mockDispatchFn = vi.fn(() => ({
     then: () => Promise.resolve(),
   }));
 
-  const mockDeleteFn = jest.fn();
+  const mockDeleteFn = vi.fn();
 
   // mock dispatch
-  const useDispatchSpy = jest.spyOn(hook, 'useAppDispatch');
+  const useDispatchSpy = vi.spyOn(hook, 'useAppDispatch');
   useDispatchSpy.mockReturnValue(mockDispatchFn as any);
 
-  const mockUsePaperChannelHook = jest.spyOn(hookPaperChannel, 'usePaperChannel');
+  const mockUsePaperChannelHook = vi.spyOn(hookPaperChannel, 'usePaperChannel');
   mockUsePaperChannelHook.mockReturnValue({
     changeStatusTender(): Promise<void> {
       return Promise.resolve(undefined);

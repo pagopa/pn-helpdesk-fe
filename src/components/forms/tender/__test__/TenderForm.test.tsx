@@ -1,12 +1,12 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import * as italianStyle from 'date-fns/locale';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
+import { act } from 'react';
 import * as reactRedux from '../../../../redux/hook';
 import * as paperChannelApi from '../../../../api/paperChannelApi';
 import { reducer } from '../../../../mocks/mockReducer';
 import { TenderForm } from '../TenderForm';
 import { TenderDTO } from '../../../../api/paperChannel';
+import { vi } from 'vitest';
 
 const tenderResponse = {
   code: 'abc',
@@ -17,12 +17,12 @@ const tenderResponse = {
 } as TenderDTO;
 
 describe('TenderFormTest', () => {
-  const dispatchMockFn = jest.fn();
-  const createTenderMockFn = jest.fn(() => Promise.resolve(tenderResponse));
-  const createTenderSpy = jest.spyOn(paperChannelApi, 'createTender');
+  const dispatchMockFn = vi.fn();
+  const createTenderMockFn = vi.fn(() => Promise.resolve(tenderResponse));
+  const createTenderSpy = vi.spyOn(paperChannelApi, 'createTender');
 
   beforeEach(() => {
-    const dispatchSpy = jest.spyOn(reactRedux, 'useAppDispatch');
+    const dispatchSpy = vi.spyOn(reactRedux, 'useAppDispatch');
     dispatchSpy.mockReturnValue(dispatchMockFn);
     createTenderSpy.mockImplementation(createTenderMockFn);
   });
@@ -44,11 +44,7 @@ describe('TenderFormTest', () => {
   });
 
   it('whenClickSaveOnRealDescription', async function () {
-    render(
-      <LocalizationProvider adapterLocale={italianStyle.it} dateAdapter={AdapterDateFns}>
-        <TenderForm />
-      </LocalizationProvider>
-    );
+    reducer(<TenderForm />);
     // description field, startDate field, endDateField
     const [inputDescription, ,] = screen.getAllByRole('textbox');
     expect(inputDescription).toBeInTheDocument();
@@ -84,11 +80,7 @@ describe('TenderFormTest', () => {
 
   it('whenClickSaveOnError', async function () {
     createTenderSpy.mockRejectedValue(new Error('Error with creation'));
-    render(
-      <LocalizationProvider adapterLocale={italianStyle.it} dateAdapter={AdapterDateFns}>
-        <TenderForm />
-      </LocalizationProvider>
-    );
+    reducer(<TenderForm />);
     // description field, startDate field, endDateField
     const [inputDescription, ,] = screen.getAllByRole('textbox');
     expect(inputDescription).toBeInTheDocument();
