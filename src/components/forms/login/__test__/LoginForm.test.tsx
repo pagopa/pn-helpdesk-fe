@@ -1,7 +1,9 @@
 /**
- * @jest-environment jsdom
+ * @vi-environment jsdom
  */
-jest.doMock('@pagopa/mui-italia/assets', () => ({
+import { Mocked, vi, type Mock } from 'vitest';
+
+vi.doMock('@pagopa/mui-italia/assets', () => ({
   __esModule: true,
   MonogramPagoPACompany: () => {
     const React = require('react');
@@ -9,14 +11,13 @@ jest.doMock('@pagopa/mui-italia/assets', () => ({
   },
 }));
 import 'regenerator-runtime/runtime';
-import '@testing-library/jest-dom/extend-expect';
 import { screen, cleanup, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { reducer } from '../../../../mocks/mockReducer';
 import LoginForm from '../LoginForm';
 
 describe('LoginForm', () => {
-  const setEmailMock = jest.fn();
+  const setEmailMock = vi.fn();
 
   afterEach(cleanup);
 

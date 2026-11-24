@@ -1,10 +1,11 @@
 /**
- * @jest-environment jsdom
+ * @vi-environment jsdom
  */
 import React from 'react';
 import 'regenerator-runtime/runtime';
 import { render, screen } from '@testing-library/react';
 import TextFieldComponent from '../TextFieldComponent';
+import { Mocked, vi, type Mock } from 'vitest';
 
 describe('Testfield Component', () => {
   const field = {
@@ -19,7 +20,7 @@ describe('Testfield Component', () => {
   };
 
   it('renders', () => {
-    render(<TextFieldComponent field={field} onBlur={jest.fn} />);
+    render(<TextFieldComponent field={field} onBlur={vi.fn} />);
     const component = screen.getByLabelText('Codice IPA');
     expect(component).toBeInTheDocument();
   });

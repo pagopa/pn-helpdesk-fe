@@ -2,27 +2,34 @@
  * @jest-environment jsdom
  */
 import 'regenerator-runtime/runtime';
-import '@testing-library/jest-dom/extend-expect';
 import { screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { reducer } from '../../../../mocks/mockReducer';
 import SearchForm from '../SearchForm';
 import apiRequests from '../../../../api/apiRequests';
+import { Mocked, vi, type Mock } from 'vitest';
+import { getPersonIdType } from '../../../../api/apiRequestTypes';
 
 describe('SearchForm', () => {
-  
+  const mockGetPersonIdParams: getPersonIdType = {
+    recipientType: 'PF',
+    ticketNumber: 'TICKET-123',
+    taxId: 'RSSMRA80A01H501U',
+  };
   beforeEach(async () => {
-    const apiSpyGetPersonsLogs = jest.spyOn(apiRequests, 'getPersonsLogs');
+    const apiSpyGetPersonsLogs = vi.spyOn(apiRequests, 'getPersonsLogs');
     apiSpyGetPersonsLogs.mockImplementation(() => Promise.resolve({ items: [] }));
-    const apiSpyGetPersonId = jest.spyOn(apiRequests, 'getPersonId');
-    apiSpyGetPersonId.mockImplementation();
-    const apiSpyGetSessionId = jest.spyOn(apiRequests, 'getSessionLogs');
+    const apiSpyGetPersonId = vi.spyOn(apiRequests, 'getPersonId');
+    apiSpyGetPersonId.mockImplementation((_params: getPersonIdType) =>
+      Promise.resolve({ internalId: 'mock-person-id-123' } as any)
+    );
+    const apiSpyGetSessionId = vi.spyOn(apiRequests, 'getSessionLogs');
     apiSpyGetSessionId.mockImplementation(() => {
       console.log('mock getSessionLogs');
       return Promise.resolve({ items: [] });
     });
   });
-  
+
   afterEach(cleanup);
 
   it('renders component', async () => {

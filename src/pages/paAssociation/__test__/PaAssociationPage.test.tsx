@@ -4,9 +4,10 @@ import { ConfirmationProvider } from '../../../components/confirmationDialog/Con
 import { renderWithProviders } from '../../../mocks/mockReducer';
 import PaAssociationPage from '../PaAssociationPage';
 import apiRequests from '../../../api/apiRequests';
+import { Mocked, vi, type Mock } from 'vitest';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', () => ({
+  ...vi.importActual('react-router-dom'),
   useLocation: () => ({
     pathname: 'localhost:3000/example/path',
     state: { aggregate: mockAggregate },
@@ -15,7 +16,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('PaAssociationPage test', () => {
   beforeEach(() => {
-    const apiSpyGetAssociablePaList = jest.spyOn(apiRequests, 'getAssociablePaList');
+    const apiSpyGetAssociablePaList = vi.spyOn(apiRequests, 'getAssociablePaList');
     apiSpyGetAssociablePaList.mockImplementation(() => Promise.resolve({ items: [] }));
   });
 

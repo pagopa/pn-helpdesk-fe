@@ -5,6 +5,7 @@ import React from 'react';
 import 'regenerator-runtime/runtime';
 import { render, screen } from '@testing-library/react';
 import RadioButtonsGroup from '../RadioButtonsGroup';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const props = {
   field: {
@@ -23,7 +24,7 @@ const props = {
       },
     ],
   },
-  onChange: jest.fn(),
+  onChange: vi.fn(),
   value: 'PF',
 };
 

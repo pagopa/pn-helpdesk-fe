@@ -6,25 +6,25 @@ import { renderWithProviders } from '../../../mocks/mockReducer';
 import * as routes from '../../../navigation/router.const';
 import { ConfirmationProvider } from '../../confirmationDialog/ConfirmationProvider';
 import PaAssociation from '../../paAssociation/PaAssociation';
+import { Mocked, vi, type Mock } from 'vitest';
 
-const navigate = jest.fn();
+const navigate = vi.fn();
 
 describe('PaAssociation tests', () => {
   // Override default timeout
-  jest.setTimeout(10000);
-
-  const mockApiGetAssociablePaList = jest.fn();
-  const mockApiAddPaFn = jest.fn();
+  vi.setConfig({ testTimeout: 10000 });
+  const mockApiGetAssociablePaList = vi.fn();
+  const mockApiAddPaFn = vi.fn();
   const idAggregate = 'agg_1';
 
   beforeEach(async () => {
     // mock api
-    const apiSpyGetAssociablePaList = jest.spyOn(apiRequests, 'getAssociablePaList');
+    const apiSpyGetAssociablePaList = vi.spyOn(apiRequests, 'getAssociablePaList');
     apiSpyGetAssociablePaList.mockImplementation(mockApiGetAssociablePaList);
     const items = pa_list_associated.items.map((pa) => ({ ...pa, selected: false }));
     apiSpyGetAssociablePaList.mockResolvedValue({ items });
 
-    const apiSpyAddPa = jest.spyOn(apiRequests, 'addPa');
+    const apiSpyAddPa = vi.spyOn(apiRequests, 'addPa');
     apiSpyAddPa.mockImplementation(mockApiAddPaFn);
     apiSpyAddPa.mockResolvedValue({
       processed: 1,
@@ -33,13 +33,13 @@ describe('PaAssociation tests', () => {
     });
 
     // mock navigation
-    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
+    vi.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('render associable-pa-card', async () => {

@@ -8,6 +8,7 @@ import * as paperChannelApi from '../../../../api/paperChannelApi';
 import { CapDto, CapResponseDto } from '../../../../api/paperChannel';
 import { COST_TYPE } from '../fields';
 import * as reactRedux from '../../../../redux/hook';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const nationalCost = {
   type: 'NATIONAL',
@@ -38,15 +39,15 @@ const capResponse = {
 } as CapResponseDto;
 
 describe('CostsForm Test', () => {
-  const saveMockFn = jest.fn();
-  const dispatchMockFn = jest.fn();
-  const retrieveCapsMockFn = jest.fn();
-  const createCostMockFn = jest.fn(() => Promise.resolve());
-  const retrieveCapsSpy = jest.spyOn(paperChannelApi, 'retrieveCaps');
-  const createCostSpy = jest.spyOn(paperChannelApi, 'createCost');
+  const saveMockFn = vi.fn();
+  const dispatchMockFn = vi.fn();
+  const retrieveCapsMockFn = vi.fn();
+  const createCostMockFn = vi.fn(() => Promise.resolve());
+  const retrieveCapsSpy = vi.spyOn(paperChannelApi, 'retrieveCaps');
+  const createCostSpy = vi.spyOn(paperChannelApi, 'createCost');
 
   beforeEach(() => {
-    const dispatchSpy = jest.spyOn(reactRedux, 'useAppDispatch');
+    const dispatchSpy = vi.spyOn(reactRedux, 'useAppDispatch');
     dispatchSpy.mockReturnValue(dispatchMockFn);
     retrieveCapsSpy.mockImplementation(retrieveCapsMockFn);
     retrieveCapsSpy.mockResolvedValue(capResponse);

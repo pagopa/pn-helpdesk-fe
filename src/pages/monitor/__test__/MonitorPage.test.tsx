@@ -1,5 +1,5 @@
 /**
- * @jest-environment jsdom
+ * @vi-environment jsdom
  */
 
 import { RenderResult, screen, waitFor } from '@testing-library/react';
@@ -8,8 +8,9 @@ import 'regenerator-runtime/runtime';
 import userEvent from '@testing-library/user-event';
 import MonitorPage from '../MonitorPage';
 import { reducer } from '../../../mocks/mockReducer';
+import { Mocked, vi, type Mock } from 'vitest';
 
-jest.mock('../../../api/apiRequests', () => ({
+vi.mock('../../../api/apiRequests', () => ({
   getStatus: () =>
     Promise.resolve({
       data: {

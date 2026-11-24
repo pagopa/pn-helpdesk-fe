@@ -3,6 +3,7 @@ import { pa_list } from '../../../api/mock_agg_response';
 import { DEFAULT_PAGINATION_LIMIT } from '../../../hooks/usePagination';
 import { reducer } from '../../../mocks/mockReducer';
 import PaTable from '../PaTable';
+import { vi } from 'vitest';
 
 describe('PaTable without selection', () => {
   // eslint-disable-next-line functional/no-let
@@ -27,7 +28,7 @@ describe('PaTable with selection', () => {
   // eslint-disable-next-line functional/no-let
   let result: RenderResult | undefined;
   const mockedData = pa_list.items;
-  const mockHandleSelection = jest.fn();
+  const mockHandleSelection = vi.fn();
   beforeEach(() => {
     result = reducer(<PaTable paList={mockedData} onSelect={mockHandleSelection} />);
   });

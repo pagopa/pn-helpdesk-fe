@@ -1,6 +1,4 @@
-/**
- * @jest-environment jsdom
- */
+
 import 'regenerator-runtime/runtime';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';

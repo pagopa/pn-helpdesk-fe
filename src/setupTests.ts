@@ -2,10 +2,10 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
-// src/setupTests.js
+import '@testing-library/jest-dom/vitest'
 import { server } from './mocks/server.js';
 import { Configuration } from './model/configuration';
+import { beforeAll, afterEach, afterAll, beforeEach } from 'vitest';
 
 // Establish API mocking before all tests.
 beforeAll(() => {

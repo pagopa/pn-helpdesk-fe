@@ -4,6 +4,7 @@ import { DeliveriesDriverTable } from '../DeliveriesDriverTable';
 import * as reactRedux from '../../../redux/hook';
 import { DeliveryDriver, FilterRequest, Page } from '../../../model';
 import { reducer } from '../../../mocks/mockReducer';
+import { vi, type Mock } from 'vitest';
 
 const driversStore = {
   loading: false,
@@ -33,9 +34,9 @@ const driversStore = {
   dialogCost: undefined,
 };
 describe('DeliveriesDriverTableTest', () => {
-  const useSelectorSpy = jest.spyOn(reactRedux, 'useAppSelector');
-  const useDispatchSpy = jest.spyOn(reactRedux, 'useAppDispatch');
-  const dispatchMockFn = jest.fn();
+  const useSelectorSpy = vi.spyOn(reactRedux, 'useAppSelector');
+  const useDispatchSpy = vi.spyOn(reactRedux, 'useAppDispatch');
+  const dispatchMockFn = vi.fn();
 
   const changeStore = (state: any) => {
     const reduxStore = {
@@ -119,7 +120,7 @@ describe('DeliveriesDriverTableTest', () => {
     await act(async () => {
       options[1].click();
     });
-    
+
     await waitFor(async () => {
       expect(dispatchMockFn).toBeCalledWith({
         payload: {
@@ -133,6 +134,6 @@ describe('DeliveriesDriverTableTest', () => {
   });
 });
 
-jest.mock('../CostsTable', () => ({
+vi.mock('../CostsTable', () => ({
   CostsTable: () => <div data-testid="cost-table-mock" />,
 }));

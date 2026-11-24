@@ -3,15 +3,16 @@ import userEvent from '@testing-library/user-event';
 import { reducer } from '../../../mocks/mockReducer';
 import SSOLogin from '../SSOLogin';
 import { useAuth } from '../../../Authentication/auth';
+import { Mocked, vi, type Mock } from 'vitest';
 
-jest.mock('../../../Authentication/auth', () => ({
-  useAuth: jest.fn(),
+vi.mock('../../../Authentication/auth', () => ({
+  useAuth: vi.fn(),
 }));
 
-const mockLoginWithSSO = jest.fn();
+const mockLoginWithSSO = vi.fn();
 
 beforeEach(() => {
-  (useAuth as jest.Mock).mockReturnValue({ loginWithSSO: mockLoginWithSSO });
+  (useAuth as Mock).mockReturnValue({ loginWithSSO: mockLoginWithSSO });
   mockLoginWithSSO.mockReset();
 });
 

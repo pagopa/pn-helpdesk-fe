@@ -7,14 +7,15 @@ import { AxiosError, AxiosResponse } from 'axios';
 import * as paperChannelApi from '../../../../api/paperChannelApi';
 import * as reactRedux from '../../../../redux/hook';
 import { DeliveryDriverForm } from '../DeliveryDriverForm';
+import { Mocked, vi, type Mock } from 'vitest';
 
 describe('DeliveryDriverFormTest', () => {
-  const dispatchMockFn = jest.fn();
-  const createDriverMockFn = jest.fn(() => Promise.resolve());
-  const createDriverSpy = jest.spyOn(paperChannelApi, 'createDeliveryDriver');
+  const dispatchMockFn = vi.fn();
+  const createDriverMockFn = vi.fn(() => Promise.resolve());
+  const createDriverSpy = vi.spyOn(paperChannelApi, 'createDeliveryDriver');
 
   beforeEach(() => {
-    const dispatchSpy = jest.spyOn(reactRedux, 'useAppDispatch');
+    const dispatchSpy = vi.spyOn(reactRedux, 'useAppDispatch');
     dispatchSpy.mockReturnValue(dispatchMockFn);
     createDriverSpy.mockImplementation(createDriverMockFn);
   });

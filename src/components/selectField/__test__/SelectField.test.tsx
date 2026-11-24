@@ -6,6 +6,7 @@ import 'regenerator-runtime/runtime';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SelectField from '../SelectField';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const props = {
   field: {
@@ -21,7 +22,7 @@ const props = {
       'Ottieni log di processo',
     ],
   },
-  onChange: jest.fn(),
+  onChange: vi.fn(),
   value: 'Ottieni EncCF',
 };
 

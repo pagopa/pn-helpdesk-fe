@@ -1,8 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import CustomCard from '../CustomCard';
+import { vi, type Mock } from 'vitest';
 
 describe('CustomCard test', () => {
-  const actionMocked = jest.fn();
+  const actionMocked = vi.fn();
   const cardBodyMock = <p data-testid="mocked-body">Mocked body</p>;
   const cardHeaderMock = {
     title: 'HeaderMocked',

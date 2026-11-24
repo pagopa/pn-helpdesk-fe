@@ -4,6 +4,7 @@ import * as input from '@pagopa/mui-italia/components/SingleFileInput/utils';
 import { UploadBox } from '../UploadForm';
 import { UPLOAD_STATUS_ENUM } from '../../../../model';
 import * as reactRedux from '../../../../redux/hook';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const initialState = {
   download: {
@@ -17,9 +18,9 @@ const initialState = {
 };
 
 describe('UploadBoxTest', () => {
-  const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
-  const mockDispatch = jest.fn();
+  const useSelectorMock = vi.spyOn(reactRedux, 'useAppSelector');
+  const useDispatchMock = vi.spyOn(reactRedux, 'useAppDispatch');
+  const mockDispatch = vi.fn();
 
   const mockingStore = (state: any) => {
     const reduxStore = {
@@ -33,7 +34,7 @@ describe('UploadBoxTest', () => {
     useSelectorMock.mockClear();
     useDispatchMock.mockClear();
     mockingStore(initialState);
-    jest.spyOn(input, 'generateRandomID').mockReturnValue('AAAAAA-AAAAAAA');
+    vi.spyOn(input, 'generateRandomID').mockReturnValue('AAAAAA-AAAAAAA');
   });
 
   it('whenSelectedFile', async () => {

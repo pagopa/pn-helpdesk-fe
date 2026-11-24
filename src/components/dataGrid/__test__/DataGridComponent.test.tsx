@@ -15,8 +15,9 @@ import MonitorPage from '../../../pages/monitor/MonitorPage';
 import DataGridComponent from '../DataGridComponent';
 import { server } from '../../../mocks/server';
 import { reducer } from '../../../mocks/mockReducer';
+import { vi, type Mock } from 'vitest';
 
-jest.mock('@mui/x-data-grid', () => {
+vi.mock('@mui/x-data-grid', () => {
   const React = require('react');
 
   const DataGrid = ({ rows, columns }: any) => (

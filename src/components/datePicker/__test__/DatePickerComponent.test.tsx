@@ -1,5 +1,5 @@
 /**
- * @jest-environment jsdom
+ * @vi-environment jsdom
  */
 import React from 'react';
 import 'regenerator-runtime/runtime';
@@ -7,6 +7,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import { FieldsProps } from '../../formFields/FormFields';
 import DatePickerComponent from '../DatePickerComponent';
 import { reducer } from '../../../mocks/mockReducer';
+import { vi, type Mock } from 'vitest';
 
 const field: FieldsProps = {
   name: 'referenceMonth',
@@ -28,11 +29,11 @@ describe('DatePickerComponent', () => {
       value: (query: string) => ({
         media: query,
         matches: query === '(pointer: fine)',
-        onchange: () => {},
-        addEventListener: () => {},
-        removeEventListener: () => {},
-        addListener: () => {},
-        removeListener: () => {},
+        onchange: () => { },
+        addEventListener: () => { },
+        removeEventListener: () => { },
+        addListener: () => { },
+        removeListener: () => { },
         dispatchEvent: () => false,
       }),
     });
@@ -43,8 +44,8 @@ describe('DatePickerComponent', () => {
       <DatePickerComponent
         field={field}
         value={november2022}
-        onChange={jest.fn()}
-        onBlur={jest.fn()}
+        onChange={vi.fn()}
+        onBlur={vi.fn()}
       />
     );
     const input = screen.getByRole('textbox', {
@@ -56,10 +57,10 @@ describe('DatePickerComponent', () => {
 
   it('test changing value', async () => {
     let emittedValue = '';
-    const handleChange = jest.fn((value: string) => {
+    const handleChange = vi.fn((value: string) => {
       emittedValue = value;
     });
-    const handleBlur = jest.fn();
+    const handleBlur = vi.fn();
 
     const rendered = reducer(
       <DatePickerComponent

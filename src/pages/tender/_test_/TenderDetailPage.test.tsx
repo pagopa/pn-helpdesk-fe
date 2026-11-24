@@ -8,6 +8,7 @@ import * as reactRedux from '../../../redux/hook';
 import { TenderDTO, TenderDTOStatusEnum } from '../../../api/paperChannel';
 import { reducer } from '../../../mocks/mockReducer';
 import * as hookPermission from '../../../hooks/useHasPermissions';
+import { Mocked, vi, type Mock } from 'vitest';
 
 import { CREATE_TENDER_ROUTE, TENDERS_TABLE_ROUTE } from '../../../navigation/router.const';
 
@@ -20,12 +21,12 @@ const tender: TenderDTO = {
 };
 
 describe('TenderDetailPage', () => {
-  jest.spyOn(React, 'useEffect').mockImplementation(() => jest.fn());
-  const navigateMock = jest.fn();
-  const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
+  vi.spyOn(React, 'useEffect').mockImplementation(() => vi.fn());
+  const navigateMock = vi.fn();
+  const useSelectorMock = vi.spyOn(reactRedux, 'useAppSelector');
+  const useDispatchMock = vi.spyOn(reactRedux, 'useAppDispatch');
   const setHasPermission = (value: boolean = true) => {
-    const spyUsePermission = jest.spyOn(hookPermission, 'useHasPermissions');
+    const spyUsePermission = vi.spyOn(hookPermission, 'useHasPermissions');
     spyUsePermission.mockReturnValue(value);
   };
   const mockingStore = (state: any) => {
@@ -33,12 +34,12 @@ describe('TenderDetailPage', () => {
     mockingDispatch();
   };
   const mockingDispatch = () => {
-    const mockDispatch = jest.fn();
+    const mockDispatch = vi.fn();
     useDispatchMock.mockReturnValue(mockDispatch);
   };
 
   beforeEach(() => {
-    const useNavigate = jest.spyOn(router, 'useNavigate');
+    const useNavigate = vi.spyOn(router, 'useNavigate');
     useNavigate.mockReturnValue(navigateMock);
     useSelectorMock.mockClear();
     useDispatchMock.mockClear();

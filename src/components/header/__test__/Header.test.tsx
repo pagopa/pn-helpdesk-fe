@@ -1,19 +1,19 @@
 /**
- * @jest-environment jsdom
+ * @vi-environment jsdom
  */
-import '@testing-library/jest-dom/extend-expect';
 import { cleanup, screen, within, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import 'regenerator-runtime/runtime';
 import { reducer } from '../../../mocks/mockReducer';
 import Header from '../Header';
+import { Mocked, vi, type Mock } from 'vitest';
 
 describe('Header Component', () => {
   afterEach(cleanup);
 
   beforeEach(async () => {
-    jest.spyOn(React, 'useEffect').mockImplementation(() => jest.fn());
+    vi.spyOn(React, 'useEffect').mockImplementation(() => vi.fn());
     reducer(<Header />);
   });
 

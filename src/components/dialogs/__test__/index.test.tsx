@@ -2,14 +2,15 @@ import { cleanup, fireEvent, screen, waitForElementToBeRemoved } from '@testing-
 import React, { useState } from 'react';
 import { reducer } from '../../../mocks/mockReducer';
 import { AlertDialog, CostDialog, DriverCostsDialog } from '../index';
+import { Mocked, vi, type Mock } from 'vitest';
 
-jest.mock('../../../components/deliveriesDrivers/CostsTable', () => ({
+vi.mock('../../../components/deliveriesDrivers/CostsTable', () => ({
   CostsTable: () => <div data-testid="cost-table-mock" />,
 }));
 const DriverCostsDialogCase = () => {
   const [opened, setOpened] = useState(true);
   const onClickNegativeMock = () => setOpened(false);
-  const onClickPositiveMock = jest.fn();
+  const onClickPositiveMock = vi.fn();
 
   return (
     <DriverCostsDialog
@@ -22,13 +23,13 @@ const DriverCostsDialogCase = () => {
   );
 };
 
-jest.mock('../../../components/forms/costs/CostsForm', () => ({
+vi.mock('../../../components/forms/costs/CostsForm', () => ({
   CostsForm: () => <div data-testid="cost-form-mock" />,
 }));
 const CostDialogCase = () => {
   const [opened, setOpened] = useState(true);
   const onClickNegativeMock = () => setOpened(false);
-  const onClickPositiveMock = () => {};
+  const onClickPositiveMock = () => { };
 
   return (
     <CostDialog
@@ -46,7 +47,7 @@ const CostDialogCase = () => {
 const AlertDialogCase = () => {
   const [opened, setOpened] = useState(true);
   const onClickNegativeMock = () => setOpened(false);
-  const onClickPositiveMock = jest.fn();
+  const onClickPositiveMock = vi.fn();
 
   return (
     <AlertDialog

@@ -7,22 +7,23 @@ import TenderPage from '../TenderPage';
 import { CREATE_TENDER_ROUTE } from '../../../navigation/router.const';
 import { reducer } from '../../../mocks/mockReducer';
 import * as hookPermission from '../../../hooks/useHasPermissions';
+import { Mocked, vi, type Mock } from 'vitest';
 
-jest.mock('../../../components/deliveriesDrivers/TenderTable', () => ({
+vi.mock('../../../components/deliveriesDrivers/TenderTable', () => ({
   TenderTable: () => <div data-testid="tender-table-mock" />,
 }));
 
 describe('TenderPageTest', () => {
-  const navigateMock = jest.fn();
+  const navigateMock = vi.fn();
 
   const setHasPermission = (value: boolean = true) => {
-    const spyUsePermission = jest.spyOn(hookPermission, 'useHasPermissions');
+    const spyUsePermission = vi.spyOn(hookPermission, 'useHasPermissions');
     spyUsePermission.mockReturnValue(value);
   };
 
   beforeEach(() => {
-    jest.spyOn(React, 'useEffect').mockImplementation(() => jest.fn());
-    const useNavigate = jest.spyOn(router, 'useNavigate');
+    vi.spyOn(React, 'useEffect').mockImplementation(() => vi.fn());
+    const useNavigate = vi.spyOn(router, 'useNavigate');
     useNavigate.mockReturnValue(navigateMock);
     setHasPermission();
   });

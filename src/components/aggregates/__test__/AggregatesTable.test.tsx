@@ -9,8 +9,9 @@ import { formatDate } from '../../../helpers/formatter.utility';
 import * as routes from '../../../navigation/router.const';
 import { getAggregatesResponse } from '../../../api/apiRequestTypes';
 import { Permission } from '../../../model/user-permission';
+import { vi } from 'vitest';
 
-const navigate = jest.fn();
+const navigate = vi.fn();
 
 describe('AggregatesTable Component with Write permission', () => {
   // eslint-disable-next-line functional/no-let
@@ -26,7 +27,7 @@ describe('AggregatesTable Component with Write permission', () => {
 
   beforeEach(async () => {
     // mock api
-    const apiSpyGetAggregates = jest.spyOn(apiRequests, 'getAggregates');
+    const apiSpyGetAggregates = vi.spyOn(apiRequests, 'getAggregates');
     apiSpyGetAggregates.mockImplementation((params) => {
       if (params.name !== '') {
         const filteredItems = mockData.items.filter((agg) => agg.name === params.name);
@@ -39,19 +40,19 @@ describe('AggregatesTable Component with Write permission', () => {
       return Promise.resolve(mockData);
     });
 
-    const apiSpyDeleteAggregate = jest.spyOn(apiRequests, 'deleteAggregate');
+    const apiSpyDeleteAggregate = vi.spyOn(apiRequests, 'deleteAggregate');
     apiSpyDeleteAggregate
       .mockImplementationOnce((id) => Promise.resolve({ id }))
       .mockImplementation(() => Promise.reject({ detail: 'Errore' }));
 
     // mock navigation
-    jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
+    vi.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
     result = undefined;
   });
 
@@ -185,14 +186,14 @@ describe('AggregatesTable Component with Write permission', () => {
 describe('AggregatesTable Component error', () => {
   beforeEach(() => {
     // mock api
-    const apiSpyGetAggregates = jest.spyOn(apiRequests, 'getAggregates');
+    const apiSpyGetAggregates = vi.spyOn(apiRequests, 'getAggregates');
     apiSpyGetAggregates.mockRejectedValue({});
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('handles error in api rest', async () => {

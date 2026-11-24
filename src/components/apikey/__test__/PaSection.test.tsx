@@ -3,6 +3,7 @@ import { renderWithProviders } from '../../../mocks/mockReducer';
 import apiRequests from '../../../api/apiRequests';
 import PaSection from '../PaSection';
 import { search_pa } from '../../../api/mock_agg_response';
+import { vi } from 'vitest';
 
 const DEFAULT_LIMIT = 10;
 
@@ -11,11 +12,11 @@ describe('PaSection tests with API success call', () => {
 
   // Mocked data fetched on first mount
   const mockedData = search_pa(DEFAULT_LIMIT, '', '');
-  const onSelect = jest.fn();
+  const onSelect = vi.fn();
 
   beforeEach(() => {
     // mock api
-    const apiSpySearchPa = jest.spyOn(apiRequests, 'searchPa');
+    const apiSpySearchPa = vi.spyOn(apiRequests, 'searchPa');
     apiSpySearchPa.mockImplementation((params) => {
       const { lastEvaluatedId, limit, paName } = params;
       const res = search_pa(limit!, lastEvaluatedId!, paName);
@@ -24,9 +25,9 @@ describe('PaSection tests with API success call', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.clearAllMocks();
-    jest.restoreAllMocks();
+    vi.resetAllMocks();
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
     result = undefined;
   });
 
@@ -130,11 +131,11 @@ describe('PaSection tests with API success call', () => {
 
 describe('PaSection tests with API error call', () => {
   let result: RenderResult | undefined;
-  const onSelect = jest.fn();
+  const onSelect = vi.fn();
 
   beforeEach(() => {
     // mock api
-    const apiSpySearchPa = jest.spyOn(apiRequests, 'searchPa');
+    const apiSpySearchPa = vi.spyOn(apiRequests, 'searchPa');
     apiSpySearchPa.mockImplementation(() => Promise.reject({}));
   });
 

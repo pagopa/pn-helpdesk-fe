@@ -6,20 +6,21 @@ import * as reactRedux from '../../../redux/hook';
 import { DeliveryDriver, Tender } from '../../../model';
 import { FormTenderPage } from '../FormTenderPage';
 import { reducer } from '../../../mocks/mockReducer';
+import { Mocked, vi, type Mock } from 'vitest';
 
-jest.mock('../../../components/steps/StepTender', () => ({
+vi.mock('../../../components/steps/StepTender', () => ({
   StepTender: () => <div data-testid="step-tender-mock" />,
 }));
 
-jest.mock('../../../components/steps/StepFSU', () => ({
+vi.mock('../../../components/steps/StepFSU', () => ({
   StepFSU: () => <div data-testid="step-fsu-mock" />,
 }));
 
-jest.mock('../../../components/steps/StepDeliveriesDrivers', () => ({
+vi.mock('../../../components/steps/StepDeliveriesDrivers', () => ({
   StepDeliveriesDrivers: () => <div data-testid="step-deliveries-drivers-mock" />,
 }));
 
-jest.mock('../../../components/steps/StepSummary', () => ({
+vi.mock('../../../components/steps/StepSummary', () => ({
   StepSummary: () => <div data-testid="step-summary-mock" />,
 }));
 
@@ -39,22 +40,22 @@ const initialState = {
 };
 
 describe('FormTenderPage test', () => {
-  const useSelectorMock = jest.spyOn(reactRedux, 'useAppSelector');
-  const useDispatchMock = jest.spyOn(reactRedux, 'useAppDispatch');
-  const useParamsSpy = jest.spyOn(router, 'useParams');
+  const useSelectorMock = vi.spyOn(reactRedux, 'useAppSelector');
+  const useDispatchMock = vi.spyOn(reactRedux, 'useAppDispatch');
+  const useParamsSpy = vi.spyOn(router, 'useParams');
 
   const mockingStore = (state: any) => {
     useSelectorMock.mockReturnValue(state);
     const mockStore = configureStore();
     const updatedStore = mockStore(state);
-    const mockDispatch = jest.fn();
+    const mockDispatch = vi.fn();
     useDispatchMock.mockReturnValue(mockDispatch);
     updatedStore.dispatch = mockDispatch;
   };
 
   beforeEach(() => {
     useParamsSpy.mockReturnValue({ tenderCode: undefined });
-    jest.spyOn(React, 'useEffect').mockImplementation(() => jest.fn());
+    vi.spyOn(React, 'useEffect').mockImplementation(() => vi.fn());
     useSelectorMock.mockClear();
     useDispatchMock.mockClear();
     mockingStore(initialState);

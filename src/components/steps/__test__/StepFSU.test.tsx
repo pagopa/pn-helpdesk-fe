@@ -4,6 +4,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import { render } from '@testing-library/react';
 import * as reactRedux from '../../../redux/hook';
 import { StepFSU } from '../StepFSU';
+import { Mocked, vi, type Mock } from 'vitest';
 
 const initialState = {
   activeKey: 0 as number,
@@ -21,11 +22,11 @@ const initialState = {
 };
 
 describe('StepFSUTest', () => {
-  const mockDispatchFn = jest.fn();
-  const spyUseSelector = jest.spyOn(reactRedux, 'useAppSelector');
+  const mockDispatchFn = vi.fn();
+  const spyUseSelector = vi.spyOn(reactRedux, 'useAppSelector');
 
   beforeEach(() => {
-    const spyUseDispatch = jest.spyOn(reactRedux, 'useAppDispatch');
+    const spyUseDispatch = vi.spyOn(reactRedux, 'useAppDispatch');
     spyUseDispatch.mockReturnValue(mockDispatchFn);
     changeStore(initialState);
   });
@@ -115,6 +116,6 @@ describe('StepFSUTest', () => {
   });
 });
 
-jest.mock('../../deliveriesDrivers/DriverAndCostForm', () => ({
+vi.mock('../../deliveriesDrivers/DriverAndCostForm', () => ({
   DriverAndCostForm: () => <div data-testid="driver-and-cost-form" />,
 }));
