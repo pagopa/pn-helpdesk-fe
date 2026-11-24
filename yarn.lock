@@ -11748,7 +11748,12 @@ validator@^13.7.0:
   optionalDependencies:
     fsevents "~2.3.3"
 
-vitest@^5.1.1, vitest@5.1.1:
+vitest-sonar-reporter@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/vitest-sonar-reporter/-/vitest-sonar-reporter-3.0.0.tgz"
+  integrity sha512-QRT5m9Z/3Kt0WVDVcFHm5LC9Ba89yDP4twlX2QUAJ9PdqfJBkLAh/kXj7m6U3i0k6GxnIEiwCc295bmAYokmZg==
+
+vitest@^5.1.1, vitest@>=3, vitest@5.1.1:
   version "5.1.1"
   resolved "https://registry.npmjs.org/vitest/-/vitest-5.1.1.tgz"
   integrity sha512-trVmzUFOSraCZcI3uZIMD5FqBh4atFkC/XuJP/IU7qtyQay0FCs3Ia+0QiQ2JJwGyWG/xrcBoJNel2+O7kEZ0g==

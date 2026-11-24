@@ -114,7 +114,8 @@
     "rimraf": "^3.0.2",
     "sonarqube-scanner": "^4.3.8",
     "vite": "^8.3.8",
-    "vitest": "^5.1.1"
+    "vitest": "^5.1.1",
+    "vitest-sonar-reporter": "^3.0.0"
   },
   "jest": {
     "transformIgnorePatterns": [
