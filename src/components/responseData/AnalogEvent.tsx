@@ -1,6 +1,6 @@
 import { Typography, Box, Tooltip, Link } from '@mui/material';
 import React from 'react';
-import { codiciStatusTimeline, LegalFact } from '../../model/notification';
+import { codiciStatusTimeline, DocumentToBeDownloaded, LegalFact } from '../../model/notification';
 import { formatEventDate } from '../../helpers/utils';
 
 type AnalogEvent = {
@@ -33,6 +33,7 @@ type AnalogAttachment = {
     documentType: string;
     url: string;
     date: string;
+    data: DocumentToBeDownloaded;
 };
 
 const PhysicalAddress: React.FC<{ address: any }> = ({ address }) => (
@@ -147,38 +148,46 @@ const SendAnalogDomicile: React.FC<{ analogCost: any }> = ({ analogCost }) => {
 const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog }) => (
     <>
         {sendAnalog?.attachments && (
-            <> - Attachments: {sendAnalog.attachments.map((attachment) => (
-                <>
-                    <Box component="span">
-                        {attachment.documentType} -
-                    </Box>
-                    <Box component="span">
-                        {attachment.url} -
-                    </Box>
-                    <Box component="span">
-                        {formatEventDate(attachment.date)}
-                    </Box>
-                </>
-            ))}</>
-        )}
-        {sendAnalog?.legalFactsIds && (
-            <> - Legal Facts: {sendAnalog.legalFactsIds.map((legalFact, idx) => (
-                legalFact?.data?.download?.url ? (
-                    <Box component="span" key={`legalFact-${idx}`}>
+            <> - Attachments: {sendAnalog.attachments.map((attachment, idx) => (
+                attachment?.data?.download?.url ? (
+                    <Box component="span" key={`attachment-${idx}`}>
                         <Link
                             target="_blank"
-                            href={`${legalFact?.data?.download?.url}`}
+                            href={`${attachment?.data?.download?.url}`}
                         >
-                            LEGALFACT
+                            ATTACHMENT
                         </Link>
                     </Box>
                 ) : (
-                    <Box component="span" key={`legalFact-${idx}`}>
-                        {typeof legalFact === 'string' ? legalFact : 'Documento non disponibile'} -{' '}
+                    <Box component="span" key={`attachment-${idx}`}>
+                        {typeof attachment.url === 'string' ? attachment.url : 'Documento non disponibile'} -{' '}
                     </Box>
-                )
-            ))}</>
+                )))}
+            </>
         )}
+
+
+
+        {
+            sendAnalog?.legalFactsIds && (
+                <> - Legal Facts: {sendAnalog.legalFactsIds.map((legalFact, idx) => (
+                    legalFact?.data?.download?.url ? (
+                        <Box component="span" key={`legalFact-${idx}`}>
+                            <Link
+                                target="_blank"
+                                href={`${legalFact?.data?.download?.url}`}
+                            >
+                                LEGALFACT
+                            </Link>
+                        </Box>
+                    ) : (
+                        <Box component="span" key={`legalFact-${idx}`}>
+                            {typeof legalFact.key === 'string' ? legalFact.key : 'Documento non disponibile'} -{' '}
+                        </Box>
+                    )
+                ))}</>
+            )
+        }
     </>
 );
 
