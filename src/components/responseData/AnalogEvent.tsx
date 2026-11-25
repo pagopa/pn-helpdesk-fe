@@ -16,7 +16,6 @@ type AnalogEvent = {
             registeredLetterCode?: string | null;
             [key: string]: any;
         };
-        legalFactsIds: Array<LegalFact>;
     }>;
 };
 
@@ -165,29 +164,6 @@ const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog })
                 )))}
             </>
         )}
-
-
-
-        {
-            sendAnalog?.legalFactsIds && (
-                <> - Legal Facts: {sendAnalog.legalFactsIds.map((legalFact, idx) => (
-                    legalFact?.data?.download?.url ? (
-                        <Box component="span" key={`legalFact-${idx}`}>
-                            <Link
-                                target="_blank"
-                                href={`${legalFact?.data?.download?.url}`}
-                            >
-                                LEGALFACT
-                            </Link>
-                        </Box>
-                    ) : (
-                        <Box component="span" key={`legalFact-${idx}`}>
-                            {typeof legalFact.key === 'string' ? legalFact.key : 'Documento non disponibile'} -{' '}
-                        </Box>
-                    )
-                ))}</>
-            )
-        }
     </>
 );
 
