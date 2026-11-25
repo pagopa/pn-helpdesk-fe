@@ -1,7 +1,6 @@
-import { Typography, Box, Tooltip } from '@mui/material';
+import { Typography, Box, Tooltip, Link } from '@mui/material';
 import React from 'react';
-
-import { codiciStatusTimeline } from '../../model/notification';
+import { codiciStatusTimeline, LegalFact } from '../../model/notification';
 import { formatEventDate } from '../../helpers/utils';
 
 type AnalogEvent = {
@@ -17,6 +16,7 @@ type AnalogEvent = {
             registeredLetterCode?: string | null;
             [key: string]: any;
         };
+        legalFactsIds: Array<LegalFact>;
     }>;
 };
 
@@ -26,7 +26,7 @@ type SendAnalog = {
     responseStatus: string;
     registeredLetterCode: string;
     attachments: Array<AnalogAttachment>;
-
+    legalFactsIds: Array<LegalFact>;
 } | null;
 
 type AnalogAttachment = {
@@ -161,8 +161,27 @@ const SendAnalogDetails: React.FC<{ sendAnalog: SendAnalog }> = ({ sendAnalog })
                 </>
             ))}</>
         )}
+        {sendAnalog?.legalFactsIds && (
+            <> - Legal Facts: {sendAnalog.legalFactsIds.map((legalFact, idx) => (
+                legalFact?.data?.download?.url ? (
+                    <Box component="span" key={`legalFact-${idx}`}>
+                        <Link
+                            target="_blank"
+                            href={`${legalFact?.data?.download?.url}`}
+                        >
+                            LEGALFACT
+                        </Link>
+                    </Box>
+                ) : (
+                    <Box component="span" key={`legalFact-${idx}`}>
+                        {typeof legalFact === 'string' ? legalFact : 'Documento non disponibile'} -{' '}
+                    </Box>
+                )
+            ))}</>
+        )}
     </>
 );
+
 
 const SendAnalogFeedbackDetails: React.FC<{ feedback: any }> = ({ feedback }) => (
     <>
@@ -221,6 +240,7 @@ function parseAnalogElement(el: any) {
                 responseStatus: el.details.responseStatus,
                 registeredLetterCode: el.details.registeredLetterCode,
                 attachments: el.details.attachments,
+                legalFactsIds: el.legalFactsIds || [],
             }
             : null;
 
@@ -288,7 +308,7 @@ const AnalogEvent: React.FC<AnalogEvent> = ({ analogEvents }) => (
                 sendAnalogDomicile,
                 ingestionTimeStamp
             } = parseAnalogElement(el);
-
+            console.log("sendanalog", sendAnalog);
             return (
                 <Typography key={`analog-${i}`} variant="body2" component="div">
                     <Box sx={{

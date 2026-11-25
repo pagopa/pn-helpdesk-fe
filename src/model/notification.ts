@@ -75,9 +75,23 @@ export interface Document {
     };
 }
 
-interface LegalFact {
+export interface DocumentToBeDownloaded {
     key: string;
+    versionId: string | null;
+    documentType: string;
+    documentStatus: string;
+    contentType: string;
+    contentLength: number;
+    checksum: string;
+    retentionUntil: string;
+    tags: Record<string, string>;
+    download: DownloadInfo;
+}
+
+export interface LegalFact {
+    data: DocumentToBeDownloaded;
     category: string;
+    key: string;
 }
 
 interface TimelineAttachment {
