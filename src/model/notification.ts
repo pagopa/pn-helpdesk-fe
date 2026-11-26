@@ -35,12 +35,17 @@ export interface PagoPa {
 export interface Payment {
     pagoPa?: PagoPa;
 }
+interface DigitalDomicile {
+    type: string;
+    address: string;
+}
 
 export interface Recipient {
     recipientType: 'PF' | 'PG';
     taxId: string;
     denomination: string;
     physicalAddress: PhysicalAddress;
+    digitalDomicile?: DigitalDomicile;
     payments?: Array<Payment>;
     timeline: Array<TimelineElement>;
 }
@@ -70,9 +75,23 @@ export interface Document {
     };
 }
 
-interface LegalFact {
+export interface DocumentToBeDownloaded {
     key: string;
+    versionId: string | null;
+    documentType: string;
+    documentStatus: string;
+    contentType: string;
+    contentLength: number;
+    checksum: string;
+    retentionUntil: string;
+    tags: Record<string, string>;
+    download: DownloadInfo;
+}
+
+export interface LegalFact {
+    data: DocumentToBeDownloaded;
     category: string;
+    key: string;
 }
 
 interface TimelineAttachment {
@@ -343,7 +362,7 @@ export const codiciStatusTimeline: Record<string, string> = {
     "RECAG012": "Accettazione 23L",
     "RECAG013": "Non Rendicontabile",
     "RECAG015": "Causa Forza Maggiore",
-
+    "RECAG012A": "Distacco della 23L dal plico - pre esito",
     "RECRI002": "Ingresso nel paese estero",
     "RECRI003A": "Consegnato - pre-esito",
     "RECRI003B": "Consegnato - In Dematerializzazione",
@@ -352,7 +371,8 @@ export const codiciStatusTimeline: Record<string, string> = {
     "RECRI004B": "Non Consegnato - In Dematerializzazione",
     "RECRI004C": "Non Consegnato - Fascicolo Chiuso",
     "RECRI005": "Furto/Smarrimento/deterioramento",
-
+    "PNRN012": "Decorsi i 10gg dal rilascio avviso di giacenza in buchetta",
+    "PNAG012": "Perfezionamento giudiziario della notifica (deprecato)",
     "RECRSI001": "Avviato all'estero",
     "RECRSI002": "Ingresso nel paese estero",
     "RECRSI003C": "Consegnato - Fascicolo Chiuso",

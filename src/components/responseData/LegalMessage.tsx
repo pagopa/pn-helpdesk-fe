@@ -14,7 +14,7 @@ const LegalMessage: React.FC<Props> = ({ category, details, eventTimestamp }) =>
     const eventDateFormatted = formatEventDate(eventTimestamp);
 
     return (
-        <Box sx={{ my: 1, ml: 2 }}>
+        <Box sx={{ ml: 2 }}>
             <Typography variant="body2" component="div">
 
                 {eventDateFormatted && (
@@ -28,6 +28,9 @@ const LegalMessage: React.FC<Props> = ({ category, details, eventTimestamp }) =>
                 )}
                 {details?.digitalAddress?.address && (
                     <>: <Box component="span" >{details.digitalAddress.address}</Box></>
+                )}
+                {details?.digitalAddressSource && (
+                    <> - <Box component="span" >{details.digitalAddressSource}</Box></>
                 )}
 
                 {details?.deliveryDetailCode && (
