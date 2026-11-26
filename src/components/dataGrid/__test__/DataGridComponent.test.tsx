@@ -100,22 +100,12 @@ const columns = [
 ];
 
 describe('DataGridComponent', () => {
-  let getComputedStyleSpy: jest.SpyInstance;
-
-  beforeAll(() => {
-    getComputedStyleSpy = jest.spyOn(window, 'getComputedStyle').mockImplementation((element) =>
-    ({
-      position: 'relative',
-      paddingLeft: '0px',
-      paddingRight: '0px',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-    } as CSSStyleDeclaration)
-    );
-  });
-
-  afterAll(() => getComputedStyleSpy.mockRestore());
   afterEach(cleanup);
+
+  beforeEach(() => {
+    // Avoid running DataGrid's layout measurement effects in jsdom, which has no real layout.
+    jest.spyOn(React, 'useEffect').mockImplementation(() => jest.fn());
+  });
 
   it('render DataGridComponent with 4 columns and 4 rows', async () => {
     await act(async () => {
